@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Class Reps - Physiology 2k29</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-page="reps">
+    <!-- APP SHELL: Shared page frame for consistency. -->
+    <div class="app-shell">
+      <!-- SIDEBAR COMPONENT: Same navigation, reps page highlighted. -->
+      <aside class="sidebar" aria-label="Class dashboard navigation">
+        <a class="sidebar-brand" href="./dashboard.html">
+          <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
+          <span>
+            <strong>Physiology</strong>
+            <small>Class 2k29</small>
+          </span>
+        </a>
+
+        <nav class="nav-stack" aria-label="Primary pages">
+          <a class="nav-link" href="./dashboard.html"><span aria-hidden="true">D</span>Dashboard</a>
+          <a class="nav-link" href="./courses.html"><span aria-hidden="true">C</span>Courses</a>
+          <a class="nav-link" href="./timetable.html"><span aria-hidden="true">T</span>Timetable</a>
+          <a class="nav-link active" href="./reps.html"><span aria-hidden="true">R</span>Reps</a>
+          <a class="nav-link" href="./rep.html"><span aria-hidden="true">U</span>Rep Portal</a>
+          <a class="nav-link" href="./admin.html"><span aria-hidden="true">A</span>Admin</a>
+        </nav>
+      </aside>
+
+      <main class="main-area">
+        <!-- HEADER COMPONENT: Logo plaque with class identity. -->
+        <header class="page-header">
+          <div class="logo-plaque">
+            <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
+            <div class="plaque-text">
+              <span>Physiology Class 2k29</span>
+              <strong>Class Reps</strong>
+            </div>
+          </div>
+          <a class="ghost-action" href="./rep.html">Rep portal</a>
+        </header>
+
+        <!-- REPS INTRO COMPONENT: States ownership of updates and resources. -->
+        <section class="page-intro">
+          <p class="eyebrow">People to ask</p>
+          <h1>Ayanfe and Raphael keep the board tidy.</h1>
+          <p>
+            Reps upload class files, post announcements, and view the private
+            class member list through the protected rep portal.
+          </p>
+        </section>
+
+        <!-- REPS GRID COMPONENT: Two profile cards for the course representatives. -->
+        <section class="rep-grid">
+          <article class="rep-card">
+            <span class="rep-avatar">A</span>
+            <div>
+              <p class="eyebrow">Course rep</p>
+              <h2>Ayanfe</h2>
+              <p>Coordinates new course materials, slide links, and reminders.</p>
+            </div>
+          </article>
+          <article class="rep-card">
+            <span class="rep-avatar">R</span>
+            <div>
+              <p class="eyebrow">Course rep</p>
+              <h2>Raphael</h2>
+              <p>Helps verify folders, timetable updates, and shared resources.</p>
+            </div>
+          </article>
+        </section>
+
+        <!-- GUIDE COMPONENT: Simple workflow for reps adding new resources. -->
+        <section class="content-panel">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Add resource guide</p>
+              <h2>How reps update the site</h2>
+            </div>
+          </div>
+          <ol class="guide-list">
+            <li>Open the protected rep portal and sign in with the rep account.</li>
+            <li>Choose the course, resource type, title, and file.</li>
+            <li>Submit the form; the file is saved to Firebase Storage.</li>
+            <li>The resource appears on the dashboard and course page automatically.</li>
+          </ol>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

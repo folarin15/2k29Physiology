@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>First Semester Courses - Physiology 2k29</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-page="courses">
+    <!-- APP SHELL: Reuses the same sidebar pattern so every page feels connected. -->
+    <div class="app-shell">
+      <!-- SIDEBAR COMPONENT: Navigation between dashboard, courses, timetable, and staff portals. -->
+      <aside class="sidebar" aria-label="Class dashboard navigation">
+        <a class="sidebar-brand" href="./dashboard.html">
+          <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
+          <span>
+            <strong>Physiology</strong>
+            <small>Class 2k29</small>
+          </span>
+        </a>
+
+        <nav class="nav-stack" aria-label="Primary pages">
+          <a class="nav-link" href="./dashboard.html"><span aria-hidden="true">D</span>Dashboard</a>
+          <a class="nav-link active" href="./courses.html"><span aria-hidden="true">C</span>Courses</a>
+          <a class="nav-link" href="./timetable.html"><span aria-hidden="true">T</span>Timetable</a>
+          <a class="nav-link" href="./reps.html"><span aria-hidden="true">R</span>Reps</a>
+          <a class="nav-link" href="./rep.html"><span aria-hidden="true">U</span>Rep Portal</a>
+          <a class="nav-link" href="./admin.html"><span aria-hidden="true">A</span>Admin</a>
+        </nav>
+
+        <!-- SOURCE NOTE COMPONENT: Explains where the course list came from. -->
+        <section class="sidebar-note">
+          <strong>Source</strong>
+          <p>
+            Courses are taken from the 2025/2026 course registration PDF and trimmed
+            to the first-semester set.
+          </p>
+        </section>
+      </aside>
+
+      <main class="main-area">
+        <!-- HEADER COMPONENT: School logo plus the requested stretched class plaque. -->
+        <header class="page-header">
+          <div class="logo-plaque">
+            <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
+            <div class="plaque-text">
+              <span>Physiology Class 2k29</span>
+              <strong>First Semester Courses</strong>
+            </div>
+          </div>
+          <a class="ghost-action" href="./timetable.html">Open timetable</a>
+        </header>
+
+        <!-- COURSE INTRO COMPONENT: Gives students quick context before the grid. -->
+        <section class="page-intro">
+          <p class="eyebrow">Course folders</p>
+          <h1>Live course resource bank</h1>
+          <p>
+            Course cards are fixed from registration data. Uploads under each course
+            appear automatically after a course rep adds them.
+          </p>
+        </section>
+
+        <!-- COURSE GRID COMPONENT: JavaScript renders all first-semester courses here. -->
+        <section class="content-panel">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Registration list</p>
+              <h2>Displayed courses</h2>
+            </div>
+            <span id="coursePageCount" class="soft-pill">0 courses</span>
+          </div>
+          <div id="courseGrid" class="course-grid"></div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

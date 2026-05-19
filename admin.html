@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Portal - Physiology 2k29</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-page="admin" data-portal="staff" data-portal-role="admin">
+    <!-- APP SHELL: Protected admin frame for the site owner. -->
+    <div class="app-shell">
+      <!-- SIDEBAR COMPONENT: Admin navigation. -->
+      <aside class="sidebar" aria-label="Class dashboard navigation">
+        <a class="sidebar-brand" href="./dashboard.html">
+          <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
+          <span>
+            <strong>Physiology</strong>
+            <small>Class 2k29</small>
+          </span>
+        </a>
+
+        <nav class="nav-stack" aria-label="Primary pages">
+          <a class="nav-link" href="./dashboard.html"><span aria-hidden="true">D</span>Dashboard</a>
+          <a class="nav-link" href="./courses.html"><span aria-hidden="true">C</span>Courses</a>
+          <a class="nav-link" href="./timetable.html"><span aria-hidden="true">T</span>Timetable</a>
+          <a class="nav-link" href="./reps.html"><span aria-hidden="true">R</span>Reps</a>
+          <a class="nav-link" href="./rep.html"><span aria-hidden="true">U</span>Rep Portal</a>
+          <a class="nav-link active" href="./admin.html"><span aria-hidden="true">A</span>Admin</a>
+        </nav>
+
+        <section class="sidebar-note">
+          <strong>Owner controls</strong>
+          <p>Admin can view members and remove bad resources or announcements.</p>
+        </section>
+      </aside>
+
+      <main class="main-area">
+        <!-- HEADER COMPONENT: Logo plaque for admin management. -->
+        <header class="page-header">
+          <div class="logo-plaque">
+            <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
+            <div class="plaque-text">
+              <span>Physiology Class 2k29</span>
+              <strong>Admin Portal</strong>
+            </div>
+          </div>
+          <button class="ghost-action" id="staffSignOut" type="button">Sign out</button>
+        </header>
+
+        <!-- LOGIN COMPONENT: Firebase Auth email/password sign-in for admin. -->
+        <section class="content-panel auth-panel" id="staffLoginPanel">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Admin login</p>
+              <h2>Sign in to manage the portal</h2>
+            </div>
+          </div>
+          <form class="portal-form compact-form" id="staffLoginForm">
+            <label>
+              Email
+              <input name="email" type="email" autocomplete="email" required />
+            </label>
+            <label>
+              Password
+              <input name="password" type="password" autocomplete="current-password" required />
+            </label>
+            <button class="primary-action" type="submit">Sign in</button>
+            <p class="form-status" id="staffStatus"></p>
+          </form>
+        </section>
+
+        <!-- ADMIN PORTAL COMPONENT: Hidden until the logged-in user has admin role. -->
+        <section id="staffPortal" hidden>
+          <!-- MEMBERS COMPONENT: Private class list visible to admin. -->
+          <section class="content-panel">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Private list</p>
+                <h2>Class members</h2>
+              </div>
+              <span class="soft-pill" id="membersCount">0 members</span>
+            </div>
+            <div class="table-wrap">
+              <table class="timetable-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Matric number</th>
+                    <th>Notifications</th>
+                    <th>Last seen</th>
+                  </tr>
+                </thead>
+                <tbody id="membersTableBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <div class="staff-grid">
+            <!-- RESOURCE ADMIN COMPONENT: Lets admin remove bad uploads. -->
+            <section class="content-panel">
+              <div class="section-header">
+                <div>
+                  <p class="eyebrow">Uploads</p>
+                  <h2>Manage resources</h2>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table class="timetable-table">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Course</th>
+                      <th>Uploaded by</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminResourcesBody"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- ANNOUNCEMENT ADMIN COMPONENT: Lets admin remove bad posts. -->
+            <section class="content-panel">
+              <div class="section-header">
+                <div>
+                  <p class="eyebrow">News</p>
+                  <h2>Manage announcements</h2>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table class="timetable-table">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Priority</th>
+                      <th>Posted by</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminAnnouncementsBody"></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+
+          <!-- ROLE GUIDE COMPONENT: Explains how to seed admin and reps in Firestore. -->
+          <section class="content-panel">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Role setup</p>
+                <h2>How to add reps/admin</h2>
+              </div>
+            </div>
+            <p class="form-help">
+              Create Firebase Auth users for you, Ayanfe, and Raphael. Then create
+              matching Firestore documents in roles/{uid} with role set to "admin"
+              for you and "rep" for Ayanfe/Raphael.
+            </p>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

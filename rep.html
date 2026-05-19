@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rep Portal - Physiology 2k29</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-page="rep" data-portal="staff" data-portal-role="rep">
+    <!-- APP SHELL: Protected portal frame for Ayanfe and Raphael. -->
+    <div class="app-shell">
+      <!-- SIDEBAR COMPONENT: Staff portal navigation. -->
+      <aside class="sidebar" aria-label="Class dashboard navigation">
+        <a class="sidebar-brand" href="./dashboard.html">
+          <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
+          <span>
+            <strong>Physiology</strong>
+            <small>Class 2k29</small>
+          </span>
+        </a>
+
+        <nav class="nav-stack" aria-label="Primary pages">
+          <a class="nav-link" href="./dashboard.html"><span aria-hidden="true">D</span>Dashboard</a>
+          <a class="nav-link" href="./courses.html"><span aria-hidden="true">C</span>Courses</a>
+          <a class="nav-link" href="./timetable.html"><span aria-hidden="true">T</span>Timetable</a>
+          <a class="nav-link" href="./reps.html"><span aria-hidden="true">R</span>Reps</a>
+          <a class="nav-link active" href="./rep.html"><span aria-hidden="true">U</span>Rep Portal</a>
+          <a class="nav-link" href="./admin.html"><span aria-hidden="true">A</span>Admin</a>
+        </nav>
+
+        <section class="sidebar-note">
+          <strong>Private</strong>
+          <p>Only role-approved course reps and admin can upload files or post announcements.</p>
+        </section>
+      </aside>
+
+      <main class="main-area">
+        <!-- HEADER COMPONENT: Logo plaque for the protected upload area. -->
+        <header class="page-header">
+          <div class="logo-plaque">
+            <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
+            <div class="plaque-text">
+              <span>Physiology Class 2k29</span>
+              <strong>Rep Portal</strong>
+            </div>
+          </div>
+          <button class="ghost-action" id="staffSignOut" type="button">Sign out</button>
+        </header>
+
+        <!-- LOGIN COMPONENT: Firebase Auth email/password sign-in for reps. -->
+        <section class="content-panel auth-panel" id="staffLoginPanel">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Course rep login</p>
+              <h2>Sign in to upload and post</h2>
+            </div>
+          </div>
+          <form class="portal-form compact-form" id="staffLoginForm">
+            <label>
+              Email
+              <input name="email" type="email" autocomplete="email" required />
+            </label>
+            <label>
+              Password
+              <input name="password" type="password" autocomplete="current-password" required />
+            </label>
+            <button class="primary-action" type="submit">Sign in</button>
+            <p class="form-status" id="staffStatus"></p>
+          </form>
+        </section>
+
+        <!-- STAFF PORTAL COMPONENT: Hidden until the logged-in user has rep/admin role. -->
+        <section id="staffPortal" hidden>
+          <div class="staff-grid">
+            <!-- RESOURCE UPLOAD COMPONENT: Sends files to Firebase Storage. -->
+            <section class="content-panel">
+              <div class="section-header">
+                <div>
+                  <p class="eyebrow">Upload resource</p>
+                  <h2>Add a class file</h2>
+                </div>
+              </div>
+              <form class="portal-form" id="resourceUploadForm">
+                <label>
+                  Course
+                  <select name="courseCode" data-course-select required></select>
+                </label>
+                <label>
+                  Type
+                  <select name="type" data-type-select required></select>
+                </label>
+                <label>
+                  Title
+                  <input name="title" type="text" placeholder="e.g. CHM 101 Week 3 Slides" required />
+                </label>
+                <label>
+                  Note
+                  <textarea name="note" placeholder="Short context for students"></textarea>
+                </label>
+                <label>
+                  File
+                  <input name="file" type="file" accept=".pdf,.ppt,.pptx,.doc,.docx,.png,.jpg,.jpeg" required />
+                </label>
+                <button class="primary-action" type="submit">Upload file</button>
+                <p class="form-status" id="uploadStatus"></p>
+              </form>
+            </section>
+
+            <!-- ANNOUNCEMENT COMPONENT: Posts news and triggers notifications. -->
+            <section class="content-panel">
+              <div class="section-header">
+                <div>
+                  <p class="eyebrow">Announcement</p>
+                  <h2>Post class news</h2>
+                </div>
+              </div>
+              <form class="portal-form" id="announcementForm">
+                <label>
+                  Title
+                  <input name="title" type="text" placeholder="e.g. PHY practical update" required />
+                </label>
+                <label>
+                  Priority
+                  <select name="priority" required>
+                    <option value="Normal">Normal</option>
+                    <option value="Important">Important</option>
+                    <option value="Urgent">Urgent</option>
+                  </select>
+                </label>
+                <label>
+                  Message
+                  <textarea name="message" placeholder="Write the full announcement" required></textarea>
+                </label>
+                <button class="primary-action" type="submit">Post announcement</button>
+                <p class="form-status" id="announcementStatus"></p>
+              </form>
+            </section>
+          </div>
+
+          <!-- MEMBERS COMPONENT: Private class list visible to reps and admin. -->
+          <section class="content-panel">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Private list</p>
+                <h2>Class members</h2>
+              </div>
+              <span class="soft-pill" id="membersCount">0 members</span>
+            </div>
+            <div class="table-wrap">
+              <table class="timetable-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Matric number</th>
+                    <th>Notifications</th>
+                    <th>Last seen</th>
+                  </tr>
+                </thead>
+                <tbody id="membersTableBody"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

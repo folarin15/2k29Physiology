@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CBT Timetable - Physiology 2k29</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-page="timetable">
+    <!-- APP SHELL: The timetable page keeps the same layout language. -->
+    <div class="app-shell">
+      <!-- SIDEBAR COMPONENT: Persistent navigation for fast movement across pages. -->
+      <aside class="sidebar" aria-label="Class dashboard navigation">
+        <a class="sidebar-brand" href="./dashboard.html">
+          <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
+          <span>
+            <strong>Physiology</strong>
+            <small>Class 2k29</small>
+          </span>
+        </a>
+
+        <nav class="nav-stack" aria-label="Primary pages">
+          <a class="nav-link" href="./dashboard.html"><span aria-hidden="true">D</span>Dashboard</a>
+          <a class="nav-link" href="./courses.html"><span aria-hidden="true">C</span>Courses</a>
+          <a class="nav-link active" href="./timetable.html"><span aria-hidden="true">T</span>Timetable</a>
+          <a class="nav-link" href="./reps.html"><span aria-hidden="true">R</span>Reps</a>
+          <a class="nav-link" href="./rep.html"><span aria-hidden="true">U</span>Rep Portal</a>
+          <a class="nav-link" href="./admin.html"><span aria-hidden="true">A</span>Admin</a>
+        </nav>
+
+        <!-- TIMETABLE TIP COMPONENT: Practical reminder for students. -->
+        <section class="sidebar-note">
+          <strong>Batch check</strong>
+          <p>Confirm your exact batch before exam day; the board lists official time windows.</p>
+        </section>
+      </aside>
+
+      <main class="main-area">
+        <!-- HEADER COMPONENT: Logo plaque and page action. -->
+        <header class="page-header">
+          <div class="logo-plaque">
+            <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
+            <div class="plaque-text">
+              <span>Physiology Class 2k29</span>
+              <strong>CBT Timetable</strong>
+            </div>
+          </div>
+          <a class="ghost-action" href="./dashboard.html">Back to dashboard</a>
+        </header>
+
+        <!-- TIMETABLE INTRO COMPONENT: Clarifies that the table is filtered to registered courses. -->
+        <section class="page-intro">
+          <p class="eyebrow">First semester CBT</p>
+          <h1>Relevant GES/GST exam schedule</h1>
+          <p>
+            Pulled from the 2025/2026 First Semester CBT timetable and matched
+            against registered first-semester courses.
+          </p>
+        </section>
+
+        <!-- TIMETABLE TABLE COMPONENT: JavaScript renders the official batch rows here. -->
+        <section class="content-panel">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Exam rows</p>
+              <h2>Timetable</h2>
+            </div>
+            <span id="timetablePageCount" class="soft-pill">0 rows</span>
+          </div>
+          <div class="table-wrap">
+            <table class="timetable-table">
+              <thead>
+                <tr>
+                  <th>Course</th>
+                  <th>Day</th>
+                  <th>Date</th>
+                  <th>Batch</th>
+                  <th>Duration</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody id="timetableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
