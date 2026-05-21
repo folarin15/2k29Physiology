@@ -1,16 +1,24 @@
 import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js";
-import { createBackend } from "./firebase-service.js";
-import { isFirebaseConfigured } from "./firebase-config.js";
+import { createBackend } from "./supabase-service.js";
+import { isSupabaseConfigured } from "./supabase-config.js";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
-const NOTIFICATION_ASKED_KEY = "physiology2k29.notificationAsked";
 
 const state = {
   backend: null,
   resources: [],
   announcements: [],
   members: [],
+  suggestions: [],
+  staffUser: null,
+  staffRole: null,
   membersUnsubscribe: null,
+  suggestionsUnsubscribe: null,
+  live: {
+    resources: { loaded: false, ids: new Set() },
+    announcements: { loaded: false, ids: new Set() },
+    suggestions: { loaded: false, ids: new Set() },
+  },
 };
 
 /* DOM UTILITY: Keeps page-specific rendering safe across all HTML files. */
@@ -57,6 +65,14 @@ function saveMemberSession(session) {
   localStorage.setItem(MEMBER_SESSION_KEY, JSON.stringify(session));
 }
 
+function clearMemberSession() {
+  localStorage.removeItem(MEMBER_SESSION_KEY);
+}
+
+function shouldResetMemberSession() {
+  return new URLSearchParams(window.location.search).has("resetStudent");
+}
+
 function showToast(message, tone = "default") {
   let toast = getElement("#portalToast");
   if (!toast) {
@@ -72,7 +88,36 @@ function showToast(message, tone = "default") {
   window.setTimeout(() => toast.classList.remove("show"), 4200);
 }
 
-/* SIDEBAR COMPONENT: Renders the fixed course shortcuts in the dark rail. */
+/* FOOTER CREDIT: Keeps the creator mark present without competing with the portal UI. */
+function renderSiteCredit() {
+  const main = getElement(".main-area");
+  if (!main || getElement(".site-credit")) return;
+
+  const credit = document.createElement("footer");
+  credit.className = "site-credit";
+  credit.textContent = "© 2026 Maverick";
+  main.appendChild(credit);
+}
+
+function rememberLiveItems(key, items, messageBuilder) {
+  const bucket = state.live[key];
+  const nextIds = new Set(items.map((item) => item.id));
+
+  if (!bucket.loaded) {
+    bucket.loaded = true;
+    bucket.ids = nextIds;
+    return;
+  }
+
+  const freshItems = items.filter((item) => !bucket.ids.has(item.id));
+  bucket.ids = nextIds;
+
+  if (freshItems.length) {
+    showToast(messageBuilder(freshItems[0], freshItems.length));
+  }
+}
+
+/* SIDEBAR COURSE SHORTCUTS: Kept for compatibility if a page re-adds the container later. */
 function renderSidebarCourses() {
   const target = getElement("#sidebarCourseList");
   if (!target) return;
@@ -89,14 +134,19 @@ function renderSidebarCourses() {
     .join("");
 }
 
-/* STUDENT ONBOARDING: Collects name and matric once, then requests notifications. */
+/* STUDENT ONBOARDING: Collects name and matric once, then refreshes the member record. */
 async function ensureMemberOnboarding() {
   if (document.body.dataset.portal === "staff") return;
 
+  if (shouldResetMemberSession()) {
+    clearMemberSession();
+  }
+
   const existingSession = getMemberSession();
-  if (existingSession?.memberId && existingSession?.sessionToken) {
-    state.backend.refreshMemberSession(existingSession).catch(console.warn);
-    return;
+  if (existingSession?.memberId) {
+    const active = await state.backend.refreshMemberSession(existingSession).catch(() => true);
+    if (active !== false) return;
+    clearMemberSession();
   }
 
   const overlay = document.createElement("section");
@@ -104,16 +154,16 @@ async function ensureMemberOnboarding() {
   overlay.innerHTML = `
     <form class="member-card" id="memberOnboardingForm">
       <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
-      <p class="eyebrow">Class member check-in</p>
+      <p class="eyebrow">Class check-in</p>
       <h2>Welcome to Physiology Class 2k29</h2>
-      <p class="form-help">Enter your name and matric number once. Reps and admin use this private list to know who has joined the class portal.</p>
+      <p class="form-help">Enter your name and matric number once. This keeps the class list accurate for reps and admin.</p>
       <label>
         Full name
-        <input name="name" type="text" placeholder="e.g. Akinteye Akinbode" autocomplete="name" required />
+        <input name="name" type="text" placeholder="e.g. Suberu Igbobamiji Barawo" autocomplete="name" required />
       </label>
       <label>
         Matric number
-        <input name="matricNumber" type="text" placeholder="e.g. 256492" autocomplete="off" required />
+        <input name="matricNumber" type="text" placeholder="e.g. 123456" autocomplete="off" required />
       </label>
       <button class="primary-action" type="submit">Enter portal</button>
       <p class="form-status" id="memberOnboardingStatus"></p>
@@ -143,13 +193,6 @@ async function ensureMemberOnboarding() {
       };
       saveMemberSession(memberSession);
 
-      if (!localStorage.getItem(NOTIFICATION_ASKED_KEY)) {
-        localStorage.setItem(NOTIFICATION_ASKED_KEY, "true");
-        status.textContent = "Profile saved. Checking notification permission...";
-        const result = await state.backend.requestNotificationAccess(memberSession);
-        if (result === "granted") showToast("Notifications enabled for new uploads and news.");
-      }
-
       overlay.remove();
       showToast("Welcome. Your class profile is saved.");
     } catch (error) {
@@ -168,10 +211,12 @@ function renderDashboardMetrics() {
   if (courseCount) courseCount.textContent = firstSemesterCourses.length;
   if (resourceCount) resourceCount.textContent = state.resources.length;
   if (timetableCount) timetableCount.textContent = cbtTimetable.length;
-  if (memberCount) memberCount.textContent = state.members.length || "2";
+  if (memberCount) memberCount.textContent = state.members.length || "Private";
 }
 
 function resourceCard(resource) {
+  const resourceUrl = resource.downloadUrl || "#";
+
   return `
     <article class="resource-card">
       <div class="card-topline">
@@ -186,7 +231,10 @@ function resourceCard(resource) {
         <span>${escapeHtml(resource.uploadedBy || "Course rep")}</span>
         <span>${formatDate(resource.createdAtMs)}</span>
       </div>
-      <a class="card-action" href="${escapeHtml(resource.downloadUrl || "#")}" target="_blank" rel="noreferrer">Open file</a>
+      <a class="card-action" href="${escapeHtml(resourceUrl)}" target="_blank" rel="noreferrer">
+        <span class="material-symbols-rounded" aria-hidden="true">open_in_new</span>
+        Open file
+      </a>
     </article>
   `;
 }
@@ -202,14 +250,14 @@ function renderResourceCards(items = state.resources) {
       <article class="resource-card setup-card">
         <span class="course-code">No uploads yet</span>
         <div>
-          <h3>${isFirebaseConfigured() ? "Waiting for course reps" : "Firebase setup needed"}</h3>
+          <h3>${isSupabaseConfigured() ? "Waiting for course reps" : "Supabase setup needed"}</h3>
           <p>${
-            isFirebaseConfigured()
-              ? "Uploaded files will appear here automatically."
-              : "Paste your Firebase web config in firebase-config.js to activate live resources."
+            isSupabaseConfigured()
+              ? "New slides and materials will appear here once they are posted."
+              : "Paste your Supabase project URL and anon key in supabase-config.js to activate live resources."
           }</p>
         </div>
-        <a class="card-action" href="./rep.html">Open rep portal</a>
+        <a class="card-action" href="./courses.html">View courses</a>
       </article>
     `;
     if (empty) empty.hidden = true;
@@ -240,7 +288,7 @@ function renderCourseGrid() {
           </div>
           <div>
             <h3>${escapeHtml(course.title)}</h3>
-            <p>${course.type}. ${resources.length} uploaded resource${resources.length === 1 ? "" : "s"}.</p>
+            <p>${course.type}. ${resources.length} posted resource${resources.length === 1 ? "" : "s"}.</p>
           </div>
           <div class="mini-resource-list">
             ${
@@ -251,7 +299,7 @@ function renderCourseGrid() {
                         `<a href="${escapeHtml(resource.downloadUrl || "#")}" target="_blank" rel="noreferrer">${escapeHtml(resource.title)}</a>`
                     )
                     .join("")
-                : "<span>No uploads yet</span>"
+                : "<span>No resources yet</span>"
             }
           </div>
         </article>
@@ -312,12 +360,26 @@ function renderAnnouncements() {
     .join("");
 }
 
+function canDeleteResource(resource) {
+  return state.staffRole === "admin" || resource.uploadedByUid === state.staffUser?.id;
+}
+
+function canDeleteAnnouncement(announcement) {
+  return state.staffRole === "admin" || announcement.postedByUid === state.staffUser?.id;
+}
+
+function isAdminPortal() {
+  return document.body.dataset.portalRole === "admin";
+}
+
 function renderMembersTable() {
   const body = getElement("#membersTableBody");
   const count = getElement("#membersCount");
   if (!body) return;
 
+  const canDeleteMembers = isAdminPortal();
   if (count) count.textContent = `${state.members.length} members`;
+
   body.innerHTML = state.members.length
     ? state.members
         .map(
@@ -325,32 +387,41 @@ function renderMembersTable() {
             <tr>
               <td>${escapeHtml(member.name)}</td>
               <td>${escapeHtml(member.matricNumber)}</td>
-              <td>${member.notificationEnabled ? "Enabled" : "Not enabled"}</td>
+              <td>Registered</td>
               <td>${formatDate(member.lastSeenAtMs || member.createdAtMs)}</td>
+              ${
+                canDeleteMembers
+                  ? `<td><button class="danger-link" data-delete-member="${member.id}">Delete</button></td>`
+                  : ""
+              }
             </tr>
           `
         )
         .join("")
-    : `<tr><td colspan="4">No class members yet.</td></tr>`;
+    : `<tr><td colspan="${canDeleteMembers ? 5 : 4}">No class members yet.</td></tr>`;
 }
 
-function renderAdminLists() {
-  const resourcesBody = getElement("#adminResourcesBody");
-  const announcementsBody = getElement("#adminAnnouncementsBody");
+function renderStaffLists() {
+  const resourcesBody = getElement("#staffResourcesBody") || getElement("#adminResourcesBody");
+  const announcementsBody = getElement("#staffAnnouncementsBody") || getElement("#adminAnnouncementsBody");
+  const suggestionsBody = getElement("#staffSuggestionsBody");
 
   if (resourcesBody) {
     resourcesBody.innerHTML = state.resources.length
       ? state.resources
-          .map(
-            (resource) => `
+          .map((resource) => {
+            const action = canDeleteResource(resource)
+              ? `<button class="danger-link" data-delete-resource="${resource.id}">Delete</button>`
+              : `<span class="muted-cell">Owner only</span>`;
+            return `
               <tr>
                 <td>${escapeHtml(resource.title)}</td>
                 <td>${escapeHtml(resource.courseCode)}</td>
                 <td>${escapeHtml(resource.uploadedBy || "Course rep")}</td>
-                <td><button class="danger-link" data-delete-resource="${resource.id}">Delete</button></td>
+                <td>${action}</td>
               </tr>
-            `
-          )
+            `;
+          })
           .join("")
       : `<tr><td colspan="4">No uploads yet.</td></tr>`;
   }
@@ -358,22 +429,51 @@ function renderAdminLists() {
   if (announcementsBody) {
     announcementsBody.innerHTML = state.announcements.length
       ? state.announcements
-          .map(
-            (announcement) => `
+          .map((announcement) => {
+            const action = canDeleteAnnouncement(announcement)
+              ? `<button class="danger-link" data-delete-announcement="${announcement.id}">Delete</button>`
+              : `<span class="muted-cell">Owner only</span>`;
+            return `
               <tr>
                 <td>${escapeHtml(announcement.title)}</td>
                 <td>${escapeHtml(announcement.priority || "Normal")}</td>
                 <td>${escapeHtml(announcement.postedBy || "Course rep")}</td>
-                <td><button class="danger-link" data-delete-announcement="${announcement.id}">Delete</button></td>
+                <td>${action}</td>
+              </tr>
+            `;
+          })
+          .join("")
+      : `<tr><td colspan="4">No announcements yet.</td></tr>`;
+  }
+
+  if (suggestionsBody) {
+    suggestionsBody.innerHTML = state.suggestions.length
+      ? state.suggestions
+          .map(
+            (suggestion) => `
+              <tr>
+                <td>
+                  <strong>${escapeHtml(suggestion.name)}</strong>
+                  <small>${escapeHtml(suggestion.matricNumber)}</small>
+                </td>
+                <td>${escapeHtml(suggestion.category || "General")}</td>
+                <td>${escapeHtml(suggestion.message)}</td>
+                <td>${formatDate(suggestion.createdAtMs)}</td>
+                <td>${
+                  isAdminPortal()
+                    ? `<button class="danger-link" data-delete-suggestion="${suggestion.id}">Delete</button>`
+                    : `<span class="muted-cell">Visible</span>`
+                }</td>
               </tr>
             `
           )
           .join("")
-      : `<tr><td colspan="4">No announcements yet.</td></tr>`;
+      : `<tr><td colspan="5">No suggestions yet.</td></tr>`;
   }
 }
 
 function renderAll() {
+  renderSiteCredit();
   renderSidebarCourses();
   renderDashboardMetrics();
   renderResourceCards();
@@ -381,7 +481,7 @@ function renderAll() {
   renderTimetable();
   renderAnnouncements();
   renderMembersTable();
-  renderAdminLists();
+  renderStaffLists();
 }
 
 /* SEARCH BEHAVIOR: Filters live uploads first, then course cards if no uploads exist. */
@@ -421,7 +521,7 @@ function populateCourseSelects() {
   });
 }
 
-/* REP/ADMIN AUTH: Protects staff portals through Firebase Auth + roles collection. */
+/* REP/ADMIN AUTH: Protects staff portals through Supabase Auth + staff_roles table. */
 function connectStaffPortal(allowedRoles) {
   const loginForm = getElement("#staffLoginForm");
   const portal = getElement("#staffPortal");
@@ -448,6 +548,8 @@ function connectStaffPortal(allowedRoles) {
 
   state.backend.onAuth((user, role) => {
     const canEnter = Boolean(user && role && allowedRoles.includes(role.role));
+    state.staffUser = canEnter ? user : null;
+    state.staffRole = canEnter ? role.role : null;
     portal.hidden = !canEnter;
     loginPanel.hidden = canEnter;
     if (signOut) signOut.hidden = !canEnter;
@@ -463,6 +565,17 @@ function connectStaffPortal(allowedRoles) {
       );
     }
 
+    if (canEnter && !state.suggestionsUnsubscribe && getElement("#staffSuggestionsBody")) {
+      state.suggestionsUnsubscribe = state.backend.watchSuggestions(
+        (suggestions) => {
+          state.suggestions = suggestions;
+          rememberLiveItems("suggestions", suggestions, (item) => `New suggestion from ${item.name}.`);
+          renderStaffLists();
+        },
+        (error) => showToast(error.message || "Could not load suggestions.", "error")
+      );
+    }
+
     if (!canEnter && state.membersUnsubscribe) {
       state.membersUnsubscribe();
       state.membersUnsubscribe = null;
@@ -470,13 +583,22 @@ function connectStaffPortal(allowedRoles) {
       renderMembersTable();
     }
 
+    if (!canEnter && state.suggestionsUnsubscribe) {
+      state.suggestionsUnsubscribe();
+      state.suggestionsUnsubscribe = null;
+      state.suggestions = [];
+      renderStaffLists();
+    }
+
+    renderStaffLists();
+
     if (user && !canEnter) {
       status.textContent = "This account is not allowed to access this portal.";
     }
   });
 }
 
-/* REP PORTAL FORMS: Uploads files and posts announcements. */
+/* REP/ADMIN FORMS: Uploads files and posts announcements. */
 function connectRepForms() {
   const uploadForm = getElement("#resourceUploadForm");
   const announcementForm = getElement("#announcementForm");
@@ -507,7 +629,7 @@ function connectRepForms() {
         );
         uploadForm.reset();
         populateCourseSelects();
-        uploadStatus.textContent = "Upload saved and notification queued.";
+        uploadStatus.textContent = "Upload saved.";
       } catch (error) {
         uploadStatus.textContent = error.message || "Upload failed.";
       }
@@ -526,7 +648,7 @@ function connectRepForms() {
           priority: String(formData.get("priority")),
         });
         announcementForm.reset();
-        announcementStatus.textContent = "Announcement posted and notification queued.";
+        announcementStatus.textContent = "Announcement posted.";
       } catch (error) {
         announcementStatus.textContent = error.message || "Announcement failed.";
       }
@@ -534,25 +656,247 @@ function connectRepForms() {
   }
 }
 
-/* ADMIN ACTIONS: Lets the admin remove bad content from the portal. */
-function connectAdminActions() {
+/* SUGGESTION FORM: Lets checked-in students send structured notes to staff. */
+function connectSuggestionForm() {
+  const form = getElement("#suggestionForm");
+  const status = getElement("#suggestionStatus");
+  if (!form) return;
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const session = getMemberSession();
+    if (!session?.memberId) {
+      status.textContent = "Complete the class check-in first, then send your suggestion.";
+      return;
+    }
+
+    const formData = new FormData(form);
+    try {
+      status.textContent = "Sending suggestion...";
+      await state.backend.submitSuggestion({
+        name: session.name,
+        matricNumber: session.matricNumber,
+        category: String(formData.get("category")),
+        message: String(formData.get("message")).trim(),
+      });
+      form.reset();
+      status.textContent = "Suggestion sent. Thank you.";
+      showToast("Suggestion sent to the reps and admin.");
+    } catch (error) {
+      status.textContent = error.message || "Could not send suggestion.";
+    }
+  });
+}
+
+/* STAFF ACTIONS: Deletes resources, announcements, suggestions, and member records. */
+function connectStaffActions() {
   document.addEventListener("click", async (event) => {
     const resourceButton = event.target.closest("[data-delete-resource]");
     const announcementButton = event.target.closest("[data-delete-announcement]");
+    const suggestionButton = event.target.closest("[data-delete-suggestion]");
+    const memberButton = event.target.closest("[data-delete-member]");
 
-    if (resourceButton) {
-      const resource = state.resources.find((item) => item.id === resourceButton.dataset.deleteResource);
-      if (!resource || !confirm(`Delete "${resource.title}"?`)) return;
-      await state.backend.deleteResource(resource);
-      showToast("Resource deleted.");
-    }
+    try {
+      if (resourceButton) {
+        const resource = state.resources.find((item) => item.id === resourceButton.dataset.deleteResource);
+        if (!resource || !confirm(`Delete "${resource.title}"?`)) return;
+        await state.backend.deleteResource(resource);
+        showToast("Resource deleted.");
+      }
 
-    if (announcementButton) {
-      const id = announcementButton.dataset.deleteAnnouncement;
-      if (!confirm("Delete this announcement?")) return;
-      await state.backend.deleteAnnouncement(id);
-      showToast("Announcement deleted.");
+      if (announcementButton) {
+        const id = announcementButton.dataset.deleteAnnouncement;
+        if (!confirm("Delete this announcement?")) return;
+        await state.backend.deleteAnnouncement(id);
+        showToast("Announcement deleted.");
+      }
+
+      if (suggestionButton) {
+        const id = suggestionButton.dataset.deleteSuggestion;
+        if (!confirm("Delete this suggestion?")) return;
+        await state.backend.deleteSuggestion(id);
+        showToast("Suggestion deleted.");
+      }
+
+      if (memberButton) {
+        const member = state.members.find((item) => item.id === memberButton.dataset.deleteMember);
+        if (!member || !confirm(`Delete ${member.name} from the class list?`)) return;
+        await state.backend.deleteMember(member.id);
+        showToast("Member deleted from the class list.");
+      }
+    } catch (error) {
+      showToast(error.message || "Action failed.", "error");
     }
+  });
+}
+
+/* COPY BUTTONS: Copies class rep phone numbers from the reps page. */
+function connectCopyButtons() {
+  getElements("[data-copy]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const value = button.dataset.copy;
+      try {
+        await navigator.clipboard.writeText(value);
+        showToast("Phone number copied.");
+      } catch {
+        showToast(value);
+      }
+    });
+  });
+}
+
+/* PDF TEXT HELPERS: Keep the generated timetable PDF browser-native and library-free. */
+function sanitizePdfText(value) {
+  return String(value ?? "")
+    .normalize("NFKD")
+    .replace(/[^\x20-\x7E]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function escapePdfText(value) {
+  return sanitizePdfText(value).replace(/\\/g, "\\\\").replace(/\(/g, "\\(").replace(/\)/g, "\\)");
+}
+
+function fitPdfText(value, maxCharacters) {
+  const text = sanitizePdfText(value);
+  if (text.length <= maxCharacters) return text;
+  return `${text.slice(0, Math.max(0, maxCharacters - 3))}...`;
+}
+
+function pdfText(x, y, text, size = 10, font = "F1") {
+  return `BT /${font} ${size} Tf ${x} ${y} Td (${escapePdfText(text)}) Tj ET`;
+}
+
+function pdfLine(x1, y1, x2, y2) {
+  return `${x1} ${y1} m ${x2} ${y2} l S`;
+}
+
+/* TIMETABLE PDF: Generates a compact landscape PDF for offline timetable sharing. */
+function createTimetablePdfBlob() {
+  const pageWidth = 842;
+  const pageHeight = 595;
+  const margin = 36;
+  const tableWidth = pageWidth - margin * 2;
+  const rowHeight = 28;
+  const rowsPerPage = 13;
+  const columns = [
+    { label: "Course", key: "course", width: 78, max: 12 },
+    { label: "Day", key: "day", width: 128, max: 22 },
+    { label: "Date", key: "date", width: 92, max: 14 },
+    { label: "Batch", key: "batch", width: 82, max: 14 },
+    { label: "Duration", key: "duration", width: 86, max: 14 },
+    { label: "Time", key: "time", width: tableWidth - 466, max: 34 },
+  ];
+  const pages = [];
+
+  for (let start = 0; start < cbtTimetable.length; start += rowsPerPage) {
+    const pageRows = cbtTimetable.slice(start, start + rowsPerPage);
+    const pageNumber = pages.length + 1;
+    const totalPages = Math.ceil(cbtTimetable.length / rowsPerPage) || 1;
+    const tableTop = 470;
+    const headerBottom = tableTop - 28;
+    const operations = [
+      "1 1 1 rg 0 0 842 595 re f",
+      "0.09 0.11 0.12 rg",
+      pdfText(margin, 548, "PhysioK29 CBT Timetable", 20, "F2"),
+      "0.39 0.44 0.42 rg",
+      pdfText(margin, 528, "GES/GST first-semester rows matched to Physiology Class 2k29.", 10),
+      pdfText(margin, 512, `Generated from the class portal. Page ${pageNumber} of ${totalPages}.`, 9),
+      "0.88 0.96 0.93 rg",
+      `${margin} ${headerBottom} ${tableWidth} 28 re f`,
+      "0.82 0.80 0.74 RG",
+      `${margin} ${headerBottom} ${tableWidth} 28 re S`,
+    ];
+
+    let cursorX = margin;
+    columns.forEach((column) => {
+      operations.push("0.09 0.11 0.12 rg", pdfText(cursorX + 7, tableTop - 18, column.label, 9, "F2"));
+      cursorX += column.width;
+    });
+
+    pageRows.forEach((item, rowIndex) => {
+      const rowTop = headerBottom - rowIndex * rowHeight;
+      const rowBottom = rowTop - rowHeight;
+      operations.push("0.82 0.80 0.74 RG", pdfLine(margin, rowBottom, margin + tableWidth, rowBottom));
+      cursorX = margin;
+      columns.forEach((column) => {
+        const cell = fitPdfText(item[column.key], column.max);
+        operations.push("0.09 0.11 0.12 rg", pdfText(cursorX + 7, rowBottom + 10, cell, 9));
+        cursorX += column.width;
+      });
+    });
+
+    operations.push(
+      "0.39 0.44 0.42 rg",
+      pdfText(margin, 44, "Confirm your exact CBT batch before exam day.", 9),
+      pdfText(pageWidth - 132, 44, "PhysioK29", 9, "F2")
+    );
+    pages.push(operations.join("\n"));
+  }
+
+  const maxObjectId = 4 + pages.length * 2;
+  const regularFontId = 3;
+  const boldFontId = 4;
+  const objects = [
+    { id: 1, body: "<< /Type /Catalog /Pages 2 0 R >>" },
+    {
+      id: 2,
+      body: `<< /Type /Pages /Kids [${pages.map((_, index) => `${5 + index * 2} 0 R`).join(" ")}] /Count ${
+        pages.length
+      } >>`,
+    },
+    { id: regularFontId, body: "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>" },
+    { id: boldFontId, body: "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>" },
+  ];
+
+  pages.forEach((content, index) => {
+    const pageId = 5 + index * 2;
+    const contentId = pageId + 1;
+    objects.push({
+      id: pageId,
+      body: `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 ${regularFontId} 0 R /F2 ${boldFontId} 0 R >> >> /Contents ${contentId} 0 R >>`,
+    });
+    objects.push({
+      id: contentId,
+      body: `<< /Length ${content.length} >>\nstream\n${content}\nendstream`,
+    });
+  });
+
+  const offsets = new Array(maxObjectId + 1).fill(0);
+  let pdf = "%PDF-1.4\n";
+  objects
+    .sort((a, b) => a.id - b.id)
+    .forEach((object) => {
+      offsets[object.id] = pdf.length;
+      pdf += `${object.id} 0 obj\n${object.body}\nendobj\n`;
+    });
+
+  const xrefStart = pdf.length;
+  pdf += `xref\n0 ${maxObjectId + 1}\n0000000000 65535 f \n`;
+  for (let id = 1; id <= maxObjectId; id += 1) {
+    pdf += `${String(offsets[id]).padStart(10, "0")} 00000 n \n`;
+  }
+  pdf += `trailer\n<< /Size ${maxObjectId + 1} /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF`;
+
+  return new Blob([pdf], { type: "application/pdf" });
+}
+
+/* TIMETABLE DOWNLOAD: Builds a PDF file from the displayed CBT rows. */
+function connectTimetableDownload() {
+  const button = getElement("#downloadTimetable");
+  if (!button) return;
+
+  button.addEventListener("click", () => {
+    const blob = createTimetablePdfBlob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "physiok29-ges-gst-cbt-timetable.pdf";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
   });
 }
 
@@ -560,6 +904,7 @@ function connectRealtimeData() {
   state.backend.watchResources(
     (resources) => {
       state.resources = resources;
+      rememberLiveItems("resources", resources, (item) => `New ${item.type || "resource"} posted: ${item.title}`);
       renderAll();
     },
     (error) => showToast(error.message || "Could not load resources.", "error")
@@ -568,6 +913,7 @@ function connectRealtimeData() {
   state.backend.watchAnnouncements(
     (announcements) => {
       state.announcements = announcements;
+      rememberLiveItems("announcements", announcements, (item) => `New announcement: ${item.title}`);
       renderAll();
     },
     (error) => showToast(error.message || "Could not load announcements.", "error")
@@ -583,14 +929,12 @@ async function init() {
   connectSearch();
   connectStaffPortal(document.body.dataset.portalRole === "admin" ? ["admin"] : ["rep", "admin"]);
   connectRepForms();
-  connectAdminActions();
+  connectSuggestionForm();
+  connectStaffActions();
+  connectCopyButtons();
+  connectTimetableDownload();
   connectRealtimeData();
   await ensureMemberOnboarding();
-
-  window.addEventListener("portal:message", (event) => {
-    const title = event.detail?.notification?.title || "Physiology 2k29";
-    showToast(title);
-  });
 }
 
 init().catch((error) => {

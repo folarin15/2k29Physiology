@@ -3,11 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PhysioK29 - Admin Portal</title>
+    <base href="../" />
+    <title>PhysioK29 - Rep Portal</title>
     <meta name="robots" content="noindex, nofollow" />
     <meta
       name="description"
-      content="Protected PhysioK29 admin workspace."
+      content="Protected PhysioK29 workspace for course reps."
     />
     <meta property="og:site_name" content="PhysioK29" />
     <meta property="og:title" content="PhysioK29 - Physiology Class 2k29" />
@@ -32,11 +33,11 @@
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body data-page="admin" data-portal="staff" data-portal-role="admin">
-    <!-- APP SHELL: Protected admin frame for the site owner. -->
+  <body data-page="rep" data-portal="staff" data-portal-role="rep">
+    <!-- APP SHELL: Protected portal frame for Ayanfe and Raphael. -->
     <div class="app-shell">
-      <!-- SIDEBAR COMPONENT: Owner navigation, intentionally absent from public pages. -->
-      <aside class="sidebar" aria-label="Admin portal navigation">
+      <!-- SIDEBAR COMPONENT: Staff-only navigation; this page is not linked from the public menu. -->
+      <aside class="sidebar" aria-label="Rep portal navigation">
         <a class="sidebar-brand" href="./dashboard.html">
           <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
           <span>
@@ -47,24 +48,24 @@
 
         <nav class="nav-stack" aria-label="Staff pages">
           <a class="nav-link" href="./dashboard.html"><span class="material-symbols-rounded" aria-hidden="true">space_dashboard</span>Dashboard</a>
-          <a class="nav-link" href="./K29.rep/"><span class="material-symbols-rounded" aria-hidden="true">upload_file</span>Rep Portal</a>
-          <a class="nav-link active" href="./K29.admin/"><span class="material-symbols-rounded" aria-hidden="true">admin_panel_settings</span>Admin</a>
+          <a class="nav-link active" href="./K29.rep/"><span class="material-symbols-rounded" aria-hidden="true">upload_file</span>Rep Portal</a>
+          <a class="nav-link" href="./K29.admin/"><span class="material-symbols-rounded" aria-hidden="true">admin_panel_settings</span>Admin</a>
         </nav>
 
         <section class="sidebar-note">
-          <strong>Owner controls</strong>
-          <p>Admin can post, upload, review suggestions, manage members, and remove bad content.</p>
+          <strong>Private</strong>
+          <p>Only approved reps and admin can upload files, post announcements, or view suggestions.</p>
         </section>
       </aside>
 
       <main class="main-area">
-        <!-- HEADER COMPONENT: Logo plaque for admin management. -->
+        <!-- HEADER COMPONENT: Logo plaque for the protected upload area. -->
         <header class="page-header">
           <div class="logo-plaque">
             <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
             <div class="plaque-text">
               <span>PhysioK29</span>
-              <strong>Admin Portal</strong>
+              <strong>Rep Portal</strong>
             </div>
           </div>
           <button class="ghost-action" id="staffSignOut" type="button">
@@ -73,12 +74,12 @@
           </button>
         </header>
 
-        <!-- LOGIN COMPONENT: Supabase Auth email/password sign-in for admin. -->
+        <!-- LOGIN COMPONENT: Supabase Auth email/password sign-in for reps. -->
         <section class="content-panel auth-panel" id="staffLoginPanel">
           <div class="section-header">
             <div>
-              <p class="eyebrow">Admin login</p>
-              <h2>Sign in to manage the portal</h2>
+              <p class="eyebrow">Course rep login</p>
+              <h2>Sign in to update class materials</h2>
             </div>
           </div>
           <form class="portal-form compact-form" id="staffLoginForm">
@@ -98,10 +99,10 @@
           </form>
         </section>
 
-        <!-- ADMIN PORTAL COMPONENT: Hidden until the logged-in user has admin role. -->
+        <!-- STAFF PORTAL COMPONENT: Hidden until the logged-in user has rep/admin role. -->
         <section id="staffPortal" hidden>
           <div class="staff-grid">
-            <!-- RESOURCE UPLOAD COMPONENT: Admin has the same posting controls as reps. -->
+            <!-- RESOURCE UPLOAD COMPONENT: Sends files to Supabase Storage. -->
             <section class="content-panel">
               <div class="section-header">
                 <div>
@@ -138,7 +139,7 @@
               </form>
             </section>
 
-            <!-- ANNOUNCEMENT COMPONENT: Admin can post official class updates. -->
+            <!-- ANNOUNCEMENT COMPONENT: Posts class news to Supabase. -->
             <section class="content-panel">
               <div class="section-header">
                 <div>
@@ -172,7 +173,77 @@
             </section>
           </div>
 
-          <!-- MEMBERS COMPONENT: Private class list visible to admin, with delete controls. -->
+          <!-- MANAGE RESOURCES COMPONENT: Reps can delete resources they posted. -->
+          <section class="content-panel">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Posted files</p>
+                <h2>Manage resources</h2>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="timetable-table">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Course</th>
+                    <th>Added by</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="staffResourcesBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- MANAGE ANNOUNCEMENTS COMPONENT: Reps can delete announcements they posted. -->
+          <section class="content-panel">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Class board</p>
+                <h2>Manage announcements</h2>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="timetable-table">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Priority</th>
+                    <th>Posted by</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="staffAnnouncementsBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- SUGGESTIONS COMPONENT: Private suggestions from checked-in students. -->
+          <section class="content-panel">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Student feedback</p>
+                <h2>Suggestions</h2>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="timetable-table suggestions-table">
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>Type</th>
+                    <th>Message</th>
+                    <th>Sent</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="staffSuggestionsBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- MEMBERS COMPONENT: Private class list visible to reps and admin. -->
           <section class="content-panel">
             <div class="section-header">
               <div>
@@ -189,98 +260,11 @@
                     <th>Matric number</th>
                     <th>Status</th>
                     <th>Last seen</th>
-                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody id="membersTableBody"></tbody>
               </table>
             </div>
-          </section>
-
-          <div class="staff-grid">
-            <!-- RESOURCE ADMIN COMPONENT: Lets admin remove any resource. -->
-            <section class="content-panel">
-              <div class="section-header">
-                <div>
-                  <p class="eyebrow">Resources</p>
-                  <h2>Manage resources</h2>
-                </div>
-              </div>
-              <div class="table-wrap">
-                <table class="timetable-table">
-                  <thead>
-                    <tr>
-                      <th>Title</th>
-                      <th>Course</th>
-                      <th>Added by</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody id="staffResourcesBody"></tbody>
-                </table>
-              </div>
-            </section>
-
-            <!-- ANNOUNCEMENT ADMIN COMPONENT: Lets admin remove any post. -->
-            <section class="content-panel">
-              <div class="section-header">
-                <div>
-                  <p class="eyebrow">News</p>
-                  <h2>Manage announcements</h2>
-                </div>
-              </div>
-              <div class="table-wrap">
-                <table class="timetable-table">
-                  <thead>
-                    <tr>
-                      <th>Title</th>
-                      <th>Priority</th>
-                      <th>Posted by</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody id="staffAnnouncementsBody"></tbody>
-                </table>
-              </div>
-            </section>
-          </div>
-
-          <!-- SUGGESTIONS ADMIN COMPONENT: Admin can review and delete student suggestions. -->
-          <section class="content-panel">
-            <div class="section-header">
-              <div>
-                <p class="eyebrow">Student feedback</p>
-                <h2>Suggestions</h2>
-              </div>
-            </div>
-            <div class="table-wrap">
-              <table class="timetable-table suggestions-table">
-                <thead>
-                  <tr>
-                    <th>Student</th>
-                    <th>Type</th>
-                    <th>Message</th>
-                    <th>Sent</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody id="staffSuggestionsBody"></tbody>
-              </table>
-            </div>
-          </section>
-
-          <!-- ROLE GUIDE COMPONENT: Explains how to seed admin and reps in Supabase. -->
-          <section class="content-panel">
-            <div class="section-header">
-              <div>
-                <p class="eyebrow">Role setup</p>
-                <h2>How to add reps/admin</h2>
-              </div>
-            </div>
-            <p class="form-help">
-              Create Supabase Auth users, then add matching rows in staff_roles.
-              Use role "admin" for the owner account and "rep" for Ayanfe/Raphael.
-            </p>
           </section>
         </section>
       </main>

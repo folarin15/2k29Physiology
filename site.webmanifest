@@ -1,0 +1,16 @@
+{
+  "name": "PhysioK29",
+  "short_name": "PhysioK29",
+  "description": "Class portal for Physiology Class 2k29.",
+  "start_url": "./dashboard.html",
+  "display": "standalone",
+  "background_color": "#f8f6ef",
+  "theme_color": "#171b1f",
+  "icons": [
+    {
+      "src": "./assets/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

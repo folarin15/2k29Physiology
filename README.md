@@ -1,70 +1,48 @@
-# Physiology 2k29 Class Portal
+# PhysioK29
 
-This is a vanilla HTML/CSS/JS portal that can be hosted on Pxxl while Firebase handles the backend.
+Vanilla HTML/CSS/JS portal for Physiology Class 2k29, hosted on Pxxl with Supabase as the backend.
 
-## What Firebase Handles
+## Public Links
 
-- Firestore: resources, announcements, member list, roles, push tokens.
-- Firebase Storage: uploaded class files.
-- Firebase Auth: Ayanfe, Raphael, and admin login.
-- Firebase Functions: member registration, session refresh, push-token saving, and notification triggers.
-- Firebase Cloud Messaging: browser notifications for new uploads and announcements.
+- `dashboard.html`: dashboard, latest resources, and announcements.
+- `courses.html`: first-semester course resource bank.
+- `timetable.html`: GES/GST CBT timetable with CSV download.
+- `reps.html`: Ayanfe/Raphael contacts and WhatsApp links.
+- `suggestions.html`: student suggestion form.
 
-## Setup Checklist
+## Staff Links
 
-1. Create a Firebase project.
-2. Add a web app in Firebase Console and copy the config into:
-   - `firebase-config.js`
-   - `firebase-messaging-sw.js`
-3. Generate a Web Push certificate in Firebase Console and paste the public VAPID key into `firebase-config.js`.
-4. Enable Firebase Auth email/password.
-5. Create Firebase Auth users for:
-   - you as admin
-   - Ayanfe as rep
-   - Raphael as rep
-6. In Firestore, create `roles/{uid}` documents for those Auth users:
+These are intentionally not shown in the public navigation:
 
-```json
-{
-  "role": "admin",
-  "displayName": "Akinteye"
-}
+- `K29.rep/`: course rep workspace.
+- `K29.admin/`: admin workspace.
+
+The older `rep.html` and `admin.html` files remain for compatibility, but share `K29.rep/` and `K29.admin/` with staff.
+
+## Supabase
+
+- Auth: admin and rep login.
+- Storage: uploaded class files.
+- Database: members, resources, announcements, suggestions, and staff roles.
+- Realtime: live in-site updates while the portal is open.
+
+Run `supabase-schema.sql` in Supabase SQL Editor after pulling updates.
+
+## Sharing
+
+The WhatsApp/social preview image is `assets/og-image.png`, and the favicon/app icon is `assets/favicon.png`.
+
+When the final Pxxl URL is known, update the `og:image` tags to the absolute image URL if WhatsApp does not preview it automatically, for example:
+
+```html
+<meta property="og:image" content="https://your-pxxl-site.com/assets/og-image.png" />
 ```
 
-```json
-{
-  "role": "rep",
-  "displayName": "Ayanfe"
-}
-```
+## Push Notifications
 
-```json
-{
-  "role": "rep",
-  "displayName": "Raphael"
-}
-```
+The portal currently has live in-site toasts for new resources, announcements, and suggestions. True background push needs a push sender:
 
-7. Deploy backend rules and functions:
+- easiest: OneSignal Web Push
+- more custom: Supabase Edge Functions + web-push
 
-```bash
-firebase deploy --only functions,firestore:rules,storage
-```
-
-8. Upload the frontend files to Pxxl. Make sure `firebase-messaging-sw.js` is served from the site root.
-
-## Important Files
-
-- `dashboard.html`: student dashboard and live announcements.
-- `courses.html`: course list plus live resource counts.
-- `rep.html`: protected upload and announcement portal.
-- `admin.html`: protected admin portal.
-- `app.js`: frontend rendering and event wiring.
-- `firebase-service.js`: Firebase client wrapper.
-- `functions/index.js`: secure server logic and notification triggers.
-- `firestore.rules`: Firestore permissions.
-- `storage.rules`: Firebase Storage permissions.
-
-## Local Preview
-
-The frontend renders without Firebase config, but live uploads, login, member registration, and notifications require deployed Firebase services.
+Do not build background push directly into static frontend-only code; it needs a trusted server-side sender.

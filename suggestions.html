@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PhysioK29 - Timetable</title>
+    <title>PhysioK29 - Suggestions</title>
     <meta
       name="description"
-      content="Download and view the relevant GES/GST CBT timetable for Physiology Class 2k29."
+      content="Send structured suggestions to the Physiology Class 2k29 reps and admin."
     />
     <meta property="og:site_name" content="PhysioK29" />
     <meta property="og:title" content="PhysioK29 - Physiology Class 2k29" />
@@ -31,10 +31,10 @@
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body data-page="timetable">
-    <!-- APP SHELL: The timetable page keeps the same layout language. -->
+  <body data-page="suggestions">
+    <!-- APP SHELL: Student suggestion page for structured feedback. -->
     <div class="app-shell">
-      <!-- SIDEBAR COMPONENT: Public navigation with staff portals kept private by URL. -->
+      <!-- SIDEBAR COMPONENT: Public navigation with protected portals intentionally hidden. -->
       <aside class="sidebar" aria-label="Class dashboard navigation">
         <a class="sidebar-brand" href="./dashboard.html">
           <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
@@ -47,68 +47,72 @@
         <nav class="nav-stack" aria-label="Primary pages">
           <a class="nav-link" href="./dashboard.html"><span class="material-symbols-rounded" aria-hidden="true">space_dashboard</span>Dashboard</a>
           <a class="nav-link" href="./courses.html"><span class="material-symbols-rounded" aria-hidden="true">menu_book</span>Courses</a>
-          <a class="nav-link active" href="./timetable.html"><span class="material-symbols-rounded" aria-hidden="true">calendar_month</span>Timetable</a>
+          <a class="nav-link" href="./timetable.html"><span class="material-symbols-rounded" aria-hidden="true">calendar_month</span>Timetable</a>
           <a class="nav-link" href="./reps.html"><span class="material-symbols-rounded" aria-hidden="true">groups</span>Reps</a>
-          <a class="nav-link" href="./suggestions.html"><span class="material-symbols-rounded" aria-hidden="true">forum</span>Suggestions</a>
+          <a class="nav-link active" href="./suggestions.html"><span class="material-symbols-rounded" aria-hidden="true">forum</span>Suggestions</a>
         </nav>
 
-        <!-- TIMETABLE TIP COMPONENT: Practical reminder for students. -->
         <section class="sidebar-note">
-          <strong>Batch check</strong>
-          <p>Confirm your exact batch before exam day; the board lists official time windows.</p>
+          <strong>Private by design</strong>
+          <p>Your name and matric number are attached so reps can follow up responsibly.</p>
         </section>
       </aside>
 
       <main class="main-area">
-        <!-- HEADER COMPONENT: Logo plaque and page action. -->
+        <!-- HEADER COMPONENT: School logo plus class plaque. -->
         <header class="page-header">
           <div class="logo-plaque">
             <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
             <div class="plaque-text">
               <span>PhysioK29</span>
-              <strong>CBT Timetable</strong>
+              <strong>Suggestions</strong>
             </div>
           </div>
-          <button class="ghost-action" id="downloadTimetable" type="button">
-            <span class="material-symbols-rounded" aria-hidden="true">download</span>
-            Download PDF
-          </button>
+          <a class="ghost-action" href="./reps.html">
+            <span class="material-symbols-rounded" aria-hidden="true">groups</span>
+            Contact reps
+          </a>
         </header>
 
-        <!-- TIMETABLE INTRO COMPONENT: Clarifies that the table is filtered to registered courses. -->
+        <!-- SUGGESTION INTRO COMPONENT: Sets a clear, relaxed tone for feedback. -->
         <section class="page-intro">
-          <p class="eyebrow">First semester CBT</p>
-          <h1>GES/GST exam schedule for quick checks.</h1>
+          <p class="eyebrow">Feedback desk</p>
+          <h1>Drop a suggestion without chasing anyone in the group chat.</h1>
           <p>
-            Pulled from the 2025/2026 First Semester CBT timetable and matched
-            against registered first-semester courses.
+            Send resource requests, timetable issues, broken links, or class-process
+            ideas. Reps and admin will see it in their protected portals.
           </p>
         </section>
 
-        <!-- TIMETABLE TABLE COMPONENT: JavaScript renders the official batch rows here. -->
-        <section class="content-panel">
+        <!-- SUGGESTION FORM COMPONENT: Saves student feedback to Supabase. -->
+        <section class="content-panel suggestion-panel">
           <div class="section-header">
             <div>
-              <p class="eyebrow">Exam rows</p>
-              <h2>Timetable</h2>
+              <p class="eyebrow">Send note</p>
+              <h2>What should be improved?</h2>
             </div>
-            <span id="timetablePageCount" class="soft-pill">0 rows</span>
           </div>
-          <div class="table-wrap">
-            <table class="timetable-table">
-              <thead>
-                <tr>
-                  <th>Course</th>
-                  <th>Day</th>
-                  <th>Date</th>
-                  <th>Batch</th>
-                  <th>Duration</th>
-                  <th>Time</th>
-                </tr>
-              </thead>
-              <tbody id="timetableBody"></tbody>
-            </table>
-          </div>
+          <form class="portal-form compact-form" id="suggestionForm">
+            <label>
+              Type
+              <select name="category" required>
+                <option value="Resource request">Resource request</option>
+                <option value="Broken link">Broken link</option>
+                <option value="Timetable issue">Timetable issue</option>
+                <option value="Class update">Class update</option>
+                <option value="General">General</option>
+              </select>
+            </label>
+            <label>
+              Message
+              <textarea name="message" placeholder="Write the suggestion clearly enough for the reps to act on it." required></textarea>
+            </label>
+            <button class="primary-action" type="submit">
+              <span class="material-symbols-rounded" aria-hidden="true">send</span>
+              Send suggestion
+            </button>
+            <p class="form-status" id="suggestionStatus"></p>
+          </form>
         </section>
       </main>
     </div>

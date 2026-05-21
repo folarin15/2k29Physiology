@@ -14,6 +14,8 @@
   --plum: #5c3f7d;
   --sky: #5fa8d3;
   --shadow: 0 18px 50px rgba(31, 34, 30, 0.12);
+  --body-font: "Inter", Aptos, "Segoe UI Variable Text", "Helvetica Neue", ui-sans-serif, system-ui, sans-serif;
+  --display-font: "Outfit", "Inter", "Aptos Display", "Segoe UI Variable Display", sans-serif;
 }
 
 /* BASE RESET: Normalizes sizing and typography across all pages. */
@@ -21,19 +23,20 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
   overflow-x: hidden;
-  background:
-    radial-gradient(circle at 12% 10%, rgba(216, 199, 77, 0.16), transparent 24rem),
-    radial-gradient(circle at 88% 18%, rgba(42, 157, 127, 0.14), transparent 22rem),
-    var(--bg);
+  background: linear-gradient(180deg, #fbfaf5 0%, var(--bg) 48%, #f2eee4 100%);
   color: var(--ink);
-  font-family:
-    Aptos, "Segoe UI Variable Text", "Helvetica Neue", Inter, ui-sans-serif,
-    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-weight: 380;
+  font-family: var(--body-font);
+  font-weight: 400;
   text-rendering: geometricPrecision;
 }
 
@@ -51,6 +54,22 @@ input,
 select,
 textarea {
   font: inherit;
+}
+
+.material-symbols-rounded {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 1.2em;
+  height: 1.2em;
+  font-family: "Material Symbols Rounded";
+  font-size: 1.2em;
+  font-style: normal;
+  font-weight: 400;
+  font-feature-settings: "liga";
+  line-height: 1;
+  text-transform: none;
+  white-space: nowrap;
 }
 
 [hidden] {
@@ -102,7 +121,8 @@ textarea {
 }
 
 .sidebar-brand strong {
-  font-weight: 560;
+  font-family: var(--display-font);
+  font-weight: 500;
 }
 
 .sidebar-brand small {
@@ -130,7 +150,7 @@ textarea {
   min-height: 42px;
   border-radius: 10px;
   color: rgba(255, 250, 240, 0.78);
-  font-weight: 420;
+  font-weight: 500;
   text-decoration: none;
 }
 
@@ -138,10 +158,11 @@ textarea {
   padding: 0 12px;
 }
 
-.nav-link span {
+.nav-link .material-symbols-rounded {
   display: grid;
   place-items: center;
   width: 24px;
+  color: rgba(255, 250, 240, 0.7);
 }
 
 .nav-link:hover,
@@ -251,9 +272,8 @@ textarea {
 
 .plaque-text strong {
   font-size: clamp(0.96rem, 1.65vw, 1.22rem);
-  font-family:
-    "Aptos Display", "Segoe UI Variable Display", Aptos, "Segoe UI", sans-serif;
-  font-weight: 560;
+  font-family: var(--display-font);
+  font-weight: 500;
 }
 
 /* SMALL HEADER CARDS: Used for reps and page actions. */
@@ -287,6 +307,7 @@ textarea {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   min-height: 46px;
   min-width: 150px;
   padding: 0 18px;
@@ -334,10 +355,9 @@ textarea {
 .page-intro h1 {
   max-width: 860px;
   margin: 0;
-  font-family:
-    "Aptos Display", "Segoe UI Variable Display", Aptos, "Segoe UI", sans-serif;
-  font-size: clamp(1.85rem, 3.7vw, 3.25rem);
-  font-weight: 560;
+  font-family: var(--display-font);
+  font-size: clamp(1.85rem, 3.7vw, 3.1rem);
+  font-weight: 500;
   line-height: 1.06;
   letter-spacing: 0;
   overflow-wrap: break-word;
@@ -381,7 +401,7 @@ textarea {
 
 .search-box span {
   color: var(--mint);
-  font-size: 1.35rem;
+  font-size: 1.45rem;
 }
 
 .search-box input {
@@ -463,9 +483,8 @@ textarea {
 
 .section-header h2 {
   margin: 0;
-  font-family:
-    "Aptos Display", "Segoe UI Variable Display", Aptos, "Segoe UI", sans-serif;
-  font-weight: 560;
+  font-family: var(--display-font);
+  font-weight: 500;
 }
 
 .section-header a {
@@ -527,9 +546,8 @@ textarea {
 .course-card h3 {
   margin: 0;
   font-size: 0.98rem;
-  font-family:
-    "Aptos Display", "Segoe UI Variable Display", Aptos, "Segoe UI", sans-serif;
-  font-weight: 560;
+  font-family: var(--display-font);
+  font-weight: 500;
   line-height: 1.34;
 }
 
@@ -569,6 +587,7 @@ textarea {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 7px;
   min-height: 42px;
   border-radius: 12px;
   background: #f2ede2;
@@ -672,6 +691,10 @@ textarea {
   padding: 20px;
 }
 
+.rep-card > div {
+  min-width: 0;
+}
+
 .rep-avatar {
   display: grid;
   flex: 0 0 auto;
@@ -687,15 +710,38 @@ textarea {
 
 .rep-card h2 {
   margin: 0 0 6px;
-  font-family:
-    "Aptos Display", "Segoe UI Variable Display", Aptos, "Segoe UI", sans-serif;
-  font-weight: 560;
+  font-family: var(--display-font);
+  font-weight: 500;
 }
 
 .rep-card p {
   margin: 0;
   color: var(--muted);
   line-height: 1.5;
+}
+
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.contact-actions a,
+.contact-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  max-width: 100%;
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fffefa;
+  color: var(--ink);
+  cursor: pointer;
+  padding: 0 12px;
+  text-decoration: none;
+  overflow-wrap: anywhere;
 }
 
 .guide-list {
@@ -776,6 +822,31 @@ textarea {
   padding: 0;
 }
 
+.muted-cell {
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.suggestions-table td:nth-child(3) {
+  min-width: 280px;
+  max-width: 460px;
+  white-space: normal;
+}
+
+.suggestions-table td strong,
+.suggestions-table td small {
+  display: block;
+}
+
+.suggestions-table td small {
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.suggestion-panel {
+  max-width: 720px;
+}
+
 /* MEMBER MODAL: First-visit student name and matric check-in. */
 .member-modal {
   position: fixed;
@@ -808,9 +879,8 @@ textarea {
 
 .member-card h2 {
   margin: 0;
-  font-family:
-    "Aptos Display", "Segoe UI Variable Display", Aptos, "Segoe UI", sans-serif;
-  font-weight: 560;
+  font-family: var(--display-font);
+  font-weight: 500;
 }
 
 /* TOAST COMPONENT: Small status message used for notifications and errors. */
@@ -843,6 +913,13 @@ textarea {
   background: #5d2020;
 }
 
+.site-credit {
+  margin: 28px 0 0;
+  color: rgba(103, 112, 108, 0.48);
+  font-size: 0.72rem;
+  text-align: right;
+}
+
 /* RESPONSIVE RULES: Makes the interface work cleanly on phones and tablets. */
 @media (max-width: 1050px) {
   .app-shell {
@@ -866,21 +943,90 @@ textarea {
 }
 
 @media (max-width: 760px) {
+  html,
+  body {
+    max-width: 100vw;
+    overflow-x: hidden;
+    background: #f8f6ef;
+  }
+
+  .app-shell {
+    min-height: auto;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
   .main-area {
-    padding-inline: 14px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 14px 12px 32px;
   }
 
   .sidebar {
-    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    gap: 12px;
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 250, 240, 0.1);
+    width: 100%;
+    max-width: 100vw;
+    min-width: 0;
+    overflow: hidden;
   }
 
   .nav-stack {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: flex;
+    gap: 8px;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  .nav-stack::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-link {
+    flex: 0 0 auto;
+    min-height: 40px;
+    padding: 0 11px;
+    scroll-snap-align: start;
+  }
+
+  .sidebar-brand img {
+    width: 42px;
+    height: 42px;
   }
 
   .sidebar-section,
   .sidebar-note {
     display: none;
+  }
+
+  .page-header,
+  .hero-panel,
+  .page-intro,
+  .content-panel,
+  .activity-panel,
+  .control-row,
+  .dashboard-grid,
+  .resources-list,
+  .resource-grid,
+  .course-grid,
+  .rep-grid {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .rep-grid {
+    grid-template-columns: 1fr;
   }
 
   .page-header,
@@ -892,6 +1038,8 @@ textarea {
 
   .page-header {
     display: grid;
+    gap: 12px;
+    margin-bottom: 14px;
   }
 
   .logo-plaque img {
@@ -899,42 +1047,107 @@ textarea {
     height: 60px;
   }
 
+  .logo-plaque {
+    width: 100%;
+    min-width: 0;
+  }
+
   .plaque-text {
+    flex: 1;
+    min-width: 0;
     min-height: 52px;
     padding-right: 16px;
+  }
+
+  .rep-mini-card,
+  .ghost-action {
+    width: 100%;
+    min-width: 0;
   }
 
   .metrics-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .metric-card {
+    min-height: 82px;
+    padding: 14px;
+  }
+
+  .hero-panel,
+  .page-intro,
+  .content-panel,
+  .activity-panel {
+    border-radius: 14px;
+    padding: 16px;
+    overflow: hidden;
+  }
+
   .hero-panel h1,
   .page-intro h1 {
-    font-size: clamp(1.85rem, 8vw, 2.65rem);
+    max-width: 100%;
+    font-size: clamp(1.65rem, 7.6vw, 2.35rem);
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+  }
+
+  .hero-panel p,
+  .page-intro p,
+  .content-panel p,
+  .activity-panel p {
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
 
   .primary-action {
+    min-width: 0;
     width: 100%;
+  }
+
+  .table-wrap {
+    margin-inline: -2px;
+  }
+
+  .site-credit {
+    text-align: center;
   }
 }
 
 @media (max-width: 480px) {
   .main-area {
-    max-width: 390px;
-    margin-inline: 0;
+    width: 100%;
   }
 
   .hero-panel h1,
   .page-intro h1 {
-    font-size: clamp(1.65rem, 7vw, 2.1rem);
+    font-size: clamp(1.5rem, 7vw, 1.9rem);
   }
 
   .metrics-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .metric-card span {
+    font-size: 1.35rem;
+  }
+
+  .metric-card small {
+    font-size: 0.78rem;
   }
 
   .resource-grid,
   .course-grid {
     grid-template-columns: 1fr;
+  }
+
+  .member-card {
+    padding: 18px;
+  }
+
+  .contact-actions a,
+  .contact-actions button {
+    width: 100%;
+    justify-content: center;
+    white-space: normal;
   }
 }
