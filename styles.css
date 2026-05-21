@@ -329,6 +329,27 @@ textarea {
   color: #fffaf0;
 }
 
+.secondary-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: fit-content;
+  min-height: 42px;
+  padding: 10px 14px;
+  border: 1px solid rgba(0, 121, 97, 0.18);
+  border-radius: 12px;
+  background: rgba(224, 248, 239, 0.68);
+  color: var(--mint-dark);
+  cursor: pointer;
+  font-weight: 560;
+}
+
+.secondary-action:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
 /* HERO COMPONENT: Large welcoming dashboard section with class-specific purpose. */
 .hero-panel,
 .page-intro,
@@ -1364,6 +1385,10 @@ textarea {
 
   .primary-action {
     min-width: 0;
+    width: 100%;
+  }
+
+  .secondary-action {
     width: 100%;
   }
 

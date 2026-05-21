@@ -791,6 +791,28 @@ function renderBulkUploadLine(target, text, tone = "default") {
   target.appendChild(item);
 }
 
+function ensureAiDetailsButton(uploadForm, uploadStatus) {
+  if (!uploadForm || uploadForm.querySelector("[data-generate-resource-details]")) return null;
+
+  const button = document.createElement("button");
+  button.className = "secondary-action ai-details-button";
+  button.type = "button";
+  button.dataset.generateResourceDetails = "true";
+  button.innerHTML = `
+    <span class="material-symbols-rounded" aria-hidden="true">auto_awesome</span>
+    Auto-title
+  `;
+
+  const fileLabel = uploadForm.querySelector('input[name="file"]')?.closest("label");
+  if (fileLabel) {
+    fileLabel.insertAdjacentElement("afterend", button);
+  } else {
+    uploadForm.insertBefore(button, uploadStatus || uploadForm.lastElementChild);
+  }
+
+  return button;
+}
+
 /* REP/ADMIN AUTH: Protects staff portals through Supabase Auth + staff_roles table. */
 function connectStaffPortal(allowedRoles) {
   const loginForm = getElement("#staffLoginForm");
@@ -876,6 +898,46 @@ function connectRepForms() {
   const announcementStatus = getElement("#announcementStatus");
 
   if (uploadForm) {
+    const autoTitleButton = ensureAiDetailsButton(uploadForm, uploadStatus);
+
+    if (autoTitleButton) {
+      autoTitleButton.addEventListener("click", async () => {
+        const formData = new FormData(uploadForm);
+        const file = formData.get("file");
+        const course = findCourse(String(formData.get("courseCode")));
+
+        if (!(file instanceof File) || !file.name) {
+          uploadStatus.textContent = "Choose a file first, then use Auto-title.";
+          return;
+        }
+
+        autoTitleButton.disabled = true;
+        uploadStatus.textContent = "Generating title and context...";
+
+        try {
+          const details = await state.backend.generateResourceDetails({
+            courseCode: String(formData.get("courseCode")),
+            courseTitle: course?.title || "",
+            fileName: file.name,
+            existingTitle: String(formData.get("title") || ""),
+            existingNote: String(formData.get("note") || ""),
+          });
+
+          uploadForm.elements.title.value = details.title || uploadForm.elements.title.value;
+          uploadForm.elements.note.value = details.context || uploadForm.elements.note.value;
+          if (details.type && [...uploadForm.elements.type.options].some((option) => option.value === details.type)) {
+            uploadForm.elements.type.value = details.type;
+          }
+
+          uploadStatus.textContent = "Auto-title filled. Review before uploading.";
+        } catch (error) {
+          uploadStatus.textContent = error.message || "Auto-title failed.";
+        } finally {
+          autoTitleButton.disabled = false;
+        }
+      });
+    }
+
     uploadForm.addEventListener("submit", async (event) => {
       event.preventDefault();
       const formData = new FormData(uploadForm);

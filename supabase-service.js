@@ -181,6 +181,9 @@ export async function createBackend() {
       updateAnnouncement: async () => {
         throw new Error("Add your Supabase config before editing announcements.");
       },
+      generateResourceDetails: async () => {
+        throw new Error("Add your Supabase config before generating upload details.");
+      },
       deleteResource: async () => {
         throw new Error("Add your Supabase config before deleting resources.");
       },
@@ -476,6 +479,22 @@ export async function createBackend() {
       });
 
       if (error) throw error;
+    },
+
+    async generateResourceDetails(input) {
+      const { data, error } = await supabase.functions.invoke("generate-resource-details", {
+        body: {
+          courseCode: cleanStoredText(input.courseCode || ""),
+          courseTitle: cleanStoredText(input.courseTitle || ""),
+          fileName: cleanStoredText(input.fileName || ""),
+          existingTitle: cleanStoredText(input.existingTitle || ""),
+          existingNote: cleanStoredText(input.existingNote || ""),
+        },
+      });
+
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      return data;
     },
 
     async updateResource(resourceId, updates) {
