@@ -22,6 +22,63 @@ const state = {
   },
 };
 
+const cosBulkMetadata = [
+  {
+    keys: ["fundamental_of_computer_science", "week 1"],
+    title: "COS 101 Week 1: Fundamentals of Computer Science",
+    type: "Slide",
+    note: "Course overview and fundamentals: basic computing concepts, data representation, organization, networks, algorithms, and Visual Basic.",
+  },
+  {
+    keys: ["history_and_generation", "week 2"],
+    title: "COS 101 Week 2: History and Generations of Computing",
+    type: "Slide",
+    note: "Focuses on early computing devices, primitive calculators, and how modern computers developed.",
+  },
+  {
+    keys: ["components_of_computer", "week 3-4"],
+    title: "COS 101 Week 3-4: Components of Computer Systems",
+    type: "Slide",
+    note: "Focuses on hardware, software, system structure, and how computer components work together.",
+  },
+  {
+    keys: ["software component", "week 4a"],
+    title: "COS 101 Week 4a: System and Application Software",
+    type: "Slide",
+    note: "Focuses on system software, application software, program documentation, and the role of software in computing.",
+  },
+  {
+    keys: ["data_representation", "data representation", "week 4b"],
+    title: "COS 101 Week 4b: Data Representation",
+    type: "Slide",
+    note: "Focuses on how computers represent numbers, text, audio, images, video, analog and digital data, and compression.",
+  },
+  {
+    keys: ["number systems", "week 5"],
+    title: "COS 101 Week 5: Number Systems",
+    type: "Slide",
+    note: "Focuses on number bases, binary and decimal ideas, and the foundations of number system conversion.",
+  },
+  {
+    keys: ["computernetwork", "computer network", "week7", "week 7"],
+    title: "COS 101 Week 7: Computer Networks and Internet",
+    type: "Slide",
+    note: "Focuses on LAN, MAN, WAN, network uses, resource sharing, topology, and internet basics.",
+  },
+  {
+    keys: ["problemsolving", "problem solving", "lecture 8"],
+    title: "COS 101 Lecture 8: Problem Solving With Computers",
+    type: "Slide",
+    note: "Focuses on problem analysis, data processing, algorithm writing, and software development steps.",
+  },
+  {
+    keys: ["csc 101 compiled", "sister iza"],
+    title: "COS 101 Compiled Notes by Sister Iza",
+    type: "Note",
+    note: "Compiled COS 101 study material for broad revision across course topics.",
+  },
+];
+
 /* DOM UTILITY: Keeps page-specific rendering safe across all HTML files. */
 function getElement(selector) {
   return document.querySelector(selector);
@@ -699,6 +756,28 @@ function populateCourseSelects() {
   });
 }
 
+function normalizeUploadName(value = "") {
+  return stripSiteEmoji(value)
+    .toLowerCase()
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+\(\d+\)(?=\.[a-z0-9]+$)/i, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function findCosBulkMetadata(fileName) {
+  const normalized = normalizeUploadName(fileName);
+  return cosBulkMetadata.find((item) => item.keys.some((key) => normalized.includes(key)));
+}
+
+function renderBulkUploadLine(target, text, tone = "default") {
+  if (!target) return;
+  const item = document.createElement("li");
+  item.dataset.tone = tone;
+  item.textContent = text;
+  target.appendChild(item);
+}
+
 /* REP/ADMIN AUTH: Protects staff portals through Supabase Auth + staff_roles table. */
 function connectStaffPortal(allowedRoles) {
   const loginForm = getElement("#staffLoginForm");
@@ -832,6 +911,81 @@ function connectRepForms() {
       }
     });
   }
+}
+
+/* TEMP BULK UPLOAD: Staff-only helper for quickly loading the COS 101 batch. */
+function connectCosBulkUpload() {
+  const form = getElement("#cosBulkUploadForm");
+  const fileInput = getElement("#cosBulkFiles");
+  const status = getElement("#cosBulkStatus");
+  const list = getElement("#cosBulkList");
+  if (!form || !fileInput) return;
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const files = [...fileInput.files];
+    const course = findCourse("COS 101");
+    const seenTitles = new Set();
+    let uploadedCount = 0;
+    let skippedCount = 0;
+
+    if (!files.length) {
+      status.textContent = "Choose the COS files first.";
+      return;
+    }
+
+    list.innerHTML = "";
+    status.textContent = "Preparing COS uploads...";
+
+    for (const file of files) {
+      const metadata = findCosBulkMetadata(file.name);
+
+      if (!metadata) {
+        skippedCount += 1;
+        renderBulkUploadLine(list, `Skipped unknown file: ${stripSiteEmoji(file.name)}`, "muted");
+        continue;
+      }
+
+      if (seenTitles.has(metadata.title)) {
+        skippedCount += 1;
+        renderBulkUploadLine(list, `Skipped duplicate copy: ${metadata.title}`, "muted");
+        continue;
+      }
+
+      if (state.resources.some((resource) => resource.courseCode === "COS 101" && resource.title === metadata.title)) {
+        seenTitles.add(metadata.title);
+        skippedCount += 1;
+        renderBulkUploadLine(list, `Already on portal: ${metadata.title}`, "muted");
+        continue;
+      }
+
+      seenTitles.add(metadata.title);
+      status.textContent = `Uploading ${metadata.title}...`;
+
+      try {
+        await state.backend.uploadResource(
+          {
+            title: metadata.title,
+            courseCode: "COS 101",
+            courseTitle: course?.title || "Introduction to Computing Sciences",
+            type: metadata.type,
+            note: metadata.note,
+          },
+          file,
+          (progress) => {
+            status.textContent = `Uploading ${metadata.title}... ${progress}%`;
+          }
+        );
+        uploadedCount += 1;
+        renderBulkUploadLine(list, `Uploaded: ${metadata.title}`, "success");
+      } catch (error) {
+        renderBulkUploadLine(list, `${metadata.title}: ${error.message || "Upload failed."}`, "error");
+      }
+    }
+
+    status.textContent = `COS batch complete. ${uploadedCount} uploaded, ${skippedCount} skipped.`;
+    form.reset();
+  });
 }
 
 /* SUGGESTION FORM: Lets checked-in students send structured notes to staff. */
@@ -1261,6 +1415,7 @@ async function init() {
   connectSearch();
   connectStaffPortal(document.body.dataset.portalRole === "admin" ? ["admin"] : ["rep", "admin"]);
   connectRepForms();
+  connectCosBulkUpload();
   connectSuggestionForm();
   connectStaffActions();
   connectCopyButtons();

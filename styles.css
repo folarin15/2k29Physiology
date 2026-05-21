@@ -1067,6 +1067,41 @@ textarea {
   padding: 11px 12px;
 }
 
+.temp-upload-panel {
+  max-width: 760px;
+}
+
+.bulk-upload-list {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bulk-upload-list li {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fffefa;
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.bulk-upload-list li[data-tone="success"] {
+  border-color: rgba(0, 121, 97, 0.22);
+  background: rgba(224, 248, 239, 0.72);
+}
+
+.bulk-upload-list li[data-tone="error"] {
+  border-color: rgba(190, 69, 69, 0.26);
+  background: rgba(255, 238, 236, 0.78);
+}
+
+.bulk-upload-list li[data-tone="muted"] {
+  color: var(--muted);
+}
+
 /* MEMBER MODAL: First-visit student name and matric check-in. */
 .member-modal {
   position: fixed;
