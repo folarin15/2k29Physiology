@@ -37,7 +37,7 @@ create table if not exists public.resources (
   storage_path text not null,
   download_url text not null,
   uploaded_by text not null,
-  uploaded_by_user_id uuid not null references auth.users(id) on delete restrict,
+  uploaded_by_user_id uuid references auth.users(id) on delete set null,
   created_at timestamptz not null default now()
 );
 
@@ -47,7 +47,7 @@ create table if not exists public.announcements (
   message text not null,
   priority text not null default 'Normal' check (priority in ('Normal', 'Important', 'Urgent')),
   posted_by text not null,
-  posted_by_user_id uuid not null references auth.users(id) on delete restrict,
+  posted_by_user_id uuid references auth.users(id) on delete set null,
   created_at timestamptz not null default now()
 );
 
