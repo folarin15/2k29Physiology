@@ -3,6 +3,7 @@ import { createBackend } from "./supabase-service.js";
 import { isSupabaseConfigured } from "./supabase-config.js";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
+const ONESIGNAL_PROMPT_KEY = "physiology2k29.onesignalPromptAsked";
 
 const state = {
   backend: null,
@@ -88,6 +89,31 @@ function showToast(message, tone = "default") {
   window.setTimeout(() => toast.classList.remove("show"), 4200);
 }
 
+/* PUSH NOTIFICATIONS: Links OneSignal browser push to the saved student profile. */
+async function connectPushNotifications(session, shouldPrompt = false) {
+  if (!session?.memberId || !window.OneSignalDeferred) return;
+
+  window.OneSignalDeferred.push(async (OneSignal) => {
+    try {
+      await OneSignal.login(session.memberId);
+
+      if (OneSignal.User?.addTags) {
+        await OneSignal.User.addTags({
+          name: session.name || "",
+          matricNumber: session.matricNumber || "",
+        });
+      }
+
+      if (shouldPrompt && !localStorage.getItem(ONESIGNAL_PROMPT_KEY)) {
+        localStorage.setItem(ONESIGNAL_PROMPT_KEY, "true");
+        await OneSignal.Slidedown.promptPush();
+      }
+    } catch (error) {
+      console.warn("OneSignal setup skipped:", error);
+    }
+  });
+}
+
 /* FOOTER CREDIT: Keeps the creator mark present without competing with the portal UI. */
 function renderSiteCredit() {
   const main = getElement(".main-area");
@@ -145,7 +171,10 @@ async function ensureMemberOnboarding() {
   const existingSession = getMemberSession();
   if (existingSession?.memberId) {
     const active = await state.backend.refreshMemberSession(existingSession).catch(() => true);
-    if (active !== false) return;
+    if (active !== false) {
+      connectPushNotifications(existingSession);
+      return;
+    }
     clearMemberSession();
   }
 
@@ -195,6 +224,7 @@ async function ensureMemberOnboarding() {
 
       overlay.remove();
       showToast("Welcome. Your class profile is saved.");
+      connectPushNotifications(memberSession, true);
     } catch (error) {
       status.textContent = error.message || "Could not save profile. Please try again.";
     }
