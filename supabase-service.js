@@ -200,6 +200,17 @@ export async function createBackend() {
     return data ? { role: data.role, displayName: data.display_name } : null;
   }
 
+  async function notifyPortal(payload) {
+    const { error } = await supabase.functions.invoke("send-portal-notification", {
+      body: {
+        url: "https://2k29physiology.pxxl.click/dashboard.html",
+        ...payload,
+      },
+    });
+
+    if (error) throw error;
+  }
+
   function subscribeAndReload(channelName, tableName, load) {
     load();
 
@@ -380,11 +391,13 @@ export async function createBackend() {
 
       const { data: publicFile } = supabase.storage.from(supabaseConfig.storageBucket).getPublicUrl(filePath);
 
+      const resourceTitle = String(formData.title || "").trim();
+      const resourceType = String(formData.type || "Resource");
       const { error: insertError } = await supabase.from("resources").insert({
-        title: String(formData.title || "").trim(),
+        title: resourceTitle,
         course_code: courseCode,
         course_title: String(formData.courseTitle || "").trim(),
-        type: String(formData.type || "Resource"),
+        type: resourceType,
         note: String(formData.note || "").trim(),
         file_name: file.name,
         file_size: file.size,
@@ -399,6 +412,13 @@ export async function createBackend() {
         await supabase.storage.from(supabaseConfig.storageBucket).remove([filePath]).catch(() => undefined);
         throw insertError;
       }
+
+      notifyPortal({
+        type: "resource",
+        title: resourceTitle,
+        courseCode,
+        resourceType,
+      }).catch((error) => console.warn("Push notification skipped:", error));
     },
 
     async postAnnouncement(formData) {
@@ -410,15 +430,23 @@ export async function createBackend() {
         throw new Error("This account is not allowed to post announcements.");
       }
 
+      const announcementTitle = String(formData.title || "").trim();
+      const announcementMessage = String(formData.message || "").trim();
       const { error } = await supabase.from("announcements").insert({
-        title: String(formData.title || "").trim(),
-        message: String(formData.message || "").trim(),
+        title: announcementTitle,
+        message: announcementMessage,
         priority: String(formData.priority || "Normal"),
         posted_by: role.displayName || user.email || "Course rep",
         posted_by_user_id: user.id,
       });
 
       if (error) throw error;
+
+      notifyPortal({
+        type: "announcement",
+        title: announcementTitle,
+        message: announcementMessage,
+      }).catch((error) => console.warn("Push notification skipped:", error));
     },
 
     async submitSuggestion(formData) {

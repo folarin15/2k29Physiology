@@ -6,7 +6,7 @@ Vanilla HTML/CSS/JS portal for Physiology Class 2k29, hosted on Pxxl with Supaba
 
 - `dashboard.html`: dashboard, latest resources, and announcements.
 - `courses.html`: first-semester course resource bank.
-- `timetable.html`: GES/GST CBT timetable with CSV download.
+- `timetable.html`: GES/GST CBT timetable with PDF download.
 - `reps.html`: Ayanfe/Raphael contacts and WhatsApp links.
 - `suggestions.html`: student suggestion form.
 
@@ -40,9 +40,21 @@ When the final Pxxl URL is known, update the `og:image` tags to the absolute ima
 
 ## Push Notifications
 
-The portal currently has live in-site toasts for new resources, announcements, and suggestions. True background push needs a push sender:
+The portal uses OneSignal for browser subscriptions and Supabase Edge Functions for secure sending.
 
-- easiest: OneSignal Web Push
-- more custom: Supabase Edge Functions + web-push
+Add these Supabase secrets before deploying the sender:
 
-Do not build background push directly into static frontend-only code; it needs a trusted server-side sender.
+```txt
+ONESIGNAL_APP_ID=6b1caa76-8b69-48cb-b925-b10aabd80ef3
+ONESIGNAL_REST_API_KEY=your_private_rest_key
+```
+
+Deploy the function:
+
+```bash
+supabase functions deploy send-portal-notification
+```
+
+Re-upload the Pxxl frontend after changes. Keep `OneSignalSDKWorker.js` at the site root so browser push can subscribe correctly.
+
+When a rep/admin uploads a resource or posts an announcement, the frontend calls `send-portal-notification`. The function verifies the Supabase user is in `staff_roles`, then sends the push through OneSignal.
