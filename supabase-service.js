@@ -211,14 +211,11 @@ export async function createBackend() {
   async function getRole(uid) {
     if (!uid) return null;
 
-    const { data, error } = await supabase
-      .from("staff_roles")
-      .select("role, display_name")
-      .eq("user_id", uid)
-      .maybeSingle();
+    const { data, error } = await supabase.rpc("get_my_staff_profile");
 
     if (error) throw error;
-    return data ? { role: data.role, displayName: data.display_name } : null;
+    const profile = Array.isArray(data) ? data[0] : data;
+    return profile ? { role: profile.role, displayName: profile.display_name } : null;
   }
 
   async function notifyPortal(payload) {

@@ -87,6 +87,19 @@ as $$
   select display_name from public.staff_roles where user_id = auth.uid() limit 1;
 $$;
 
+create or replace function public.get_my_staff_profile()
+returns table(role text, display_name text)
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select staff_roles.role, staff_roles.display_name
+  from public.staff_roles
+  where staff_roles.user_id = auth.uid()
+  limit 1;
+$$;
+
 create or replace function public.is_staff()
 returns boolean
 language sql
@@ -199,11 +212,13 @@ revoke all on function public.register_member(text, text) from public;
 revoke all on function public.refresh_member_seen(uuid, text) from public;
 revoke all on function public.current_staff_role() from public, anon, authenticated;
 revoke all on function public.current_staff_name() from public, anon, authenticated;
+revoke all on function public.get_my_staff_profile() from public, anon, authenticated;
 revoke all on function public.is_staff() from public, anon, authenticated;
 revoke all on function public.is_admin() from public, anon, authenticated;
 revoke all on function public.can_delete_resource_object(text) from public, anon, authenticated;
 grant execute on function public.register_member(text, text) to anon, authenticated;
 grant execute on function public.refresh_member_seen(uuid, text) to anon, authenticated;
+grant execute on function public.get_my_staff_profile() to authenticated;
 
 drop policy if exists "Staff can read members" on public.members;
 create policy "Staff can read members"
