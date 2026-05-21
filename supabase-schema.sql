@@ -60,6 +60,9 @@ create table if not exists public.suggestions (
   created_at timestamptz not null default now()
 );
 
+create index if not exists resources_uploaded_by_user_id_idx on public.resources(uploaded_by_user_id);
+create index if not exists announcements_posted_by_user_id_idx on public.announcements(posted_by_user_id);
+
 alter table public.members enable row level security;
 alter table public.allowed_members enable row level security;
 alter table public.staff_roles enable row level security;
@@ -219,6 +222,11 @@ revoke all on function public.can_delete_resource_object(text) from public, anon
 grant execute on function public.register_member(text, text) to anon, authenticated;
 grant execute on function public.refresh_member_seen(uuid, text) to anon, authenticated;
 grant execute on function public.get_my_staff_profile() to authenticated;
+grant execute on function public.current_staff_role() to authenticated;
+grant execute on function public.current_staff_name() to authenticated;
+grant execute on function public.is_staff() to authenticated;
+grant execute on function public.is_admin() to authenticated;
+grant execute on function public.can_delete_resource_object(text) to authenticated;
 
 drop policy if exists "Staff can read members" on public.members;
 create policy "Staff can read members"
