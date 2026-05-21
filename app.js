@@ -56,8 +56,14 @@ function getSelectedCourseCode() {
   return new URLSearchParams(window.location.search).get("course");
 }
 
-function getScholarFirstName(session = getMemberSession()) {
-  return stripSiteEmoji(session?.name || "").split(/\s+/).find(Boolean) || "Scholar";
+function getScholarDisplayName(session = getMemberSession()) {
+  const names = stripSiteEmoji(session?.name || "").split(/\s+/).filter(Boolean);
+  return names[1] || names[0] || "Scholar";
+}
+
+function isDashboardPage() {
+  const page = window.location.pathname.split("/").pop() || "index.html";
+  return page === "index.html" || page === "dashboard.html";
 }
 
 function formatDate(ms) {
@@ -141,15 +147,20 @@ function renderSiteCredit() {
   main.appendChild(credit);
 }
 
-/* SCHOLAR GREETING: Uses the checked-in student's first name across public pages. */
+/* SCHOLAR GREETING: Uses the checked-in student's second name on the dashboard only. */
 function renderScholarGreeting() {
-  if (document.body.dataset.portal === "staff") return;
+  const existingGreeting = getElement("#scholarGreeting");
+  if (document.body.dataset.portal === "staff" || !isDashboardPage()) {
+    existingGreeting?.remove();
+    return;
+  }
+
   const main = getElement(".main-area");
   const header = getElement(".page-header");
   const session = getMemberSession();
   if (!main || !header || !session?.name) return;
 
-  let greeting = getElement("#scholarGreeting");
+  let greeting = existingGreeting;
   if (!greeting) {
     greeting = document.createElement("section");
     greeting.id = "scholarGreeting";
@@ -158,8 +169,7 @@ function renderScholarGreeting() {
   }
 
   greeting.innerHTML = `
-    <span>Welcome, Scholar</span>
-    <strong>${escapeHtml(getScholarFirstName(session))}</strong>
+    <span>Welcome, Scholar <strong>${escapeHtml(getScholarDisplayName(session))}</strong></span>
   `;
 }
 
