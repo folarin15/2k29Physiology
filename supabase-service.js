@@ -247,7 +247,7 @@ export async function createBackend() {
 
     async signInRep(email, password) {
       const { data, error } = await supabase.auth.signInWithPassword({
-        email,
+        email: String(email || "").trim().toLowerCase(),
         password,
       });
       if (error) throw error;
