@@ -704,13 +704,22 @@ function renderStaffLists() {
                   <small>${escapeHtml(suggestion.matricNumber)}</small>
                 </td>
                 <td>${escapeHtml(suggestion.category || "General")}</td>
-                <td>${escapeHtml(suggestion.message)}</td>
+                <td>
+                  <button class="ghost-link suggestion-preview" data-view-suggestion="${suggestion.id}">
+                    ${escapeHtml(suggestion.message)}
+                  </button>
+                </td>
                 <td>${formatDate(suggestion.createdAtMs)}</td>
-                <td>${
-                  isAdminPortal()
-                    ? `<button class="danger-link" data-delete-suggestion="${suggestion.id}">Delete</button>`
-                    : `<span class="muted-cell">Visible</span>`
-                }</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="ghost-link" data-view-suggestion="${suggestion.id}">View</button>
+                    ${
+                      isAdminPortal()
+                        ? `<button class="danger-link" data-delete-suggestion="${suggestion.id}">Delete</button>`
+                        : `<span class="muted-cell">Visible</span>`
+                    }
+                  </div>
+                </td>
               </tr>
             `
           )
@@ -1235,11 +1244,132 @@ function openEditAnnouncementModal(announcement) {
   });
 }
 
+function wrapCanvasText(context, text, x, y, maxWidth, lineHeight, maxLines = 12) {
+  const words = stripSiteEmoji(text).split(/\s+/).filter(Boolean);
+  const lines = [];
+  let line = "";
+
+  words.forEach((word) => {
+    const nextLine = line ? `${line} ${word}` : word;
+    if (context.measureText(nextLine).width > maxWidth && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = nextLine;
+    }
+  });
+  if (line) lines.push(line);
+
+  lines.slice(0, maxLines).forEach((item, index) => {
+    const suffix = index === maxLines - 1 && lines.length > maxLines ? "..." : "";
+    context.fillText(`${item}${suffix}`, x, y + index * lineHeight);
+  });
+}
+
+function downloadSuggestionImage(suggestion) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1200;
+  canvas.height = 900;
+  const context = canvas.getContext("2d");
+
+  const gradient = context.createLinearGradient(0, 0, 1200, 900);
+  gradient.addColorStop(0, "#fffdf8");
+  gradient.addColorStop(0.45, "#e6f6ef");
+  gradient.addColorStop(1, "#f2eadb");
+  context.fillStyle = gradient;
+  context.fillRect(0, 0, 1200, 900);
+
+  context.fillStyle = "rgba(42, 157, 127, 0.16)";
+  context.beginPath();
+  context.ellipse(965, 135, 270, 145, -0.25, 0, Math.PI * 2);
+  context.fill();
+
+  context.fillStyle = "rgba(217, 111, 77, 0.14)";
+  context.beginPath();
+  context.ellipse(130, 790, 310, 170, 0.2, 0, Math.PI * 2);
+  context.fill();
+
+  context.fillStyle = "rgba(255, 253, 248, 0.92)";
+  context.strokeStyle = "rgba(23, 27, 31, 0.1)";
+  context.lineWidth = 2;
+  context.beginPath();
+  context.roundRect(90, 90, 1020, 720, 34);
+  context.fill();
+  context.stroke();
+
+  context.fillStyle = "#16735c";
+  context.font = "600 32px Inter, Arial, sans-serif";
+  context.fillText("PhysioK29 Suggestion", 140, 165);
+
+  context.fillStyle = "#d96f4d";
+  context.font = "600 24px Inter, Arial, sans-serif";
+  context.fillText(stripSiteEmoji(suggestion.category || "General").toUpperCase(), 140, 220);
+
+  context.fillStyle = "#171b1f";
+  context.font = "600 42px Outfit, Inter, Arial, sans-serif";
+  wrapCanvasText(context, suggestion.message, 140, 305, 910, 54, 9);
+
+  context.fillStyle = "#67706c";
+  context.font = "400 24px Inter, Arial, sans-serif";
+  context.fillText(`From: ${stripSiteEmoji(suggestion.name)}`, 140, 720);
+  context.fillText(`Matric: ${stripSiteEmoji(suggestion.matricNumber)}`, 140, 758);
+  context.fillText(`Sent: ${formatDate(suggestion.createdAtMs)}`, 760, 758);
+
+  context.fillStyle = "rgba(23, 27, 31, 0.45)";
+  context.font = "400 18px Inter, Arial, sans-serif";
+  context.fillText("Generated from PhysioK29 staff portal", 140, 845);
+
+  const link = document.createElement("a");
+  link.href = canvas.toDataURL("image/png");
+  link.download = `physiok29-suggestion-${stripSiteEmoji(suggestion.matricNumber || "student")}.png`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
+
+function openSuggestionModal(suggestion) {
+  if (!suggestion) return;
+
+  closeEditModal();
+  const overlay = document.createElement("section");
+  overlay.className = "edit-modal";
+  overlay.id = "editPostModal";
+  overlay.innerHTML = `
+    <article class="edit-card suggestion-detail-card">
+      <div class="edit-card-head">
+        <div>
+          <p class="eyebrow">${escapeHtml(suggestion.category || "General")}</p>
+          <h2>${escapeHtml(suggestion.name)}</h2>
+        </div>
+        <button type="button" class="icon-button" data-close-edit aria-label="Close suggestion">
+          <span class="material-symbols-rounded" aria-hidden="true">close</span>
+        </button>
+      </div>
+      <div class="suggestion-art-card">
+        <p>${escapeHtml(suggestion.message)}</p>
+        <div>
+          <span>${escapeHtml(suggestion.matricNumber)}</span>
+          <span>${formatDate(suggestion.createdAtMs)}</span>
+        </div>
+      </div>
+      <button class="primary-action" type="button" data-download-suggestion="${suggestion.id}">
+        <span class="material-symbols-rounded" aria-hidden="true">download</span>
+        Download as image
+      </button>
+    </article>
+  `;
+  document.body.appendChild(overlay);
+
+  getElement("[data-close-edit]")?.addEventListener("click", closeEditModal);
+  getElement("[data-download-suggestion]")?.addEventListener("click", () => downloadSuggestionImage(suggestion));
+}
+
 /* STAFF ACTIONS: Deletes resources, announcements, suggestions, and member records. */
 function connectStaffActions() {
   document.addEventListener("click", async (event) => {
     const editResourceButton = event.target.closest("[data-edit-resource]");
     const editAnnouncementButton = event.target.closest("[data-edit-announcement]");
+    const viewSuggestionButton = event.target.closest("[data-view-suggestion]");
     const resourceButton = event.target.closest("[data-delete-resource]");
     const announcementButton = event.target.closest("[data-delete-announcement]");
     const suggestionButton = event.target.closest("[data-delete-suggestion]");
@@ -1257,6 +1387,12 @@ function connectStaffActions() {
           (item) => item.id === editAnnouncementButton.dataset.editAnnouncement
         );
         openEditAnnouncementModal(announcement);
+        return;
+      }
+
+      if (viewSuggestionButton) {
+        const suggestion = state.suggestions.find((item) => item.id === viewSuggestionButton.dataset.viewSuggestion);
+        openSuggestionModal(suggestion);
         return;
       }
 
