@@ -11,6 +11,12 @@ create table if not exists public.members (
   last_seen_at timestamptz not null default now()
 );
 
+create table if not exists public.allowed_members (
+  matric_number text primary key,
+  name text not null,
+  created_at timestamptz not null default now()
+);
+
 create table if not exists public.staff_roles (
   user_id uuid primary key references auth.users(id) on delete cascade,
   role text not null check (role in ('rep', 'admin')),
@@ -55,6 +61,7 @@ create table if not exists public.suggestions (
 );
 
 alter table public.members enable row level security;
+alter table public.allowed_members enable row level security;
 alter table public.staff_roles enable row level security;
 alter table public.resources enable row level security;
 alter table public.announcements enable row level security;
@@ -122,6 +129,14 @@ begin
     raise exception 'Enter a valid matric number.';
   end if;
 
+  if not exists (
+    select 1
+    from public.allowed_members
+    where matric_number = v_matric
+  ) then
+    raise exception 'This matric number is not on the Physiology 2k29 class list.';
+  end if;
+
   insert into public.members (name, matric_number, last_seen_at)
   values (v_name, v_matric, now())
   on conflict (matric_number)
@@ -150,7 +165,12 @@ begin
   update public.members
   set last_seen_at = now()
   where id = p_member_id
-    and matric_number = v_matric;
+    and matric_number = v_matric
+    and exists (
+      select 1
+      from public.allowed_members
+      where matric_number = v_matric
+    );
 
   return found;
 end;
@@ -177,6 +197,11 @@ $$;
 
 revoke all on function public.register_member(text, text) from public;
 revoke all on function public.refresh_member_seen(uuid, text) from public;
+revoke all on function public.current_staff_role() from public, anon, authenticated;
+revoke all on function public.current_staff_name() from public, anon, authenticated;
+revoke all on function public.is_staff() from public, anon, authenticated;
+revoke all on function public.is_admin() from public, anon, authenticated;
+revoke all on function public.can_delete_resource_object(text) from public, anon, authenticated;
 grant execute on function public.register_member(text, text) to anon, authenticated;
 grant execute on function public.refresh_member_seen(uuid, text) to anon, authenticated;
 
@@ -185,6 +210,19 @@ create policy "Staff can read members"
 on public.members for select
 to authenticated
 using (public.is_staff());
+
+drop policy if exists "Staff can read allowed members" on public.allowed_members;
+create policy "Staff can read allowed members"
+on public.allowed_members for select
+to authenticated
+using (public.is_staff());
+
+drop policy if exists "Admin can manage allowed members" on public.allowed_members;
+create policy "Admin can manage allowed members"
+on public.allowed_members for all
+to authenticated
+using (public.is_admin())
+with check (public.is_admin());
 
 drop policy if exists "Admin can delete members" on public.members;
 create policy "Admin can delete members"
@@ -309,10 +347,6 @@ values ('class-resources', 'class-resources', true)
 on conflict (id) do update set public = excluded.public;
 
 drop policy if exists "Public can read class resources" on storage.objects;
-create policy "Public can read class resources"
-on storage.objects for select
-to anon, authenticated
-using (bucket_id = 'class-resources');
 
 drop policy if exists "Staff can upload class resources" on storage.objects;
 create policy "Staff can upload class resources"

@@ -40,6 +40,14 @@ body {
   text-rendering: geometricPrecision;
 }
 
+body[data-member-gate="locked"] .app-shell {
+  visibility: hidden;
+}
+
+body[data-member-gate="locked"] .member-modal {
+  visibility: visible;
+}
+
 a {
   color: inherit;
 }

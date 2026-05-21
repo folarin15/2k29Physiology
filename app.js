@@ -153,6 +153,15 @@ function shouldResetMemberSession() {
   return new URLSearchParams(window.location.search).has("resetStudent");
 }
 
+function isPublicMemberPage() {
+  return document.body.dataset.portal !== "staff";
+}
+
+function setMemberGate(isLocked) {
+  if (!isPublicMemberPage()) return;
+  document.body.dataset.memberGate = isLocked ? "locked" : "open";
+}
+
 function showToast(message, tone = "default") {
   let toast = getElement("#portalToast");
   if (!toast) {
@@ -277,11 +286,14 @@ async function ensureMemberOnboarding() {
   if (existingSession?.memberId) {
     const active = await state.backend.refreshMemberSession(existingSession).catch(() => true);
     if (active !== false) {
+      setMemberGate(false);
       connectPushNotifications(existingSession);
       return;
     }
     clearMemberSession();
   }
+
+  setMemberGate(true);
 
   const overlay = document.createElement("section");
   overlay.className = "member-modal";
@@ -328,6 +340,7 @@ async function ensureMemberOnboarding() {
       saveMemberSession(memberSession);
 
       overlay.remove();
+      setMemberGate(false);
       renderScholarGreeting();
       showToast("Welcome. Your class profile is saved.");
       connectPushNotifications(memberSession, true);
@@ -1410,6 +1423,7 @@ function connectRealtimeData() {
 
 async function init() {
   state.backend = await createBackend();
+  setMemberGate(!getMemberSession()?.memberId);
   populateCourseSelects();
   renderAll();
   connectSearch();
