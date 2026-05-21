@@ -578,6 +578,20 @@ textarea {
   text-decoration: none;
 }
 
+.course-card-link {
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.course-card-link:hover,
+.course-card-link:focus-visible {
+  border-color: rgba(0, 121, 97, 0.34);
+  box-shadow: 0 14px 34px rgba(35, 47, 43, 0.08);
+  transform: translateY(-2px);
+  outline: none;
+}
+
 .setup-card {
   border-style: dashed;
 }
@@ -646,6 +660,104 @@ textarea {
 
 .course-card {
   min-height: 174px;
+}
+
+.course-detail-grid {
+  display: block;
+}
+
+.course-detail {
+  display: grid;
+  gap: 18px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  width: fit-content;
+  color: var(--mint-dark);
+  font-weight: 560;
+  text-decoration: none;
+}
+
+.course-detail-head {
+  display: grid;
+  gap: 9px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fffefa;
+}
+
+.course-detail-head h2,
+.course-resource-group h3,
+.course-resource-item h4 {
+  margin: 0;
+}
+
+.course-detail-head h2 {
+  font-family: var(--display-font);
+  font-size: clamp(1.25rem, 2.2vw, 1.9rem);
+  font-weight: 520;
+}
+
+.course-detail-head p,
+.course-resource-item p,
+.empty-group {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.course-resource-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.course-resource-group {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-height: 148px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fffefa;
+}
+
+.group-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.group-heading span {
+  display: inline-grid;
+  min-width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--mint-soft);
+  color: var(--mint-dark);
+  font-size: 0.82rem;
+  font-weight: 640;
+}
+
+.course-resource-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+
+.course-resource-item h4 {
+  font-size: 0.95rem;
+  font-weight: 560;
 }
 
 /* TIMETABLE PAGE: Responsive table with strong scan lines. */
@@ -845,6 +957,113 @@ textarea {
 
 .suggestion-panel {
   max-width: 720px;
+}
+
+.scholar-greeting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  border: 1px solid rgba(0, 121, 97, 0.16);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(224, 248, 239, 0.82), rgba(255, 254, 250, 0.92));
+  color: var(--text);
+}
+
+.scholar-greeting span {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.scholar-greeting strong {
+  color: var(--mint-dark);
+  font-family: var(--display-font);
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  font-weight: 560;
+}
+
+.table-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ghost-link {
+  border: 0;
+  background: transparent;
+  color: var(--mint-dark);
+  cursor: pointer;
+  font-weight: 560;
+  padding: 0;
+}
+
+.icon-button {
+  display: inline-grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.edit-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(23, 27, 31, 0.62);
+  backdrop-filter: blur(10px);
+}
+
+.edit-card {
+  display: grid;
+  gap: 14px;
+  width: min(560px, 100%);
+  max-height: min(720px, calc(100vh - 36px));
+  overflow: auto;
+  padding: 20px;
+  border-radius: 18px;
+  background: #fffefa;
+  box-shadow: var(--shadow);
+}
+
+.edit-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.edit-card-head h2 {
+  margin: 2px 0 0;
+  font-family: var(--display-font);
+  font-size: 1.2rem;
+  font-weight: 540;
+}
+
+.edit-card label {
+  display: grid;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.edit-card input,
+.edit-card select,
+.edit-card textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #ffffff;
+  color: var(--text);
+  padding: 11px 12px;
 }
 
 /* MEMBER MODAL: First-visit student name and matric check-in. */
@@ -1108,6 +1327,10 @@ textarea {
     margin-inline: -2px;
   }
 
+  .course-resource-groups {
+    grid-template-columns: 1fr;
+  }
+
   .site-credit {
     text-align: center;
   }
@@ -1149,5 +1372,19 @@ textarea {
     width: 100%;
     justify-content: center;
     white-space: normal;
+  }
+
+  .scholar-greeting,
+  .course-resource-item {
+    align-items: stretch;
+    grid-template-columns: 1fr;
+  }
+
+  .scholar-greeting {
+    display: grid;
+  }
+
+  .course-resource-item .card-action {
+    justify-content: center;
   }
 }

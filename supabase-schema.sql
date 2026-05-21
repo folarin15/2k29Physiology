@@ -217,6 +217,20 @@ on public.resources for insert
 to authenticated
 with check (public.is_staff() and uploaded_by_user_id = auth.uid());
 
+drop policy if exists "Admin can update resources" on public.resources;
+create policy "Admin can update resources"
+on public.resources for update
+to authenticated
+using (public.is_admin())
+with check (public.is_admin());
+
+drop policy if exists "Staff can update own resources" on public.resources;
+create policy "Staff can update own resources"
+on public.resources for update
+to authenticated
+using (public.is_staff() and uploaded_by_user_id = auth.uid())
+with check (public.is_staff() and uploaded_by_user_id = auth.uid());
+
 drop policy if exists "Admin can delete resources" on public.resources;
 create policy "Admin can delete resources"
 on public.resources for delete
@@ -239,6 +253,20 @@ drop policy if exists "Staff can create announcements" on public.announcements;
 create policy "Staff can create announcements"
 on public.announcements for insert
 to authenticated
+with check (public.is_staff() and posted_by_user_id = auth.uid());
+
+drop policy if exists "Admin can update announcements" on public.announcements;
+create policy "Admin can update announcements"
+on public.announcements for update
+to authenticated
+using (public.is_admin())
+with check (public.is_admin());
+
+drop policy if exists "Staff can update own announcements" on public.announcements;
+create policy "Staff can update own announcements"
+on public.announcements for update
+to authenticated
+using (public.is_staff() and posted_by_user_id = auth.uid())
 with check (public.is_staff() and posted_by_user_id = auth.uid());
 
 drop policy if exists "Admin can delete announcements" on public.announcements;

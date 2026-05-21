@@ -54,6 +54,18 @@ function normalizeSuggestionMessage(value) {
   return message;
 }
 
+/* TEXT HYGIENE: Keeps stored display text clean even when filenames contain emoji. */
+function stripSiteEmoji(value = "") {
+  return String(value)
+    .replace(/[\u{1F1E6}-\u{1F1FF}\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function cleanStoredText(value = "") {
+  return stripSiteEmoji(value);
+}
+
 function safeFileName(fileName) {
   return String(fileName || "resource")
     .trim()
@@ -162,6 +174,12 @@ export async function createBackend() {
       },
       postAnnouncement: async () => {
         throw new Error("Add your Supabase config before posting announcements.");
+      },
+      updateResource: async () => {
+        throw new Error("Add your Supabase config before editing resources.");
+      },
+      updateAnnouncement: async () => {
+        throw new Error("Add your Supabase config before editing announcements.");
       },
       deleteResource: async () => {
         throw new Error("Add your Supabase config before deleting resources.");
@@ -391,15 +409,15 @@ export async function createBackend() {
 
       const { data: publicFile } = supabase.storage.from(supabaseConfig.storageBucket).getPublicUrl(filePath);
 
-      const resourceTitle = String(formData.title || "").trim();
-      const resourceType = String(formData.type || "Resource");
+      const resourceTitle = cleanStoredText(formData.title || "");
+      const resourceType = cleanStoredText(formData.type || "Resource");
       const { error: insertError } = await supabase.from("resources").insert({
         title: resourceTitle,
         course_code: courseCode,
-        course_title: String(formData.courseTitle || "").trim(),
+        course_title: cleanStoredText(formData.courseTitle || ""),
         type: resourceType,
-        note: String(formData.note || "").trim(),
-        file_name: file.name,
+        note: cleanStoredText(formData.note || ""),
+        file_name: cleanStoredText(file.name) || safeFileName(file.name),
         file_size: file.size,
         file_type: file.type || "unknown",
         storage_path: filePath,
@@ -430,12 +448,12 @@ export async function createBackend() {
         throw new Error("This account is not allowed to post announcements.");
       }
 
-      const announcementTitle = String(formData.title || "").trim();
-      const announcementMessage = String(formData.message || "").trim();
+      const announcementTitle = cleanStoredText(formData.title || "");
+      const announcementMessage = cleanStoredText(formData.message || "");
       const { error } = await supabase.from("announcements").insert({
         title: announcementTitle,
         message: announcementMessage,
-        priority: String(formData.priority || "Normal"),
+        priority: cleanStoredText(formData.priority || "Normal"),
         posted_by: role.displayName || user.email || "Course rep",
         posted_by_user_id: user.id,
       });
@@ -457,6 +475,35 @@ export async function createBackend() {
         message: normalizeSuggestionMessage(formData.message),
       });
 
+      if (error) throw error;
+    },
+
+    async updateResource(resourceId, updates) {
+      const payload = {
+        title: cleanStoredText(updates.title),
+        type: cleanStoredText(updates.type || "Resource"),
+        note: cleanStoredText(updates.note || ""),
+        file_name: cleanStoredText(updates.fileName || "resource"),
+      };
+
+      if (!payload.title) throw new Error("Resource title is required.");
+      if (!payload.file_name) throw new Error("Display file name is required.");
+
+      const { error } = await supabase.from("resources").update(payload).eq("id", resourceId);
+      if (error) throw error;
+    },
+
+    async updateAnnouncement(announcementId, updates) {
+      const payload = {
+        title: cleanStoredText(updates.title),
+        message: cleanStoredText(updates.message),
+        priority: cleanStoredText(updates.priority || "Normal"),
+      };
+
+      if (!payload.title) throw new Error("Announcement title is required.");
+      if (!payload.message) throw new Error("Announcement message is required.");
+
+      const { error } = await supabase.from("announcements").update(payload).eq("id", announcementId);
       if (error) throw error;
     },
 

@@ -31,8 +31,16 @@ function getElements(selector) {
   return [...document.querySelectorAll(selector)];
 }
 
-function escapeHtml(value = "") {
+/* TEXT HYGIENE: Removes emoji and decorative glyphs before anything is shown in the UI. */
+function stripSiteEmoji(value = "") {
   return String(value)
+    .replace(/[\u{1F1E6}-\u{1F1FF}\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function escapeHtml(value = "") {
+  return stripSiteEmoji(value)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
@@ -42,6 +50,14 @@ function escapeHtml(value = "") {
 
 function courseAnchor(code) {
   return code.replace(/\s+/g, "-");
+}
+
+function getSelectedCourseCode() {
+  return new URLSearchParams(window.location.search).get("course");
+}
+
+function getScholarFirstName(session = getMemberSession()) {
+  return stripSiteEmoji(session?.name || "").split(/\s+/).find(Boolean) || "Scholar";
 }
 
 function formatDate(ms) {
@@ -121,8 +137,30 @@ function renderSiteCredit() {
 
   const credit = document.createElement("footer");
   credit.className = "site-credit";
-  credit.textContent = "© 2026 Maverick";
+  credit.textContent = "Copyright 2026 Maverick";
   main.appendChild(credit);
+}
+
+/* SCHOLAR GREETING: Uses the checked-in student's first name across public pages. */
+function renderScholarGreeting() {
+  if (document.body.dataset.portal === "staff") return;
+  const main = getElement(".main-area");
+  const header = getElement(".page-header");
+  const session = getMemberSession();
+  if (!main || !header || !session?.name) return;
+
+  let greeting = getElement("#scholarGreeting");
+  if (!greeting) {
+    greeting = document.createElement("section");
+    greeting.id = "scholarGreeting";
+    greeting.className = "scholar-greeting";
+    header.insertAdjacentElement("afterend", greeting);
+  }
+
+  greeting.innerHTML = `
+    <span>Welcome, Scholar</span>
+    <strong>${escapeHtml(getScholarFirstName(session))}</strong>
+  `;
 }
 
 function rememberLiveItems(key, items, messageBuilder) {
@@ -223,6 +261,7 @@ async function ensureMemberOnboarding() {
       saveMemberSession(memberSession);
 
       overlay.remove();
+      renderScholarGreeting();
       showToast("Welcome. Your class profile is saved.");
       connectPushNotifications(memberSession, true);
     } catch (error) {
@@ -269,6 +308,78 @@ function resourceCard(resource) {
   `;
 }
 
+function normalizeResourceGroup(resource) {
+  const label = stripSiteEmoji(resource.type || "Other").toLowerCase();
+  if (label.includes("past") || label.includes("pq") || label.includes("question")) return "Past Questions";
+  if (label.includes("slide") || label.includes("lecture")) return "Slides";
+  if (label.includes("note")) return "Notes";
+  if (label.includes("assignment")) return "Assignments";
+  if (label.includes("practical") || label.includes("lab")) return "Practicals";
+  if (label.includes("link")) return "Links";
+  return "Other Resources";
+}
+
+function courseResourceItem(resource) {
+  return `
+    <article class="course-resource-item">
+      <div>
+        <h4>${escapeHtml(resource.title)}</h4>
+        <p>${escapeHtml(resource.note || resource.fileName || "Uploaded class material")}</p>
+      </div>
+      <a class="card-action" href="${escapeHtml(resource.downloadUrl || "#")}" target="_blank" rel="noreferrer">
+        <span class="material-symbols-rounded" aria-hidden="true">open_in_new</span>
+        Open
+      </a>
+    </article>
+  `;
+}
+
+function renderCourseDetail(grid, course, resources) {
+  const grouped = resources.reduce((groups, resource) => {
+    const group = normalizeResourceGroup(resource);
+    groups[group] = groups[group] || [];
+    groups[group].push(resource);
+    return groups;
+  }, {});
+  const groupOrder = ["Slides", "Past Questions", "Notes", "Assignments", "Practicals", "Links", "Other Resources"];
+
+  grid.classList.add("course-detail-grid");
+  grid.innerHTML = `
+    <section class="course-detail">
+      <a class="back-link" href="./courses.html">
+        <span class="material-symbols-rounded" aria-hidden="true">arrow_back</span>
+        All courses
+      </a>
+      <div class="course-detail-head">
+        <span class="course-code">${escapeHtml(course.code)}</span>
+        <span class="unit-pill">${course.units} unit${course.units > 1 ? "s" : ""}</span>
+        <h2>${escapeHtml(course.title)}</h2>
+        <p>${escapeHtml(course.type)}. ${resources.length} posted resource${resources.length === 1 ? "" : "s"}.</p>
+      </div>
+      <div class="course-resource-groups">
+        ${groupOrder
+          .map((group) => {
+            const groupItems = grouped[group] || [];
+            return `
+              <section class="course-resource-group">
+                <div class="group-heading">
+                  <h3>${group}</h3>
+                  <span>${groupItems.length}</span>
+                </div>
+                ${
+                  groupItems.length
+                    ? groupItems.map(courseResourceItem).join("")
+                    : `<p class="empty-group">Nothing posted here yet.</p>`
+                }
+              </section>
+            `;
+          })
+          .join("")}
+      </div>
+    </section>
+  `;
+}
+
 /* RESOURCE BOARD: Renders live uploads, or an honest empty/setup state. */
 function renderResourceCards(items = state.resources) {
   const grid = getElement("#resourceGrid");
@@ -304,6 +415,16 @@ function renderCourseGrid() {
   const count = getElement("#coursePageCount");
   if (!grid) return;
 
+  grid.classList.remove("course-detail-grid");
+  const selectedCourseCode = getSelectedCourseCode();
+  const selectedCourse = firstSemesterCourses.find((course) => course.code === selectedCourseCode);
+  if (selectedCourse) {
+    const resources = state.resources.filter((resource) => resource.courseCode === selectedCourse.code);
+    if (count) count.textContent = `${selectedCourse.code} course view`;
+    renderCourseDetail(grid, selectedCourse, resources);
+    return;
+  }
+
   if (count) count.textContent = `${firstSemesterCourses.length} courses`;
 
   grid.innerHTML = firstSemesterCourses
@@ -311,14 +432,16 @@ function renderCourseGrid() {
       const resources = state.resources.filter((resource) => resource.courseCode === course.code);
       const latest = resources.slice(0, 3);
       return `
-        <article class="course-card" id="${courseAnchor(course.code)}">
+        <a class="course-card course-card-link" id="${courseAnchor(course.code)}" href="./courses.html?course=${encodeURIComponent(
+        course.code
+      )}">
           <div class="card-topline">
-            <span class="course-code">${course.code}</span>
+            <span class="course-code">${escapeHtml(course.code)}</span>
             <span class="unit-pill">${course.units} unit${course.units > 1 ? "s" : ""}</span>
           </div>
           <div>
             <h3>${escapeHtml(course.title)}</h3>
-            <p>${course.type}. ${resources.length} posted resource${resources.length === 1 ? "" : "s"}.</p>
+            <p>${escapeHtml(course.type)}. ${resources.length} posted resource${resources.length === 1 ? "" : "s"}.</p>
           </div>
           <div class="mini-resource-list">
             ${
@@ -326,13 +449,13 @@ function renderCourseGrid() {
                 ? latest
                     .map(
                       (resource) =>
-                        `<a href="${escapeHtml(resource.downloadUrl || "#")}" target="_blank" rel="noreferrer">${escapeHtml(resource.title)}</a>`
+                        `<span>${escapeHtml(resource.title)}</span>`
                     )
                     .join("")
                 : "<span>No resources yet</span>"
             }
           </div>
-        </article>
+        </a>
       `;
     })
     .join("");
@@ -398,6 +521,14 @@ function canDeleteAnnouncement(announcement) {
   return state.staffRole === "admin" || announcement.postedByUid === state.staffUser?.id;
 }
 
+function canEditResource(resource) {
+  return canDeleteResource(resource);
+}
+
+function canEditAnnouncement(announcement) {
+  return canDeleteAnnouncement(announcement);
+}
+
 function isAdminPortal() {
   return document.body.dataset.portalRole === "admin";
 }
@@ -441,7 +572,10 @@ function renderStaffLists() {
       ? state.resources
           .map((resource) => {
             const action = canDeleteResource(resource)
-              ? `<button class="danger-link" data-delete-resource="${resource.id}">Delete</button>`
+              ? `<div class="table-actions">
+                  <button class="ghost-link" data-edit-resource="${resource.id}">Edit</button>
+                  <button class="danger-link" data-delete-resource="${resource.id}">Delete</button>
+                </div>`
               : `<span class="muted-cell">Owner only</span>`;
             return `
               <tr>
@@ -461,7 +595,10 @@ function renderStaffLists() {
       ? state.announcements
           .map((announcement) => {
             const action = canDeleteAnnouncement(announcement)
-              ? `<button class="danger-link" data-delete-announcement="${announcement.id}">Delete</button>`
+              ? `<div class="table-actions">
+                  <button class="ghost-link" data-edit-announcement="${announcement.id}">Edit</button>
+                  <button class="danger-link" data-delete-announcement="${announcement.id}">Delete</button>
+                </div>`
               : `<span class="muted-cell">Owner only</span>`;
             return `
               <tr>
@@ -504,6 +641,7 @@ function renderStaffLists() {
 
 function renderAll() {
   renderSiteCredit();
+  renderScholarGreeting();
   renderSidebarCourses();
   renderDashboardMetrics();
   renderResourceCards();
@@ -718,15 +856,169 @@ function connectSuggestionForm() {
   });
 }
 
+/* EDIT MODALS: Lets staff correct titles, contexts, filenames, and announcements after posting. */
+function closeEditModal() {
+  getElement("#editPostModal")?.remove();
+}
+
+function openEditResourceModal(resource) {
+  if (!resource || !canEditResource(resource)) return;
+
+  closeEditModal();
+  const overlay = document.createElement("section");
+  overlay.className = "edit-modal";
+  overlay.id = "editPostModal";
+  overlay.innerHTML = `
+    <form class="edit-card" id="editResourceForm">
+      <div class="edit-card-head">
+        <div>
+          <p class="eyebrow">Edit resource</p>
+          <h2>${escapeHtml(resource.courseCode)}</h2>
+        </div>
+        <button type="button" class="icon-button" data-close-edit aria-label="Close editor">
+          <span class="material-symbols-rounded" aria-hidden="true">close</span>
+        </button>
+      </div>
+      <label>
+        Title
+        <input name="title" type="text" value="${escapeHtml(resource.title)}" required />
+      </label>
+      <label>
+        Category
+        <select name="type">
+          ${resourceTypes
+            .map(
+              (type) =>
+                `<option value="${escapeHtml(type)}" ${type === resource.type ? "selected" : ""}>${escapeHtml(
+                  type
+                )}</option>`
+            )
+            .join("")}
+        </select>
+      </label>
+      <label>
+        Context
+        <textarea name="note" rows="4">${escapeHtml(resource.note || "")}</textarea>
+      </label>
+      <label>
+        Display file name
+        <input name="fileName" type="text" value="${escapeHtml(resource.fileName || "")}" required />
+      </label>
+      <button class="primary-action" type="submit">Save changes</button>
+      <p class="form-status" id="editResourceStatus"></p>
+    </form>
+  `;
+  document.body.appendChild(overlay);
+
+  getElement("[data-close-edit]")?.addEventListener("click", closeEditModal);
+  getElement("#editResourceForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const status = getElement("#editResourceStatus");
+    const formData = new FormData(event.currentTarget);
+    try {
+      status.textContent = "Saving changes...";
+      await state.backend.updateResource(resource.id, {
+        title: String(formData.get("title")).trim(),
+        type: String(formData.get("type")),
+        note: String(formData.get("note")).trim(),
+        fileName: String(formData.get("fileName")).trim(),
+      });
+      closeEditModal();
+      showToast("Resource updated.");
+    } catch (error) {
+      status.textContent = error.message || "Could not update resource.";
+    }
+  });
+}
+
+function openEditAnnouncementModal(announcement) {
+  if (!announcement || !canEditAnnouncement(announcement)) return;
+
+  closeEditModal();
+  const overlay = document.createElement("section");
+  overlay.className = "edit-modal";
+  overlay.id = "editPostModal";
+  overlay.innerHTML = `
+    <form class="edit-card" id="editAnnouncementForm">
+      <div class="edit-card-head">
+        <div>
+          <p class="eyebrow">Edit announcement</p>
+          <h2>Portal notice</h2>
+        </div>
+        <button type="button" class="icon-button" data-close-edit aria-label="Close editor">
+          <span class="material-symbols-rounded" aria-hidden="true">close</span>
+        </button>
+      </div>
+      <label>
+        Title
+        <input name="title" type="text" value="${escapeHtml(announcement.title)}" required />
+      </label>
+      <label>
+        Priority
+        <select name="priority">
+          ${["Normal", "Important", "Urgent"]
+            .map(
+              (priority) =>
+                `<option value="${priority}" ${priority === announcement.priority ? "selected" : ""}>${priority}</option>`
+            )
+            .join("")}
+        </select>
+      </label>
+      <label>
+        Message
+        <textarea name="message" rows="5" required>${escapeHtml(announcement.message)}</textarea>
+      </label>
+      <button class="primary-action" type="submit">Save changes</button>
+      <p class="form-status" id="editAnnouncementStatus"></p>
+    </form>
+  `;
+  document.body.appendChild(overlay);
+
+  getElement("[data-close-edit]")?.addEventListener("click", closeEditModal);
+  getElement("#editAnnouncementForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const status = getElement("#editAnnouncementStatus");
+    const formData = new FormData(event.currentTarget);
+    try {
+      status.textContent = "Saving changes...";
+      await state.backend.updateAnnouncement(announcement.id, {
+        title: String(formData.get("title")).trim(),
+        priority: String(formData.get("priority")),
+        message: String(formData.get("message")).trim(),
+      });
+      closeEditModal();
+      showToast("Announcement updated.");
+    } catch (error) {
+      status.textContent = error.message || "Could not update announcement.";
+    }
+  });
+}
+
 /* STAFF ACTIONS: Deletes resources, announcements, suggestions, and member records. */
 function connectStaffActions() {
   document.addEventListener("click", async (event) => {
+    const editResourceButton = event.target.closest("[data-edit-resource]");
+    const editAnnouncementButton = event.target.closest("[data-edit-announcement]");
     const resourceButton = event.target.closest("[data-delete-resource]");
     const announcementButton = event.target.closest("[data-delete-announcement]");
     const suggestionButton = event.target.closest("[data-delete-suggestion]");
     const memberButton = event.target.closest("[data-delete-member]");
 
     try {
+      if (editResourceButton) {
+        const resource = state.resources.find((item) => item.id === editResourceButton.dataset.editResource);
+        openEditResourceModal(resource);
+        return;
+      }
+
+      if (editAnnouncementButton) {
+        const announcement = state.announcements.find(
+          (item) => item.id === editAnnouncementButton.dataset.editAnnouncement
+        );
+        openEditAnnouncementModal(announcement);
+        return;
+      }
+
       if (resourceButton) {
         const resource = state.resources.find((item) => item.id === resourceButton.dataset.deleteResource);
         if (!resource || !confirm(`Delete "${resource.title}"?`)) return;
