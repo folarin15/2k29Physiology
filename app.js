@@ -792,7 +792,9 @@ function renderBulkUploadLine(target, text, tone = "default") {
 }
 
 function ensureAiDetailsButton(uploadForm, uploadStatus) {
-  if (!uploadForm || uploadForm.querySelector("[data-generate-resource-details]")) return null;
+  if (!uploadForm) return null;
+  const existingButton = uploadForm.querySelector("[data-generate-resource-details]");
+  if (existingButton) return existingButton;
 
   const button = document.createElement("button");
   button.className = "secondary-action ai-details-button";
