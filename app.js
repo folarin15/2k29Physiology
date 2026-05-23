@@ -908,6 +908,47 @@ function renderBulkUploadLine(target, text, tone = "default") {
   target.appendChild(item);
 }
 
+function titleCaseResourceName(value = "") {
+  return stripSiteEmoji(value)
+    .replace(/\.[^.]+$/, "")
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/\b([a-z])/g, (letter) => letter.toUpperCase());
+}
+
+function inferBulkCourse(file) {
+  const path = `${file.webkitRelativePath || ""}/${file.name}`.toUpperCase().replaceAll("1O1", "101");
+  return firstSemesterCourses.find((course) => path.includes(course.code));
+}
+
+function inferBulkType(file) {
+  const path = `${file.webkitRelativePath || ""}/${file.name}`.toLowerCase();
+  if (/\b(past questions?|pqs?|pq|test|ca|mock|exam|questions?)\b/.test(path)) return "Past Question";
+  if (/\b(textbook|manual|green book|engineering math)\b/.test(path)) return "Textbook";
+  if (/\b(practical|drawings?|microscopy)\b/.test(path)) return "Practical";
+  return "Slide";
+}
+
+function buildBulkMetadata(file) {
+  const course = inferBulkCourse(file);
+  const type = inferBulkType(file);
+  const readableName = titleCaseResourceName(file.name);
+  const contextByType = {
+    "Past Question": "Past question and revision material for exam practice.",
+    Textbook: "Reference textbook or manual for deeper study.",
+    Practical: "Practical support material for lab preparation and revision.",
+    Slide: "Lecture slide or class material for topic review.",
+  };
+
+  return {
+    course,
+    type,
+    title: course ? `${course.code}: ${readableName}` : readableName,
+    note: `${contextByType[type] || "Class resource material."} Focus: ${readableName}.`,
+  };
+}
+
 function ensureAiDetailsButton(uploadForm, uploadStatus) {
   if (!uploadForm) return null;
   const existingButton = uploadForm.querySelector("[data-generate-resource-details]");
@@ -1105,6 +1146,94 @@ function connectRepForms() {
       }
     });
   }
+}
+
+/* GENERIC BULK UPLOAD: Admin can select a prepared folder and upload by course/type. */
+function connectGenericBulkUpload() {
+  const form = getElement("#genericBulkUploadForm");
+  const fileInput = getElement("#genericBulkFiles");
+  const status = getElement("#genericBulkStatus");
+  const list = getElement("#genericBulkList");
+  if (!form || !fileInput) return;
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const files = [...fileInput.files];
+    const uploadedByCourse = new Map();
+    let uploadedCount = 0;
+    let skippedCount = 0;
+
+    if (!files.length) {
+      status.textContent = "Choose the prepared folder first.";
+      return;
+    }
+
+    list.innerHTML = "";
+    status.textContent = "Preparing folder upload...";
+
+    for (const file of files) {
+      const metadata = buildBulkMetadata(file);
+
+      if (!metadata.course) {
+        skippedCount += 1;
+        renderBulkUploadLine(list, `Skipped unknown course: ${stripSiteEmoji(file.name)}`, "muted");
+        continue;
+      }
+
+      if (file.size > 50 * 1024 * 1024) {
+        skippedCount += 1;
+        renderBulkUploadLine(list, `Skipped over 50 MB: ${metadata.title}`, "muted");
+        continue;
+      }
+
+      if (state.resources.some((resource) => resource.courseCode === metadata.course.code && resource.title === metadata.title)) {
+        skippedCount += 1;
+        renderBulkUploadLine(list, `Already on portal: ${metadata.title}`, "muted");
+        continue;
+      }
+
+      status.textContent = `Uploading ${metadata.title}...`;
+
+      try {
+        await state.backend.uploadResource(
+          {
+            title: metadata.title,
+            courseCode: metadata.course.code,
+            courseTitle: metadata.course.title,
+            type: metadata.type,
+            note: metadata.note,
+          },
+          file,
+          (progress) => {
+            status.textContent = `Uploading ${metadata.title}... ${progress}%`;
+          }
+        );
+
+        uploadedCount += 1;
+        uploadedByCourse.set(metadata.course.code, (uploadedByCourse.get(metadata.course.code) || 0) + 1);
+        renderBulkUploadLine(list, `Uploaded: ${metadata.title}`, "success");
+      } catch (error) {
+        skippedCount += 1;
+        renderBulkUploadLine(list, `${metadata.title}: ${error.message || "Upload failed."}`, "error");
+      }
+    }
+
+    for (const [courseCode, count] of uploadedByCourse.entries()) {
+      const course = findCourse(courseCode);
+      await state.backend
+        .postAnnouncement({
+          title: `${courseCode} materials uploaded`,
+          priority: "Normal",
+          message: `${count} ${count === 1 ? "resource has" : "resources have"} been added for ${
+            course?.title || courseCode
+          }. Open the course page to download the new slides, notes, textbooks, practical materials, or past questions.`,
+        })
+        .catch((error) => renderBulkUploadLine(list, `Announcement skipped for ${courseCode}: ${error.message}`, "error"));
+    }
+
+    form.reset();
+    status.textContent = `Folder upload complete. ${uploadedCount} uploaded, ${skippedCount} skipped. Announcements posted for uploaded courses.`;
+  });
 }
 
 /* TEMP BULK UPLOAD: Staff-only helper for quickly loading the COS 101 batch. */
@@ -1767,6 +1896,7 @@ async function init() {
   connectSearch();
   connectStaffPortal(document.body.dataset.portalRole === "admin" ? ["admin"] : ["rep", "admin"]);
   connectRepForms();
+  connectGenericBulkUpload();
   connectCosBulkUpload();
   connectSuggestionForm();
   connectStaffActions();

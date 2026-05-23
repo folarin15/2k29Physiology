@@ -12,6 +12,12 @@ export const firstSemesterCourses = [
     units: 2,
   },
   {
+    code: "MTH 102",
+    title: "Elementary Mathematics II: Calculus",
+    type: "Compulsory",
+    units: 2,
+  },
+  {
     code: "GES 107",
     title: "Reproductive Health, STIs, Drugs and Mankind",
     type: "Required",
@@ -93,7 +99,7 @@ export const cbtTimetable = [
   },
 ];
 
-export const resourceTypes = ["Slide", "Note", "Practical", "Past Question", "Assignment", "Link"];
+export const resourceTypes = ["Slide", "Note", "Textbook", "Practical", "Past Question", "Assignment", "Link"];
 
 export function findCourse(courseCode) {
   return firstSemesterCourses.find((course) => course.code === courseCode);

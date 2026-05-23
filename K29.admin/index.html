@@ -143,6 +143,35 @@
               </form>
             </section>
 
+            <!-- BULK UPLOAD COMPONENT: Lets admin load a prepared course folder in one batch. -->
+            <section class="content-panel bulk-upload-panel">
+              <div class="section-header">
+                <div>
+                  <p class="eyebrow">Bulk upload</p>
+                  <h2>Upload prepared folders</h2>
+                </div>
+              </div>
+              <form class="portal-form" id="genericBulkUploadForm">
+                <label>
+                  Prepared folder
+                  <input
+                    id="genericBulkFiles"
+                    type="file"
+                    webkitdirectory
+                    directory
+                    multiple
+                    accept=".pdf,.ppt,.pptx,.doc,.docx,.png,.jpg,.jpeg"
+                  />
+                </label>
+                <button class="primary-action" type="submit">
+                  <span class="material-symbols-rounded" aria-hidden="true">drive_folder_upload</span>
+                  Upload folder
+                </button>
+                <p class="form-status" id="genericBulkStatus"></p>
+                <ul class="bulk-upload-list" id="genericBulkList"></ul>
+              </form>
+            </section>
+
             <!-- ANNOUNCEMENT COMPONENT: Admin can post official class updates. -->
             <section class="content-panel">
               <div class="section-header">
