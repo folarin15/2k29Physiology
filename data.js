@@ -22,8 +22,6 @@ export const firstSemesterCourses = [
   { code: "CHM 107", title: "General Chemistry Practical I", type: "Compulsory", units: 1 },
   { code: "BIO 107", title: "General Biology Practical I", type: "Compulsory", units: 1 },
   { code: "PHY 107", title: "General Practical Physics I", type: "Compulsory", units: 1 },
-  { code: "ZOO 101", title: "The Mammalian Body", type: "Compulsory", units: 2 },
-  { code: "GST 111", title: "Communication in English I", type: "Compulsory", units: 2 },
   { code: "COS 101", title: "Introduction to Computing Sciences", type: "Compulsory", units: 3 },
 ];
 
@@ -46,23 +44,7 @@ export const cbtTimetable = [
     time: "9:30am - 10:30am",
   },
   {
-    course: "GST 111 / GES 101",
-    day: "Tuesday / Morning, Afternoon",
-    date: "26/05/2026",
-    batch: "Batch 1",
-    duration: "1 hour",
-    time: "11:00am - 12:00pm",
-  },
-  {
-    course: "GST 111 / GES 101",
-    day: "Tuesday / Morning, Afternoon",
-    date: "26/05/2026",
-    batch: "Batch 2",
-    duration: "1 hour",
-    time: "12:30pm - 1:30pm",
-  },
-  {
-    course: "GST 112 / GES 102",
+    course: "GST 112",
     day: "Saturday / Morning, Afternoon",
     date: "30/05/2026",
     batch: "Batch 1",
@@ -70,7 +52,7 @@ export const cbtTimetable = [
     time: "8:00am - 9:00am",
   },
   {
-    course: "GST 112 / GES 102",
+    course: "GST 112",
     day: "Saturday / Morning, Afternoon",
     date: "30/05/2026",
     batch: "Batch 2",
@@ -78,7 +60,7 @@ export const cbtTimetable = [
     time: "9:30am - 10:30am",
   },
   {
-    course: "GST 112 / GES 102",
+    course: "GST 112",
     day: "Saturday / Morning, Afternoon",
     date: "30/05/2026",
     batch: "Batch 3",
@@ -86,7 +68,7 @@ export const cbtTimetable = [
     time: "11:00am - 12:00pm",
   },
   {
-    course: "GST 112 / GES 102",
+    course: "GST 112",
     day: "Saturday / Morning, Afternoon",
     date: "30/05/2026",
     batch: "Batch 4",

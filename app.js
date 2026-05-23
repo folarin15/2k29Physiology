@@ -133,6 +133,53 @@ function formatDate(ms) {
   }).format(new Date(ms));
 }
 
+function formatExamDate(date) {
+  return new Intl.DateTimeFormat("en-NG", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  }).format(date);
+}
+
+function parseClockTime(value, date) {
+  const match = String(value || "").trim().match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)$/i);
+  if (!match) return null;
+
+  let hour = Number(match[1]);
+  const minute = Number(match[2] || 0);
+  const meridiem = match[3].toLowerCase();
+
+  if (meridiem === "pm" && hour !== 12) hour += 12;
+  if (meridiem === "am" && hour === 12) hour = 0;
+
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, minute, 0, 0);
+}
+
+function getTimetableWindow(item) {
+  const [day, month, year] = item.date.split("/").map(Number);
+  const baseDate = new Date(year, month - 1, day);
+  const [startText, endText] = item.time.split("-").map((part) => part.trim());
+  const start = parseClockTime(startText, baseDate);
+  const end = parseClockTime(endText, baseDate);
+
+  return { start, end };
+}
+
+function getTimetableStatus(item, now = new Date()) {
+  const { start, end } = getTimetableWindow(item);
+  if (!start || !end) return "upcoming";
+  if (now >= end) return "passed";
+  if (now >= start) return "current";
+  return "upcoming";
+}
+
+function getNextTimetableItem(now = new Date()) {
+  return cbtTimetable
+    .map((item) => ({ ...item, ...getTimetableWindow(item) }))
+    .filter((item) => item.end && item.end > now)
+    .sort((a, b) => a.start - b.start)[0];
+}
+
 function getMemberSession() {
   try {
     return JSON.parse(localStorage.getItem(MEMBER_SESSION_KEY));
@@ -178,7 +225,7 @@ function showToast(message, tone = "default") {
 }
 
 /* PUSH NOTIFICATIONS: Links OneSignal browser push to the saved student profile. */
-async function connectPushNotifications(session, shouldPrompt = false) {
+async function connectPushNotifications(session, shouldPrompt = false, options = {}) {
   if (!session?.memberId || !window.OneSignalDeferred) return;
 
   window.OneSignalDeferred.push(async (OneSignal) => {
@@ -192,14 +239,51 @@ async function connectPushNotifications(session, shouldPrompt = false) {
         });
       }
 
-      if (shouldPrompt && !localStorage.getItem(ONESIGNAL_PROMPT_KEY)) {
+      if (shouldPrompt && (options.forcePrompt || !localStorage.getItem(ONESIGNAL_PROMPT_KEY))) {
         localStorage.setItem(ONESIGNAL_PROMPT_KEY, "true");
-        await OneSignal.Slidedown.promptPush();
+        if (OneSignal.Slidedown?.promptPush) {
+          await OneSignal.Slidedown.promptPush();
+        }
       }
     } catch (error) {
       console.warn("OneSignal setup skipped:", error);
     }
   });
+}
+
+/* NOTIFICATION SETUP: Gives students a visible retry path for mobile push permission. */
+function renderNotificationSetup() {
+  const existingPanel = getElement("#notificationSetup");
+  if (document.body.dataset.portal === "staff" || !isDashboardPage()) {
+    existingPanel?.remove();
+    return;
+  }
+
+  const controlRow = getElement(".control-row");
+  const session = getMemberSession();
+  if (!controlRow || !session?.memberId) return;
+
+  if (existingPanel) return;
+
+  const panel = document.createElement("section");
+  panel.id = "notificationSetup";
+  panel.className = "notification-setup";
+  panel.innerHTML = `
+    <div>
+      <span class="material-symbols-rounded" aria-hidden="true">notifications_active</span>
+      <div>
+        <strong>Class notifications</strong>
+        <p>Android users can allow notifications here. iPhone users should add the site to Home Screen, open it from that icon, then enable notifications.</p>
+        <small id="notificationSetupStatus">You can retry setup anytime from this dashboard.</small>
+      </div>
+    </div>
+    <button class="secondary-action" type="button" data-enable-notifications>
+      <span class="material-symbols-rounded" aria-hidden="true">touch_app</span>
+      Enable notifications
+    </button>
+  `;
+
+  controlRow.insertAdjacentElement("afterend", panel);
 }
 
 /* FOOTER CREDIT: Keeps the creator mark present without competing with the portal UI. */
@@ -342,6 +426,7 @@ async function ensureMemberOnboarding() {
       overlay.remove();
       setMemberGate(false);
       renderScholarGreeting();
+      renderNotificationSetup();
       showToast("Welcome. Your class profile is saved.");
       connectPushNotifications(memberSession, true);
     } catch (error) {
@@ -552,7 +637,7 @@ function renderTimetable() {
   body.innerHTML = cbtTimetable
     .map(
       (item) => `
-        <tr>
+        <tr data-status="${getTimetableStatus(item)}">
           <td>${item.course}</td>
           <td>${item.day}</td>
           <td>${item.date}</td>
@@ -563,6 +648,27 @@ function renderTimetable() {
       `
     )
     .join("");
+}
+
+/* NEXT CBT CARD: Automatically advances after each exam time passes. */
+function renderNextExam() {
+  const title = getElement("#nextExamTitle");
+  const meta = getElement("#nextExamMeta");
+  if (!title || !meta) return;
+
+  const now = new Date();
+  const next = getNextTimetableItem(now);
+  if (!next) {
+    title.textContent = "CBT complete";
+    meta.textContent = "All listed timetable rows have passed.";
+    return;
+  }
+
+  const isCurrent = now >= next.start && now < next.end;
+  title.textContent = next.course;
+  meta.textContent = isCurrent
+    ? `Now until ${next.time.split("-")[1].trim()} - ${next.batch}`
+    : `${formatExamDate(next.start)} - ${next.time} - ${next.batch}`;
 }
 
 /* ANNOUNCEMENT BOARD: Renders live rep/admin announcements. */
@@ -731,11 +837,13 @@ function renderStaffLists() {
 function renderAll() {
   renderSiteCredit();
   renderScholarGreeting();
+  renderNotificationSetup();
   renderSidebarCourses();
   renderDashboardMetrics();
   renderResourceCards();
   renderCourseGrid();
   renderTimetable();
+  renderNextExam();
   renderAnnouncements();
   renderMembersTable();
   renderStaffLists();
@@ -1444,6 +1552,36 @@ function connectCopyButtons() {
   });
 }
 
+/* NOTIFICATION BUTTON: Lets students retry OneSignal permission setup from the dashboard. */
+function connectNotificationSetup() {
+  document.addEventListener("click", async (event) => {
+    const button = event.target.closest("[data-enable-notifications]");
+    if (!button) return;
+
+    const status = getElement("#notificationSetupStatus");
+    const session = getMemberSession();
+    if (!session?.memberId) {
+      if (status) status.textContent = "Complete class check-in before enabling notifications.";
+      return;
+    }
+
+    button.disabled = true;
+    if (status) status.textContent = "Opening the browser notification prompt...";
+
+    try {
+      localStorage.removeItem(ONESIGNAL_PROMPT_KEY);
+      await connectPushNotifications(session, true, { forcePrompt: true });
+      if (status) {
+        status.textContent = "If your browser allows web push, notifications are now linked to this device.";
+      }
+    } catch (error) {
+      if (status) status.textContent = error.message || "Notification setup could not finish on this browser.";
+    } finally {
+      button.disabled = false;
+    }
+  });
+}
+
 /* PDF TEXT HELPERS: Keep the generated timetable PDF browser-native and library-free. */
 function sanitizePdfText(value) {
   return String(value ?? "")
@@ -1633,8 +1771,10 @@ async function init() {
   connectSuggestionForm();
   connectStaffActions();
   connectCopyButtons();
+  connectNotificationSetup();
   connectTimetableDownload();
   connectRealtimeData();
+  window.setInterval(renderNextExam, 60000);
   await ensureMemberOnboarding();
 }
 

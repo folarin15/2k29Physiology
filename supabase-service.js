@@ -299,6 +299,7 @@ export async function createBackend() {
 
       const { data, error } = await supabase.rpc("refresh_member_seen", {
         p_member_id: session.memberId,
+        p_name: normalizeName(session.name),
         p_matric_number: normalizeMatric(session.matricNumber),
       });
 

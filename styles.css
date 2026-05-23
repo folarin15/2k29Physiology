@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Manrope:wght@300;400;500;600&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap");
+
 /* THEME TOKENS: A non-stereotypic academic palette with clay, mint, citron, plum, and ink. */
 :root {
   --bg: #f8f6ef;
@@ -14,8 +16,8 @@
   --plum: #5c3f7d;
   --sky: #5fa8d3;
   --shadow: 0 18px 50px rgba(31, 34, 30, 0.12);
-  --body-font: "Inter", Aptos, "Segoe UI Variable Text", "Helvetica Neue", ui-sans-serif, system-ui, sans-serif;
-  --display-font: "Outfit", "Inter", "Aptos Display", "Segoe UI Variable Display", sans-serif;
+  --body-font: "Manrope", Aptos, "Segoe UI Variable Text", "Helvetica Neue", ui-sans-serif, system-ui, sans-serif;
+  --display-font: "Fraunces", "Manrope", "Aptos Display", "Segoe UI Variable Display", serif;
 }
 
 /* BASE RESET: Normalizes sizing and typography across all pages. */
@@ -459,6 +461,48 @@ textarea {
   font-weight: 560;
 }
 
+.notification-setup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 18px;
+  padding: 14px 16px;
+  border: 1px solid rgba(42, 157, 127, 0.2);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(232, 249, 242, 0.92), rgba(255, 253, 248, 0.92));
+  box-shadow: 0 14px 40px rgba(31, 34, 30, 0.08);
+}
+
+.notification-setup > div {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.notification-setup .material-symbols-rounded {
+  color: var(--mint-dark);
+  font-size: 1.35rem;
+}
+
+.notification-setup strong {
+  display: block;
+  font-weight: 560;
+}
+
+.notification-setup p {
+  max-width: 760px;
+  margin: 2px 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.notification-setup small {
+  color: var(--muted);
+}
+
 /* METRICS COMPONENT: Four summary cards on the dashboard. */
 .metrics-grid {
   display: grid;
@@ -818,6 +862,19 @@ textarea {
 .timetable-table td:first-child {
   color: var(--mint-dark);
   font-weight: 560;
+}
+
+.timetable-table tr[data-status="current"] td {
+  background: rgba(224, 248, 239, 0.64);
+}
+
+.timetable-table tr[data-status="passed"] td {
+  color: rgba(103, 112, 108, 0.72);
+  opacity: 0.72;
+}
+
+.timetable-table tr[data-status="passed"] td:first-child {
+  color: rgba(22, 115, 92, 0.72);
 }
 
 /* REPS PAGE: Profile cards and simple upload/update guide. */
@@ -1408,10 +1465,16 @@ textarea {
   .hero-panel,
   .page-intro,
   .content-panel,
-  .activity-panel {
+  .activity-panel,
+  .notification-setup {
     border-radius: 14px;
     padding: 16px;
     overflow: hidden;
+  }
+
+  .notification-setup {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .hero-panel h1,

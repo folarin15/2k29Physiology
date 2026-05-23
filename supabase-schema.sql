@@ -123,6 +123,15 @@ as $$
   select coalesce(public.current_staff_role() = 'admin', false);
 $$;
 
+create or replace function public.normalize_member_name(p_name text)
+returns text
+language sql
+immutable
+set search_path = public
+as $$
+  select trim(regexp_replace(upper(regexp_replace(coalesce(p_name, ''), '[^A-Za-z0-9]+', ' ', 'g')), '\s+', ' ', 'g'));
+$$;
+
 create or replace function public.register_member(p_name text, p_matric_number text)
 returns uuid
 language plpgsql
@@ -132,6 +141,7 @@ as $$
 declare
   v_name text;
   v_matric text;
+  v_allowed_name text;
   v_member_id uuid;
 begin
   v_name := trim(regexp_replace(coalesce(p_name, ''), '\s+', ' ', 'g'));
@@ -145,16 +155,20 @@ begin
     raise exception 'Enter a valid matric number.';
   end if;
 
-  if not exists (
-    select 1
-    from public.allowed_members
-    where matric_number = v_matric
-  ) then
+  select name into v_allowed_name
+  from public.allowed_members
+  where matric_number = v_matric;
+
+  if v_allowed_name is null then
     raise exception 'This matric number is not on the Physiology 2k29 class list.';
   end if;
 
+  if public.normalize_member_name(v_name) <> public.normalize_member_name(v_allowed_name) then
+    raise exception 'Your name must match the class list for this matric number.';
+  end if;
+
   insert into public.members (name, matric_number, last_seen_at)
-  values (v_name, v_matric, now())
+  values (v_allowed_name, v_matric, now())
   on conflict (matric_number)
   do update set
     name = excluded.name,
@@ -166,8 +180,9 @@ end;
 $$;
 
 drop function if exists public.refresh_member_seen(uuid, text);
+drop function if exists public.refresh_member_seen(uuid, text, text);
 
-create function public.refresh_member_seen(p_member_id uuid, p_matric_number text)
+create function public.refresh_member_seen(p_member_id uuid, p_name text, p_matric_number text)
 returns boolean
 language plpgsql
 security definer
@@ -175,18 +190,22 @@ set search_path = public
 as $$
 declare
   v_matric text;
+  v_allowed_name text;
 begin
   v_matric := upper(regexp_replace(trim(coalesce(p_matric_number, '')), '\s+', '', 'g'));
+
+  select name into v_allowed_name
+  from public.allowed_members
+  where matric_number = v_matric;
+
+  if v_allowed_name is null or public.normalize_member_name(p_name) <> public.normalize_member_name(v_allowed_name) then
+    return false;
+  end if;
 
   update public.members
   set last_seen_at = now()
   where id = p_member_id
-    and matric_number = v_matric
-    and exists (
-      select 1
-      from public.allowed_members
-      where matric_number = v_matric
-    );
+    and matric_number = v_matric;
 
   return found;
 end;
@@ -212,7 +231,8 @@ as $$
 $$;
 
 revoke all on function public.register_member(text, text) from public;
-revoke all on function public.refresh_member_seen(uuid, text) from public;
+revoke all on function public.refresh_member_seen(uuid, text, text) from public;
+revoke all on function public.normalize_member_name(text) from public, anon, authenticated;
 revoke all on function public.current_staff_role() from public, anon, authenticated;
 revoke all on function public.current_staff_name() from public, anon, authenticated;
 revoke all on function public.get_my_staff_profile() from public, anon, authenticated;
@@ -220,7 +240,7 @@ revoke all on function public.is_staff() from public, anon, authenticated;
 revoke all on function public.is_admin() from public, anon, authenticated;
 revoke all on function public.can_delete_resource_object(text) from public, anon, authenticated;
 grant execute on function public.register_member(text, text) to anon, authenticated;
-grant execute on function public.refresh_member_seen(uuid, text) to anon, authenticated;
+grant execute on function public.refresh_member_seen(uuid, text, text) to anon, authenticated;
 grant execute on function public.get_my_staff_profile() to authenticated;
 grant execute on function public.current_staff_role() to authenticated;
 grant execute on function public.current_staff_name() to authenticated;
