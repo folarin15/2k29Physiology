@@ -4,6 +4,7 @@ import { isSupabaseConfigured } from "./supabase-config.js";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const ONESIGNAL_PROMPT_KEY = "physiology2k29.onesignalPromptAsked";
+const NOTIFICATION_READ_KEY = "physiology2k29.readNotifications";
 const BULK_ALLOWED_EXTENSIONS = new Set([".pdf", ".ppt", ".pptx", ".doc", ".docx", ".png", ".jpg", ".jpeg"]);
 
 const state = {
@@ -85,6 +86,16 @@ function formatExamDate(date) {
   }).format(date);
 }
 
+function formatFullExamDate(date) {
+  return new Intl.DateTimeFormat("en-NG", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(date);
+}
+
 function parseClockTime(value, date) {
   const match = String(value || "").trim().match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)$/i);
   if (!match) return null;
@@ -122,6 +133,44 @@ function getNextTimetableItem(now = new Date()) {
     .map((item) => ({ ...item, ...getTimetableWindow(item) }))
     .filter((item) => item.end && item.end > now)
     .sort((a, b) => a.start - b.start)[0];
+}
+
+function getUpcomingGesItems(now = new Date()) {
+  return cbtTimetable
+    .filter((item) => item.course.startsWith("GES"))
+    .map((item) => ({ ...item, ...getTimetableWindow(item) }))
+    .filter((item) => item.end && item.end > now)
+    .sort((a, b) => a.start - b.start);
+}
+
+function getNextGesItem(now = new Date()) {
+  return getUpcomingGesItems(now)[0];
+}
+
+function formatCountdownParts(targetDate, now = new Date()) {
+  const totalSeconds = Math.max(0, Math.floor((targetDate - now) / 1000));
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return [
+    { label: "Days", value: days },
+    { label: "Hours", value: hours },
+    { label: "Minutes", value: minutes },
+    { label: "Seconds", value: seconds },
+  ];
+}
+
+function getReadNotificationIds() {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(NOTIFICATION_READ_KEY)) || []);
+  } catch {
+    return new Set();
+  }
+}
+
+function saveReadNotificationIds(ids) {
+  localStorage.setItem(NOTIFICATION_READ_KEY, JSON.stringify([...ids].slice(0, 300)));
 }
 
 function getMemberSession() {
@@ -615,6 +664,108 @@ function renderNextExam() {
     : `${formatExamDate(next.start)} - ${next.time} - ${next.batch}`;
 }
 
+/* GES COUNTDOWN: Keeps the nearest GES CBT visible and advances after each batch. */
+function renderGesCountdown() {
+  const title = getElement("#gesCountdownTitle");
+  const meta = getElement("#gesCountdownMeta");
+  const grid = getElement("#gesCountdownGrid");
+  if (!title || !meta || !grid) return;
+
+  const now = new Date();
+  const next = getNextGesItem(now);
+  if (!next) {
+    title.textContent = "GES CBT complete";
+    meta.textContent = "All listed GES exam rows have passed.";
+    grid.innerHTML = ["Days", "Hours", "Minutes", "Seconds"]
+      .map((label) => `<span><strong>0</strong><small>${label}</small></span>`)
+      .join("");
+    return;
+  }
+
+  const isCurrent = now >= next.start && now < next.end;
+  const target = isCurrent ? next.end : next.start;
+  const upcomingCount = getUpcomingGesItems(now).length;
+  title.textContent = `${next.course} ${next.batch}`;
+  meta.textContent = isCurrent
+    ? `In progress now. Ends ${next.time.split("-")[1].trim()}. ${upcomingCount} GES row${upcomingCount === 1 ? "" : "s"} still active.`
+    : `${formatFullExamDate(next.start)}. ${upcomingCount} GES row${upcomingCount === 1 ? "" : "s"} still upcoming.`;
+  grid.innerHTML = formatCountdownParts(target, now)
+    .map(
+      (part) => `
+        <span>
+          <strong>${String(part.value).padStart(2, "0")}</strong>
+          <small>${part.label}</small>
+        </span>
+      `
+    )
+    .join("");
+}
+
+function getNotificationItems() {
+  const resourceItems = state.resources.map((resource) => ({
+    id: `resource:${resource.id}`,
+    kind: resource.type || "Resource",
+    title: resource.title,
+    message: `${resource.courseCode} material posted by ${resource.uploadedBy || "Course rep"}.`,
+    time: resource.createdAtMs,
+    href: resource.downloadUrl || "./courses.html",
+    action: "Open file",
+  }));
+  const announcementItems = state.announcements.map((announcement) => ({
+    id: `announcement:${announcement.id}`,
+    kind: announcement.priority || "Announcement",
+    title: announcement.title,
+    message: announcement.message,
+    time: announcement.createdAtMs,
+    href: "./dashboard.html",
+    action: "View",
+  }));
+
+  return [...announcementItems, ...resourceItems]
+    .filter((item) => item.id && item.time)
+    .sort((a, b) => b.time - a.time);
+}
+
+/* NOTIFICATION CENTER: In-site history for announcements and uploads. */
+function renderNotificationCenter() {
+  const list = getElement("#notificationCenterList");
+  const summary = getElement("#notificationSummary");
+  if (!list || !summary) return;
+
+  const items = getNotificationItems();
+  const readIds = getReadNotificationIds();
+  const unreadCount = items.filter((item) => !readIds.has(item.id)).length;
+
+  summary.innerHTML = `
+    <span><strong>${unreadCount}</strong> unread</span>
+    <span>${items.length} total updates</span>
+  `;
+
+  if (!items.length) {
+    list.innerHTML = `<article class="notification-item"><p>No updates yet. New uploads and announcements will appear here.</p></article>`;
+    return;
+  }
+
+  list.innerHTML = items
+    .slice(0, 12)
+    .map(
+      (item) => `
+        <article class="notification-item" data-unread="${readIds.has(item.id) ? "false" : "true"}">
+          <div>
+            <span>${escapeHtml(item.kind)}</span>
+            <h3>${escapeHtml(item.title)}</h3>
+            <p>${escapeHtml(item.message)}</p>
+            <small>${formatDate(item.time)}</small>
+          </div>
+          <a class="card-action" href="${escapeHtml(item.href)}" ${item.href.startsWith("http") ? 'target="_blank" rel="noreferrer"' : ""}>
+            ${escapeHtml(item.action)}
+          </a>
+        </article>
+      `
+    )
+    .join("");
+}
+
 /* ANNOUNCEMENT BOARD: Renders live rep/admin announcements. */
 function renderAnnouncements() {
   const target = getElement("#announcementList");
@@ -788,6 +939,8 @@ function renderAll() {
   renderCourseGrid();
   renderTimetable();
   renderNextExam();
+  renderGesCountdown();
+  renderNotificationCenter();
   renderAnnouncements();
   renderMembersTable();
   renderStaffLists();
@@ -1696,7 +1849,7 @@ function createTimetablePdfBlob() {
       "0.09 0.11 0.12 rg",
       pdfText(margin, 548, "PhysioK29 CBT Timetable", 20, "F2"),
       "0.39 0.44 0.42 rg",
-      pdfText(margin, 528, "GES/GST first-semester rows matched to Physiology Class 2k29.", 10),
+      pdfText(margin, 528, "Current GES first-semester rows tracked for Physiology Class 2k29.", 10),
       pdfText(margin, 512, `Generated from the class portal. Page ${pageNumber} of ${totalPages}.`, 9),
       "0.88 0.96 0.93 rg",
       `${margin} ${headerBottom} ${tableWidth} 28 re f`,
@@ -1787,11 +1940,23 @@ function connectTimetableDownload() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "physiok29-ges-gst-cbt-timetable.pdf";
+    link.download = "physiok29-ges-cbt-timetable.pdf";
     document.body.appendChild(link);
     link.click();
     link.remove();
     window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  });
+}
+
+/* NOTIFICATION CENTER ACTIONS: Lets students clear the in-site unread badge. */
+function connectNotificationCenter() {
+  const button = getElement("#markNotificationsRead");
+  if (!button) return;
+
+  button.addEventListener("click", () => {
+    saveReadNotificationIds(new Set(getNotificationItems().map((item) => item.id)));
+    renderNotificationCenter();
+    showToast("Notification center marked as read.");
   });
 }
 
@@ -1830,9 +1995,13 @@ async function init() {
   connectStaffActions();
   connectCopyButtons();
   connectNotificationSetup();
+  connectNotificationCenter();
   connectTimetableDownload();
   connectRealtimeData();
-  window.setInterval(renderNextExam, 60000);
+  window.setInterval(() => {
+    renderNextExam();
+    renderGesCountdown();
+  }, 1000);
   await ensureMemberOnboarding();
 }
 

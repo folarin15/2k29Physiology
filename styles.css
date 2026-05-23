@@ -503,6 +503,140 @@ textarea {
   color: var(--muted);
 }
 
+/* GES COUNTDOWN: Dashboard timer for the next visible GES CBT row. */
+.ges-countdown-panel,
+.notification-center {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 253, 248, 0.88);
+  box-shadow: var(--shadow);
+}
+
+.ges-countdown-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+  gap: 18px;
+  align-items: center;
+  padding: 18px;
+  background:
+    linear-gradient(135deg, rgba(255, 253, 248, 0.94), rgba(232, 249, 242, 0.8)),
+    #fffefa;
+}
+
+.ges-countdown-panel h2 {
+  margin: 0;
+  font-family: var(--display-font);
+  font-size: clamp(1.25rem, 2.4vw, 1.9rem);
+  font-weight: 520;
+}
+
+.ges-countdown-panel p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.countdown-grid span {
+  display: grid;
+  place-items: center;
+  min-height: 86px;
+  border: 1px solid rgba(42, 157, 127, 0.16);
+  border-radius: 14px;
+  background: #fffefa;
+}
+
+.countdown-grid strong {
+  color: var(--plum);
+  font-family: var(--display-font);
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  font-weight: 520;
+  line-height: 1;
+}
+
+.countdown-grid small {
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+/* NOTIFICATION CENTER: Reliable in-site history for uploads and announcements. */
+.notification-center {
+  padding: 18px;
+}
+
+.notification-center .section-header {
+  margin-bottom: 12px;
+}
+
+.notification-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.notification-summary span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(92, 63, 125, 0.1);
+  color: var(--plum);
+  font-size: 0.82rem;
+  font-weight: 560;
+}
+
+.notification-list {
+  display: grid;
+  gap: 10px;
+}
+
+.notification-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fffefa;
+}
+
+.notification-item[data-unread="true"] {
+  border-color: rgba(42, 157, 127, 0.28);
+  background: rgba(236, 250, 244, 0.84);
+}
+
+.notification-item span {
+  color: var(--clay);
+  font-size: 0.72rem;
+  font-weight: 560;
+  text-transform: uppercase;
+}
+
+.notification-item h3 {
+  margin: 2px 0 4px;
+  font-family: var(--display-font);
+  font-size: 1rem;
+  font-weight: 520;
+}
+
+.notification-item p,
+.notification-item small {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
 /* METRICS COMPONENT: Four summary cards on the dashboard. */
 .metrics-grid {
   display: grid;
@@ -1398,6 +1532,8 @@ textarea {
   .page-intro,
   .content-panel,
   .activity-panel,
+  .ges-countdown-panel,
+  .notification-center,
   .control-row,
   .dashboard-grid,
   .resources-list,
@@ -1462,6 +1598,8 @@ textarea {
   .page-intro,
   .content-panel,
   .activity-panel,
+  .ges-countdown-panel,
+  .notification-center,
   .notification-setup {
     border-radius: 14px;
     padding: 16px;
@@ -1471,6 +1609,15 @@ textarea {
   .notification-setup {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .ges-countdown-panel,
+  .notification-item {
+    grid-template-columns: 1fr;
+  }
+
+  .countdown-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .hero-panel h1,
@@ -1552,6 +1699,10 @@ textarea {
   .course-resource-item {
     align-items: stretch;
     grid-template-columns: 1fr;
+  }
+
+  .notification-item .card-action {
+    justify-content: center;
   }
 
   .scholar-greeting {

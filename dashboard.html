@@ -115,6 +115,16 @@
           </article>
         </section>
 
+        <!-- GES COUNTDOWN COMPONENT: Tracks the next listed GES CBT and advances automatically. -->
+        <section class="ges-countdown-panel" aria-label="GES examination countdown">
+          <div>
+            <p class="eyebrow">GES exam countdown</p>
+            <h2 id="gesCountdownTitle">Next GES paper</h2>
+            <p id="gesCountdownMeta">Loading timetable...</p>
+          </div>
+          <div class="countdown-grid" id="gesCountdownGrid" aria-label="Time remaining"></div>
+        </section>
+
         <!-- METRICS COMPONENT: Summarizes current dashboard information. -->
         <section class="metrics-grid" aria-label="Dashboard summary">
           <article class="metric-card">
@@ -133,6 +143,19 @@
             <span id="memberCount">2</span>
             <small>known members</small>
           </article>
+        </section>
+
+        <!-- NOTIFICATION CENTER COMPONENT: Reliable in-site updates for students even when browser push is unavailable. -->
+        <section class="notification-center" aria-label="Class notification center">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Notification center</p>
+              <h2>What changed recently</h2>
+            </div>
+            <button class="ghost-link" type="button" id="markNotificationsRead">Mark all read</button>
+          </div>
+          <div class="notification-summary" id="notificationSummary"></div>
+          <div class="notification-list" id="notificationCenterList"></div>
         </section>
 
         <div class="dashboard-grid">

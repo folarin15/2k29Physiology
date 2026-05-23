@@ -31,7 +31,7 @@ export const firstSemesterCourses = [
   { code: "COS 101", title: "Introduction to Computing Sciences", type: "Compulsory", units: 3 },
 ];
 
-/* TIMETABLE DATA: CBT rows that match the registered first-semester GES/GST courses. */
+/* TIMETABLE DATA: Current CBT rows for the GES papers the class is tracking now. */
 export const cbtTimetable = [
   {
     course: "GES 107",
@@ -48,38 +48,6 @@ export const cbtTimetable = [
     batch: "Batch 2",
     duration: "1 hour",
     time: "9:30am - 10:30am",
-  },
-  {
-    course: "GST 112",
-    day: "Saturday / Morning, Afternoon",
-    date: "30/05/2026",
-    batch: "Batch 1",
-    duration: "1 hour",
-    time: "8:00am - 9:00am",
-  },
-  {
-    course: "GST 112",
-    day: "Saturday / Morning, Afternoon",
-    date: "30/05/2026",
-    batch: "Batch 2",
-    duration: "1 hour",
-    time: "9:30am - 10:30am",
-  },
-  {
-    course: "GST 112",
-    day: "Saturday / Morning, Afternoon",
-    date: "30/05/2026",
-    batch: "Batch 3",
-    duration: "1 hour",
-    time: "11:00am - 12:00pm",
-  },
-  {
-    course: "GST 112",
-    day: "Saturday / Morning, Afternoon",
-    date: "30/05/2026",
-    batch: "Batch 4",
-    duration: "1 hour",
-    time: "12:30pm - 1:30pm",
   },
   {
     course: "GES 108",
