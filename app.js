@@ -4,6 +4,7 @@ import { isSupabaseConfigured } from "./supabase-config.js";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const ONESIGNAL_PROMPT_KEY = "physiology2k29.onesignalPromptAsked";
+const BULK_ALLOWED_EXTENSIONS = new Set([".pdf", ".ppt", ".pptx", ".doc", ".docx", ".png", ".jpg", ".jpeg"]);
 
 const state = {
   backend: null,
@@ -917,13 +918,37 @@ function titleCaseResourceName(value = "") {
     .replace(/\b([a-z])/g, (letter) => letter.toUpperCase());
 }
 
+function getBulkPath(file) {
+  return file.bulkPath || file.webkitRelativePath || file.name || "";
+}
+
+function getFileExtension(fileName = "") {
+  const match = String(fileName).toLowerCase().match(/\.[a-z0-9]+$/);
+  return match ? match[0] : "";
+}
+
+function getMimeType(fileName = "") {
+  const extension = getFileExtension(fileName);
+  const types = {
+    ".pdf": "application/pdf",
+    ".ppt": "application/vnd.ms-powerpoint",
+    ".pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    ".doc": "application/msword",
+    ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+  };
+  return types[extension] || "application/octet-stream";
+}
+
 function inferBulkCourse(file) {
-  const path = `${file.webkitRelativePath || ""}/${file.name}`.toUpperCase().replaceAll("1O1", "101");
+  const path = `${getBulkPath(file)}/${file.name}`.toUpperCase().replaceAll("1O1", "101");
   return firstSemesterCourses.find((course) => path.includes(course.code));
 }
 
 function inferBulkType(file) {
-  const path = `${file.webkitRelativePath || ""}/${file.name}`.toLowerCase();
+  const path = `${getBulkPath(file)}/${file.name}`.toLowerCase();
   if (/\b(past questions?|pqs?|pq|test|ca|mock|exam|questions?)\b/.test(path)) return "Past Question";
   if (/\b(textbook|manual|green book|engineering math)\b/.test(path)) return "Textbook";
   if (/\b(practical|drawings?|microscopy)\b/.test(path)) return "Practical";
@@ -947,6 +972,47 @@ function buildBulkMetadata(file) {
     title: course ? `${course.code}: ${readableName}` : readableName,
     note: `${contextByType[type] || "Class resource material."} Focus: ${readableName}.`,
   };
+}
+
+async function loadZipLibrary() {
+  if (window.fflate?.unzipSync) return window.fflate;
+  return import("https://cdn.jsdelivr.net/npm/fflate@0.8.2/esm/browser.js");
+}
+
+async function expandBulkInputFiles(files, status, list) {
+  const expanded = [];
+
+  for (const file of files) {
+    if (getFileExtension(file.name) !== ".zip") {
+      if (BULK_ALLOWED_EXTENSIONS.has(getFileExtension(file.name))) expanded.push(file);
+      continue;
+    }
+
+    status.textContent = `Reading ZIP: ${stripSiteEmoji(file.name)}...`;
+
+    try {
+      const { unzipSync } = await loadZipLibrary();
+      const archive = unzipSync(new Uint8Array(await file.arrayBuffer()));
+
+      Object.entries(archive).forEach(([entryPath, bytes]) => {
+        const fileName = entryPath.split(/[\\/]/).pop();
+        if (!fileName || !BULK_ALLOWED_EXTENSIONS.has(getFileExtension(fileName))) return;
+
+        const unzippedFile = new File([bytes], fileName.trim(), { type: getMimeType(fileName) });
+        Object.defineProperty(unzippedFile, "bulkPath", {
+          value: `${file.name}/${entryPath}`,
+          configurable: true,
+        });
+        expanded.push(unzippedFile);
+      });
+
+      renderBulkUploadLine(list, `Read ZIP: ${stripSiteEmoji(file.name)}`, "success");
+    } catch (error) {
+      renderBulkUploadLine(list, `Could not read ZIP ${stripSiteEmoji(file.name)}: ${error.message}`, "error");
+    }
+  }
+
+  return expanded;
 }
 
 function ensureAiDetailsButton(uploadForm, uploadStatus) {
@@ -1152,24 +1218,33 @@ function connectRepForms() {
 function connectGenericBulkUpload() {
   const form = getElement("#genericBulkUploadForm");
   const fileInput = getElement("#genericBulkFiles");
+  const looseInput = getElement("#genericBulkLooseFiles");
   const status = getElement("#genericBulkStatus");
   const list = getElement("#genericBulkList");
-  if (!form || !fileInput) return;
+  if (!form || !fileInput || !looseInput) return;
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    const files = [...fileInput.files];
+    const selectedFiles = [...fileInput.files, ...looseInput.files];
     const uploadedByCourse = new Map();
     let uploadedCount = 0;
     let skippedCount = 0;
 
-    if (!files.length) {
-      status.textContent = "Choose the prepared folder first.";
+    if (!selectedFiles.length) {
+      status.textContent = "Choose the prepared folder, ZIP files, or loose files first.";
       return;
     }
 
     list.innerHTML = "";
-    status.textContent = "Preparing folder upload...";
+    status.textContent = `Preparing ${selectedFiles.length} selected item${selectedFiles.length === 1 ? "" : "s"}...`;
+    const files = await expandBulkInputFiles(selectedFiles, status, list);
+
+    if (!files.length) {
+      status.textContent = "No uploadable files were found. Choose the prepared folder or the original ZIP files.";
+      return;
+    }
+
+    status.textContent = `Uploading ${files.length} file${files.length === 1 ? "" : "s"}...`;
 
     for (const file of files) {
       const metadata = buildBulkMetadata(file);
