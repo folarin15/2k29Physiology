@@ -6,7 +6,7 @@ Vanilla HTML/CSS/JS portal for Physiology Class 2k29, hosted on Pxxl with Supaba
 
 - `dashboard.html`: dashboard, latest resources, and announcements.
 - `courses.html`: first-semester course resource bank.
-- `timetable.html`: current GES CBT timetable with PDF download.
+- `timetable.html`: current GES/GST CBT timetable with PDF download.
 - `reps.html`: Ayanfe/Raphael contacts and WhatsApp links.
 - `suggestions.html`: student suggestion form.
 

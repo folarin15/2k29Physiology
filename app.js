@@ -135,16 +135,15 @@ function getNextTimetableItem(now = new Date()) {
     .sort((a, b) => a.start - b.start)[0];
 }
 
-function getUpcomingGesItems(now = new Date()) {
+function getUpcomingTrackedCbtItems(now = new Date()) {
   return cbtTimetable
-    .filter((item) => item.course.startsWith("GES"))
     .map((item) => ({ ...item, ...getTimetableWindow(item) }))
     .filter((item) => item.end && item.end > now)
     .sort((a, b) => a.start - b.start);
 }
 
-function getNextGesItem(now = new Date()) {
-  return getUpcomingGesItems(now)[0];
+function getNextTrackedCbtItem(now = new Date()) {
+  return getUpcomingTrackedCbtItems(now)[0];
 }
 
 function formatCountdownParts(targetDate, now = new Date()) {
@@ -664,7 +663,7 @@ function renderNextExam() {
     : `${formatExamDate(next.start)} - ${next.time} - ${next.batch}`;
 }
 
-/* GES COUNTDOWN: Keeps the nearest GES CBT visible and advances after each batch. */
+/* GES/GST COUNTDOWN: Keeps the nearest matching CBT row visible and advances after each batch. */
 function renderGesCountdown() {
   const title = getElement("#gesCountdownTitle");
   const meta = getElement("#gesCountdownMeta");
@@ -672,10 +671,10 @@ function renderGesCountdown() {
   if (!title || !meta || !grid) return;
 
   const now = new Date();
-  const next = getNextGesItem(now);
+  const next = getNextTrackedCbtItem(now);
   if (!next) {
-    title.textContent = "GES CBT complete";
-    meta.textContent = "All listed GES exam rows have passed.";
+    title.textContent = "CBT complete";
+    meta.textContent = "All listed exam rows have passed.";
     grid.innerHTML = ["Days", "Hours", "Minutes", "Seconds"]
       .map((label) => `<span><strong>0</strong><small>${label}</small></span>`)
       .join("");
@@ -684,11 +683,11 @@ function renderGesCountdown() {
 
   const isCurrent = now >= next.start && now < next.end;
   const target = isCurrent ? next.end : next.start;
-  const upcomingCount = getUpcomingGesItems(now).length;
+  const upcomingCount = getUpcomingTrackedCbtItems(now).length;
   title.textContent = `${next.course} ${next.batch}`;
   meta.textContent = isCurrent
-    ? `In progress now. Ends ${next.time.split("-")[1].trim()}. ${upcomingCount} GES row${upcomingCount === 1 ? "" : "s"} still active.`
-    : `${formatFullExamDate(next.start)}. ${upcomingCount} GES row${upcomingCount === 1 ? "" : "s"} still upcoming.`;
+    ? `In progress now. Ends ${next.time.split("-")[1].trim()}. ${upcomingCount} row${upcomingCount === 1 ? "" : "s"} still active.`
+    : `${formatFullExamDate(next.start)}. ${upcomingCount} row${upcomingCount === 1 ? "" : "s"} still upcoming.`;
   grid.innerHTML = formatCountdownParts(target, now)
     .map(
       (part) => `
@@ -1849,7 +1848,7 @@ function createTimetablePdfBlob() {
       "0.09 0.11 0.12 rg",
       pdfText(margin, 548, "PhysioK29 CBT Timetable", 20, "F2"),
       "0.39 0.44 0.42 rg",
-      pdfText(margin, 528, "Current GES first-semester rows tracked for Physiology Class 2k29.", 10),
+      pdfText(margin, 528, "Current GES/GST rows matched to Physiology Class 2k29 registration.", 10),
       pdfText(margin, 512, `Generated from the class portal. Page ${pageNumber} of ${totalPages}.`, 9),
       "0.88 0.96 0.93 rg",
       `${margin} ${headerBottom} ${tableWidth} 28 re f`,
@@ -1940,7 +1939,7 @@ function connectTimetableDownload() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "physiok29-ges-cbt-timetable.pdf";
+    link.download = "physiok29-ges-gst-cbt-timetable.pdf";
     document.body.appendChild(link);
     link.click();
     link.remove();
