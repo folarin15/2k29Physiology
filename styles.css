@@ -1200,10 +1200,6 @@ textarea {
   padding: 11px 12px;
 }
 
-.temp-upload-panel {
-  max-width: 760px;
-}
-
 .bulk-upload-list {
   display: grid;
   gap: 8px;

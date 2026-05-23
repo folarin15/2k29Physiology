@@ -6,7 +6,7 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
-const allowedTypes = new Set(["Slide", "Note", "Practical", "Past Question", "Assignment", "Link"]);
+const allowedTypes = new Set(["Slide", "Note", "Textbook", "Practical", "Past Question", "Assignment", "Link"]);
 
 type GenerateRequest = {
   courseCode?: string;
@@ -143,7 +143,7 @@ Deno.serve(async (req) => {
           {
             role: "system",
             content:
-              "You organize a class resource bank. Return only JSON with title, context, and type. No emojis. Professional but relaxed. Context must be under 30 words. Type must be one of: Slide, Note, Practical, Past Question, Assignment, Link.",
+              "You organize a class resource bank. Return only JSON with title, context, and type. No emojis. Professional but relaxed. Context must be under 30 words. Type must be one of: Slide, Note, Textbook, Practical, Past Question, Assignment, Link.",
           },
           {
             role: "user",

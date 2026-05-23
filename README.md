@@ -17,7 +17,7 @@ These are intentionally not shown in the public navigation:
 - `K29.rep/`: course rep workspace.
 - `K29.admin/`: admin workspace.
 
-The older `rep.html` and `admin.html` files remain for compatibility, but share `K29.rep/` and `K29.admin/` with staff.
+The older `rep.html` and `admin.html` files only redirect to these canonical staff paths.
 
 ## Supabase
 

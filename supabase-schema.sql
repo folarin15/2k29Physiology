@@ -132,6 +132,32 @@ as $$
   select trim(regexp_replace(upper(regexp_replace(coalesce(p_name, ''), '[^A-Za-z0-9]+', ' ', 'g')), '\s+', ' ', 'g'));
 $$;
 
+create or replace function public.normalize_member_name_key(p_name text)
+returns text
+language sql
+immutable
+set search_path = public
+as $$
+  select coalesce(
+    (
+      select string_agg(token, ' ' order by token)
+      from regexp_split_to_table(public.normalize_member_name(p_name), '\s+') as token
+      where token <> ''
+    ),
+    ''
+  );
+$$;
+
+create or replace function public.member_name_matches(p_submitted_name text, p_allowed_name text)
+returns boolean
+language sql
+immutable
+set search_path = public
+as $$
+  select public.normalize_member_name(p_submitted_name) = public.normalize_member_name(p_allowed_name)
+    or public.normalize_member_name_key(p_submitted_name) = public.normalize_member_name_key(p_allowed_name);
+$$;
+
 create or replace function public.register_member(p_name text, p_matric_number text)
 returns uuid
 language plpgsql
@@ -163,7 +189,7 @@ begin
     raise exception 'This matric number is not on the Physiology 2k29 class list.';
   end if;
 
-  if public.normalize_member_name(v_name) <> public.normalize_member_name(v_allowed_name) then
+  if not public.member_name_matches(v_name, v_allowed_name) then
     raise exception 'Your name must match the class list for this matric number.';
   end if;
 
@@ -198,7 +224,7 @@ begin
   from public.allowed_members
   where matric_number = v_matric;
 
-  if v_allowed_name is null or public.normalize_member_name(p_name) <> public.normalize_member_name(v_allowed_name) then
+  if v_allowed_name is null or not public.member_name_matches(p_name, v_allowed_name) then
     return false;
   end if;
 
@@ -233,6 +259,8 @@ $$;
 revoke all on function public.register_member(text, text) from public;
 revoke all on function public.refresh_member_seen(uuid, text, text) from public;
 revoke all on function public.normalize_member_name(text) from public, anon, authenticated;
+revoke all on function public.normalize_member_name_key(text) from public, anon, authenticated;
+revoke all on function public.member_name_matches(text, text) from public, anon, authenticated;
 revoke all on function public.current_staff_role() from public, anon, authenticated;
 revoke all on function public.current_staff_name() from public, anon, authenticated;
 revoke all on function public.get_my_staff_profile() from public, anon, authenticated;

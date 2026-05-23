@@ -3,5 +3,7 @@ Disallow: /admin.html
 Disallow: /rep.html
 Disallow: /K29.admin/
 Disallow: /K29.rep/
+Disallow: /K29.temp/
 Disallow: /k29.admin/
 Disallow: /k29.rep/
+Disallow: /k29.temp/
