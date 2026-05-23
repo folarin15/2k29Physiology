@@ -2,6 +2,7 @@ import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js";
 
 const SUPABASE_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
+const RESOURCE_PAGE_SIZE = 1000;
 
 let clientPromise;
 
@@ -242,6 +243,26 @@ export async function createBackend() {
     };
   }
 
+  async function loadAllResources() {
+    const rows = [];
+    let from = 0;
+
+    while (true) {
+      const to = from + RESOURCE_PAGE_SIZE - 1;
+      const { data, error } = await supabase
+        .from("resources")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .range(from, to);
+
+      if (error) throw error;
+      rows.push(...(data || []));
+
+      if (!data || data.length < RESOURCE_PAGE_SIZE) return rows;
+      from += RESOURCE_PAGE_SIZE;
+    }
+  }
+
   return {
     ready: true,
 
@@ -309,18 +330,12 @@ export async function createBackend() {
 
     watchResources(callback, onError = console.error) {
       async function load() {
-        const { data, error } = await supabase
-          .from("resources")
-          .select("*")
-          .order("created_at", { ascending: false })
-          .limit(100);
-
-        if (error) {
+        try {
+          const data = await loadAllResources();
+          callback(data.map(mapResource));
+        } catch (error) {
           onError(error);
-          return;
         }
-
-        callback((data || []).map(mapResource));
       }
 
       return subscribeAndReload("portal-resources", "resources", load);
