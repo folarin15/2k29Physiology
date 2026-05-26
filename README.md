@@ -22,11 +22,20 @@ The older `rep.html` and `admin.html` files only redirect to these canonical sta
 ## Supabase
 
 - Auth: admin and rep login.
-- Storage: uploaded class files.
-- Database: members, resources, announcements, suggestions, and staff roles.
-- Realtime: live in-site updates while the portal is open.
+- Storage: private uploaded class files, delivered to verified members through signed URLs.
+- Database: members, resources, announcements, suggestions, staff roles, and member access attempt logs.
+- Realtime: staff-side live updates; student pages poll the verified member portal endpoint.
 
-Run `supabase-schema.sql` in Supabase SQL Editor after pulling updates.
+Run `supabase-schema.sql` in Supabase SQL Editor for a fresh setup. For hardening an existing setup, apply these files in order:
+
+```bash
+npx supabase db query --linked --file supabase/security-hardening.sql
+npx supabase db query --linked --file supabase/private-policy-hardening.sql
+npx supabase db query --linked --file supabase/policy-performance-cleanup.sql
+npx supabase functions deploy member-portal --project-ref rfrlddiebyfojnzbfldy --no-verify-jwt --use-api
+```
+
+In Supabase Dashboard, enable Auth leaked password protection for the remaining advisor warning.
 
 ## Sharing
 
@@ -49,10 +58,10 @@ ONESIGNAL_APP_ID=6b1caa76-8b69-48cb-b925-b10aabd80ef3
 ONESIGNAL_REST_API_KEY=your_private_rest_key
 ```
 
-Deploy the function:
+Deploy the functions:
 
 ```bash
-supabase functions deploy send-portal-notification
+npx supabase functions deploy send-portal-notification generate-resource-details --project-ref rfrlddiebyfojnzbfldy --use-api
 ```
 
 Re-upload the Pxxl frontend after changes. Keep `OneSignalSDKWorker.js` at the site root so browser push can subscribe correctly.

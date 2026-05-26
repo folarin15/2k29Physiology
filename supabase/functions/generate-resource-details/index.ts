@@ -1,10 +1,21 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
+const allowedOrigins = new Set([
+  "https://2k29physiology.pxxl.click",
+  "http://localhost:4177",
+  "http://127.0.0.1:4177",
+]);
+
+function corsHeaders(req: Request) {
+  const origin = req.headers.get("Origin") || "";
+  const allowOrigin = allowedOrigins.has(origin) ? origin : "https://2k29physiology.pxxl.click";
+  return {
+    "Access-Control-Allow-Origin": allowOrigin,
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Vary": "Origin",
+  };
+}
 
 const allowedTypes = new Set(["Slide", "Note", "Textbook", "Practical", "Past Question", "Assignment", "Link"]);
 
@@ -16,11 +27,11 @@ type GenerateRequest = {
   existingNote?: string;
 };
 
-function jsonResponse(body: Record<string, unknown>, status = 200) {
+function jsonResponse(req: Request, body: Record<string, unknown>, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
     headers: {
-      ...corsHeaders,
+      ...corsHeaders(req),
       "Content-Type": "application/json",
     },
   });
@@ -65,11 +76,11 @@ function extractJsonText(value: unknown) {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
+    return new Response("ok", { headers: corsHeaders(req) });
   }
 
   if (req.method !== "POST") {
-    return jsonResponse({ error: "Method not allowed." }, 405);
+    return jsonResponse(req, { error: "Method not allowed." }, 405);
   }
 
   try {
@@ -78,12 +89,12 @@ Deno.serve(async (req) => {
     const openAiKey = Deno.env.get("OPENAI_API_KEY");
 
     if (!supabaseUrl || !supabaseAnonKey) {
-      return jsonResponse({ error: "Supabase function environment is incomplete." }, 500);
+      return jsonResponse(req, { error: "Supabase function environment is incomplete." }, 500);
     }
 
     const authorization = req.headers.get("Authorization") || "";
     if (!authorization) {
-      return jsonResponse({ error: "Authentication required." }, 401);
+      return jsonResponse(req, { error: "Authentication required." }, 401);
     }
 
     const supabase = createClient(supabaseUrl, supabaseAnonKey, {
@@ -98,7 +109,7 @@ Deno.serve(async (req) => {
     } = await supabase.auth.getUser();
 
     if (userError || !user) {
-      return jsonResponse({ error: "Authentication required." }, 401);
+      return jsonResponse(req, { error: "Authentication required." }, 401);
     }
 
     const { data: role, error: roleError } = await supabase
@@ -108,18 +119,18 @@ Deno.serve(async (req) => {
       .maybeSingle();
 
     if (roleError) {
-      return jsonResponse({ error: roleError.message }, 500);
+      return jsonResponse(req, { error: roleError.message }, 500);
     }
 
     if (!role || !["rep", "admin"].includes(role.role)) {
-      return jsonResponse({ error: "Only course reps and admin can generate upload details." }, 403);
+      return jsonResponse(req, { error: "Only course reps and admin can generate upload details." }, 403);
     }
 
     const body = (await req.json()) as GenerateRequest;
     const fallback = fallbackDetails(body);
 
     if (!openAiKey) {
-      return jsonResponse({ ...fallback, generatedBy: "fallback" });
+      return jsonResponse(req, { ...fallback, generatedBy: "fallback" });
     }
 
     const prompt = {
@@ -172,13 +183,13 @@ Deno.serve(async (req) => {
 
     const result = await response.json().catch(() => ({}));
     if (!response.ok) {
-      return jsonResponse({ ...fallback, generatedBy: "fallback", aiError: result.error?.message || "AI request failed." });
+      return jsonResponse(req, { ...fallback, generatedBy: "fallback", aiError: result.error?.message || "AI request failed." });
     }
 
     const parsed = JSON.parse(extractJsonText(result) || "{}");
     const type = allowedTypes.has(cleanText(parsed.type)) ? cleanText(parsed.type) : fallback.type;
 
-    return jsonResponse({
+    return jsonResponse(req, {
       title: cleanText(parsed.title, fallback.title).slice(0, 120),
       context: cleanText(parsed.context, fallback.context).slice(0, 220),
       type,
@@ -186,6 +197,6 @@ Deno.serve(async (req) => {
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Auto-title failed.";
-    return jsonResponse({ error: message }, 400);
+    return jsonResponse(req, { error: message }, 400);
   }
 });

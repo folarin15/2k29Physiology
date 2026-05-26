@@ -1,10 +1,21 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
+const allowedOrigins = new Set([
+  "https://2k29physiology.pxxl.click",
+  "http://localhost:4177",
+  "http://127.0.0.1:4177",
+]);
+
+function corsHeaders(req: Request) {
+  const origin = req.headers.get("Origin") || "";
+  const allowOrigin = allowedOrigins.has(origin) ? origin : "https://2k29physiology.pxxl.click";
+  return {
+    "Access-Control-Allow-Origin": allowOrigin,
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Vary": "Origin",
+  };
+}
 
 type NotificationRequest = {
   type?: "resource" | "announcement";
@@ -15,11 +26,11 @@ type NotificationRequest = {
   url?: string;
 };
 
-function jsonResponse(body: Record<string, unknown>, status = 200) {
+function jsonResponse(req: Request, body: Record<string, unknown>, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
     headers: {
-      ...corsHeaders,
+      ...corsHeaders(req),
       "Content-Type": "application/json",
     },
   });
@@ -63,11 +74,11 @@ function buildNotification(body: NotificationRequest) {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
+    return new Response("ok", { headers: corsHeaders(req) });
   }
 
   if (req.method !== "POST") {
-    return jsonResponse({ error: "Method not allowed." }, 405);
+    return jsonResponse(req, { error: "Method not allowed." }, 405);
   }
 
   try {
@@ -77,16 +88,16 @@ Deno.serve(async (req) => {
     const oneSignalRestKey = Deno.env.get("ONESIGNAL_REST_API_KEY");
 
     if (!supabaseUrl || !supabaseAnonKey) {
-      return jsonResponse({ error: "Supabase function environment is incomplete." }, 500);
+      return jsonResponse(req, { error: "Supabase function environment is incomplete." }, 500);
     }
 
     if (!oneSignalAppId || !oneSignalRestKey) {
-      return jsonResponse({ error: "OneSignal secrets are not configured." }, 500);
+      return jsonResponse(req, { error: "OneSignal secrets are not configured." }, 500);
     }
 
     const authorization = req.headers.get("Authorization") || "";
     if (!authorization) {
-      return jsonResponse({ error: "Missing authorization header." }, 401);
+      return jsonResponse(req, { error: "Missing authorization header." }, 401);
     }
 
     const supabase = createClient(supabaseUrl, supabaseAnonKey, {
@@ -101,7 +112,7 @@ Deno.serve(async (req) => {
     } = await supabase.auth.getUser();
 
     if (userError || !user) {
-      return jsonResponse({ error: "Authentication required." }, 401);
+      return jsonResponse(req, { error: "Authentication required." }, 401);
     }
 
     const { data: role, error: roleError } = await supabase
@@ -111,11 +122,11 @@ Deno.serve(async (req) => {
       .maybeSingle();
 
     if (roleError) {
-      return jsonResponse({ error: roleError.message }, 500);
+      return jsonResponse(req, { error: roleError.message }, 500);
     }
 
     if (!role || !["rep", "admin"].includes(role.role)) {
-      return jsonResponse({ error: "Only course reps and admin can send notifications." }, 403);
+      return jsonResponse(req, { error: "Only course reps and admin can send notifications." }, 403);
     }
 
     const notification = buildNotification((await req.json()) as NotificationRequest);
@@ -141,6 +152,7 @@ Deno.serve(async (req) => {
     const result = await response.json().catch(() => ({}));
     if (!response.ok) {
       return jsonResponse(
+        req,
         {
           error: "OneSignal rejected the notification.",
           details: result,
@@ -149,9 +161,9 @@ Deno.serve(async (req) => {
       );
     }
 
-    return jsonResponse({ ok: true, notificationId: result.id || null });
+    return jsonResponse(req, { ok: true, notificationId: result.id || null });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Notification failed.";
-    return jsonResponse({ error: message }, 400);
+    return jsonResponse(req, { error: message }, 400);
   }
 });

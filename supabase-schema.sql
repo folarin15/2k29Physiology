@@ -60,8 +60,19 @@ create table if not exists public.suggestions (
   created_at timestamptz not null default now()
 );
 
+create table if not exists public.member_access_attempts (
+  id uuid primary key default gen_random_uuid(),
+  action text not null,
+  client_key text not null,
+  matric_number text,
+  success boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
 create index if not exists resources_uploaded_by_user_id_idx on public.resources(uploaded_by_user_id);
 create index if not exists announcements_posted_by_user_id_idx on public.announcements(posted_by_user_id);
+create index if not exists member_access_attempts_lookup_idx
+on public.member_access_attempts(action, client_key, success, created_at desc);
 
 alter table public.members enable row level security;
 alter table public.allowed_members enable row level security;
@@ -69,6 +80,7 @@ alter table public.staff_roles enable row level security;
 alter table public.resources enable row level security;
 alter table public.announcements enable row level security;
 alter table public.suggestions enable row level security;
+alter table public.member_access_attempts enable row level security;
 
 create or replace function public.current_staff_role()
 returns text
@@ -256,8 +268,8 @@ as $$
   );
 $$;
 
-revoke all on function public.register_member(text, text) from public;
-revoke all on function public.refresh_member_seen(uuid, text, text) from public;
+revoke all on function public.register_member(text, text) from public, anon, authenticated;
+revoke all on function public.refresh_member_seen(uuid, text, text) from public, anon, authenticated;
 revoke all on function public.normalize_member_name(text) from public, anon, authenticated;
 revoke all on function public.normalize_member_name_key(text) from public, anon, authenticated;
 revoke all on function public.member_name_matches(text, text) from public, anon, authenticated;
@@ -267,8 +279,8 @@ revoke all on function public.get_my_staff_profile() from public, anon, authenti
 revoke all on function public.is_staff() from public, anon, authenticated;
 revoke all on function public.is_admin() from public, anon, authenticated;
 revoke all on function public.can_delete_resource_object(text) from public, anon, authenticated;
-grant execute on function public.register_member(text, text) to anon, authenticated;
-grant execute on function public.refresh_member_seen(uuid, text, text) to anon, authenticated;
+grant execute on function public.register_member(text, text) to service_role;
+grant execute on function public.refresh_member_seen(uuid, text, text) to service_role;
 grant execute on function public.get_my_staff_profile() to authenticated;
 grant execute on function public.current_staff_role() to authenticated;
 grant execute on function public.current_staff_name() to authenticated;
@@ -315,10 +327,11 @@ using (public.is_admin())
 with check (public.is_admin());
 
 drop policy if exists "Public can read resources" on public.resources;
-create policy "Public can read resources"
+drop policy if exists "Staff can read resources" on public.resources;
+create policy "Staff can read resources"
 on public.resources for select
-to anon, authenticated
-using (true);
+to authenticated
+using (public.is_staff());
 
 drop policy if exists "Staff can create resources" on public.resources;
 create policy "Staff can create resources"
@@ -353,10 +366,11 @@ to authenticated
 using (public.is_staff() and uploaded_by_user_id = auth.uid());
 
 drop policy if exists "Public can read announcements" on public.announcements;
-create policy "Public can read announcements"
+drop policy if exists "Staff can read announcements" on public.announcements;
+create policy "Staff can read announcements"
 on public.announcements for select
-to anon, authenticated
-using (true);
+to authenticated
+using (public.is_staff());
 
 drop policy if exists "Staff can create announcements" on public.announcements;
 create policy "Staff can create announcements"
@@ -391,15 +405,6 @@ to authenticated
 using (public.is_staff() and posted_by_user_id = auth.uid());
 
 drop policy if exists "Anyone can create suggestions" on public.suggestions;
-create policy "Anyone can create suggestions"
-on public.suggestions for insert
-to anon, authenticated
-with check (
-  char_length(name) between 3 and 80
-  and char_length(matric_number) between 3 and 24
-  and char_length(category) between 3 and 40
-  and char_length(message) between 3 and 1200
-);
 
 drop policy if exists "Staff can read suggestions" on public.suggestions;
 create policy "Staff can read suggestions"
@@ -414,10 +419,15 @@ to authenticated
 using (public.is_admin());
 
 insert into storage.buckets (id, name, public)
-values ('class-resources', 'class-resources', true)
+values ('class-resources', 'class-resources', false)
 on conflict (id) do update set public = excluded.public;
 
 drop policy if exists "Public can read class resources" on storage.objects;
+drop policy if exists "Staff can read class resources" on storage.objects;
+create policy "Staff can read class resources"
+on storage.objects for select
+to authenticated
+using (bucket_id = 'class-resources' and public.is_staff());
 
 drop policy if exists "Staff can upload class resources" on storage.objects;
 create policy "Staff can upload class resources"

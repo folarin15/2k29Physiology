@@ -15,6 +15,7 @@ const state = {
   suggestions: [],
   staffUser: null,
   staffRole: null,
+  realtimeUnsubscribe: null,
   membersUnsubscribe: null,
   suggestionsUnsubscribe: null,
   live: {
@@ -360,7 +361,7 @@ async function ensureMemberOnboarding() {
 
   const existingSession = getMemberSession();
   if (existingSession?.memberId) {
-    const active = await state.backend.refreshMemberSession(existingSession).catch(() => true);
+    const active = await state.backend.refreshMemberSession(existingSession).catch(() => false);
     if (active !== false) {
       setMemberGate(false);
       connectPushNotifications(existingSession);
@@ -409,8 +410,8 @@ async function ensureMemberOnboarding() {
       const session = await state.backend.registerMember(profile);
       const memberSession = {
         ...session,
-        name: profile.name,
-        matricNumber: profile.matricNumber,
+        name: session.name || profile.name,
+        matricNumber: session.matricNumber || profile.matricNumber,
         savedAt: Date.now(),
       };
       saveMemberSession(memberSession);
@@ -1175,6 +1176,10 @@ function connectStaffPortal(allowedRoles) {
       );
     }
 
+    if (canEnter && !state.realtimeUnsubscribe) {
+      state.realtimeUnsubscribe = connectRealtimeData();
+    }
+
     if (!canEnter && state.membersUnsubscribe) {
       state.membersUnsubscribe();
       state.membersUnsubscribe = null;
@@ -1187,6 +1192,14 @@ function connectStaffPortal(allowedRoles) {
       state.suggestionsUnsubscribe = null;
       state.suggestions = [];
       renderStaffLists();
+    }
+
+    if (!canEnter && state.realtimeUnsubscribe) {
+      state.realtimeUnsubscribe();
+      state.realtimeUnsubscribe = null;
+      state.resources = [];
+      state.announcements = [];
+      renderAll();
     }
 
     renderStaffLists();
@@ -1960,7 +1973,7 @@ function connectNotificationCenter() {
 }
 
 function connectRealtimeData() {
-  state.backend.watchResources(
+  const unsubscribeResources = state.backend.watchResources(
     (resources) => {
       state.resources = resources;
       rememberLiveItems("resources", resources, (item) => `New ${item.type || "resource"} posted: ${item.title}`);
@@ -1969,7 +1982,7 @@ function connectRealtimeData() {
     (error) => showToast(error.message || "Could not load resources.", "error")
   );
 
-  state.backend.watchAnnouncements(
+  const unsubscribeAnnouncements = state.backend.watchAnnouncements(
     (announcements) => {
       state.announcements = announcements;
       rememberLiveItems("announcements", announcements, (item) => `New announcement: ${item.title}`);
@@ -1979,6 +1992,11 @@ function connectRealtimeData() {
   );
 
   renderMembersTable();
+
+  return () => {
+    unsubscribeResources?.();
+    unsubscribeAnnouncements?.();
+  };
 }
 
 async function init() {
@@ -1996,12 +2014,14 @@ async function init() {
   connectNotificationSetup();
   connectNotificationCenter();
   connectTimetableDownload();
-  connectRealtimeData();
   window.setInterval(() => {
     renderNextExam();
     renderGesCountdown();
   }, 1000);
   await ensureMemberOnboarding();
+  if (document.body.dataset.portal !== "staff") {
+    state.realtimeUnsubscribe = connectRealtimeData();
+  }
 }
 
 init().catch((error) => {

@@ -3,6 +3,8 @@ import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js";
 const SUPABASE_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
 const RESOURCE_PAGE_SIZE = 1000;
+const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
+const MEMBER_PORTAL_FUNCTION = "member-portal";
 
 let clientPromise;
 
@@ -53,6 +55,18 @@ function normalizeSuggestionMessage(value) {
   if (message.length < 3) throw new Error("Write a little more before sending.");
   if (message.length > 1200) throw new Error("Suggestion is too long.");
   return message;
+}
+
+function isStaffPortal() {
+  return globalThis.document?.body?.dataset.portal === "staff";
+}
+
+function getStoredMemberSession() {
+  try {
+    return JSON.parse(globalThis.localStorage?.getItem(MEMBER_SESSION_KEY) || "null");
+  } catch {
+    return null;
+  }
 }
 
 /* TEXT HYGIENE: Keeps stored display text clean even when filenames contain emoji. */
@@ -212,11 +226,14 @@ export async function createBackend() {
   async function getRole(uid) {
     if (!uid) return null;
 
-    const { data, error } = await supabase.rpc("get_my_staff_profile");
+    const { data, error } = await supabase
+      .from("staff_roles")
+      .select("role, display_name")
+      .eq("user_id", uid)
+      .maybeSingle();
 
     if (error) throw error;
-    const profile = Array.isArray(data) ? data[0] : data;
-    return profile ? { role: profile.role, displayName: profile.display_name } : null;
+    return data ? { role: data.role, displayName: data.display_name } : null;
   }
 
   async function notifyPortal(payload) {
@@ -228,6 +245,40 @@ export async function createBackend() {
     });
 
     if (error) throw error;
+  }
+
+  async function callMemberPortal(action, payload = {}) {
+    const { data, error } = await supabase.functions.invoke(MEMBER_PORTAL_FUNCTION, {
+      body: {
+        action,
+        ...payload,
+      },
+    });
+
+    if (error) throw error;
+    if (data?.error) throw new Error(data.error);
+    return data || {};
+  }
+
+  let memberPortalDataPromise = null;
+  let memberPortalDataCachedAt = 0;
+
+  async function loadMemberPortalData() {
+    const now = Date.now();
+    if (memberPortalDataPromise && now - memberPortalDataCachedAt < 3000) {
+      return memberPortalDataPromise;
+    }
+
+    memberPortalDataCachedAt = now;
+    memberPortalDataPromise = callMemberPortal("portal-data", {
+      memberSession: getStoredMemberSession(),
+    }).finally(() => {
+      window.setTimeout(() => {
+        memberPortalDataPromise = null;
+      }, 3000);
+    });
+
+    return memberPortalDataPromise;
   }
 
   function subscribeAndReload(channelName, tableName, load) {
@@ -261,6 +312,28 @@ export async function createBackend() {
       if (!data || data.length < RESOURCE_PAGE_SIZE) return rows;
       from += RESOURCE_PAGE_SIZE;
     }
+  }
+
+  async function signResourceRows(rows) {
+    return Promise.all(
+      rows.map(async (row) => {
+        if (!row.storage_path) return row;
+        const { data, error } = await supabase.storage
+          .from(supabaseConfig.storageBucket)
+          .createSignedUrl(row.storage_path, 60 * 60);
+
+        return {
+          ...row,
+          download_url: error ? "" : data?.signedUrl || "",
+        };
+      })
+    );
+  }
+
+  function pollAndReload(load, intervalMs = 60000) {
+    load();
+    const intervalId = window.setInterval(load, intervalMs);
+    return () => window.clearInterval(intervalId);
   }
 
   return {
@@ -306,43 +379,68 @@ export async function createBackend() {
     },
 
     async registerMember(profile) {
-      const { data, error } = await supabase.rpc("register_member", {
-        p_name: normalizeName(profile.name),
-        p_matric_number: normalizeMatric(profile.matricNumber),
+      const data = await callMemberPortal("register", {
+        name: normalizeName(profile.name),
+        matricNumber: normalizeMatric(profile.matricNumber),
       });
 
-      if (error) throw error;
-      return { memberId: data };
+      return {
+        memberId: data.memberId,
+        name: data.name || normalizeName(profile.name),
+        matricNumber: data.matricNumber || normalizeMatric(profile.matricNumber),
+      };
     },
 
     async refreshMemberSession(session) {
       if (!session?.memberId || !session?.matricNumber) return;
 
-      const { data, error } = await supabase.rpc("refresh_member_seen", {
-        p_member_id: session.memberId,
-        p_name: normalizeName(session.name),
-        p_matric_number: normalizeMatric(session.matricNumber),
-      });
-
-      if (error) console.warn(error);
-      return data !== false;
+      try {
+        const data = await callMemberPortal("refresh", {
+          memberSession: {
+            memberId: session.memberId,
+            name: normalizeName(session.name),
+            matricNumber: normalizeMatric(session.matricNumber),
+          },
+        });
+        return data.ok !== false;
+      } catch (error) {
+        console.warn(error);
+        return false;
+      }
     },
 
     watchResources(callback, onError = console.error) {
       async function load() {
         try {
-          const data = await loadAllResources();
-          callback(data.map(mapResource));
+          if (isStaffPortal()) {
+            const data = await loadAllResources();
+            callback((await signResourceRows(data)).map(mapResource));
+            return;
+          }
+
+          const data = await loadMemberPortalData();
+          callback((data.resources || []).map(mapResource));
         } catch (error) {
           onError(error);
         }
       }
 
+      if (!isStaffPortal()) return pollAndReload(load);
       return subscribeAndReload("portal-resources", "resources", load);
     },
 
     watchAnnouncements(callback, onError = console.error) {
       async function load() {
+        if (!isStaffPortal()) {
+          try {
+            const data = await loadMemberPortalData();
+            callback((data.announcements || []).map(mapAnnouncement));
+          } catch (error) {
+            onError(error);
+          }
+          return;
+        }
+
         const { data, error } = await supabase
           .from("announcements")
           .select("*")
@@ -357,6 +455,7 @@ export async function createBackend() {
         callback((data || []).map(mapAnnouncement));
       }
 
+      if (!isStaffPortal()) return pollAndReload(load);
       return subscribeAndReload("portal-announcements", "announcements", load);
     },
 
@@ -423,8 +522,6 @@ export async function createBackend() {
       if (uploadError) throw uploadError;
       if (onProgress) onProgress(100);
 
-      const { data: publicFile } = supabase.storage.from(supabaseConfig.storageBucket).getPublicUrl(filePath);
-
       const resourceTitle = cleanStoredText(formData.title || "");
       const resourceType = cleanStoredText(formData.type || "Resource");
       const { error: insertError } = await supabase.from("resources").insert({
@@ -437,7 +534,7 @@ export async function createBackend() {
         file_size: file.size,
         file_type: file.type || "unknown",
         storage_path: filePath,
-        download_url: publicFile.publicUrl,
+        download_url: filePath,
         uploaded_by: role.displayName || user.email || "Course rep",
         uploaded_by_user_id: user.id,
       });
@@ -484,14 +581,11 @@ export async function createBackend() {
     },
 
     async submitSuggestion(formData) {
-      const { error } = await supabase.from("suggestions").insert({
-        name: normalizeName(formData.name),
-        matric_number: normalizeMatric(formData.matricNumber),
+      await callMemberPortal("submit-suggestion", {
+        memberSession: getStoredMemberSession(),
         category: String(formData.category || "General").trim(),
         message: normalizeSuggestionMessage(formData.message),
       });
-
-      if (error) throw error;
     },
 
     async generateResourceDetails(input) {
