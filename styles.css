@@ -1663,6 +1663,29 @@ textarea {
     width: 100%;
   }
 
+  .nav-stack {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: visible;
+  }
+
+  .nav-link {
+    justify-content: center;
+    min-width: 0;
+    padding: 0 6px;
+    gap: 5px;
+    font-size: 0.8rem;
+  }
+
+  .nav-link .material-symbols-rounded {
+    width: 18px;
+    font-size: 1.15rem;
+  }
+
+  body[data-page="dashboard"] .page-header {
+    display: none;
+  }
+
   .hero-panel h1,
   .page-intro h1 {
     font-size: clamp(1.5rem, 7vw, 1.9rem);

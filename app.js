@@ -1,6 +1,6 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260526b";
-import { createBackend } from "./supabase-service.js?v=20260526b";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260526b";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260526c";
+import { createBackend } from "./supabase-service.js?v=20260526c";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260526c";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const ONESIGNAL_PROMPT_KEY = "physiology2k29.onesignalPromptAsked";
@@ -334,26 +334,9 @@ function rememberLiveItems(key, items, messageBuilder) {
   }
 }
 
-/* SIDEBAR COURSE SHORTCUTS: Kept for compatibility if a page re-adds the container later. */
-function renderSidebarCourses() {
-  const target = getElement("#sidebarCourseList");
-  if (!target) return;
-
-  target.innerHTML = firstSemesterCourses
-    .map(
-      (course) => `
-        <a class="course-chip" href="./courses.html#${courseAnchor(course.code)}">
-          <span>${course.code}</span>
-          <small>${course.units}u</small>
-        </a>
-      `
-    )
-    .join("");
-}
-
 /* STUDENT ONBOARDING: Collects name and matric once, then refreshes the member record. */
 async function ensureMemberOnboarding() {
-  if (document.body.dataset.portal === "staff") return;
+  if (document.body.dataset.portal === "staff") return true;
 
   if (shouldResetMemberSession()) {
     clearMemberSession();
@@ -365,7 +348,7 @@ async function ensureMemberOnboarding() {
     if (active !== false) {
       setMemberGate(false);
       connectPushNotifications(existingSession);
-      return;
+      return true;
     }
     clearMemberSession();
   }
@@ -422,10 +405,13 @@ async function ensureMemberOnboarding() {
       renderNotificationSetup();
       showToast("Welcome. Your class profile is saved.");
       connectPushNotifications(memberSession, true);
+      startPublicRealtimeData();
     } catch (error) {
       status.textContent = error.message || "Could not save profile. Please try again.";
     }
   });
+
+  return false;
 }
 
 /* METRICS COMPONENT: Combines fixed course counts with live backend records. */
@@ -433,12 +419,10 @@ function renderDashboardMetrics() {
   const courseCount = getElement("#courseCount");
   const resourceCount = getElement("#resourceCount");
   const timetableCount = getElement("#timetableCount");
-  const memberCount = getElement("#memberCount");
 
   if (courseCount) courseCount.textContent = firstSemesterCourses.length;
   if (resourceCount) resourceCount.textContent = state.resources.length;
   if (timetableCount) timetableCount.textContent = cbtTimetable.length;
-  if (memberCount) memberCount.textContent = state.members.length || "Private";
 }
 
 function resourceCard(resource) {
@@ -933,7 +917,6 @@ function renderAll() {
   renderSiteCredit();
   renderScholarGreeting();
   renderNotificationSetup();
-  renderSidebarCourses();
   renderDashboardMetrics();
   renderResourceCards();
   renderCourseGrid();
@@ -1999,6 +1982,11 @@ function connectRealtimeData() {
   };
 }
 
+function startPublicRealtimeData() {
+  if (document.body.dataset.portal === "staff" || state.realtimeUnsubscribe) return;
+  state.realtimeUnsubscribe = connectRealtimeData();
+}
+
 async function init() {
   state.backend = await createBackend();
   setMemberGate(!getMemberSession()?.memberId);
@@ -2018,10 +2006,8 @@ async function init() {
     renderNextExam();
     renderGesCountdown();
   }, 1000);
-  await ensureMemberOnboarding();
-  if (document.body.dataset.portal !== "staff") {
-    state.realtimeUnsubscribe = connectRealtimeData();
-  }
+  const memberReady = await ensureMemberOnboarding();
+  if (memberReady) startPublicRealtimeData();
 }
 
 init().catch((error) => {
