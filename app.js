@@ -1,6 +1,6 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260527a";
-import { createBackend } from "./supabase-service.js?v=20260527a";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260527a";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260527c";
+import { createBackend } from "./supabase-service.js?v=20260527c";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260527c";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
@@ -15,11 +15,14 @@ const state = {
   announcements: [],
   members: [],
   suggestions: [],
+  resourceProgress: [],
+  resourceFeedback: [],
   staffUser: null,
   staffRole: null,
   realtimeUnsubscribe: null,
   membersUnsubscribe: null,
   suggestionsUnsubscribe: null,
+  engagementUnsubscribe: null,
   push: {
     checked: false,
     subscribed: false,
@@ -65,6 +68,59 @@ function courseAnchor(code) {
 
 function getSelectedCourseCode() {
   return new URLSearchParams(window.location.search).get("course");
+}
+
+function resourceReaderLink(resource) {
+  return resource?.id ? `./reader.html?resource=${encodeURIComponent(resource.id)}` : resource?.downloadUrl || "#";
+}
+
+function getResourceProgress(resource) {
+  return (
+    resource?.progress ||
+    state.resourceProgress.find((progress) => progress?.resourceId === resource?.id) ||
+    null
+  );
+}
+
+function getResourceFeedback(resource) {
+  const helpfulCount =
+    resource?.feedback?.helpfulCount ??
+    state.resourceFeedback.filter((feedback) => feedback?.resourceId === resource?.id && feedback.helpful).length;
+
+  return {
+    helpful: Boolean(resource?.feedback?.helpful),
+    helpfulCount: Number(helpfulCount || 0),
+  };
+}
+
+function setResourceProgress(resourceId, progress) {
+  if (!resourceId || !progress) return;
+  state.resources = state.resources.map((resource) =>
+    resource.id === resourceId ? { ...resource, progress } : resource
+  );
+  state.resourceProgress = [
+    progress,
+    ...state.resourceProgress.filter((item) => item?.resourceId !== resourceId || item?.memberId !== progress.memberId),
+  ];
+}
+
+function setResourceFeedback(resourceId, feedback) {
+  if (!resourceId || !feedback) return;
+  state.resources = state.resources.map((resource) =>
+    resource.id === resourceId ? { ...resource, feedback } : resource
+  );
+}
+
+function progressLabel(status = "opened") {
+  return (
+    {
+      "not-started": "Not started",
+      opened: "Opened",
+      reading: "Reading",
+      urgent: "Urgent",
+      done: "Done",
+    }[status] || "Not started"
+  );
 }
 
 function getScholarDisplayName(session = getMemberSession()) {
@@ -585,8 +641,41 @@ function renderDashboardMetrics() {
   if (timetableCount) timetableCount.textContent = cbtTimetable.length;
 }
 
+function progressBadge(resource) {
+  const status = getResourceProgress(resource)?.status || "not-started";
+  return `<span class="progress-pill" data-status="${escapeHtml(status)}">${progressLabel(status)}</span>`;
+}
+
+function resourceEngagementRow(resource) {
+  const progress = getResourceProgress(resource);
+  const feedback = getResourceFeedback(resource);
+  const activeStatus = progress?.status || "";
+
+  return `
+    <div class="resource-engagement">
+      ${progressBadge(resource)}
+      <button class="mini-action" type="button" data-progress-resource="${escapeHtml(resource.id)}" data-progress-status="reading" data-active="${activeStatus === "reading"}">
+        <span class="material-symbols-rounded" aria-hidden="true">local_library</span>
+        Reading
+      </button>
+      <button class="mini-action" type="button" data-progress-resource="${escapeHtml(resource.id)}" data-progress-status="urgent" data-active="${activeStatus === "urgent"}">
+        <span class="material-symbols-rounded" aria-hidden="true">priority_high</span>
+        Urgent
+      </button>
+      <button class="mini-action" type="button" data-progress-resource="${escapeHtml(resource.id)}" data-progress-status="done" data-active="${activeStatus === "done"}">
+        <span class="material-symbols-rounded" aria-hidden="true">task_alt</span>
+        Done
+      </button>
+      <button class="mini-action helpful-action" type="button" data-helpful-resource="${escapeHtml(resource.id)}" data-active="${feedback.helpful}">
+        <span class="material-symbols-rounded" aria-hidden="true">thumb_up</span>
+        Helpful ${feedback.helpfulCount}
+      </button>
+    </div>
+  `;
+}
+
 function resourceCard(resource) {
-  const resourceUrl = resource.downloadUrl || "#";
+  const resourceUrl = resourceReaderLink(resource);
 
   return `
     <article class="resource-card">
@@ -602,9 +691,10 @@ function resourceCard(resource) {
         <span>${escapeHtml(resource.uploadedBy || "Course rep")}</span>
         <span>${formatDate(resource.createdAtMs)}</span>
       </div>
-      <a class="card-action" href="${escapeHtml(resourceUrl)}" target="_blank" rel="noreferrer">
-        <span class="material-symbols-rounded" aria-hidden="true">open_in_new</span>
-        Open file
+      ${resourceEngagementRow(resource)}
+      <a class="card-action" href="${escapeHtml(resourceUrl)}">
+        <span class="material-symbols-rounded" aria-hidden="true">chrome_reader_mode</span>
+        Read inside
       </a>
     </article>
   `;
@@ -622,15 +712,17 @@ function normalizeResourceGroup(resource) {
 }
 
 function courseResourceItem(resource) {
+  const resourceUrl = resourceReaderLink(resource);
   return `
     <article class="course-resource-item">
       <div>
         <h4>${escapeHtml(resource.title)}</h4>
         <p>${escapeHtml(resource.note || resource.fileName || "Uploaded class material")}</p>
+        ${resourceEngagementRow(resource)}
       </div>
-      <a class="card-action" href="${escapeHtml(resource.downloadUrl || "#")}" target="_blank" rel="noreferrer">
-        <span class="material-symbols-rounded" aria-hidden="true">open_in_new</span>
-        Open
+      <a class="card-action" href="${escapeHtml(resourceUrl)}">
+        <span class="material-symbols-rounded" aria-hidden="true">chrome_reader_mode</span>
+        Read
       </a>
     </article>
   `;
@@ -657,6 +749,15 @@ function renderCourseDetail(grid, course, resources) {
         <span class="unit-pill">${course.units} unit${course.units > 1 ? "s" : ""}</span>
         <h2>${escapeHtml(course.title)}</h2>
         <p>${escapeHtml(course.type)}. ${resources.length} posted resource${resources.length === 1 ? "" : "s"}.</p>
+        <div class="course-detail-actions">
+          <button class="secondary-action" type="button" data-download-course-zip="${escapeHtml(course.code)}" ${
+            resources.length ? "" : "disabled"
+          }>
+            <span class="material-symbols-rounded" aria-hidden="true">folder_zip</span>
+            Download all as ZIP
+          </button>
+          <span class="form-status" id="courseZipStatus"></span>
+        </div>
       </div>
       <div class="course-resource-groups">
         ${groupOrder
@@ -845,6 +946,82 @@ function renderGesCountdown() {
     .join("");
 }
 
+function isLastMinuteResource(resource) {
+  const haystack = `${resource.title} ${resource.type} ${resource.note || ""} ${resource.fileName || ""}`.toLowerCase();
+  return /\b(past questions?|pq|pqs|mock|test|exam|ca|practice|revision|solved|compiled)\b/.test(haystack);
+}
+
+function getLastMinuteResources(limit = 10) {
+  return state.resources
+    .filter(isLastMinuteResource)
+    .sort((a, b) => {
+      const aUrgent = getResourceProgress(a)?.status === "urgent" ? 1 : 0;
+      const bUrgent = getResourceProgress(b)?.status === "urgent" ? 1 : 0;
+      if (aUrgent !== bUrgent) return bUrgent - aUrgent;
+      return Number(b.createdAtMs || 0) - Number(a.createdAtMs || 0);
+    })
+    .slice(0, limit);
+}
+
+function renderExamMode() {
+  const title = getElement("#examCountdownTitle");
+  const meta = getElement("#examCountdownMeta");
+  const grid = getElement("#examCountdownGrid");
+  const body = getElement("#examTimetableBody");
+  const resources = getElement("#examResourceGrid");
+  if (!title || !meta || !grid || !body || !resources) return;
+
+  const now = new Date();
+  const next = getNextTrackedCbtItem(now);
+  if (!next) {
+    title.textContent = "CBT complete";
+    meta.textContent = "All listed GES/GST rows have passed.";
+    grid.innerHTML = ["Days", "Hours", "Minutes", "Seconds"]
+      .map((label) => `<span><strong>0</strong><small>${label}</small></span>`)
+      .join("");
+  } else {
+    const isCurrent = now >= next.start && now < next.end;
+    const target = isCurrent ? next.end : next.start;
+    title.textContent = `${next.course} ${next.batch}`;
+    meta.textContent = isCurrent ? `In progress now. Ends ${next.time.split("-")[1].trim()}.` : formatFullExamDate(next.start);
+    grid.innerHTML = formatCountdownParts(target, now)
+      .map(
+        (part) => `
+          <span>
+            <strong>${String(part.value).padStart(2, "0")}</strong>
+            <small>${part.label}</small>
+          </span>
+        `
+      )
+      .join("");
+  }
+
+  body.innerHTML = getUpcomingTrackedCbtItems(now)
+    .map(
+      (item) => `
+        <tr data-status="${getTimetableStatus(item, now)}">
+          <td>${item.course}</td>
+          <td>${item.date}</td>
+          <td>${item.batch}</td>
+          <td>${item.time}</td>
+        </tr>
+      `
+    )
+    .join("");
+
+  const lastMinute = getLastMinuteResources();
+  resources.innerHTML = lastMinute.length
+    ? lastMinute.map(resourceCard).join("")
+    : `<article class="resource-card setup-card">
+        <span class="course-code">No revision picks yet</span>
+        <div>
+          <h3>Last-minute resources will appear here</h3>
+          <p>Past questions, mocks, tests, solved material, and revision files will show in this focused exam view.</p>
+        </div>
+        <a class="card-action" href="./courses.html">Browse all courses</a>
+      </article>`;
+}
+
 function getNotificationItems() {
   const resourceItems = state.resources.map((resource) => ({
     id: `resource:${resource.id}`,
@@ -852,8 +1029,8 @@ function getNotificationItems() {
     title: resource.title,
     message: `${resource.courseCode} material posted by ${resource.uploadedBy || "Course rep"}.`,
     time: resource.createdAtMs,
-    href: resource.downloadUrl || "./courses.html",
-    action: "Open file",
+    href: resourceReaderLink(resource),
+    action: "Read",
   }));
   const announcementItems = state.announcements.map((announcement) => ({
     id: `announcement:${announcement.id}`,
@@ -1096,6 +1273,42 @@ function renderStaffLists() {
   }
 }
 
+function renderStaffSummary() {
+  const grid = getElement("#staffSummaryGrid");
+  if (!grid) return;
+
+  const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  const uploadsThisWeek = state.resources.filter((resource) => Number(resource.createdAtMs || 0) >= weekAgo).length;
+  const pushOff = state.members.filter((member) => !member.notificationEnabled).length;
+  const helpfulVotes = state.resourceFeedback.filter((feedback) => feedback.helpful).length;
+  const courseOpens = state.resourceProgress.reduce((courses, progress) => {
+    const resource = state.resources.find((item) => item.id === progress.resourceId);
+    if (!resource?.courseCode) return courses;
+    courses.set(resource.courseCode, (courses.get(resource.courseCode) || 0) + Number(progress.openedCount || 0));
+    return courses;
+  }, new Map());
+  const mostOpenedCourse = [...courseOpens.entries()].sort((a, b) => b[1] - a[1])[0];
+
+  grid.innerHTML = `
+    <article class="metric-card staff-summary-card">
+      <span>${uploadsThisWeek}</span>
+      <small>uploads this week</small>
+    </article>
+    <article class="metric-card staff-summary-card">
+      <span>${mostOpenedCourse ? escapeHtml(mostOpenedCourse[0]) : "None"}</span>
+      <small>${mostOpenedCourse ? `${mostOpenedCourse[1]} reader open${mostOpenedCourse[1] === 1 ? "" : "s"}` : "most opened course"}</small>
+    </article>
+    <article class="metric-card staff-summary-card">
+      <span>${pushOff}</span>
+      <small>students with push off</small>
+    </article>
+    <article class="metric-card staff-summary-card">
+      <span>${helpfulVotes}</span>
+      <small>helpful resource votes</small>
+    </article>
+  `;
+}
+
 function renderAll() {
   renderSiteCredit();
   renderScholarGreeting();
@@ -1106,10 +1319,12 @@ function renderAll() {
   renderTimetable();
   renderNextExam();
   renderGesCountdown();
+  renderExamMode();
   renderNotificationCenter();
   renderAnnouncements();
   renderMembersTable();
   renderStaffLists();
+  renderStaffSummary();
 }
 
 /* SEARCH BEHAVIOR: Filters live uploads first, then course cards if no uploads exist. */
@@ -1227,6 +1442,94 @@ async function loadZipLibrary() {
   return import("https://cdn.jsdelivr.net/npm/fflate@0.8.2/esm/browser.js");
 }
 
+function normalizedDuplicateText(value = "") {
+  return stripSiteEmoji(value)
+    .toLowerCase()
+    .replace(/\.[^.]+$/, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function findPossibleDuplicate({ courseCode, title, file }) {
+  const fileName = file instanceof File ? file.name : "";
+  const titleKey = normalizedDuplicateText(title);
+  const fileKey = normalizedDuplicateText(fileName);
+  const fileSize = file instanceof File ? file.size : 0;
+
+  return state.resources.find((resource) => {
+    if (resource.courseCode !== courseCode) return false;
+    const resourceTitle = normalizedDuplicateText(resource.title);
+    const resourceFile = normalizedDuplicateText(resource.fileName);
+    const sameName = fileKey && (fileKey === resourceFile || fileKey === resourceTitle);
+    const sameTitle = titleKey && titleKey === resourceTitle;
+    const sameSize = fileSize && resource.fileSize && Number(resource.fileSize) === fileSize;
+    return sameName || sameTitle || (sameSize && fileKey && resourceFile.includes(fileKey.slice(0, 18)));
+  });
+}
+
+function safeZipEntryName(value = "resource") {
+  return stripSiteEmoji(value)
+    .replace(/[<>:"/\\|?*\x00-\x1F]+/g, "-")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 140) || "resource";
+}
+
+function uniqueZipName(used, name) {
+  const safeName = safeZipEntryName(name);
+  if (!used.has(safeName)) {
+    used.add(safeName);
+    return safeName;
+  }
+
+  const extensionMatch = safeName.match(/(\.[^.]+)$/);
+  const extension = extensionMatch?.[1] || "";
+  const base = extension ? safeName.slice(0, -extension.length) : safeName;
+  let counter = 2;
+  while (used.has(`${base} (${counter})${extension}`)) counter += 1;
+  const uniqueName = `${base} (${counter})${extension}`;
+  used.add(uniqueName);
+  return uniqueName;
+}
+
+async function downloadCourseZip(courseCode) {
+  const course = findCourse(courseCode);
+  const resources = state.resources.filter((resource) => resource.courseCode === courseCode && resource.downloadUrl);
+  const status = getElement("#courseZipStatus");
+
+  if (!resources.length) {
+    if (status) status.textContent = "No downloadable resources for this course yet.";
+    return;
+  }
+
+  if (status) status.textContent = `Preparing ${resources.length} file${resources.length === 1 ? "" : "s"}...`;
+
+  const { zipSync } = await loadZipLibrary();
+  const usedNames = new Set();
+  const entries = {};
+
+  for (const resource of resources) {
+    if (status) status.textContent = `Adding ${stripSiteEmoji(resource.title)}...`;
+    const response = await fetch(resource.downloadUrl);
+    if (!response.ok) throw new Error(`Could not download ${resource.title}.`);
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    const fileName = uniqueZipName(usedNames, resource.fileName || `${resource.title}.pdf`);
+    entries[fileName] = bytes;
+  }
+
+  const zipped = zipSync(entries, { level: 6 });
+  const blob = new Blob([zipped], { type: "application/zip" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `${safeZipEntryName(course?.code || courseCode)}-${safeZipEntryName(course?.title || "resources")}.zip`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  if (status) status.textContent = "Course ZIP downloaded.";
+}
+
 async function expandBulkInputFiles(files, status, list) {
   const expanded = [];
 
@@ -1326,6 +1629,7 @@ function connectStaffPortal(allowedRoles) {
           state.members = members;
           renderDashboardMetrics();
           renderMembersTable();
+          renderStaffSummary();
         },
         (error) => showToast(error.message || "Could not load members.", "error")
       );
@@ -1337,9 +1641,31 @@ function connectStaffPortal(allowedRoles) {
           state.suggestions = suggestions;
           rememberLiveItems("suggestions", suggestions, (item) => `New suggestion from ${item.name}.`);
           renderStaffLists();
+          renderStaffSummary();
         },
         (error) => showToast(error.message || "Could not load suggestions.", "error")
       );
+    }
+
+    if (canEnter && !state.engagementUnsubscribe && getElement("#staffSummaryGrid")) {
+      const progressUnsubscribe = state.backend.watchResourceProgress(
+        (rows) => {
+          state.resourceProgress = rows;
+          renderStaffSummary();
+        },
+        (error) => showToast(error.message || "Could not load reader progress.", "error")
+      );
+      const feedbackUnsubscribe = state.backend.watchResourceFeedback(
+        (rows) => {
+          state.resourceFeedback = rows;
+          renderStaffSummary();
+        },
+        (error) => showToast(error.message || "Could not load helpful votes.", "error")
+      );
+      state.engagementUnsubscribe = () => {
+        progressUnsubscribe?.();
+        feedbackUnsubscribe?.();
+      };
     }
 
     if (canEnter && !state.realtimeUnsubscribe) {
@@ -1358,6 +1684,14 @@ function connectStaffPortal(allowedRoles) {
       state.suggestionsUnsubscribe = null;
       state.suggestions = [];
       renderStaffLists();
+    }
+
+    if (!canEnter && state.engagementUnsubscribe) {
+      state.engagementUnsubscribe();
+      state.engagementUnsubscribe = null;
+      state.resourceProgress = [];
+      state.resourceFeedback = [];
+      renderStaffSummary();
     }
 
     if (!canEnter && state.realtimeUnsubscribe) {
@@ -1385,6 +1719,20 @@ function connectRepForms() {
 
   if (uploadForm) {
     const autoTitleButton = ensureAiDetailsButton(uploadForm, uploadStatus);
+    const fileInput = uploadForm.querySelector('input[name="file"]');
+
+    fileInput?.addEventListener("change", () => {
+      const formData = new FormData(uploadForm);
+      const file = formData.get("file");
+      const possibleDuplicate = findPossibleDuplicate({
+        courseCode: String(formData.get("courseCode")),
+        title: String(formData.get("title") || file?.name || ""),
+        file,
+      });
+      if (possibleDuplicate && uploadStatus) {
+        uploadStatus.textContent = `Possible duplicate: ${possibleDuplicate.title}. Check before uploading.`;
+      }
+    });
 
     if (autoTitleButton) {
       autoTitleButton.addEventListener("click", async () => {
@@ -1429,6 +1777,16 @@ function connectRepForms() {
       const formData = new FormData(uploadForm);
       const file = formData.get("file");
       const course = findCourse(String(formData.get("courseCode")));
+      const possibleDuplicate = findPossibleDuplicate({
+        courseCode: String(formData.get("courseCode")),
+        title: String(formData.get("title")),
+        file,
+      });
+
+      if (possibleDuplicate && !confirm(`This looks similar to "${possibleDuplicate.title}". Upload anyway?`)) {
+        uploadStatus.textContent = "Upload cancelled so you can check the existing file first.";
+        return;
+      }
 
       try {
         uploadStatus.textContent = "Uploading...";
@@ -1521,9 +1879,15 @@ function connectGenericBulkUpload() {
         continue;
       }
 
-      if (state.resources.some((resource) => resource.courseCode === metadata.course.code && resource.title === metadata.title)) {
+      const possibleDuplicate = findPossibleDuplicate({
+        courseCode: metadata.course.code,
+        title: metadata.title,
+        file,
+      });
+
+      if (possibleDuplicate) {
         skippedCount += 1;
-        renderBulkUploadLine(list, `Already on portal: ${metadata.title}`, "muted");
+        renderBulkUploadLine(list, `Possible duplicate skipped: ${metadata.title}`, "muted");
         continue;
       }
 
@@ -1974,6 +2338,58 @@ function connectNotificationSetup() {
   });
 }
 
+/* RESOURCE ENGAGEMENT: Lets students tag progress, vote helpful, and download course ZIPs. */
+function connectResourceEngagement() {
+  document.addEventListener("click", async (event) => {
+    const progressButton = event.target.closest("[data-progress-resource]");
+    const helpfulButton = event.target.closest("[data-helpful-resource]");
+    const zipButton = event.target.closest("[data-download-course-zip]");
+
+    try {
+      if (progressButton) {
+        const resourceId = progressButton.dataset.progressResource;
+        const status = progressButton.dataset.progressStatus;
+        progressButton.disabled = true;
+        const progress = await state.backend.saveResourceProgress({ resourceId, status });
+        setResourceProgress(resourceId, progress);
+        renderResourceCards();
+        renderCourseGrid();
+        renderExamMode();
+        showToast(`${progressLabel(progress?.status || status)} tag saved.`);
+        return;
+      }
+
+      if (helpfulButton) {
+        const resourceId = helpfulButton.dataset.helpfulResource;
+        const resource = state.resources.find((item) => item.id === resourceId);
+        const current = getResourceFeedback(resource);
+        helpfulButton.disabled = true;
+        const feedback = await state.backend.saveResourceFeedback({
+          resourceId,
+          helpful: !current.helpful,
+        });
+        setResourceFeedback(resourceId, feedback);
+        renderResourceCards();
+        renderCourseGrid();
+        renderExamMode();
+        showToast(feedback.helpful ? "Marked as helpful." : "Helpful vote removed.");
+        return;
+      }
+
+      if (zipButton) {
+        zipButton.disabled = true;
+        await downloadCourseZip(zipButton.dataset.downloadCourseZip);
+        zipButton.disabled = false;
+      }
+    } catch (error) {
+      if (progressButton) progressButton.disabled = false;
+      if (helpfulButton) helpfulButton.disabled = false;
+      if (zipButton) zipButton.disabled = false;
+      showToast(error.message || "Action failed.", "error");
+    }
+  });
+}
+
 /* PDF TEXT HELPERS: Keep the generated timetable PDF browser-native and library-free. */
 function sanitizePdfText(value) {
   return String(value ?? "")
@@ -2195,10 +2611,12 @@ async function init() {
   connectCopyButtons();
   connectNotificationSetup();
   connectNotificationCenter();
+  connectResourceEngagement();
   connectTimetableDownload();
   window.setInterval(() => {
     renderNextExam();
     renderGesCountdown();
+    renderExamMode();
   }, 1000);
   const memberReady = await ensureMemberOnboarding();
   if (memberReady) startPublicRealtimeData();

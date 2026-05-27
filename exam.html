@@ -3,22 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PhysioK29 - Courses</title>
-    <meta
-      name="description"
-      content="Browse first-semester course materials for Physiology Class 2k29."
-    />
+    <title>PhysioK29 - Exam Mode</title>
+    <meta name="description" content="Focused GES/GST exam mode for Physiology Class 2k29." />
     <meta property="og:site_name" content="PhysioK29" />
     <meta property="og:title" content="PhysioK29 - Physiology Class 2k29" />
-    <meta
-      property="og:description"
-      content="Slides, announcements, CBT timetable, rep contacts, and suggestions for Physiology Class 2k29."
-    />
+    <meta property="og:description" content="Slides, announcements, CBT timetable, rep contacts, and suggestions for Physiology Class 2k29." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="./assets/og-image.png" />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/png" href="./assets/favicon.png" />
     <link rel="apple-touch-icon" href="./assets/favicon.png" />
@@ -42,10 +33,10 @@
     </script>
     <link rel="stylesheet" href="./styles.css?v=20260527c" />
   </head>
-  <body data-page="courses">
-    <!-- APP SHELL: Reuses the same sidebar pattern so every page feels connected. -->
+  <body data-page="exam">
+    <!-- APP SHELL: A stripped study view for exam week. -->
     <div class="app-shell">
-      <!-- SIDEBAR COMPONENT: Student-facing navigation with protected portals intentionally hidden. -->
+      <!-- SIDEBAR COMPONENT: Same student navigation, with Exam Mode highlighted. -->
       <aside class="sidebar" aria-label="Class dashboard navigation">
         <a class="sidebar-brand" href="./dashboard.html">
           <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
@@ -57,56 +48,73 @@
 
         <nav class="nav-stack" aria-label="Primary pages">
           <a class="nav-link" href="./dashboard.html"><span class="material-symbols-rounded" aria-hidden="true">space_dashboard</span>Dashboard</a>
-          <a class="nav-link active" href="./courses.html"><span class="material-symbols-rounded" aria-hidden="true">menu_book</span>Courses</a>
-          <a class="nav-link" href="./exam.html"><span class="material-symbols-rounded" aria-hidden="true">timer</span>Exam Mode</a>
+          <a class="nav-link" href="./courses.html"><span class="material-symbols-rounded" aria-hidden="true">menu_book</span>Courses</a>
+          <a class="nav-link active" href="./exam.html"><span class="material-symbols-rounded" aria-hidden="true">timer</span>Exam Mode</a>
           <a class="nav-link" href="./timetable.html"><span class="material-symbols-rounded" aria-hidden="true">calendar_month</span>Timetable</a>
           <a class="nav-link" href="./reps.html"><span class="material-symbols-rounded" aria-hidden="true">groups</span>Reps</a>
           <a class="nav-link" href="./suggestions.html"><span class="material-symbols-rounded" aria-hidden="true">forum</span>Suggestions</a>
         </nav>
-
-        <!-- SOURCE NOTE COMPONENT: Explains where the course list came from. -->
-        <section class="sidebar-note">
-          <strong>Source</strong>
-          <p>
-            Courses are taken from the 2025/2026 course registration PDF and trimmed
-            to the first-semester set.
-          </p>
-        </section>
       </aside>
 
       <main class="main-area">
-        <!-- HEADER COMPONENT: School logo plus the requested stretched class plaque. -->
+        <!-- HEADER COMPONENT: Keeps class identity visible without extra dashboard noise. -->
         <header class="page-header">
           <div class="logo-plaque">
             <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
             <div class="plaque-text">
               <span>PhysioK29</span>
-              <strong>First Semester Courses</strong>
+              <strong>Exam Mode</strong>
             </div>
           </div>
-          <a class="ghost-action" href="./timetable.html">Open timetable</a>
+          <a class="ghost-action" href="./courses.html">
+            <span class="material-symbols-rounded" aria-hidden="true">menu_book</span>
+            All courses
+          </a>
         </header>
 
-        <!-- COURSE INTRO COMPONENT: Gives students quick context before the grid. -->
-        <section class="page-intro">
-          <p class="eyebrow">Course bank</p>
-          <h1>First-semester materials, grouped by course.</h1>
-          <p>
-            The course list comes from registration records. Materials appear under
-            each course automatically after a rep or admin posts them.
-          </p>
+        <!-- COUNTDOWN COMPONENT: Only the nearest relevant CBT row is promoted. -->
+        <section class="ges-countdown-panel exam-countdown-panel" aria-label="Exam countdown">
+          <div>
+            <p class="eyebrow">Next CBT countdown</p>
+            <h1 id="examCountdownTitle">Loading exam...</h1>
+            <p id="examCountdownMeta">Checking timetable rows...</p>
+          </div>
+          <div class="countdown-grid" id="examCountdownGrid" aria-label="Time remaining"></div>
         </section>
 
-        <!-- COURSE GRID COMPONENT: JavaScript renders all first-semester courses here. -->
+        <!-- TIMETABLE COMPONENT: Focused upcoming rows only. -->
         <section class="content-panel">
           <div class="section-header">
             <div>
-              <p class="eyebrow">Registration list</p>
-              <h2>Displayed courses</h2>
+              <p class="eyebrow">Upcoming rows</p>
+              <h2>GES/GST timetable</h2>
             </div>
-            <span id="coursePageCount" class="soft-pill">0 courses</span>
+            <a href="./timetable.html">Full timetable</a>
           </div>
-          <div id="courseGrid" class="course-grid"></div>
+          <div class="table-wrap">
+            <table class="timetable-table">
+              <thead>
+                <tr>
+                  <th>Course</th>
+                  <th>Date</th>
+                  <th>Batch</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody id="examTimetableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- LAST-MINUTE RESOURCE COMPONENT: Shows only revision-friendly files. -->
+        <section class="content-panel">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Last-minute resources</p>
+              <h2>Practice and revision picks</h2>
+            </div>
+          </div>
+          <div id="examResourceGrid" class="resource-grid"></div>
         </section>
       </main>
     </div>

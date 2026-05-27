@@ -45,6 +45,31 @@ create table if not exists public.resources (
   created_at timestamptz not null default now()
 );
 
+create table if not exists public.resource_progress (
+  id uuid primary key default gen_random_uuid(),
+  member_id uuid not null references public.members(id) on delete cascade,
+  resource_id uuid not null references public.resources(id) on delete cascade,
+  status text not null default 'opened' check (status in ('opened', 'reading', 'urgent', 'done')),
+  opened_count integer not null default 0,
+  current_page integer,
+  total_pages integer,
+  progress_percent numeric(5, 2) not null default 0,
+  first_opened_at timestamptz not null default now(),
+  last_opened_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique(member_id, resource_id)
+);
+
+create table if not exists public.resource_feedback (
+  id uuid primary key default gen_random_uuid(),
+  member_id uuid not null references public.members(id) on delete cascade,
+  resource_id uuid not null references public.resources(id) on delete cascade,
+  helpful boolean not null default true,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique(member_id, resource_id)
+);
+
 create table if not exists public.announcements (
   id uuid primary key default gen_random_uuid(),
   title text not null,
@@ -77,6 +102,14 @@ create index if not exists resources_uploaded_by_user_id_idx on public.resources
 create index if not exists announcements_posted_by_user_id_idx on public.announcements(posted_by_user_id);
 create index if not exists member_access_attempts_lookup_idx
 on public.member_access_attempts(action, client_key, success, created_at desc);
+create index if not exists resource_progress_member_idx
+on public.resource_progress(member_id, updated_at desc);
+create index if not exists resource_progress_resource_idx
+on public.resource_progress(resource_id, status);
+create index if not exists resource_feedback_member_idx
+on public.resource_feedback(member_id, updated_at desc);
+create index if not exists resource_feedback_resource_idx
+on public.resource_feedback(resource_id, helpful);
 
 alter table public.members enable row level security;
 alter table public.allowed_members enable row level security;
@@ -85,6 +118,8 @@ alter table public.resources enable row level security;
 alter table public.announcements enable row level security;
 alter table public.suggestions enable row level security;
 alter table public.member_access_attempts enable row level security;
+alter table public.resource_progress enable row level security;
+alter table public.resource_feedback enable row level security;
 
 create or replace function public.current_staff_role()
 returns text
@@ -317,6 +352,35 @@ on public.members for delete
 to authenticated
 using (public.is_admin());
 
+drop policy if exists "No direct student resource progress access" on public.resource_progress;
+create policy "No direct student resource progress access"
+on public.resource_progress for all
+to anon, authenticated
+using (false)
+with check (false);
+
+drop policy if exists "Staff can read resource progress" on public.resource_progress;
+create policy "Staff can read resource progress"
+on public.resource_progress for select
+to authenticated
+using (public.is_staff());
+
+drop policy if exists "No direct student resource feedback access" on public.resource_feedback;
+create policy "No direct student resource feedback access"
+on public.resource_feedback for all
+to anon, authenticated
+using (false)
+with check (false);
+
+drop policy if exists "Staff can read resource feedback" on public.resource_feedback;
+create policy "Staff can read resource feedback"
+on public.resource_feedback for select
+to authenticated
+using (public.is_staff());
+
+grant select on public.resource_progress to authenticated;
+grant select on public.resource_feedback to authenticated;
+
 drop policy if exists "Staff can read own role" on public.staff_roles;
 create policy "Staff can read own role"
 on public.staff_roles for select
@@ -467,5 +531,17 @@ end $$;
 do $$
 begin
   alter publication supabase_realtime add table public.suggestions;
+exception when duplicate_object then null;
+end $$;
+
+do $$
+begin
+  alter publication supabase_realtime add table public.resource_progress;
+exception when duplicate_object then null;
+end $$;
+
+do $$
+begin
+  alter publication supabase_realtime add table public.resource_feedback;
 exception when duplicate_object then null;
 end $$;

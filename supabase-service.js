@@ -1,4 +1,4 @@
-import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260527a";
+import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260527c";
 
 const SUPABASE_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
@@ -105,6 +105,11 @@ function mapResource(row) {
     uploadedBy: row.uploaded_by,
     uploadedByUid: row.uploaded_by_user_id,
     createdAtMs: toMillis(row.created_at),
+    progress: mapProgress(row.progress),
+    feedback: {
+      helpful: Boolean(row.feedback?.helpful),
+      helpfulCount: Number(row.feedback?.helpful_count || 0),
+    },
   };
 }
 
@@ -141,6 +146,33 @@ function mapSuggestion(row) {
     category: row.category,
     message: row.message,
     createdAtMs: toMillis(row.created_at),
+  };
+}
+
+function mapProgress(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    memberId: row.member_id,
+    resourceId: row.resource_id,
+    status: row.status || "opened",
+    openedCount: Number(row.opened_count || 0),
+    currentPage: Number(row.current_page || 0),
+    totalPages: Number(row.total_pages || 0),
+    progressPercent: Number(row.progress_percent || 0),
+    firstOpenedAtMs: toMillis(row.first_opened_at),
+    lastOpenedAtMs: toMillis(row.last_opened_at),
+    updatedAtMs: toMillis(row.updated_at),
+  };
+}
+
+function mapFeedback(row) {
+  if (!row) return null;
+  return {
+    resourceId: row.resource_id,
+    memberId: row.member_id,
+    helpful: Boolean(row.helpful),
+    updatedAtMs: toMillis(row.updated_at),
   };
 }
 
@@ -188,6 +220,16 @@ export async function createBackend() {
         callback([]);
         return () => undefined;
       },
+      watchResourceProgress: (callback) => {
+        offlineNotice("watchResourceProgress");
+        callback([]);
+        return () => undefined;
+      },
+      watchResourceFeedback: (callback) => {
+        offlineNotice("watchResourceFeedback");
+        callback([]);
+        return () => undefined;
+      },
       uploadResource: async () => {
         throw new Error("Add your Supabase config before uploading files.");
       },
@@ -218,6 +260,11 @@ export async function createBackend() {
       deleteMember: async () => {
         throw new Error("Add your Supabase config before deleting members.");
       },
+      getReaderResource: async () => {
+        throw new Error("Add your Supabase config before opening the reader.");
+      },
+      saveResourceProgress: async () => undefined,
+      saveResourceFeedback: async () => ({ helpful: false, helpfulCount: 0 }),
     };
   }
 
@@ -451,6 +498,44 @@ export async function createBackend() {
       });
     },
 
+    async getReaderResource(resourceId) {
+      const data = await callMemberPortal("reader-resource", {
+        memberSession: getStoredMemberSession(),
+        resourceId: String(resourceId || ""),
+      });
+
+      return {
+        resource: mapResource(data.resource || {}),
+        progress: mapProgress(data.progress),
+      };
+    },
+
+    async saveResourceProgress(payload) {
+      const data = await callMemberPortal("save-resource-progress", {
+        memberSession: payload.memberSession || getStoredMemberSession(),
+        resourceId: String(payload.resourceId || ""),
+        status: payload.status || "opened",
+        currentPage: payload.currentPage || null,
+        totalPages: payload.totalPages || null,
+        openedIncrement: Boolean(payload.openedIncrement),
+      });
+
+      return mapProgress(data.progress);
+    },
+
+    async saveResourceFeedback(payload) {
+      const data = await callMemberPortal("save-resource-feedback", {
+        memberSession: payload.memberSession || getStoredMemberSession(),
+        resourceId: String(payload.resourceId || ""),
+        helpful: Boolean(payload.helpful),
+      });
+
+      return {
+        helpful: Boolean(data.feedback?.helpful),
+        helpfulCount: Number(data.feedback?.helpful_count || 0),
+      };
+    },
+
     watchResources(callback, onError = console.error) {
       async function load() {
         try {
@@ -539,6 +624,44 @@ export async function createBackend() {
       }
 
       return subscribeAndReload("portal-suggestions", "suggestions", load);
+    },
+
+    watchResourceProgress(callback, onError = console.error) {
+      async function load() {
+        const { data, error } = await supabase
+          .from("resource_progress")
+          .select("resource_id, member_id, status, opened_count, progress_percent, updated_at")
+          .order("updated_at", { ascending: false })
+          .limit(5000);
+
+        if (error) {
+          onError(error);
+          return;
+        }
+
+        callback((data || []).map(mapProgress));
+      }
+
+      return subscribeAndReload("portal-resource-progress", "resource_progress", load);
+    },
+
+    watchResourceFeedback(callback, onError = console.error) {
+      async function load() {
+        const { data, error } = await supabase
+          .from("resource_feedback")
+          .select("resource_id, member_id, helpful, updated_at")
+          .order("updated_at", { ascending: false })
+          .limit(5000);
+
+        if (error) {
+          onError(error);
+          return;
+        }
+
+        callback((data || []).map(mapFeedback).filter(Boolean));
+      }
+
+      return subscribeAndReload("portal-resource-feedback", "resource_feedback", load);
     },
 
     async uploadResource(formData, file, onProgress) {

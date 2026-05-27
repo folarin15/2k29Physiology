@@ -31,7 +31,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Instrument+Sans:wght@400;450;500;600;650&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260527a" />
+    <link rel="stylesheet" href="./styles.css?v=20260527c" />
   </head>
   <body data-page="rep" data-portal="staff" data-portal-role="rep">
     <!-- APP SHELL: Protected portal frame for Ayanfe and Raphael. -->
@@ -101,6 +101,16 @@
 
         <!-- STAFF PORTAL COMPONENT: Hidden until the logged-in user has rep/admin role. -->
         <section id="staffPortal" hidden>
+          <section class="content-panel staff-summary-panel">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Portal pulse</p>
+                <h2>Rep summary</h2>
+              </div>
+            </div>
+            <div class="metrics-grid staff-summary-grid" id="staffSummaryGrid"></div>
+          </section>
+
           <div class="staff-grid">
             <!-- RESOURCE UPLOAD COMPONENT: Sends files to Supabase Storage. -->
             <section class="content-panel">
@@ -274,6 +284,6 @@
       </main>
     </div>
 
-    <script type="module" src="./app.js?v=20260527a"></script>
+    <script type="module" src="./app.js?v=20260527c"></script>
   </body>
 </html>

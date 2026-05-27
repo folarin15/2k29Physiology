@@ -16,7 +16,15 @@ type MemberSession = {
 };
 
 type MemberRequest = {
-  action?: "register" | "refresh" | "portal-data" | "submit-suggestion" | "save-push-status";
+  action?:
+    | "register"
+    | "refresh"
+    | "portal-data"
+    | "submit-suggestion"
+    | "save-push-status"
+    | "reader-resource"
+    | "save-resource-progress"
+    | "save-resource-feedback";
   name?: string;
   matricNumber?: string;
   memberSession?: MemberSession;
@@ -24,6 +32,12 @@ type MemberRequest = {
   message?: string;
   enabled?: boolean;
   subscriptionId?: string;
+  resourceId?: string;
+  status?: "opened" | "reading" | "urgent" | "done" | "studying";
+  helpful?: boolean;
+  currentPage?: number;
+  totalPages?: number;
+  openedIncrement?: boolean;
 };
 
 function corsHeaders(req: Request) {
@@ -63,6 +77,29 @@ function cleanText(value: unknown, maxLength: number) {
     .slice(0, maxLength);
 }
 
+function cleanUuid(value: unknown) {
+  const id = String(value || "").trim();
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)
+    ? id
+    : "";
+}
+
+function cleanPageNumber(value: unknown) {
+  const number = Math.trunc(Number(value || 0));
+  if (!Number.isFinite(number) || number < 1) return null;
+  return Math.min(number, 10000);
+}
+
+function cleanStatus(value: unknown) {
+  const status = String(value || "opened").toLowerCase();
+  if (status === "studying") return "reading";
+  return ["opened", "reading", "urgent", "done"].includes(status) ? status : "opened";
+}
+
+function statusRank(status: string) {
+  return { opened: 1, reading: 2, urgent: 3, done: 4 }[status] || 1;
+}
+
 function getClientAddress(req: Request) {
   return (
     req.headers.get("CF-Connecting-IP") ||
@@ -90,6 +127,40 @@ async function createSignedResourceRows(supabase: ReturnType<typeof createClient
       };
     }),
   );
+}
+
+function getHelpfulCounts(rows: Record<string, unknown>[]) {
+  return rows.reduce<Record<string, number>>((counts, row) => {
+    if (!row.helpful) return counts;
+    const resourceId = String(row.resource_id || "");
+    counts[resourceId] = (counts[resourceId] || 0) + 1;
+    return counts;
+  }, {});
+}
+
+function attachEngagement(
+  rows: Record<string, unknown>[],
+  progressRows: Record<string, unknown>[] = [],
+  allFeedbackRows: Record<string, unknown>[] = [],
+  ownFeedbackRows: Record<string, unknown>[] = [],
+) {
+  const progressByResource = new Map(progressRows.map((row) => [String(row.resource_id), row]));
+  const feedbackByResource = new Map(ownFeedbackRows.map((row) => [String(row.resource_id), row]));
+  const helpfulCounts = getHelpfulCounts(allFeedbackRows);
+
+  return rows.map((row) => {
+    const resourceId = String(row.id || "");
+    const ownFeedback = feedbackByResource.get(resourceId);
+
+    return {
+      ...row,
+      progress: progressByResource.get(resourceId) || null,
+      feedback: {
+        helpful: Boolean(ownFeedback?.helpful),
+        helpful_count: helpfulCounts[resourceId] || 0,
+      },
+    };
+  });
 }
 
 async function logAttempt(
@@ -245,9 +316,163 @@ Deno.serve(async (req) => {
 
       if (announcementError) throw announcementError;
 
+      const { data: progressRows, error: progressError } = await supabase
+        .from("resource_progress")
+        .select("*")
+        .eq("member_id", member.id);
+
+      if (progressError) throw progressError;
+
+      const { data: feedbackRows, error: feedbackError } = await supabase
+        .from("resource_feedback")
+        .select("resource_id, member_id, helpful, updated_at");
+
+      if (feedbackError) throw feedbackError;
+
+      const signedResources = await createSignedResourceRows(supabase, resources || []);
+      const ownFeedbackRows = (feedbackRows || []).filter((row) => String(row.member_id) === String(member.id));
+
       return jsonResponse(req, {
-        resources: await createSignedResourceRows(supabase, resources || []),
+        resources: attachEngagement(signedResources, progressRows || [], feedbackRows || [], ownFeedbackRows),
         announcements: announcements || [],
+      });
+    }
+
+    if (action === "reader-resource") {
+      const resourceId = cleanUuid(body.resourceId);
+      if (!resourceId) return jsonResponse(req, { error: "Resource not found." }, 404);
+
+      const { data: resource, error: resourceError } = await supabase
+        .from("resources")
+        .select("*")
+        .eq("id", resourceId)
+        .maybeSingle();
+
+      if (resourceError) throw resourceError;
+      if (!resource) return jsonResponse(req, { error: "Resource not found." }, 404);
+
+      const { data: progress, error: progressError } = await supabase
+        .from("resource_progress")
+        .select("*")
+        .eq("member_id", member.id)
+        .eq("resource_id", resourceId)
+        .maybeSingle();
+
+      if (progressError) throw progressError;
+
+      const { data: feedbackRows, error: feedbackError } = await supabase
+        .from("resource_feedback")
+        .select("resource_id, member_id, helpful, updated_at")
+        .eq("resource_id", resourceId);
+
+      if (feedbackError) throw feedbackError;
+
+      const [signedResource] = await createSignedResourceRows(supabase, [resource]);
+      const ownFeedbackRows = (feedbackRows || []).filter((row) => String(row.member_id) === String(member.id));
+      return jsonResponse(req, {
+        resource: attachEngagement([signedResource], progress ? [progress] : [], feedbackRows || [], ownFeedbackRows)[0],
+        progress: progress || null,
+      });
+    }
+
+    if (action === "save-resource-progress") {
+      const resourceId = cleanUuid(body.resourceId);
+      if (!resourceId) return jsonResponse(req, { error: "Resource not found." }, 404);
+
+      const { data: resource, error: resourceError } = await supabase
+        .from("resources")
+        .select("id")
+        .eq("id", resourceId)
+        .maybeSingle();
+
+      if (resourceError) throw resourceError;
+      if (!resource) return jsonResponse(req, { error: "Resource not found." }, 404);
+
+      const requestedStatus = cleanStatus(body.status);
+      const currentPage = cleanPageNumber(body.currentPage);
+      const totalPages = cleanPageNumber(body.totalPages);
+      const progressPercent =
+        totalPages && currentPage ? Math.min(100, Math.round((currentPage / totalPages) * 10000) / 100) : 0;
+
+      const { data: existing, error: existingError } = await supabase
+        .from("resource_progress")
+        .select("*")
+        .eq("member_id", member.id)
+        .eq("resource_id", resourceId)
+        .maybeSingle();
+
+      if (existingError) throw existingError;
+
+      const now = new Date().toISOString();
+      const nextStatus =
+        existing && statusRank(existing.status) > statusRank(requestedStatus) ? existing.status : requestedStatus;
+      const payload = {
+        member_id: member.id,
+        resource_id: resourceId,
+        status: nextStatus,
+        opened_count: Number(existing?.opened_count || 0) + (body.openedIncrement ? 1 : 0),
+        current_page: currentPage || existing?.current_page || null,
+        total_pages: totalPages || existing?.total_pages || null,
+        progress_percent: requestedStatus === "done" ? 100 : progressPercent || existing?.progress_percent || 0,
+        first_opened_at: existing?.first_opened_at || now,
+        last_opened_at: now,
+        updated_at: now,
+      };
+
+      const { data: saved, error: saveError } = await supabase
+        .from("resource_progress")
+        .upsert(payload, { onConflict: "member_id,resource_id" })
+        .select("*")
+        .single();
+
+      if (saveError) throw saveError;
+      return jsonResponse(req, { ok: true, progress: saved });
+    }
+
+    if (action === "save-resource-feedback") {
+      const resourceId = cleanUuid(body.resourceId);
+      if (!resourceId) return jsonResponse(req, { error: "Resource not found." }, 404);
+
+      const { data: resource, error: resourceError } = await supabase
+        .from("resources")
+        .select("id")
+        .eq("id", resourceId)
+        .maybeSingle();
+
+      if (resourceError) throw resourceError;
+      if (!resource) return jsonResponse(req, { error: "Resource not found." }, 404);
+
+      const now = new Date().toISOString();
+      const { data: saved, error: saveError } = await supabase
+        .from("resource_feedback")
+        .upsert(
+          {
+            member_id: member.id,
+            resource_id: resourceId,
+            helpful: Boolean(body.helpful),
+            updated_at: now,
+          },
+          { onConflict: "member_id,resource_id" },
+        )
+        .select("*")
+        .single();
+
+      if (saveError) throw saveError;
+
+      const { data: countRows, error: countError } = await supabase
+        .from("resource_feedback")
+        .select("id")
+        .eq("resource_id", resourceId)
+        .eq("helpful", true);
+
+      if (countError) throw countError;
+
+      return jsonResponse(req, {
+        ok: true,
+        feedback: {
+          helpful: Boolean(saved.helpful),
+          helpful_count: countRows?.length || 0,
+        },
       });
     }
 

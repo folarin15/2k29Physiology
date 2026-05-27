@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PhysioK29 - Reader</title>
+    <meta name="description" content="Read PhysioK29 class resources inside the portal." />
+    <meta property="og:site_name" content="PhysioK29" />
+    <meta property="og:title" content="PhysioK29 - Physiology Class 2k29" />
+    <meta property="og:description" content="Slides, announcements, CBT timetable, rep contacts, and suggestions for Physiology Class 2k29." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="./assets/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/png" href="./assets/favicon.png" />
+    <link rel="apple-touch-icon" href="./assets/favicon.png" />
+    <link rel="manifest" href="./site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Instrument+Sans:wght@400;450;500;600;650&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css?v=20260527c" />
+  </head>
+  <body data-page="reader">
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Class dashboard navigation">
+        <a class="sidebar-brand" href="./dashboard.html">
+          <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
+          <span>
+            <strong>PhysioK29</strong>
+            <small>Physiology 2k29</small>
+          </span>
+        </a>
+
+        <nav class="nav-stack" aria-label="Primary pages">
+          <a class="nav-link" href="./dashboard.html"><span class="material-symbols-rounded" aria-hidden="true">space_dashboard</span>Dashboard</a>
+          <a class="nav-link active" href="./courses.html"><span class="material-symbols-rounded" aria-hidden="true">menu_book</span>Courses</a>
+          <a class="nav-link" href="./exam.html"><span class="material-symbols-rounded" aria-hidden="true">timer</span>Exam Mode</a>
+          <a class="nav-link" href="./timetable.html"><span class="material-symbols-rounded" aria-hidden="true">calendar_month</span>Timetable</a>
+          <a class="nav-link" href="./reps.html"><span class="material-symbols-rounded" aria-hidden="true">groups</span>Reps</a>
+          <a class="nav-link" href="./suggestions.html"><span class="material-symbols-rounded" aria-hidden="true">forum</span>Suggestions</a>
+        </nav>
+      </aside>
+
+      <main class="main-area reader-main">
+        <header class="page-header reader-header">
+          <div class="logo-plaque">
+            <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
+            <div class="plaque-text">
+              <span>PhysioK29</span>
+              <strong>In-site Reader</strong>
+            </div>
+          </div>
+          <a class="ghost-action" href="./courses.html">
+            <span class="material-symbols-rounded" aria-hidden="true">arrow_back</span>
+            Courses
+          </a>
+        </header>
+
+        <section class="reader-panel" aria-label="Resource reader">
+          <div class="reader-title-row">
+            <div>
+              <p class="eyebrow" id="readerCourse">Loading resource</p>
+              <h1 id="readerTitle">Preparing reader...</h1>
+              <p id="readerNote">Please wait while the portal checks your class session.</p>
+            </div>
+            <span class="status-pill" id="readerStatus">Loading</span>
+          </div>
+
+          <div class="reader-progress" aria-label="Reading progress">
+            <span id="readerProgressBar"></span>
+          </div>
+
+          <div class="reader-toolbar" aria-label="Reader controls">
+            <button class="secondary-action" type="button" id="readerPrev">
+              <span class="material-symbols-rounded" aria-hidden="true">chevron_left</span>
+              Previous
+            </button>
+            <span class="soft-pill" id="readerPageInfo">Page -</span>
+            <button class="secondary-action" type="button" id="readerNext">
+              Next
+              <span class="material-symbols-rounded" aria-hidden="true">chevron_right</span>
+            </button>
+            <button class="ghost-action reader-icon-action" type="button" id="readerZoomOut" aria-label="Zoom out">
+              <span class="material-symbols-rounded" aria-hidden="true">zoom_out</span>
+            </button>
+            <button class="ghost-action reader-icon-action" type="button" id="readerZoomIn" aria-label="Zoom in">
+              <span class="material-symbols-rounded" aria-hidden="true">zoom_in</span>
+            </button>
+            <button class="secondary-action" type="button" id="readerDone">
+              <span class="material-symbols-rounded" aria-hidden="true">task_alt</span>
+              Mark done
+            </button>
+            <button class="secondary-action" type="button" id="readerUrgent">
+              <span class="material-symbols-rounded" aria-hidden="true">priority_high</span>
+              Mark urgent
+            </button>
+            <a class="ghost-action" id="readerOriginal" href="./courses.html" target="_blank" rel="noreferrer">
+              <span class="material-symbols-rounded" aria-hidden="true">open_in_new</span>
+              Original
+            </a>
+          </div>
+
+          <div class="reader-surface" id="readerSurface">
+            <p class="empty-message">Loading resource...</p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./reader.js?v=20260527c"></script>
+  </body>
+</html>
