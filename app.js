@@ -1,6 +1,6 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260527c";
-import { createBackend } from "./supabase-service.js?v=20260527c";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260527c";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260527d";
+import { createBackend } from "./supabase-service.js?v=20260527d";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260527d";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
@@ -969,7 +969,7 @@ function renderExamMode() {
   const grid = getElement("#examCountdownGrid");
   const body = getElement("#examTimetableBody");
   const resources = getElement("#examResourceGrid");
-  if (!title || !meta || !grid || !body || !resources) return;
+  if (!title || !meta || !grid || !resources) return;
 
   const now = new Date();
   const next = getNextTrackedCbtItem(now);
@@ -996,18 +996,20 @@ function renderExamMode() {
       .join("");
   }
 
-  body.innerHTML = getUpcomingTrackedCbtItems(now)
-    .map(
-      (item) => `
-        <tr data-status="${getTimetableStatus(item, now)}">
-          <td>${item.course}</td>
-          <td>${item.date}</td>
-          <td>${item.batch}</td>
-          <td>${item.time}</td>
-        </tr>
-      `
-    )
-    .join("");
+  if (body) {
+    body.innerHTML = getUpcomingTrackedCbtItems(now)
+      .map(
+        (item) => `
+          <tr data-status="${getTimetableStatus(item, now)}">
+            <td>${item.course}</td>
+            <td>${item.date}</td>
+            <td>${item.batch}</td>
+            <td>${item.time}</td>
+          </tr>
+        `
+      )
+      .join("");
+  }
 
   const lastMinute = getLastMinuteResources();
   resources.innerHTML = lastMinute.length

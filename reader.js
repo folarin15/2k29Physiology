@@ -1,4 +1,4 @@
-import { createBackend } from "./supabase-service.js?v=20260527c";
+import { createBackend } from "./supabase-service.js?v=20260527d";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
