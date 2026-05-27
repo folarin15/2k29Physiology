@@ -138,6 +138,7 @@ Deno.serve(async (req) => {
       },
       body: JSON.stringify({
         app_id: oneSignalAppId,
+        target_channel: "push",
         included_segments: ["Subscribed Users"],
         headings: { en: notification.heading },
         contents: { en: notification.content },

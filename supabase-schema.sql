@@ -8,7 +8,11 @@ create table if not exists public.members (
   name text not null,
   matric_number text not null unique,
   created_at timestamptz not null default now(),
-  last_seen_at timestamptz not null default now()
+  last_seen_at timestamptz not null default now(),
+  notification_enabled boolean not null default false,
+  onesignal_subscription_id text,
+  notification_last_seen_at timestamptz,
+  notification_updated_at timestamptz
 );
 
 create table if not exists public.allowed_members (

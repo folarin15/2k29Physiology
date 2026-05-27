@@ -1,10 +1,12 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260526c";
-import { createBackend } from "./supabase-service.js?v=20260526c";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260526c";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260527a";
+import { createBackend } from "./supabase-service.js?v=20260527a";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260527a";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
+const MEMBER_SESSION_COOKIE = "physiok29_member_session";
 const ONESIGNAL_PROMPT_KEY = "physiology2k29.onesignalPromptAsked";
 const NOTIFICATION_READ_KEY = "physiology2k29.readNotifications";
+const NOTIFICATION_COLLAPSED_KEY = "physiology2k29.notificationCenterCollapsed";
 const BULK_ALLOWED_EXTENSIONS = new Set([".pdf", ".ppt", ".pptx", ".doc", ".docx", ".png", ".jpg", ".jpeg"]);
 
 const state = {
@@ -18,6 +20,12 @@ const state = {
   realtimeUnsubscribe: null,
   membersUnsubscribe: null,
   suggestionsUnsubscribe: null,
+  push: {
+    checked: false,
+    subscribed: false,
+    subscriptionId: "",
+  },
+  pushListenerAttached: false,
   live: {
     resources: { loaded: false, ids: new Set() },
     announcements: { loaded: false, ids: new Set() },
@@ -173,20 +181,77 @@ function saveReadNotificationIds(ids) {
   localStorage.setItem(NOTIFICATION_READ_KEY, JSON.stringify([...ids].slice(0, 300)));
 }
 
-function getMemberSession() {
+function getNotificationCenterCollapsed() {
   try {
-    return JSON.parse(localStorage.getItem(MEMBER_SESSION_KEY));
+    return localStorage.getItem(NOTIFICATION_COLLAPSED_KEY) === "true";
   } catch {
-    return null;
+    return false;
   }
 }
 
+function saveNotificationCenterCollapsed(isCollapsed) {
+  try {
+    localStorage.setItem(NOTIFICATION_COLLAPSED_KEY, String(Boolean(isCollapsed)));
+  } catch {
+    // The center still works when storage is unavailable.
+  }
+}
+
+function getCookieValue(name) {
+  return document.cookie
+    .split(";")
+    .map((item) => item.trim())
+    .find((item) => item.startsWith(`${name}=`))
+    ?.slice(name.length + 1);
+}
+
+function saveMemberSessionCookie(session) {
+  const secure = window.location.protocol === "https:" ? "; Secure" : "";
+  const value = encodeURIComponent(JSON.stringify(session));
+  document.cookie = `${MEMBER_SESSION_COOKIE}=${value}; Max-Age=${60 * 60 * 24 * 180}; Path=/; SameSite=Lax${secure}`;
+}
+
+function clearMemberSessionCookie() {
+  document.cookie = `${MEMBER_SESSION_COOKIE}=; Max-Age=0; Path=/; SameSite=Lax`;
+}
+
+function getMemberSession() {
+  try {
+    const storedSession = JSON.parse(localStorage.getItem(MEMBER_SESSION_KEY));
+    if (storedSession?.memberId) return storedSession;
+  } catch {
+    // Fall through to the cookie backup below.
+  }
+
+  try {
+    const cookieSession = JSON.parse(decodeURIComponent(getCookieValue(MEMBER_SESSION_COOKIE) || "null"));
+    if (cookieSession?.memberId) {
+      localStorage.setItem(MEMBER_SESSION_KEY, JSON.stringify(cookieSession));
+      return cookieSession;
+    }
+  } catch {
+    // A bad cookie should not block a fresh check-in.
+  }
+
+  return null;
+}
+
 function saveMemberSession(session) {
-  localStorage.setItem(MEMBER_SESSION_KEY, JSON.stringify(session));
+  try {
+    localStorage.setItem(MEMBER_SESSION_KEY, JSON.stringify(session));
+  } catch {
+    // Cookie backup still keeps returning students from losing access.
+  }
+  saveMemberSessionCookie(session);
 }
 
 function clearMemberSession() {
-  localStorage.removeItem(MEMBER_SESSION_KEY);
+  try {
+    localStorage.removeItem(MEMBER_SESSION_KEY);
+  } catch {
+    // Ignore storage errors and clear the cookie fallback.
+  }
+  clearMemberSessionCookie();
 }
 
 function shouldResetMemberSession() {
@@ -217,30 +282,114 @@ function showToast(message, tone = "default") {
   window.setTimeout(() => toast.classList.remove("show"), 4200);
 }
 
+function getPushSubscriptionState(OneSignal) {
+  const subscription = OneSignal?.User?.PushSubscription;
+  const subscriptionId = subscription?.id || "";
+  const optedIn = Boolean(subscription?.optedIn);
+  const permission = Boolean(OneSignal?.Notifications?.permission);
+
+  return {
+    checked: true,
+    subscribed: Boolean(subscriptionId && optedIn),
+    subscriptionId,
+    permission,
+  };
+}
+
+function updateSavedPushState(pushState) {
+  const session = getMemberSession();
+  if (!session?.memberId) return;
+
+  saveMemberSession({
+    ...session,
+    notificationEnabled: pushState.subscribed,
+    oneSignalSubscriptionId: pushState.subscriptionId || "",
+    savedAt: Date.now(),
+  });
+}
+
+async function syncPushSubscriptionState(OneSignal) {
+  const pushState = getPushSubscriptionState(OneSignal);
+  state.push = pushState;
+  updateSavedPushState(pushState);
+  renderNotificationSetup();
+
+  const session = getMemberSession();
+  if (session?.memberId && state.backend?.savePushStatus) {
+    await state.backend.savePushStatus({
+      memberSession: session,
+      enabled: pushState.subscribed,
+      subscriptionId: pushState.subscriptionId,
+    });
+  }
+
+  return pushState;
+}
+
+function runOneSignal(callback) {
+  if (!window.OneSignalDeferred) return Promise.resolve(null);
+
+  return new Promise((resolve, reject) => {
+    window.OneSignalDeferred.push(async (OneSignal) => {
+      try {
+        resolve(await callback(OneSignal));
+      } catch (error) {
+        reject(error);
+      }
+    });
+  });
+}
+
 /* PUSH NOTIFICATIONS: Links OneSignal browser push to the saved student profile. */
 async function connectPushNotifications(session, shouldPrompt = false, options = {}) {
-  if (!session?.memberId || !window.OneSignalDeferred) return;
+  if (!session?.memberId || !window.OneSignalDeferred) return null;
 
-  window.OneSignalDeferred.push(async (OneSignal) => {
-    try {
-      await OneSignal.login(session.memberId);
+  return runOneSignal(async (OneSignal) => {
+    await OneSignal.login(session.memberId);
 
-      if (OneSignal.User?.addTags) {
-        await OneSignal.User.addTags({
-          name: session.name || "",
-          matricNumber: session.matricNumber || "",
-        });
-      }
-
-      if (shouldPrompt && (options.forcePrompt || !localStorage.getItem(ONESIGNAL_PROMPT_KEY))) {
-        localStorage.setItem(ONESIGNAL_PROMPT_KEY, "true");
-        if (OneSignal.Slidedown?.promptPush) {
-          await OneSignal.Slidedown.promptPush();
-        }
-      }
-    } catch (error) {
-      console.warn("OneSignal setup skipped:", error);
+    if (OneSignal.User?.addTags) {
+      await OneSignal.User.addTags({
+        name: session.name || "",
+        matricNumber: session.matricNumber || "",
+      });
     }
+
+    if (!state.pushListenerAttached && OneSignal.User?.PushSubscription?.addEventListener) {
+      OneSignal.User.PushSubscription.addEventListener("change", () => {
+        syncPushSubscriptionState(OneSignal).catch((error) => console.warn("Push status sync skipped:", error));
+      });
+      state.pushListenerAttached = true;
+    }
+
+    let pushState = await syncPushSubscriptionState(OneSignal);
+
+    let hasPrompted = false;
+    try {
+      hasPrompted = Boolean(localStorage.getItem(ONESIGNAL_PROMPT_KEY));
+    } catch {
+      hasPrompted = false;
+    }
+
+    if (shouldPrompt && !pushState.subscribed && (options.forcePrompt || !hasPrompted)) {
+      try {
+        localStorage.setItem(ONESIGNAL_PROMPT_KEY, "true");
+      } catch {
+        // Notification prompting can still continue if storage is unavailable.
+      }
+      if (OneSignal.Slidedown?.promptPush) {
+        await OneSignal.Slidedown.promptPush();
+      } else if (OneSignal.User?.PushSubscription?.optIn) {
+        await OneSignal.User.PushSubscription.optIn();
+      }
+
+      await new Promise((resolve) => window.setTimeout(resolve, 1800));
+      pushState = await syncPushSubscriptionState(OneSignal);
+    }
+
+    return pushState;
+  }).catch((error) => {
+    console.warn("OneSignal setup skipped:", error);
+    return null;
   });
 }
 
@@ -255,6 +404,11 @@ function renderNotificationSetup() {
   const controlRow = getElement(".control-row");
   const session = getMemberSession();
   if (!controlRow || !session?.memberId) return;
+
+  if (state.push.subscribed || session.notificationEnabled) {
+    existingPanel?.remove();
+    return;
+  }
 
   if (existingPanel) return;
 
@@ -344,10 +498,16 @@ async function ensureMemberOnboarding() {
 
   const existingSession = getMemberSession();
   if (existingSession?.memberId) {
-    const active = await state.backend.refreshMemberSession(existingSession).catch(() => false);
-    if (active !== false) {
+    const refreshedSession = await state.backend.refreshMemberSession(existingSession).catch(() => null);
+    if (refreshedSession && refreshedSession.ok !== false) {
+      saveMemberSession({
+        ...existingSession,
+        ...refreshedSession,
+        memberId: existingSession.memberId,
+        savedAt: Date.now(),
+      });
       setMemberGate(false);
-      connectPushNotifications(existingSession);
+      connectPushNotifications(getMemberSession());
       return true;
     }
     clearMemberSession();
@@ -712,13 +872,23 @@ function getNotificationItems() {
 
 /* NOTIFICATION CENTER: In-site history for announcements and uploads. */
 function renderNotificationCenter() {
+  const center = getElement(".notification-center");
   const list = getElement("#notificationCenterList");
   const summary = getElement("#notificationSummary");
+  const toggleButton = getElement("#markNotificationsRead");
   if (!list || !summary) return;
 
   const items = getNotificationItems();
   const readIds = getReadNotificationIds();
   const unreadCount = items.filter((item) => !readIds.has(item.id)).length;
+  const isCompact = Boolean(items.length && unreadCount === 0 && getNotificationCenterCollapsed());
+
+  if (unreadCount > 0) saveNotificationCenterCollapsed(false);
+  if (center) center.dataset.compact = isCompact ? "true" : "false";
+  if (toggleButton) {
+    toggleButton.textContent = isCompact ? "View updates" : "Mark all read";
+    toggleButton.disabled = !items.length;
+  }
 
   summary.innerHTML = `
     <span><strong>${unreadCount}</strong> unread</span>
@@ -727,6 +897,11 @@ function renderNotificationCenter() {
 
   if (!items.length) {
     list.innerHTML = `<article class="notification-item"><p>No updates yet. New uploads and announcements will appear here.</p></article>`;
+    return;
+  }
+
+  if (isCompact) {
+    list.innerHTML = "";
     return;
   }
 
@@ -804,7 +979,8 @@ function renderMembersTable() {
   if (!body) return;
 
   const canDeleteMembers = isAdminPortal();
-  if (count) count.textContent = `${state.members.length} members`;
+  const subscribedMembers = state.members.filter((member) => member.notificationEnabled).length;
+  if (count) count.textContent = `${state.members.length} members, ${subscribedMembers} with push`;
 
   body.innerHTML = state.members.length
     ? state.members
@@ -813,7 +989,14 @@ function renderMembersTable() {
             <tr>
               <td>${escapeHtml(member.name)}</td>
               <td>${escapeHtml(member.matricNumber)}</td>
-              <td>Registered</td>
+              <td>
+                <div class="member-status">
+                  <span class="status-pill" data-tone="${member.notificationEnabled ? "success" : "muted"}">
+                    ${member.notificationEnabled ? "Push on" : "Push off"}
+                  </span>
+                  <small>${member.notificationUpdatedAtMs ? formatDate(member.notificationUpdatedAtMs) : "Not synced yet"}</small>
+                </div>
+              </td>
               <td>${formatDate(member.lastSeenAtMs || member.createdAtMs)}</td>
               ${
                 canDeleteMembers
@@ -1776,8 +1959,11 @@ function connectNotificationSetup() {
 
     try {
       localStorage.removeItem(ONESIGNAL_PROMPT_KEY);
-      await connectPushNotifications(session, true, { forcePrompt: true });
-      if (status) {
+      const pushState = await connectPushNotifications(session, true, { forcePrompt: true });
+      if (pushState?.subscribed) {
+        showToast("Push notifications are enabled on this device.");
+        renderNotificationSetup();
+      } else if (status) {
         status.textContent = "If your browser allows web push, notifications are now linked to this device.";
       }
     } catch (error) {
@@ -1949,7 +2135,15 @@ function connectNotificationCenter() {
   if (!button) return;
 
   button.addEventListener("click", () => {
+    const isCompact = getElement(".notification-center")?.dataset.compact === "true";
+    if (isCompact) {
+      saveNotificationCenterCollapsed(false);
+      renderNotificationCenter();
+      return;
+    }
+
     saveReadNotificationIds(new Set(getNotificationItems().map((item) => item.id)));
+    saveNotificationCenterCollapsed(true);
     renderNotificationCenter();
     showToast("Notification center marked as read.");
   });

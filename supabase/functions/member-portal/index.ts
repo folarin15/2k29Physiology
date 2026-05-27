@@ -16,12 +16,14 @@ type MemberSession = {
 };
 
 type MemberRequest = {
-  action?: "register" | "refresh" | "portal-data" | "submit-suggestion";
+  action?: "register" | "refresh" | "portal-data" | "submit-suggestion" | "save-push-status";
   name?: string;
   matricNumber?: string;
   memberSession?: MemberSession;
   category?: string;
   message?: string;
+  enabled?: boolean;
+  subscriptionId?: string;
 };
 
 function corsHeaders(req: Request) {
@@ -141,7 +143,7 @@ async function verifyMember(supabase: ReturnType<typeof createClient>, session: 
 
   const { data: member } = await supabase
     .from("members")
-    .select("id, name, matric_number")
+    .select("id, name, matric_number, notification_enabled, onesignal_subscription_id")
     .eq("id", memberId)
     .eq("matric_number", matricNumber)
     .maybeSingle();
@@ -217,6 +219,8 @@ Deno.serve(async (req) => {
         ok: true,
         name: member.name,
         matricNumber: member.matric_number,
+        notificationEnabled: Boolean(member.notification_enabled),
+        oneSignalSubscriptionId: member.onesignal_subscription_id || "",
       });
     }
 
@@ -264,6 +268,24 @@ Deno.serve(async (req) => {
 
       if (error) throw error;
       return jsonResponse(req, { ok: true });
+    }
+
+    if (action === "save-push-status") {
+      const subscriptionId = cleanText(body.subscriptionId, 180);
+      const enabled = Boolean(body.enabled && subscriptionId);
+
+      const { error } = await supabase
+        .from("members")
+        .update({
+          notification_enabled: enabled,
+          onesignal_subscription_id: subscriptionId || null,
+          notification_last_seen_at: enabled ? new Date().toISOString() : null,
+          notification_updated_at: new Date().toISOString(),
+        })
+        .eq("id", member.id);
+
+      if (error) throw error;
+      return jsonResponse(req, { ok: true, notificationEnabled: enabled });
     }
 
     return jsonResponse(req, { error: "Unsupported action." }, 400);

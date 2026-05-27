@@ -1,4 +1,4 @@
-import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260526c";
+import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260527a";
 
 const SUPABASE_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
@@ -125,8 +125,11 @@ function mapMember(row) {
     id: row.id,
     name: row.name,
     matricNumber: row.matric_number,
+    notificationEnabled: Boolean(row.notification_enabled),
+    oneSignalSubscriptionId: row.onesignal_subscription_id || "",
     createdAtMs: toMillis(row.created_at),
     lastSeenAtMs: toMillis(row.last_seen_at),
+    notificationUpdatedAtMs: toMillis(row.notification_updated_at || row.notification_last_seen_at),
   };
 }
 
@@ -163,7 +166,8 @@ export async function createBackend() {
       registerMember: async (profile) => ({
         memberId: `local-${normalizeMatric(profile.matricNumber)}`,
       }),
-      refreshMemberSession: async () => undefined,
+      refreshMemberSession: async (session) => ({ ok: true, ...session }),
+      savePushStatus: async () => undefined,
       watchResources: (callback) => {
         offlineNotice("watchResources");
         callback([]);
@@ -255,8 +259,23 @@ export async function createBackend() {
       },
     });
 
-    if (error) throw error;
-    if (data?.error) throw new Error(data.error);
+    if (error) {
+      let details = null;
+      try {
+        details = await error.context?.json?.();
+      } catch {
+        details = null;
+      }
+      const wrappedError = new Error(details?.error || error.message || "Portal request failed.");
+      wrappedError.status = error.context?.status || 0;
+      wrappedError.details = details;
+      throw wrappedError;
+    }
+    if (data?.error) {
+      const wrappedError = new Error(data.error);
+      wrappedError.status = data.status || 400;
+      throw wrappedError;
+    }
     return data || {};
   }
 
@@ -402,11 +421,34 @@ export async function createBackend() {
             matricNumber: normalizeMatric(session.matricNumber),
           },
         });
-        return data.ok !== false;
+        if (data.ok === false) return { ok: false };
+        return {
+          ok: true,
+          name: data.name || normalizeName(session.name),
+          matricNumber: data.matricNumber || normalizeMatric(session.matricNumber),
+          notificationEnabled: Boolean(data.notificationEnabled),
+          oneSignalSubscriptionId: data.oneSignalSubscriptionId || "",
+        };
       } catch (error) {
         console.warn(error);
-        return false;
+        if (error.status === 401 || error.status === 403) return { ok: false };
+        return {
+          ok: true,
+          stale: true,
+          name: normalizeName(session.name),
+          matricNumber: normalizeMatric(session.matricNumber),
+          notificationEnabled: Boolean(session.notificationEnabled),
+          oneSignalSubscriptionId: session.oneSignalSubscriptionId || "",
+        };
       }
+    },
+
+    async savePushStatus(payload) {
+      await callMemberPortal("save-push-status", {
+        memberSession: payload.memberSession || getStoredMemberSession(),
+        enabled: Boolean(payload.enabled),
+        subscriptionId: String(payload.subscriptionId || ""),
+      });
     },
 
     watchResources(callback, onError = console.error) {
@@ -463,7 +505,9 @@ export async function createBackend() {
       async function load() {
         const { data, error } = await supabase
           .from("members")
-          .select("id, name, matric_number, created_at, last_seen_at")
+          .select(
+            "id, name, matric_number, notification_enabled, onesignal_subscription_id, notification_last_seen_at, notification_updated_at, created_at, last_seen_at"
+          )
           .order("created_at", { ascending: false })
           .limit(300);
 
