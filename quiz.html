@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PhysioK29 - Quiz Mode</title>
+    <meta name="description" content="Practice course questions from the PhysioK29 question bank." />
+    <meta property="og:site_name" content="PhysioK29" />
+    <meta property="og:title" content="PhysioK29 - Quiz Mode" />
+    <meta property="og:description" content="Practice questions, topic feedback, streaks, and tailored revision prompts." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="./assets/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/png" href="./assets/favicon.png" />
+    <link rel="apple-touch-icon" href="./assets/favicon.png" />
+    <link rel="manifest" href="./site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Instrument+Sans:wght@400;450;500;600;650&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css?v=20260527e" />
+  </head>
+  <body data-page="quiz" data-quiz-mode="practice">
+    <!-- APP SHELL: Quiz Mode keeps practice separate from the main dashboard. -->
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Class dashboard navigation">
+        <a class="sidebar-brand" href="./dashboard.html">
+          <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
+          <span>
+            <strong>PhysioK29</strong>
+            <small>Physiology 2k29</small>
+          </span>
+        </a>
+
+        <nav class="nav-stack" aria-label="Primary pages">
+          <a class="nav-link" href="./dashboard.html"><span class="material-symbols-rounded" aria-hidden="true">space_dashboard</span>Dashboard</a>
+          <a class="nav-link" href="./courses.html"><span class="material-symbols-rounded" aria-hidden="true">menu_book</span>Courses</a>
+          <a class="nav-link active" href="./quiz.html"><span class="material-symbols-rounded" aria-hidden="true">quiz</span>Quiz Mode</a>
+          <a class="nav-link" href="./exam-room.html"><span class="material-symbols-rounded" aria-hidden="true">timer</span>Exam Room</a>
+          <a class="nav-link" href="./exam.html"><span class="material-symbols-rounded" aria-hidden="true">hourglass_top</span>Exam Mode</a>
+          <a class="nav-link" href="./timetable.html"><span class="material-symbols-rounded" aria-hidden="true">calendar_month</span>Timetable</a>
+        </nav>
+      </aside>
+
+      <main class="main-area">
+        <header class="page-header">
+          <div class="logo-plaque">
+            <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
+            <div class="plaque-text">
+              <span>PhysioK29</span>
+              <strong>Quiz Mode</strong>
+            </div>
+          </div>
+          <a class="ghost-action" href="./exam-room.html">
+            <span class="material-symbols-rounded" aria-hidden="true">timer</span>
+            Exam room
+          </a>
+        </header>
+
+        <!-- STUDY HERO COMPONENT: Streak, topic tracker, and tailored message render here. -->
+        <section class="study-hero content-panel">
+          <div>
+            <p class="eyebrow">Study engine</p>
+            <h1>Practice questions from uploaded class resources.</h1>
+            <p id="studyMotivation">Loading your study streak and topic tracker...</p>
+          </div>
+          <div class="metrics-grid study-metrics">
+            <article class="metric-card">
+              <span id="studyStreakCount">0</span>
+              <small>day streak</small>
+            </article>
+            <article class="metric-card">
+              <span id="studyWeakCount">0</span>
+              <small>weak topics</small>
+            </article>
+          </div>
+        </section>
+
+        <!-- QUIZ SETUP COMPONENT: Students choose course/topic/count before questions load. -->
+        <section class="content-panel" id="quizSetupPanel">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Start practice</p>
+              <h2>Build a quick quiz</h2>
+            </div>
+          </div>
+          <form class="portal-form quiz-setup-form" id="quizSetupForm">
+            <label>
+              Course
+              <select name="courseCode" id="quizCourseSelect" required></select>
+            </label>
+            <label>
+              Topic
+              <select name="topic" id="quizTopicSelect">
+                <option value="">All topics</option>
+              </select>
+            </label>
+            <label>
+              Questions
+              <input name="limit" type="number" min="5" max="30" value="10" />
+            </label>
+            <button class="primary-action" type="submit">
+              <span class="material-symbols-rounded" aria-hidden="true">play_arrow</span>
+              Start quiz
+            </button>
+            <p class="form-status" id="quizStatus"></p>
+          </form>
+        </section>
+
+        <!-- QUESTION PLAYER COMPONENT: Renders quiz questions and instant practice feedback. -->
+        <section class="content-panel quiz-player-panel" id="quizPlayerPanel" hidden>
+          <div class="section-header">
+            <div>
+              <p class="eyebrow" id="quizPlayerMeta">Practice</p>
+              <h2 id="quizPlayerTitle">Quiz questions</h2>
+            </div>
+            <span class="soft-pill" id="quizTimer">Practice mode</span>
+          </div>
+          <form id="quizAnswerForm" class="quiz-question-list"></form>
+          <button class="primary-action" type="button" id="submitQuizAttempt">
+            <span class="material-symbols-rounded" aria-hidden="true">check_circle</span>
+            Submit quiz
+          </button>
+        </section>
+
+        <!-- RESULT COMPONENT: Score, topic feedback, and motivation render after submit. -->
+        <section class="content-panel quiz-result-panel" id="quizResultPanel" hidden></section>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js?v=20260527e"></script>
+  </body>
+</html>

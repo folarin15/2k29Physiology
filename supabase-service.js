@@ -1,4 +1,4 @@
-import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260527d";
+import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260527e";
 
 const SUPABASE_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
@@ -176,6 +176,42 @@ function mapFeedback(row) {
   };
 }
 
+function mapQuestion(row) {
+  return {
+    id: row.id,
+    courseCode: row.course_code || row.courseCode,
+    topic: row.topic || "General",
+    question: row.question_text || row.question,
+    options: row.options || [],
+    difficulty: row.difficulty || "Medium",
+    sourceHint: row.source_hint || row.sourceHint || "",
+    createdAtMs: toMillis(row.created_at),
+  };
+}
+
+function mapExtractionJob(row) {
+  return {
+    id: row.id,
+    resourceId: row.resource_id,
+    status: row.status,
+    questionCount: Number(row.question_count || 0),
+    error: row.error || "",
+    updatedAtMs: toMillis(row.updated_at),
+  };
+}
+
+function mapStudyEvent(row) {
+  return {
+    id: row.id,
+    memberId: row.member_id,
+    eventType: row.event_type,
+    courseCode: row.course_code || "",
+    resourceId: row.resource_id || "",
+    attemptId: row.attempt_id || "",
+    createdAtMs: toMillis(row.created_at),
+  };
+}
+
 function offlineNotice(methodName) {
   console.warn(`${methodName} skipped because Supabase is not configured yet.`);
 }
@@ -230,6 +266,11 @@ export async function createBackend() {
         callback([]);
         return () => undefined;
       },
+      watchStudyEvents: (callback) => {
+        offlineNotice("watchStudyEvents");
+        callback([]);
+        return () => undefined;
+      },
       uploadResource: async () => {
         throw new Error("Add your Supabase config before uploading files.");
       },
@@ -265,6 +306,27 @@ export async function createBackend() {
       },
       saveResourceProgress: async () => undefined,
       saveResourceFeedback: async () => ({ helpful: false, helpfulCount: 0 }),
+      getQuizSetup: async () => ({ courses: {}, summary: { streak: 0, weakTopics: [] } }),
+      getQuizQuestions: async () => ({ questions: [], summary: { streak: 0, weakTopics: [] } }),
+      submitQuizAttempt: async () => {
+        throw new Error("Add your Supabase config before submitting quizzes.");
+      },
+      watchQuestionBank: (callback) => {
+        offlineNotice("watchQuestionBank");
+        callback([]);
+        return () => undefined;
+      },
+      watchExtractionJobs: (callback) => {
+        offlineNotice("watchExtractionJobs");
+        callback([]);
+        return () => undefined;
+      },
+      extractResourceQuestions: async () => {
+        throw new Error("Add your Supabase config before extracting questions.");
+      },
+      backfillQuestionExtraction: async () => {
+        throw new Error("Add your Supabase config before extracting questions.");
+      },
     };
   }
 
@@ -296,6 +358,15 @@ export async function createBackend() {
     });
 
     if (error) throw error;
+  }
+
+  async function invokeQuestionExtractor(payload) {
+    const { data, error } = await supabase.functions.invoke("question-extractor", {
+      body: payload,
+    });
+    if (error) throw error;
+    if (data?.error) throw new Error(data.error);
+    return data;
   }
 
   async function callMemberPortal(action, payload = {}) {
@@ -536,6 +607,38 @@ export async function createBackend() {
       };
     },
 
+    async getQuizSetup() {
+      return callMemberPortal("quiz-setup", {
+        memberSession: getStoredMemberSession(),
+      });
+    },
+
+    async getQuizQuestions(payload) {
+      const data = await callMemberPortal("quiz-questions", {
+        memberSession: getStoredMemberSession(),
+        mode: payload.mode || "practice",
+        courseCode: cleanStoredText(payload.courseCode || ""),
+        topic: cleanStoredText(payload.topic || ""),
+        limit: Number(payload.limit || 10),
+      });
+
+      return {
+        ...data,
+        questions: (data.questions || []).map(mapQuestion),
+      };
+    },
+
+    async submitQuizAttempt(payload) {
+      return callMemberPortal("submit-quiz-attempt", {
+        memberSession: getStoredMemberSession(),
+        mode: payload.mode || "practice",
+        courseCode: cleanStoredText(payload.courseCode || ""),
+        topic: cleanStoredText(payload.topic || ""),
+        durationSeconds: Number(payload.durationSeconds || 0),
+        answers: payload.answers || [],
+      });
+    },
+
     watchResources(callback, onError = console.error) {
       async function load() {
         try {
@@ -664,6 +767,77 @@ export async function createBackend() {
       return subscribeAndReload("portal-resource-feedback", "resource_feedback", load);
     },
 
+    watchStudyEvents(callback, onError = console.error) {
+      async function load() {
+        const { data, error } = await supabase
+          .from("study_events")
+          .select("id, member_id, event_type, course_code, resource_id, attempt_id, created_at")
+          .order("created_at", { ascending: false })
+          .limit(8000);
+
+        if (error) {
+          onError(error);
+          return;
+        }
+
+        callback((data || []).map(mapStudyEvent));
+      }
+
+      return subscribeAndReload("portal-study-events", "study_events", load);
+    },
+
+    watchQuestionBank(callback, onError = console.error) {
+      async function load() {
+        const { data, error } = await supabase
+          .from("question_bank")
+          .select("id, course_code, topic, question_text, options, difficulty, source_hint, created_at")
+          .order("created_at", { ascending: false })
+          .limit(500);
+
+        if (error) {
+          onError(error);
+          return;
+        }
+
+        callback((data || []).map(mapQuestion));
+      }
+
+      return subscribeAndReload("portal-question-bank", "question_bank", load);
+    },
+
+    watchExtractionJobs(callback, onError = console.error) {
+      async function load() {
+        const { data, error } = await supabase
+          .from("question_extraction_jobs")
+          .select("*")
+          .order("updated_at", { ascending: false })
+          .limit(200);
+
+        if (error) {
+          onError(error);
+          return;
+        }
+
+        callback((data || []).map(mapExtractionJob));
+      }
+
+      return subscribeAndReload("portal-question-jobs", "question_extraction_jobs", load);
+    },
+
+    async extractResourceQuestions(resourceId) {
+      return invokeQuestionExtractor({
+        action: "extract-resource",
+        resourceId,
+      });
+    },
+
+    async backfillQuestionExtraction(limit = 3) {
+      return invokeQuestionExtractor({
+        action: "backfill",
+        limit,
+      });
+    },
+
     async uploadResource(formData, file, onProgress) {
       const user = await getCurrentUser();
       if (!user) throw new Error("Please sign in as a course rep first.");
@@ -691,20 +865,24 @@ export async function createBackend() {
 
       const resourceTitle = cleanStoredText(formData.title || "");
       const resourceType = cleanStoredText(formData.type || "Resource");
-      const { error: insertError } = await supabase.from("resources").insert({
-        title: resourceTitle,
-        course_code: courseCode,
-        course_title: cleanStoredText(formData.courseTitle || ""),
-        type: resourceType,
-        note: cleanStoredText(formData.note || ""),
-        file_name: cleanStoredText(file.name) || safeFileName(file.name),
-        file_size: file.size,
-        file_type: file.type || "unknown",
-        storage_path: filePath,
-        download_url: filePath,
-        uploaded_by: role.displayName || user.email || "Course rep",
-        uploaded_by_user_id: user.id,
-      });
+      const { data: insertedResource, error: insertError } = await supabase
+        .from("resources")
+        .insert({
+          title: resourceTitle,
+          course_code: courseCode,
+          course_title: cleanStoredText(formData.courseTitle || ""),
+          type: resourceType,
+          note: cleanStoredText(formData.note || ""),
+          file_name: cleanStoredText(file.name) || safeFileName(file.name),
+          file_size: file.size,
+          file_type: file.type || "unknown",
+          storage_path: filePath,
+          download_url: filePath,
+          uploaded_by: role.displayName || user.email || "Course rep",
+          uploaded_by_user_id: user.id,
+        })
+        .select("id")
+        .single();
 
       if (insertError) {
         await supabase.storage.from(supabaseConfig.storageBucket).remove([filePath]).catch(() => undefined);
@@ -717,6 +895,13 @@ export async function createBackend() {
         courseCode,
         resourceType,
       }).catch((error) => console.warn("Push notification skipped:", error));
+
+      if (insertedResource?.id) {
+        invokeQuestionExtractor({
+          action: "extract-resource",
+          resourceId: insertedResource.id,
+        }).catch((error) => console.warn("Question extraction skipped:", error));
+      }
     },
 
     async postAnnouncement(formData) {

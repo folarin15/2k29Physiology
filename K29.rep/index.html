@@ -31,7 +31,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Instrument+Sans:wght@400;450;500;600;650&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260527d" />
+    <link rel="stylesheet" href="./styles.css?v=20260527e" />
   </head>
   <body data-page="rep" data-portal="staff" data-portal-role="rep">
     <!-- APP SHELL: Protected portal frame for Ayanfe and Raphael. -->
@@ -210,6 +210,26 @@
             </div>
           </section>
 
+          <!-- QUESTION EXTRACTION COMPONENT: Reps can build quiz questions from existing files. -->
+          <section class="content-panel" id="questionExtractionPanel">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">AI study engine</p>
+                <h2>Question extraction</h2>
+              </div>
+              <span class="soft-pill" id="questionBankCount">0 questions</span>
+            </div>
+            <p class="form-help">
+              New supported uploads extract automatically. Use this batch tool to process older PDFs/images gradually.
+            </p>
+            <button class="secondary-action" type="button" data-backfill-questions>
+              <span class="material-symbols-rounded" aria-hidden="true">auto_awesome</span>
+              Backfill 3 resources
+            </button>
+            <p class="form-status" id="questionExtractionStatus"></p>
+            <ul class="bulk-upload-list" id="questionExtractionList"></ul>
+          </section>
+
           <!-- MANAGE ANNOUNCEMENTS COMPONENT: Reps can delete announcements they posted. -->
           <section class="content-panel">
             <div class="section-header">
@@ -273,6 +293,7 @@
                     <th>Name</th>
                     <th>Matric number</th>
                     <th>Status</th>
+                    <th>Streak</th>
                     <th>Last seen</th>
                   </tr>
                 </thead>
@@ -284,6 +305,6 @@
       </main>
     </div>
 
-    <script type="module" src="./app.js?v=20260527d"></script>
+    <script type="module" src="./app.js?v=20260527e"></script>
   </body>
 </html>

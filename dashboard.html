@@ -40,7 +40,7 @@
         });
       });
     </script>
-    <link rel="stylesheet" href="./styles.css?v=20260527d" />
+    <link rel="stylesheet" href="./styles.css?v=20260527e" />
   </head>
   <body data-page="dashboard">
     <!-- APP SHELL: Holds the sidebar, header, dashboard content, and activity panel. -->
@@ -58,6 +58,8 @@
         <nav class="nav-stack" aria-label="Primary pages">
           <a class="nav-link active" href="./dashboard.html"><span class="material-symbols-rounded" aria-hidden="true">space_dashboard</span>Dashboard</a>
           <a class="nav-link" href="./courses.html"><span class="material-symbols-rounded" aria-hidden="true">menu_book</span>Courses</a>
+          <a class="nav-link" href="./quiz.html"><span class="material-symbols-rounded" aria-hidden="true">quiz</span>Quiz Mode</a>
+          <a class="nav-link" href="./exam-room.html"><span class="material-symbols-rounded" aria-hidden="true">timer</span>Exam Room</a>
           <a class="nav-link" href="./exam.html"><span class="material-symbols-rounded" aria-hidden="true">timer</span>Exam Mode</a>
           <a class="nav-link" href="./timetable.html"><span class="material-symbols-rounded" aria-hidden="true">calendar_month</span>Timetable</a>
           <a class="nav-link" href="./reps.html"><span class="material-symbols-rounded" aria-hidden="true">groups</span>Reps</a>
@@ -126,6 +128,30 @@
           <div class="countdown-grid" id="gesCountdownGrid" aria-label="Time remaining"></div>
         </section>
 
+        <!-- STUDY SNAPSHOT COMPONENT: Shows streak and question-bank readiness on the dashboard. -->
+        <section class="study-snapshot content-panel" id="dashboardStudyPanel">
+          <div>
+            <p class="eyebrow">Study streak</p>
+            <h2>Keep your revision visible.</h2>
+            <p id="studyMotivation">Start a quiz or open a reader file to begin tracking study activity.</p>
+          </div>
+          <div class="metrics-grid study-metrics">
+            <article class="metric-card">
+              <span id="dashboardStudyStreak">0</span>
+              <small>day streak</small>
+            </article>
+            <article class="metric-card">
+              <span id="dashboardQuestionCount">0</span>
+              <small>quiz questions</small>
+            </article>
+          </div>
+          <div class="topic-tracker" id="studentTopicTracker"></div>
+          <div class="study-actions">
+            <a class="primary-action" href="./quiz.html"><span class="material-symbols-rounded" aria-hidden="true">quiz</span>Practice quiz</a>
+            <a class="secondary-action" href="./exam-room.html"><span class="material-symbols-rounded" aria-hidden="true">timer</span>Exam room</a>
+          </div>
+        </section>
+
         <!-- METRICS COMPONENT: Summarizes current dashboard information. -->
         <section class="metrics-grid" aria-label="Dashboard summary">
           <article class="metric-card">
@@ -183,6 +209,6 @@
       </main>
     </div>
 
-    <script type="module" src="./app.js?v=20260527d"></script>
+    <script type="module" src="./app.js?v=20260527e"></script>
   </body>
 </html>

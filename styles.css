@@ -1596,6 +1596,196 @@ textarea {
   text-align: right;
 }
 
+/* STUDY ENGINE: Streak, topic tracker, quiz player, and exam-room layouts. */
+.study-snapshot,
+.study-hero,
+.quiz-player-panel,
+.quiz-result-panel {
+  margin-bottom: 18px;
+}
+
+.study-snapshot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.45fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.study-snapshot > p,
+.study-snapshot h2,
+.study-hero h1 {
+  margin: 0;
+}
+
+.study-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.study-metrics {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 0;
+}
+
+.topic-tracker {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+}
+
+.topic-chip {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  border: 1px solid rgba(217, 111, 77, 0.18);
+  border-radius: 14px;
+  background: rgba(255, 247, 239, 0.78);
+}
+
+.topic-chip strong {
+  color: var(--clay);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.topic-chip span {
+  color: var(--ink);
+  font-weight: 560;
+}
+
+.topic-chip small {
+  color: var(--muted);
+}
+
+.topic-chip[data-tone="clear"] {
+  border-color: rgba(42, 157, 127, 0.18);
+  background: rgba(42, 157, 127, 0.08);
+}
+
+.study-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.35fr);
+  gap: 16px;
+  align-items: center;
+}
+
+.study-hero h1 {
+  max-width: 760px;
+  font-family: var(--display-font);
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.quiz-setup-form {
+  grid-template-columns: minmax(180px, 1fr) minmax(180px, 1fr) 120px;
+  align-items: end;
+}
+
+.quiz-setup-form .primary-action,
+.quiz-setup-form .form-status {
+  grid-column: 1 / -1;
+}
+
+.quiz-question-list {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.quiz-question-card {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+  margin: 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fffefa;
+}
+
+.quiz-question-card legend {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  color: var(--mint-dark);
+  font-weight: 650;
+}
+
+.quiz-question-card legend small {
+  color: var(--muted);
+  font-weight: 450;
+}
+
+.quiz-question-card p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.quiz-options {
+  display: grid;
+  gap: 8px;
+}
+
+.quiz-options label {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding: 11px 12px;
+  border: 1px solid rgba(23, 27, 31, 0.09);
+  border-radius: 12px;
+  background: rgba(248, 246, 239, 0.58);
+}
+
+.quiz-options input {
+  margin-top: 3px;
+  accent-color: var(--mint-dark);
+}
+
+.result-motivation {
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(42, 157, 127, 0.1);
+  color: var(--mint-dark);
+  font-weight: 560;
+}
+
+.quiz-review-list {
+  display: grid;
+  gap: 10px;
+}
+
+.quiz-review-card {
+  display: grid;
+  gap: 7px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--clay);
+  border-radius: 14px;
+  background: #fffefa;
+}
+
+.quiz-review-card[data-correct="true"] {
+  border-left-color: var(--mint);
+}
+
+.quiz-review-card strong,
+.quiz-review-card p,
+.quiz-review-card small {
+  margin: 0;
+}
+
+.quiz-review-card p,
+.quiz-review-card small {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
 /* RESPONSIVE RULES: Makes the interface work cleanly on phones and tablets. */
 @media (max-width: 1050px) {
   .app-shell {
@@ -1613,7 +1803,10 @@ textarea {
 
   .dashboard-grid,
   .control-row,
-  .staff-grid {
+  .staff-grid,
+  .study-snapshot,
+  .study-hero,
+  .quiz-setup-form {
     grid-template-columns: 1fr;
   }
 }
@@ -1692,6 +1885,8 @@ textarea {
   .activity-panel,
   .ges-countdown-panel,
   .notification-center,
+  .study-snapshot,
+  .study-hero,
   .control-row,
   .dashboard-grid,
   .resources-list,
@@ -1764,13 +1959,19 @@ textarea {
     overflow: hidden;
   }
 
+  .study-actions {
+    display: grid;
+  }
+
   .notification-setup {
     align-items: stretch;
     flex-direction: column;
   }
 
   .ges-countdown-panel,
-  .notification-item {
+  .notification-item,
+  .study-snapshot,
+  .study-hero {
     grid-template-columns: 1fr;
   }
 
@@ -1779,7 +1980,8 @@ textarea {
   }
 
   .hero-panel h1,
-  .page-intro h1 {
+  .page-intro h1,
+  .study-hero h1 {
     max-width: 100%;
     font-size: clamp(1.65rem, 7.6vw, 2.35rem);
     line-height: 1.1;
@@ -1862,7 +2064,8 @@ textarea {
   }
 
   .resource-grid,
-  .course-grid {
+  .course-grid,
+  .topic-tracker {
     grid-template-columns: 1fr;
   }
 

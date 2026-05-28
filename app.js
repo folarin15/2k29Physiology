@@ -1,6 +1,6 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260527d";
-import { createBackend } from "./supabase-service.js?v=20260527d";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260527d";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260527e";
+import { createBackend } from "./supabase-service.js?v=20260527e";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260527e";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
@@ -17,12 +17,24 @@ const state = {
   suggestions: [],
   resourceProgress: [],
   resourceFeedback: [],
+  studyEvents: [],
+  questions: [],
+  extractionJobs: [],
   staffUser: null,
   staffRole: null,
   realtimeUnsubscribe: null,
   membersUnsubscribe: null,
   suggestionsUnsubscribe: null,
   engagementUnsubscribe: null,
+  questionUnsubscribe: null,
+  study: {
+    setup: null,
+    questions: [],
+    startedAt: 0,
+    timerId: null,
+    warnings: 0,
+    mode: "practice",
+  },
   push: {
     checked: false,
     subscribed: false,
@@ -120,6 +132,84 @@ function progressLabel(status = "opened") {
       urgent: "Urgent",
       done: "Done",
     }[status] || "Not started"
+  );
+}
+
+function getQuizMode() {
+  return document.body.dataset.quizMode === "exam" ? "exam" : "practice";
+}
+
+function quizModeLabel(mode = getQuizMode()) {
+  return mode === "exam" ? "Hardcore Exam Room" : "Quiz Mode";
+}
+
+function getQuestionStats() {
+  if (!state.questions.length && state.study.setup?.courses) {
+    const courses = state.study.setup.courses;
+    return Object.entries(courses).reduce(
+      (stats, [courseCode, info]) => {
+        const count = Number(info?.count || 0);
+        stats.total += count;
+        stats.courses[courseCode] = count;
+        return stats;
+      },
+      { total: 0, courses: {} }
+    );
+  }
+
+  return state.questions.reduce((stats, question) => {
+    stats.total += 1;
+    stats.courses[question.courseCode] = (stats.courses[question.courseCode] || 0) + 1;
+    return stats;
+  }, { total: 0, courses: {} });
+}
+
+function getCourseTitle(courseCode) {
+  return findCourse(courseCode)?.title || courseCode;
+}
+
+function dayKey(value = Date.now()) {
+  const date = new Date(value);
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function shiftedDayKey(daysFromToday) {
+  const date = new Date();
+  date.setDate(date.getDate() + daysFromToday);
+  return dayKey(date);
+}
+
+function calculateStudyStreak(events = []) {
+  const days = new Set(events.map((event) => dayKey(event.createdAtMs)).filter(Boolean));
+  let cursor = days.has(shiftedDayKey(0)) ? 0 : days.has(shiftedDayKey(-1)) ? -1 : null;
+  if (cursor === null) return 0;
+
+  let streak = 0;
+  while (days.has(shiftedDayKey(cursor))) {
+    streak += 1;
+    cursor -= 1;
+  }
+  return streak;
+}
+
+function getMemberStudyEvents(memberId) {
+  return state.studyEvents.filter((event) => event.memberId === memberId);
+}
+
+function getMemberStreak(memberId) {
+  return calculateStudyStreak(getMemberStudyEvents(memberId));
+}
+
+function getStudySummary() {
+  return state.study.setup?.summary || { streak: 0, weakTopics: [] };
+}
+
+function hasStudyUi() {
+  return Boolean(
+    getElement("#studyStreakCount") ||
+      getElement("#dashboardStudyStreak") ||
+      getElement("#quizCourseSelect") ||
+      getElement("#studentTopicTracker")
   );
 }
 
@@ -619,6 +709,7 @@ async function ensureMemberOnboarding() {
       setMemberGate(false);
       renderScholarGreeting();
       renderNotificationSetup();
+      loadQuizSetup();
       showToast("Welcome. Your class profile is saved.");
       connectPushNotifications(memberSession, true);
       startPublicRealtimeData();
@@ -1104,6 +1195,213 @@ function renderNotificationCenter() {
     .join("");
 }
 
+function renderTopicTracker(summary = getStudySummary()) {
+  const target = getElement("#studentTopicTracker");
+  if (!target) return;
+
+  const weakTopics = summary.weakTopics || [];
+  target.innerHTML = weakTopics.length
+    ? weakTopics
+        .map(
+          (topic) => `
+            <article class="topic-chip">
+              <strong>${escapeHtml(topic.courseCode || "Course")}</strong>
+              <span>${escapeHtml(topic.topic || "General")}</span>
+              <small>${Number(topic.accuracy || 0)}% accuracy</small>
+            </article>
+          `
+        )
+        .join("")
+    : `<article class="topic-chip" data-tone="clear">
+        <strong>Clear board</strong>
+        <span>Weak topics will appear after quizzes.</span>
+        <small>Start with any course</small>
+      </article>`;
+}
+
+/* STUDY DASHBOARD: Shows streak, available questions, and topic tracker on student pages. */
+function renderStudyDashboard() {
+  const summary = getStudySummary();
+  const stats = getQuestionStats();
+  const streak = Number(summary.streak || 0);
+  const weakCount = (summary.weakTopics || []).length;
+  const motivation =
+    streak > 1
+      ? `You are on a ${streak}-day streak. Keep it light, steady, and honest.`
+      : weakCount
+        ? "Your topic tracker has a few repair points. A short focused quiz will do more than a long anxious scroll."
+        : "Start with one short quiz. The portal will begin tracking your streak and weak topics from there.";
+
+  const streakTargets = ["#studyStreakCount", "#dashboardStudyStreak"];
+  streakTargets.forEach((selector) => {
+    const target = getElement(selector);
+    if (target) target.textContent = streak;
+  });
+
+  const weakTarget = getElement("#studyWeakCount");
+  if (weakTarget) weakTarget.textContent = weakCount;
+
+  const questionTarget = getElement("#dashboardQuestionCount");
+  if (questionTarget) questionTarget.textContent = stats.total;
+
+  const motivationTarget = getElement("#studyMotivation");
+  if (motivationTarget) motivationTarget.textContent = motivation;
+
+  renderTopicTracker(summary);
+}
+
+function populateQuizTopicSelect() {
+  const courseSelect = getElement("#quizCourseSelect");
+  const topicSelect = getElement("#quizTopicSelect");
+  if (!courseSelect || !topicSelect) return;
+
+  const selectedCourse = courseSelect.value;
+  const topics = state.study.setup?.courses?.[selectedCourse]?.topics || {};
+  const topicEntries = Object.entries(topics).sort((a, b) => a[0].localeCompare(b[0]));
+  topicSelect.innerHTML = `<option value="">All topics</option>${topicEntries
+    .map(([topic, count]) => `<option value="${escapeHtml(topic)}">${escapeHtml(topic)} (${count})</option>`)
+    .join("")}`;
+}
+
+function populateQuizControls() {
+  const courseSelect = getElement("#quizCourseSelect");
+  if (!courseSelect) return;
+
+  const courses = state.study.setup?.courses || {};
+  const available = firstSemesterCourses.filter((course) => courses[course.code]?.count);
+  courseSelect.innerHTML = available.length
+    ? available
+        .map(
+          (course) =>
+            `<option value="${course.code}">${course.code} - ${escapeHtml(course.title)} (${courses[course.code].count})</option>`
+        )
+        .join("")
+    : `<option value="">No extracted questions yet</option>`;
+  courseSelect.disabled = !available.length;
+  populateQuizTopicSelect();
+}
+
+async function loadQuizSetup() {
+  if (!hasStudyUi() || !getMemberSession()?.memberId) return;
+
+  try {
+    state.study.setup = await state.backend.getQuizSetup();
+    populateQuizControls();
+    renderStudyDashboard();
+  } catch (error) {
+    const status = getElement("#quizStatus");
+    if (status) status.textContent = error.message || "Could not load the study engine yet.";
+  }
+}
+
+function stopQuizTimer() {
+  if (state.study.timerId) window.clearInterval(state.study.timerId);
+  state.study.timerId = null;
+}
+
+function renderQuizTimer() {
+  const target = getElement("#quizTimer");
+  if (!target) return;
+
+  const elapsed = Math.floor((Date.now() - state.study.startedAt) / 1000);
+  if (state.study.mode !== "exam") {
+    const minutes = Math.floor(elapsed / 60);
+    const seconds = elapsed % 60;
+    target.textContent = `${minutes}:${String(seconds).padStart(2, "0")} elapsed`;
+    return;
+  }
+
+  const duration = Number(state.study.durationSeconds || 1800);
+  const remaining = Math.max(0, duration - elapsed);
+  const minutes = Math.floor(remaining / 60);
+  const seconds = remaining % 60;
+  target.textContent = `${minutes}:${String(seconds).padStart(2, "0")} remaining`;
+  if (remaining <= 0) {
+    stopQuizTimer();
+    getElement("#submitQuizAttempt")?.click();
+  }
+}
+
+function startQuizTimer(durationSeconds = 0) {
+  stopQuizTimer();
+  state.study.startedAt = Date.now();
+  state.study.durationSeconds = Number(durationSeconds || 0);
+  renderQuizTimer();
+  state.study.timerId = window.setInterval(renderQuizTimer, 1000);
+}
+
+function renderQuizQuestions() {
+  const form = getElement("#quizAnswerForm");
+  const panel = getElement("#quizPlayerPanel");
+  const resultPanel = getElement("#quizResultPanel");
+  const title = getElement("#quizPlayerTitle");
+  const meta = getElement("#quizPlayerMeta");
+  if (!form || !panel) return;
+
+  if (title) title.textContent = state.study.mode === "exam" ? "Simulated exam attempt" : "Practice questions";
+  if (meta) meta.textContent = `${quizModeLabel(state.study.mode)} - ${escapeHtml(state.study.courseCode || "")}`;
+  panel.hidden = false;
+  if (resultPanel) resultPanel.hidden = true;
+
+  form.innerHTML = state.study.questions
+    .map(
+      (question, index) => `
+        <fieldset class="quiz-question-card">
+          <legend>
+            <span>Question ${index + 1}</span>
+            <small>${escapeHtml(question.topic || "General")} - ${escapeHtml(question.difficulty || "Medium")}</small>
+          </legend>
+          <p>${escapeHtml(question.question)}</p>
+          <div class="quiz-options">
+            ${(question.options || [])
+              .map(
+                (option) => `
+                  <label>
+                    <input type="radio" name="question-${question.id}" value="${escapeHtml(option)}" />
+                    <span>${escapeHtml(option)}</span>
+                  </label>
+                `
+              )
+              .join("")}
+          </div>
+        </fieldset>
+      `
+    )
+    .join("");
+}
+
+function renderQuizResults(data) {
+  const panel = getElement("#quizResultPanel");
+  if (!panel) return;
+
+  const percent = data.total ? Math.round((Number(data.score || 0) / Number(data.total)) * 100) : 0;
+  panel.hidden = false;
+  panel.innerHTML = `
+    <div class="section-header">
+      <div>
+        <p class="eyebrow">Attempt complete</p>
+        <h2>${percent}% score</h2>
+      </div>
+      <span class="soft-pill">${Number(data.score || 0)} of ${Number(data.total || 0)}</span>
+    </div>
+    <p class="result-motivation">${escapeHtml(data.motivation || "Attempt saved. Review your misses and try again.")}</p>
+    <div class="quiz-review-list">
+      ${(data.results || [])
+        .map(
+          (result) => `
+            <article class="quiz-review-card" data-correct="${result.correct ? "true" : "false"}">
+              <strong>${escapeHtml(result.question)}</strong>
+              <p>Your answer: ${escapeHtml(result.selectedAnswer || "No answer")}</p>
+              <p>Correct answer: ${escapeHtml(result.correctAnswer || "")}</p>
+              <small>${escapeHtml(result.explanation || result.sourceHint || "")}</small>
+            </article>
+          `
+        )
+        .join("")}
+    </div>
+  `;
+}
+
 /* ANNOUNCEMENT BOARD: Renders live rep/admin announcements. */
 function renderAnnouncements() {
   const target = getElement("#announcementList");
@@ -1176,6 +1474,7 @@ function renderMembersTable() {
                   <small>${member.notificationUpdatedAtMs ? formatDate(member.notificationUpdatedAtMs) : "Not synced yet"}</small>
                 </div>
               </td>
+              <td>${getMemberStreak(member.id)} day${getMemberStreak(member.id) === 1 ? "" : "s"}</td>
               <td>${formatDate(member.lastSeenAtMs || member.createdAtMs)}</td>
               ${
                 canDeleteMembers
@@ -1186,7 +1485,7 @@ function renderMembersTable() {
           `
         )
         .join("")
-    : `<tr><td colspan="${canDeleteMembers ? 5 : 4}">No class members yet.</td></tr>`;
+    : `<tr><td colspan="${canDeleteMembers ? 6 : 5}">No class members yet.</td></tr>`;
 }
 
 function renderStaffLists() {
@@ -1283,6 +1582,10 @@ function renderStaffSummary() {
   const uploadsThisWeek = state.resources.filter((resource) => Number(resource.createdAtMs || 0) >= weekAgo).length;
   const pushOff = state.members.filter((member) => !member.notificationEnabled).length;
   const helpfulVotes = state.resourceFeedback.filter((feedback) => feedback.helpful).length;
+  const activeStudyMembers = new Set(
+    state.studyEvents.filter((event) => Date.now() - event.createdAtMs < 7 * 24 * 60 * 60 * 1000).map((event) => event.memberId)
+  ).size;
+  const topStreak = state.members.reduce((best, member) => Math.max(best, getMemberStreak(member.id)), 0);
   const courseOpens = state.resourceProgress.reduce((courses, progress) => {
     const resource = state.resources.find((item) => item.id === progress.resourceId);
     if (!resource?.courseCode) return courses;
@@ -1308,7 +1611,43 @@ function renderStaffSummary() {
       <span>${helpfulVotes}</span>
       <small>helpful resource votes</small>
     </article>
+    <article class="metric-card staff-summary-card">
+      <span>${activeStudyMembers}</span>
+      <small>students active this week</small>
+    </article>
+    <article class="metric-card staff-summary-card">
+      <span>${topStreak}</span>
+      <small>top study streak</small>
+    </article>
   `;
+}
+
+function renderExtractionTools() {
+  const panel = getElement("#questionExtractionPanel");
+  const list = getElement("#questionExtractionList");
+  const questionCount = getElement("#questionBankCount");
+  if (!panel && !list && !questionCount) return;
+
+  const stats = getQuestionStats();
+  if (questionCount) questionCount.textContent = `${stats.total} questions`;
+
+  if (list) {
+    list.innerHTML = state.extractionJobs.length
+      ? state.extractionJobs
+          .slice(0, 12)
+          .map((job) => {
+            const resource = state.resources.find((item) => item.id === job.resourceId);
+            return `
+              <li data-tone="${job.status === "completed" ? "success" : job.status === "failed" ? "error" : "muted"}">
+                <strong>${escapeHtml(resource?.title || "Resource")}</strong>
+                <span>${escapeHtml(job.status)} - ${job.questionCount} question${job.questionCount === 1 ? "" : "s"}</span>
+                ${job.error ? `<small>${escapeHtml(job.error)}</small>` : ""}
+              </li>
+            `;
+          })
+          .join("")
+      : `<li data-tone="muted">No extraction jobs yet. Run a backfill to start building the question bank.</li>`;
+  }
 }
 
 function renderAll() {
@@ -1327,6 +1666,8 @@ function renderAll() {
   renderMembersTable();
   renderStaffLists();
   renderStaffSummary();
+  renderExtractionTools();
+  renderStudyDashboard();
 }
 
 /* SEARCH BEHAVIOR: Filters live uploads first, then course cards if no uploads exist. */
@@ -1654,6 +1995,7 @@ function connectStaffPortal(allowedRoles) {
         (rows) => {
           state.resourceProgress = rows;
           renderStaffSummary();
+          renderMembersTable();
         },
         (error) => showToast(error.message || "Could not load reader progress.", "error")
       );
@@ -1664,9 +2006,40 @@ function connectStaffPortal(allowedRoles) {
         },
         (error) => showToast(error.message || "Could not load helpful votes.", "error")
       );
+      const studyUnsubscribe = state.backend.watchStudyEvents(
+        (rows) => {
+          state.studyEvents = rows;
+          renderStaffSummary();
+          renderMembersTable();
+        },
+        (error) => showToast(error.message || "Could not load study streaks.", "error")
+      );
       state.engagementUnsubscribe = () => {
         progressUnsubscribe?.();
         feedbackUnsubscribe?.();
+        studyUnsubscribe?.();
+      };
+    }
+
+    if (canEnter && !state.questionUnsubscribe && getElement("#questionExtractionPanel")) {
+      const questionUnsubscribe = state.backend.watchQuestionBank(
+        (questions) => {
+          state.questions = questions;
+          renderExtractionTools();
+          renderStaffSummary();
+        },
+        (error) => showToast(error.message || "Could not load question bank.", "error")
+      );
+      const jobUnsubscribe = state.backend.watchExtractionJobs(
+        (jobs) => {
+          state.extractionJobs = jobs;
+          renderExtractionTools();
+        },
+        (error) => showToast(error.message || "Could not load extraction jobs.", "error")
+      );
+      state.questionUnsubscribe = () => {
+        questionUnsubscribe?.();
+        jobUnsubscribe?.();
       };
     }
 
@@ -1693,7 +2066,16 @@ function connectStaffPortal(allowedRoles) {
       state.engagementUnsubscribe = null;
       state.resourceProgress = [];
       state.resourceFeedback = [];
+      state.studyEvents = [];
       renderStaffSummary();
+    }
+
+    if (!canEnter && state.questionUnsubscribe) {
+      state.questionUnsubscribe();
+      state.questionUnsubscribe = null;
+      state.questions = [];
+      state.extractionJobs = [];
+      renderExtractionTools();
     }
 
     if (!canEnter && state.realtimeUnsubscribe) {
@@ -2392,6 +2774,118 @@ function connectResourceEngagement() {
   });
 }
 
+/* QUESTION EXTRACTION: Staff controls for AI extraction and existing-resource backfill. */
+function connectQuestionExtractionTools() {
+  document.addEventListener("click", async (event) => {
+    const extractButton = event.target.closest("[data-extract-resource]");
+    const backfillButton = event.target.closest("[data-backfill-questions]");
+    const status = getElement("#questionExtractionStatus");
+
+    try {
+      if (extractButton) {
+        extractButton.disabled = true;
+        if (status) status.textContent = "Extracting questions from this resource...";
+        const result = await state.backend.extractResourceQuestions(extractButton.dataset.extractResource);
+        if (status) status.textContent = `${result.status}: ${result.questionCount || 0} questions.`;
+        showToast("Question extraction finished.");
+        extractButton.disabled = false;
+      }
+
+      if (backfillButton) {
+        backfillButton.disabled = true;
+        if (status) status.textContent = "Backfilling a small batch of existing resources...";
+        const result = await state.backend.backfillQuestionExtraction(3);
+        if (status) status.textContent = `Processed ${result.processed || 0} resource${result.processed === 1 ? "" : "s"}.`;
+        showToast("Backfill batch finished.");
+        backfillButton.disabled = false;
+      }
+    } catch (error) {
+      if (extractButton) extractButton.disabled = false;
+      if (backfillButton) backfillButton.disabled = false;
+      if (status) status.textContent = error.message || "Question extraction failed.";
+      showToast(error.message || "Question extraction failed.", "error");
+    }
+  });
+}
+
+/* QUIZ MODE: Starts practice/exam sessions and submits answers securely through the portal function. */
+function connectQuizMode() {
+  const setupForm = getElement("#quizSetupForm");
+  const courseSelect = getElement("#quizCourseSelect");
+  const submitButton = getElement("#submitQuizAttempt");
+  if (!setupForm && !submitButton) return;
+
+  courseSelect?.addEventListener("change", populateQuizTopicSelect);
+
+  setupForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const status = getElement("#quizStatus");
+    const formData = new FormData(setupForm);
+    const mode = getQuizMode();
+    const courseCode = String(formData.get("courseCode") || "");
+    const topic = String(formData.get("topic") || "");
+    const limit = Number(formData.get("limit") || (mode === "exam" ? 30 : 10));
+
+    if (!courseCode) {
+      if (status) status.textContent = "No extracted questions are available yet. Ask admin to run the backfill.";
+      return;
+    }
+
+    try {
+      if (status) status.textContent = "Preparing questions...";
+      state.study.mode = mode;
+      state.study.courseCode = courseCode;
+      state.study.topic = topic;
+      const data = await state.backend.getQuizQuestions({ mode, courseCode, topic, limit });
+      state.study.questions = data.questions || [];
+      if (!state.study.questions.length) {
+        if (status) status.textContent = "No questions found for that selection yet.";
+        return;
+      }
+      if (status) status.textContent = "";
+      renderQuizQuestions();
+      startQuizTimer(mode === "exam" ? Math.max(300, state.study.questions.length * 60) : 0);
+      getElement("#quizPlayerPanel")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch (error) {
+      if (status) status.textContent = error.message || "Could not start this quiz.";
+    }
+  });
+
+  submitButton?.addEventListener("click", async () => {
+    if (!state.study.questions.length) return;
+    submitButton.disabled = true;
+    const status = getElement("#quizStatus");
+    const answers = state.study.questions.map((question) => ({
+      questionId: question.id,
+      selectedAnswer:
+        getElements(`input[name="question-${question.id}"]`).find((option) => option.checked)?.value || "",
+    }));
+    const durationSeconds = Math.floor((Date.now() - state.study.startedAt) / 1000);
+
+    try {
+      if (status) status.textContent = "Submitting attempt...";
+      stopQuizTimer();
+      const data = await state.backend.submitQuizAttempt({
+        mode: state.study.mode,
+        courseCode: state.study.courseCode,
+        topic: state.study.topic,
+        durationSeconds,
+        answers,
+      });
+      state.study.setup = { ...(state.study.setup || {}), summary: data.summary || getStudySummary() };
+      renderQuizResults(data);
+      renderStudyDashboard();
+      if (status) status.textContent = "";
+      getElement("#quizResultPanel")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch (error) {
+      if (status) status.textContent = error.message || "Could not submit this attempt.";
+      startQuizTimer(state.study.mode === "exam" ? Math.max(300, state.study.questions.length * 60) : 0);
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+}
+
 /* PDF TEXT HELPERS: Keep the generated timetable PDF browser-native and library-free. */
 function sanitizePdfText(value) {
   return String(value ?? "")
@@ -2614,6 +3108,8 @@ async function init() {
   connectNotificationSetup();
   connectNotificationCenter();
   connectResourceEngagement();
+  connectQuestionExtractionTools();
+  connectQuizMode();
   connectTimetableDownload();
   window.setInterval(() => {
     renderNextExam();
@@ -2621,7 +3117,10 @@ async function init() {
     renderExamMode();
   }, 1000);
   const memberReady = await ensureMemberOnboarding();
-  if (memberReady) startPublicRealtimeData();
+  if (memberReady) {
+    await loadQuizSetup();
+    startPublicRealtimeData();
+  }
 }
 
 init().catch((error) => {
