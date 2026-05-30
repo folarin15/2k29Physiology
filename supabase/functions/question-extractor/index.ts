@@ -116,11 +116,16 @@ function fallbackQuestions(resource: ResourceRow) {
   return [
     {
       topic,
-      question: `Which area should you focus on when reviewing ${cleanText(resource.title, 100)}?`,
-      options: ["Main concepts in the uploaded material", "Only the file name", "Unrelated class announcements", "Course rep contact details"],
-      answer: "Main concepts in the uploaded material",
-      explanation: base || "Review the uploaded material and identify its main concepts before attempting practice questions.",
-      difficulty: "Easy",
+      question: `A student is revising ${cleanText(resource.title, 100)}. Which approach best supports exam-level mastery of this material?`,
+      options: [
+        "Explain the major concepts, compare related ideas, and solve applied questions from the material",
+        "Memorise the file title and skip the worked details",
+        "Read only unrelated class announcements",
+        "Depend only on course rep contact details",
+      ],
+      answer: "Explain the major concepts, compare related ideas, and solve applied questions from the material",
+      explanation: base || "Exam-level mastery requires understanding, comparison, and application of the uploaded material.",
+      difficulty: "Hard",
       confidence: 0.35,
     },
   ];
@@ -187,7 +192,7 @@ async function aiExtractQuestions(resource: ResourceRow, fileBytes: Uint8Array) 
         {
           role: "system",
           content:
-            "You are building a trusted CBT practice bank for a class portal. Extract real questions when present. If the resource is a slide or note, create likely study questions strictly from visible content. No emojis. Return only JSON.",
+            "You are an examiner building a trusted University of Ibadan 100-level CBT practice bank. Create hard but fair questions from the uploaded source only. Prefer application, comparison, interpretation, calculation, and concept-linking questions over direct recall. Use plausible distractors that expose common mistakes. Do not invent facts outside the source. No emojis. Return only JSON.",
         },
         {
           role: "user",
@@ -202,7 +207,7 @@ async function aiExtractQuestions(resource: ResourceRow, fileBytes: Uint8Array) 
                 resourceType: resource.type || "",
                 note: resource.note || "",
                 instruction:
-                  "Return 6-10 multiple-choice questions. Each must have exactly 4 options, one exact answer from options, short explanation, topic, difficulty, and confidence 0-1.",
+                  "Return 8-10 high-quality multiple-choice questions at University of Ibadan 100-level/A-level standard. Each question must have exactly 4 concise options, one exact answer copied from the options array, a short explanation that teaches the reasoning, a specific topic, difficulty, and confidence 0-1. Avoid vague questions, filename questions, and giveaways such as 'all of the above' unless the source uses that style.",
               }),
             },
           ],
@@ -395,6 +400,7 @@ Deno.serve(async (req) => {
     const candidates = (resources || [])
       .filter((resource) => supportedExtensions.has(fileExtension(resource.file_name)))
       .filter((resource) => !["completed", "processing"].includes(jobByResource.get(String(resource.id)) || ""))
+      .sort((a, b) => Number(a.file_size || 0) - Number(b.file_size || 0))
       .slice(0, limit);
 
     const results = [];
@@ -402,7 +408,17 @@ Deno.serve(async (req) => {
       results.push(await extractResource(req, supabase, resource as ResourceRow, user.id));
     }
 
-    return jsonResponse(req, { processed: results.length, results });
+    const summary = results.reduce(
+      (totals, result) => {
+        totals[result.status as "completed" | "failed" | "skipped"] =
+          (totals[result.status as "completed" | "failed" | "skipped"] || 0) + 1;
+        totals.questions += Number(result.questionCount || 0);
+        return totals;
+      },
+      { completed: 0, failed: 0, skipped: 0, questions: 0 },
+    );
+
+    return jsonResponse(req, { processed: results.length, ...summary, results });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Question extractor failed.";
     const status = message.includes("Authentication") ? 401 : message.includes("Only course") ? 403 : 400;

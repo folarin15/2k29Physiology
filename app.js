@@ -1,6 +1,6 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260527e";
-import { createBackend } from "./supabase-service.js?v=20260527e";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260527e";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260530a";
+import { createBackend } from "./supabase-service.js?v=20260530a";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260530a";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
@@ -1626,10 +1626,12 @@ function renderExtractionTools() {
   const panel = getElement("#questionExtractionPanel");
   const list = getElement("#questionExtractionList");
   const questionCount = getElement("#questionBankCount");
+  const progress = getElement("#questionExtractionProgress");
   if (!panel && !list && !questionCount) return;
 
   const stats = getQuestionStats();
   if (questionCount) questionCount.textContent = `${stats.total} questions`;
+  if (progress) progress.hidden = true;
 
   if (list) {
     list.innerHTML = state.extractionJobs.length
@@ -2786,16 +2788,27 @@ function connectQuestionExtractionTools() {
         extractButton.disabled = true;
         if (status) status.textContent = "Extracting questions from this resource...";
         const result = await state.backend.extractResourceQuestions(extractButton.dataset.extractResource);
-        if (status) status.textContent = `${result.status}: ${result.questionCount || 0} questions.`;
+        if (status) {
+          status.textContent = `${result.status}: ${result.questionCount || 0} question${result.questionCount === 1 ? "" : "s"}${result.error ? ` - ${result.error}` : ""}.`;
+        }
         showToast("Question extraction finished.");
         extractButton.disabled = false;
       }
 
       if (backfillButton) {
         backfillButton.disabled = true;
+        const progress = getElement("#questionExtractionProgress");
+        if (progress) {
+          progress.hidden = false;
+          progress.querySelector("span").style.width = "35%";
+        }
         if (status) status.textContent = "Backfilling a small batch of existing resources...";
         const result = await state.backend.backfillQuestionExtraction(3);
-        if (status) status.textContent = `Processed ${result.processed || 0} resource${result.processed === 1 ? "" : "s"}.`;
+        if (progress) progress.querySelector("span").style.width = "100%";
+        const failed = (result.results || []).filter((item) => item.status === "failed" && item.error);
+        if (status) {
+          status.textContent = `Smallest files first. Processed ${result.processed || 0}: ${result.completed || 0} completed, ${result.failed || 0} failed, ${result.skipped || 0} skipped, ${result.questions || 0} questions.${failed[0] ? ` First error: ${failed[0].error}` : ""}`;
+        }
         showToast("Backfill batch finished.");
         backfillButton.disabled = false;
       }
