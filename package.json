@@ -1,0 +1,7 @@
+{
+  "name": "physiology-2k29",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build-static.mjs"
+  }
+}
