@@ -131,6 +131,32 @@ function fallbackQuestions(resource: ResourceRow) {
   ];
 }
 
+function extractionInstruction(resource: ResourceRow) {
+  return JSON.stringify({
+    courseCode: resource.course_code,
+    courseTitle: resource.course_title || "",
+    resourceTitle: resource.title,
+    resourceType: resource.type || "",
+    note: resource.note || "",
+    instruction:
+      "Return 8-10 high-quality multiple-choice questions at University of Ibadan 100-level/A-level standard. Each question must have exactly 4 concise options, one exact answer copied from the options array, a short explanation that teaches the reasoning, a specific topic, difficulty, and confidence 0-1. Avoid vague questions, filename questions, and giveaways such as 'all of the above' unless the source uses that style.",
+  });
+}
+
+function extractionSystemPrompt() {
+  return "You are an examiner building a trusted University of Ibadan 100-level CBT practice bank. Create hard but fair questions from the uploaded source only. Prefer application, comparison, interpretation, calculation, and concept-linking questions over direct recall. Use plausible distractors that expose common mistakes. Do not invent facts outside the source. No emojis. Return only JSON.";
+}
+
+function parseQuestionPayload(value: string) {
+  const cleaned = value
+    .replace(/^```json/i, "")
+    .replace(/^```/, "")
+    .replace(/```$/g, "")
+    .trim();
+  const parsed = JSON.parse(cleaned || "{}") as { questions?: ExtractedQuestion[] };
+  return Array.isArray(parsed.questions) ? parsed.questions : [];
+}
+
 async function requireStaff(req: Request, supabaseUrl: string, anonKey: string) {
   const authorization = req.headers.get("Authorization") || "";
   if (!authorization) throw new Error("Authentication required.");
@@ -169,9 +195,82 @@ async function loadResourceFile(supabase: ReturnType<typeof createClient>, resou
   return new Uint8Array(await response.arrayBuffer());
 }
 
-async function aiExtractQuestions(resource: ResourceRow, fileBytes: Uint8Array) {
+async function geminiExtractQuestions(resource: ResourceRow, fileBytes: Uint8Array) {
+  const geminiKey = Deno.env.get("GEMINI_API_KEY");
+  if (!geminiKey) throw new Error("Gemini key is not configured.");
+
+  const response = await fetch(
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": geminiKey,
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            role: "user",
+            parts: [
+              { text: `${extractionSystemPrompt()}\n\n${extractionInstruction(resource)}` },
+              {
+                inlineData: {
+                  mimeType: mimeType(resource),
+                  data: bytesToBase64(fileBytes),
+                },
+              },
+            ],
+          },
+        ],
+        generationConfig: {
+          temperature: 0.35,
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: "object",
+            properties: {
+              questions: {
+                type: "array",
+                maxItems: 10,
+                items: {
+                  type: "object",
+                  properties: {
+                    topic: { type: "string" },
+                    question: { type: "string" },
+                    options: { type: "array", minItems: 4, maxItems: 4, items: { type: "string" } },
+                    answer: { type: "string" },
+                    explanation: { type: "string" },
+                    difficulty: { type: "string", enum: ["Easy", "Medium", "Hard"] },
+                    confidence: { type: "number" },
+                  },
+                  required: ["topic", "question", "options", "answer", "explanation", "difficulty", "confidence"],
+                },
+              },
+            },
+            required: ["questions"],
+          },
+        },
+      }),
+    },
+  );
+
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const message = result.error?.message || result.error?.status || "Gemini extraction failed.";
+    throw new Error(`Gemini: ${message}`);
+  }
+
+  const text = (result.candidates || [])
+    .flatMap((candidate: { content?: { parts?: Array<{ text?: string }> } }) => candidate.content?.parts || [])
+    .map((part: { text?: string }) => part.text || "")
+    .join("\n");
+  const questions = parseQuestionPayload(text);
+  if (!questions.length) throw new Error("Gemini returned no usable questions.");
+  return questions;
+}
+
+async function openAiExtractQuestions(resource: ResourceRow, fileBytes: Uint8Array) {
   const openAiKey = Deno.env.get("OPENAI_API_KEY");
-  if (!openAiKey) return fallbackQuestions(resource);
+  if (!openAiKey) throw new Error("OpenAI key is not configured.");
 
   const extension = fileExtension(resource.file_name);
   const dataUrl = `data:${mimeType(resource)};base64,${bytesToBase64(fileBytes)}`;
@@ -191,8 +290,7 @@ async function aiExtractQuestions(resource: ResourceRow, fileBytes: Uint8Array) 
       input: [
         {
           role: "system",
-          content:
-            "You are an examiner building a trusted University of Ibadan 100-level CBT practice bank. Create hard but fair questions from the uploaded source only. Prefer application, comparison, interpretation, calculation, and concept-linking questions over direct recall. Use plausible distractors that expose common mistakes. Do not invent facts outside the source. No emojis. Return only JSON.",
+          content: extractionSystemPrompt(),
         },
         {
           role: "user",
@@ -200,15 +298,7 @@ async function aiExtractQuestions(resource: ResourceRow, fileBytes: Uint8Array) 
             fileContent,
             {
               type: "input_text",
-              text: JSON.stringify({
-                courseCode: resource.course_code,
-                courseTitle: resource.course_title || "",
-                resourceTitle: resource.title,
-                resourceType: resource.type || "",
-                note: resource.note || "",
-                instruction:
-                  "Return 8-10 high-quality multiple-choice questions at University of Ibadan 100-level/A-level standard. Each question must have exactly 4 concise options, one exact answer copied from the options array, a short explanation that teaches the reasoning, a specific topic, difficulty, and confidence 0-1. Avoid vague questions, filename questions, and giveaways such as 'all of the above' unless the source uses that style.",
-              }),
+              text: extractionInstruction(resource),
             },
           ],
         },
@@ -256,9 +346,28 @@ async function aiExtractQuestions(resource: ResourceRow, fileBytes: Uint8Array) 
   const result = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(result.error?.message || "AI extraction failed.");
 
-  const parsed = JSON.parse(extractJsonText(result) || "{}") as { questions?: ExtractedQuestion[] };
-  const questions = Array.isArray(parsed.questions) ? parsed.questions : [];
-  return questions.length ? questions : fallbackQuestions(resource);
+  const questions = parseQuestionPayload(extractJsonText(result));
+  if (!questions.length) throw new Error("OpenAI returned no usable questions.");
+  return questions;
+}
+
+async function aiExtractQuestions(resource: ResourceRow, fileBytes: Uint8Array) {
+  const errors: string[] = [];
+
+  try {
+    return await geminiExtractQuestions(resource, fileBytes);
+  } catch (error) {
+    errors.push(error instanceof Error ? error.message : "Gemini extraction failed.");
+  }
+
+  try {
+    return await openAiExtractQuestions(resource, fileBytes);
+  } catch (error) {
+    errors.push(error instanceof Error ? error.message : "OpenAI extraction failed.");
+  }
+
+  if (!Deno.env.get("GEMINI_API_KEY") && !Deno.env.get("OPENAI_API_KEY")) return fallbackQuestions(resource);
+  throw new Error(errors.join(" | "));
 }
 
 function normalizeQuestions(resource: ResourceRow, rawQuestions: ExtractedQuestion[]) {
