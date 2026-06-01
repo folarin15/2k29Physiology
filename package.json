@@ -3,8 +3,5 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build-static.mjs"
-  },
-  "devDependencies": {
-    "supabase": "^2.100.1"
   }
 }

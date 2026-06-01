@@ -1296,8 +1296,9 @@ function renderNotificationCenter() {
     return;
   }
 
+  const visibleLimit = isDashboardPage() ? 4 : 12;
   list.innerHTML = items
-    .slice(0, 12)
+    .slice(0, visibleLimit)
     .map(
       (item) => `
         <article class="notification-item" data-unread="${readIds.has(item.id) ? "false" : "true"}">
@@ -1321,6 +1322,13 @@ function renderTopicTracker(summary = getStudySummary()) {
   if (!target) return;
 
   const weakTopics = summary.weakTopics || [];
+  if (!weakTopics.length && isDashboardPage()) {
+    target.hidden = true;
+    target.innerHTML = "";
+    return;
+  }
+
+  target.hidden = false;
   target.innerHTML = weakTopics.length
     ? weakTopics
         .map(

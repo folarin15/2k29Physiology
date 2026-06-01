@@ -613,6 +613,13 @@ textarea {
     #fffefa;
 }
 
+body[data-page="dashboard"] .ges-countdown-panel {
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 340px);
+  gap: 14px;
+  margin-bottom: 14px;
+  padding: 14px;
+}
+
 .ges-countdown-panel h2 {
   margin: 0;
   font-family: var(--display-font);
@@ -620,10 +627,18 @@ textarea {
   font-weight: 520;
 }
 
+body[data-page="dashboard"] .ges-countdown-panel h2 {
+  font-size: clamp(1.05rem, 2vw, 1.48rem);
+}
+
 .ges-countdown-panel p {
   margin: 8px 0 0;
   color: var(--muted);
   line-height: 1.5;
+}
+
+body[data-page="dashboard"] .ges-countdown-panel p {
+  margin-top: 5px;
 }
 
 .countdown-grid {
@@ -641,6 +656,10 @@ textarea {
   background: #fffefa;
 }
 
+body[data-page="dashboard"] .countdown-grid span {
+  min-height: 68px;
+}
+
 .countdown-grid strong {
   color: var(--plum);
   font-family: var(--display-font);
@@ -654,9 +673,17 @@ textarea {
   font-size: 0.76rem;
 }
 
+body[data-page="dashboard"] .countdown-grid strong {
+  font-size: clamp(1.1rem, 2.3vw, 1.55rem);
+}
+
 /* NOTIFICATION CENTER: Reliable in-site history for uploads and announcements. */
 .notification-center {
   padding: 18px;
+}
+
+body[data-page="dashboard"] .notification-center {
+  padding: 14px;
 }
 
 .notification-center[data-compact="true"] {
@@ -716,6 +743,10 @@ textarea {
   border: 1px solid var(--line);
   border-radius: 14px;
   background: #fffefa;
+}
+
+body[data-page="dashboard"] .notification-item {
+  padding: 10px 12px;
 }
 
 .notification-item[data-unread="true"] {
@@ -796,6 +827,34 @@ textarea {
 
 .metric-card small {
   color: var(--muted);
+}
+
+body[data-page="dashboard"] .hero-panel {
+  display: none;
+}
+
+body[data-page="dashboard"] .dashboard-summary {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+body[data-page="dashboard"] .dashboard-summary .metric-card {
+  display: flex;
+  min-height: 62px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+}
+
+body[data-page="dashboard"] .dashboard-summary .metric-card span {
+  font-size: 1.25rem;
+}
+
+body[data-page="dashboard"] .dashboard-summary .metric-card small {
+  max-width: 108px;
+  text-align: right;
 }
 
 .streak-card {
@@ -1824,6 +1883,27 @@ textarea {
   grid-template-columns: minmax(0, 1fr) minmax(220px, 0.45fr);
   gap: 16px;
   align-items: start;
+}
+
+body[data-page="dashboard"] .study-snapshot {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding: 14px;
+}
+
+body[data-page="dashboard"] .study-snapshot h2 {
+  display: none;
+}
+
+body[data-page="dashboard"] .study-snapshot .study-metrics {
+  min-width: 116px;
+}
+
+body[data-page="dashboard"] .study-snapshot .metric-card {
+  min-height: 64px;
+  padding: 10px 12px;
 }
 
 .study-snapshot > p,
