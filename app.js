@@ -1,6 +1,6 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260530a";
-import { createBackend } from "./supabase-service.js?v=20260530a";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260530a";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260601a";
+import { createBackend } from "./supabase-service.js?v=20260601a";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260601a";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
@@ -202,6 +202,22 @@ function getMemberStreak(memberId) {
 
 function getStudySummary() {
   return state.study.setup?.summary || { streak: 0, weakTopics: [] };
+}
+
+function getStreakFireLevel(streak) {
+  if (streak >= 7) return "strong";
+  if (streak >= 3) return "active";
+  if (streak >= 1) return "low";
+  return "dim";
+}
+
+function updateStreakFire(streak) {
+  const level = getStreakFireLevel(streak);
+  const fill = Math.min(100, Math.max(0, streak) * 14);
+  getElements(".fire-streak").forEach((icon) => {
+    icon.dataset.level = level;
+    icon.style.setProperty("--streak-fill", `${fill}%`);
+  });
 }
 
 function hasStudyUi() {
@@ -1219,10 +1235,9 @@ function renderTopicTracker(summary = getStudySummary()) {
       </article>`;
 }
 
-/* STUDY DASHBOARD: Shows streak, available questions, and topic tracker on student pages. */
+/* STUDY DASHBOARD: Shows streak, motivation, and topic tracker on student pages. */
 function renderStudyDashboard() {
   const summary = getStudySummary();
-  const stats = getQuestionStats();
   const streak = Number(summary.streak || 0);
   const weakCount = (summary.weakTopics || []).length;
   const motivation =
@@ -1237,12 +1252,10 @@ function renderStudyDashboard() {
     const target = getElement(selector);
     if (target) target.textContent = streak;
   });
+  updateStreakFire(streak);
 
   const weakTarget = getElement("#studyWeakCount");
   if (weakTarget) weakTarget.textContent = weakCount;
-
-  const questionTarget = getElement("#dashboardQuestionCount");
-  if (questionTarget) questionTarget.textContent = stats.total;
 
   const motivationTarget = getElement("#studyMotivation");
   if (motivationTarget) motivationTarget.textContent = motivation;
@@ -1259,7 +1272,7 @@ function populateQuizTopicSelect() {
   const topics = state.study.setup?.courses?.[selectedCourse]?.topics || {};
   const topicEntries = Object.entries(topics).sort((a, b) => a[0].localeCompare(b[0]));
   topicSelect.innerHTML = `<option value="">All topics</option>${topicEntries
-    .map(([topic, count]) => `<option value="${escapeHtml(topic)}">${escapeHtml(topic)} (${count})</option>`)
+    .map(([topic]) => `<option value="${escapeHtml(topic)}">${escapeHtml(topic)}</option>`)
     .join("")}`;
 }
 
@@ -1273,10 +1286,10 @@ function populateQuizControls() {
     ? available
         .map(
           (course) =>
-            `<option value="${course.code}">${course.code} - ${escapeHtml(course.title)} (${courses[course.code].count})</option>`
+            `<option value="${course.code}">${course.code} - ${escapeHtml(course.title)}</option>`
         )
         .join("")
-    : `<option value="">No extracted questions yet</option>`;
+    : `<option value="">Practice questions are not ready yet</option>`;
   courseSelect.disabled = !available.length;
   populateQuizTopicSelect();
 }
@@ -2837,7 +2850,8 @@ function connectQuizMode() {
     const mode = getQuizMode();
     const courseCode = String(formData.get("courseCode") || "");
     const topic = String(formData.get("topic") || "");
-    const limit = Number(formData.get("limit") || (mode === "exam" ? 30 : 10));
+    const requestedLimit = Number(formData.get("limit") || (mode === "exam" ? 30 : 10));
+    const limit = Math.max(5, Math.min(120, requestedLimit));
 
     if (!courseCode) {
       if (status) status.textContent = "No extracted questions are available yet. Ask admin to run the backfill.";

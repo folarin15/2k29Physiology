@@ -20,7 +20,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Instrument+Sans:wght@400;450;500;600;650&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260530a" />
+    <link rel="stylesheet" href="./styles.css?v=20260601a" />
   </head>
   <body data-page="quiz" data-quiz-mode="practice">
     <!-- APP SHELL: Quiz Mode keeps practice separate from the main dashboard. -->
@@ -67,8 +67,11 @@
             <p id="studyMotivation">Loading your study streak and topic tracker...</p>
           </div>
           <div class="metrics-grid study-metrics">
-            <article class="metric-card">
-              <span id="studyStreakCount">0</span>
+            <article class="metric-card streak-card">
+              <span class="streak-display">
+                <i class="fire-streak" aria-hidden="true"></i>
+                <strong id="studyStreakCount">0</strong>
+              </span>
               <small>day streak</small>
             </article>
             <article class="metric-card">
@@ -78,7 +81,7 @@
           </div>
         </section>
 
-        <!-- QUIZ SETUP COMPONENT: Students choose course/topic/count before questions load. -->
+        <!-- QUIZ SETUP COMPONENT: Students choose course/topic and their preferred practice length without seeing bank totals. -->
         <section class="content-panel" id="quizSetupPanel">
           <div class="section-header">
             <div>
@@ -99,7 +102,7 @@
             </label>
             <label>
               Questions
-              <input name="limit" type="number" min="5" max="30" value="10" />
+              <input name="limit" type="number" min="5" max="120" value="10" />
             </label>
             <button class="primary-action" type="submit">
               <span class="material-symbols-rounded" aria-hidden="true">play_arrow</span>
@@ -130,6 +133,6 @@
       </main>
     </div>
 
-    <script type="module" src="./app.js?v=20260530a"></script>
+    <script type="module" src="./app.js?v=20260601a"></script>
   </body>
 </html>

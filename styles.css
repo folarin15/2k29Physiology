@@ -740,6 +740,112 @@ textarea {
   color: var(--muted);
 }
 
+.streak-card {
+  align-content: center;
+}
+
+.streak-display {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.metric-card .streak-display {
+  display: inline-flex;
+}
+
+.streak-display strong {
+  color: var(--plum);
+  font-size: 1.7rem;
+  font-weight: 560;
+  line-height: 1;
+}
+
+.fire-streak {
+  --streak-fill: 0%;
+  position: relative;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 34px;
+  overflow: hidden;
+  border-radius: 64% 38% 58% 42% / 64% 46% 54% 38%;
+  background: linear-gradient(160deg, rgba(102, 89, 74, 0.2), rgba(102, 89, 74, 0.07));
+  clip-path: polygon(52% 0, 76% 25%, 72% 43%, 94% 62%, 79% 100%, 21% 100%, 6% 62%, 28% 43%, 24% 25%);
+  opacity: 0.55;
+}
+
+.fire-streak::before,
+.fire-streak::after {
+  position: absolute;
+  content: "";
+  pointer-events: none;
+}
+
+.fire-streak::before {
+  inset: auto 0 0;
+  height: var(--streak-fill);
+  background: linear-gradient(180deg, #fff0a9 0%, #ffb245 42%, #d96f4d 100%);
+  transition: height 260ms ease;
+}
+
+.fire-streak::after {
+  right: 7px;
+  bottom: 4px;
+  width: 13px;
+  height: 18px;
+  border-radius: 62% 38% 58% 42% / 62% 45% 55% 38%;
+  background: linear-gradient(180deg, rgba(255, 252, 208, 0.95), rgba(255, 190, 79, 0.88));
+  clip-path: polygon(48% 0, 74% 32%, 65% 48%, 86% 68%, 69% 100%, 28% 100%, 13% 69%, 35% 49%, 30% 30%);
+  opacity: 0;
+  transform: translateY(8px) scale(0.8);
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease;
+}
+
+.fire-streak[data-level="low"] {
+  opacity: 0.82;
+  box-shadow: 0 0 12px rgba(217, 111, 77, 0.22);
+}
+
+.fire-streak[data-level="active"] {
+  opacity: 1;
+  box-shadow: 0 0 18px rgba(217, 111, 77, 0.32);
+  animation: streakPulse 1.8s ease-in-out infinite;
+}
+
+.fire-streak[data-level="active"]::after,
+.fire-streak[data-level="strong"]::after {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.fire-streak[data-level="strong"] {
+  opacity: 1;
+  box-shadow:
+    0 0 18px rgba(255, 178, 69, 0.42),
+    0 0 30px rgba(217, 111, 77, 0.28);
+  animation: streakPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes streakPulse {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-1px) scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fire-streak {
+    animation: none !important;
+  }
+}
+
 /* DASHBOARD CONTENT GRID: Main resources plus the activity sidebar. */
 .dashboard-grid {
   display: grid;

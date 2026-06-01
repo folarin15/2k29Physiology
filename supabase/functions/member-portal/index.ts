@@ -603,7 +603,7 @@ Deno.serve(async (req) => {
       const courseCode = cleanCourseCode(body.courseCode);
       const topic = cleanText(body.topic || "", 80);
       const mode = cleanQuizMode(body.mode);
-      const limit = Math.max(5, Math.min(mode === "exam" ? 60 : 30, Number(body.limit || (mode === "exam" ? 30 : 10))));
+      const limit = Math.max(5, Math.min(120, Number(body.limit || (mode === "exam" ? 30 : 10))));
 
       let query = supabase
         .from("question_bank")

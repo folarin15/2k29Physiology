@@ -40,7 +40,7 @@
         });
       });
     </script>
-    <link rel="stylesheet" href="./styles.css?v=20260530a" />
+    <link rel="stylesheet" href="./styles.css?v=20260601a" />
   </head>
   <body data-page="dashboard">
     <!-- APP SHELL: Holds the sidebar, header, dashboard content, and activity panel. -->
@@ -128,7 +128,7 @@
           <div class="countdown-grid" id="gesCountdownGrid" aria-label="Time remaining"></div>
         </section>
 
-        <!-- STUDY SNAPSHOT COMPONENT: Shows streak and question-bank readiness on the dashboard. -->
+        <!-- STUDY SNAPSHOT COMPONENT: Shows streak and topic guidance without exposing question-bank counts. -->
         <section class="study-snapshot content-panel" id="dashboardStudyPanel">
           <div>
             <p class="eyebrow">Study streak</p>
@@ -136,13 +136,12 @@
             <p id="studyMotivation">Start a quiz or open a reader file to begin tracking study activity.</p>
           </div>
           <div class="metrics-grid study-metrics">
-            <article class="metric-card">
-              <span id="dashboardStudyStreak">0</span>
+            <article class="metric-card streak-card">
+              <span class="streak-display">
+                <i class="fire-streak" aria-hidden="true"></i>
+                <strong id="dashboardStudyStreak">0</strong>
+              </span>
               <small>day streak</small>
-            </article>
-            <article class="metric-card">
-              <span id="dashboardQuestionCount">0</span>
-              <small>quiz questions</small>
             </article>
           </div>
           <div class="topic-tracker" id="studentTopicTracker"></div>
@@ -209,6 +208,6 @@
       </main>
     </div>
 
-    <script type="module" src="./app.js?v=20260530a"></script>
+    <script type="module" src="./app.js?v=20260601a"></script>
   </body>
 </html>
