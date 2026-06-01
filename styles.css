@@ -535,6 +535,61 @@ textarea {
   color: var(--muted);
 }
 
+.install-prompt {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(460px, calc(100vw - 28px));
+  gap: 14px;
+  padding: 12px 12px 12px 14px;
+  border: 1px solid rgba(217, 111, 77, 0.18);
+  border-radius: 16px;
+  background: rgba(255, 253, 248, 0.96);
+  box-shadow: 0 18px 54px rgba(31, 34, 30, 0.18);
+  backdrop-filter: blur(12px);
+}
+
+.install-prompt > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.install-prompt .material-symbols-rounded {
+  color: var(--clay);
+}
+
+.install-prompt strong,
+.install-prompt p {
+  margin: 0;
+}
+
+.install-prompt strong {
+  display: block;
+  color: var(--ink);
+  font-weight: 560;
+}
+
+.install-prompt p {
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.35;
+}
+
+.install-actions {
+  flex: 0 0 auto;
+}
+
+.install-actions .primary-action {
+  min-height: 40px;
+  padding: 0 14px;
+}
+
 /* GES COUNTDOWN: Dashboard timer for the next visible GES CBT row. */
 .ges-countdown-panel,
 .notification-center {
@@ -643,6 +698,9 @@ textarea {
 .notification-list {
   display: grid;
   gap: 10px;
+  max-height: 440px;
+  overflow: auto;
+  padding-right: 2px;
 }
 
 .notification-center[data-compact="true"] .notification-list {
@@ -762,17 +820,24 @@ textarea {
 }
 
 .fire-streak {
-  --streak-fill: 0%;
   position: relative;
   display: inline-block;
   flex: 0 0 auto;
-  width: 28px;
-  height: 34px;
+  width: 32px;
+  height: 38px;
   overflow: hidden;
   border-radius: 64% 38% 58% 42% / 64% 46% 54% 38%;
-  background: linear-gradient(160deg, rgba(102, 89, 74, 0.2), rgba(102, 89, 74, 0.07));
+  background:
+    radial-gradient(circle at 54% 78%, #fff4b8 0 18%, transparent 35%),
+    radial-gradient(circle at 48% 62%, #ffbf50 0 34%, transparent 58%),
+    linear-gradient(150deg, #fff0a9 0%, #ffb245 42%, #d96f4d 78%, #9b4d39 100%);
   clip-path: polygon(52% 0, 76% 25%, 72% 43%, 94% 62%, 79% 100%, 21% 100%, 6% 62%, 28% 43%, 24% 25%);
-  opacity: 0.55;
+  opacity: 1;
+  box-shadow:
+    0 0 0 3px rgba(217, 111, 77, 0.08),
+    0 0 18px rgba(255, 178, 69, 0.32);
+  transform-origin: 50% 88%;
+  animation: flameFlicker 1.55s ease-in-out infinite;
 }
 
 .fire-streak::before,
@@ -783,65 +848,93 @@ textarea {
 }
 
 .fire-streak::before {
-  inset: auto 0 0;
-  height: var(--streak-fill);
-  background: linear-gradient(180deg, #fff0a9 0%, #ffb245 42%, #d96f4d 100%);
-  transition: height 260ms ease;
+  right: 8px;
+  bottom: 5px;
+  width: 14px;
+  height: 21px;
+  border-radius: 62% 38% 58% 42% / 62% 45% 55% 38%;
+  background: linear-gradient(180deg, #fffbd1 0%, #ffd66c 48%, #ff9f3f 100%);
+  clip-path: polygon(48% 0, 74% 32%, 65% 48%, 86% 68%, 69% 100%, 28% 100%, 13% 69%, 35% 49%, 30% 30%);
+  animation: innerFlame 1.1s ease-in-out infinite;
 }
 
 .fire-streak::after {
-  right: 7px;
-  bottom: 4px;
-  width: 13px;
-  height: 18px;
-  border-radius: 62% 38% 58% 42% / 62% 45% 55% 38%;
-  background: linear-gradient(180deg, rgba(255, 252, 208, 0.95), rgba(255, 190, 79, 0.88));
-  clip-path: polygon(48% 0, 74% 32%, 65% 48%, 86% 68%, 69% 100%, 28% 100%, 13% 69%, 35% 49%, 30% 30%);
-  opacity: 0;
-  transform: translateY(8px) scale(0.8);
-  transition:
-    opacity 220ms ease,
-    transform 220ms ease;
+  top: 7px;
+  left: 7px;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: #fff6bf;
+  box-shadow:
+    13px 8px 0 rgba(255, 214, 108, 0.82),
+    7px 19px 0 rgba(255, 178, 69, 0.62);
+  opacity: 0.75;
+  animation: emberBlink 1.8s ease-in-out infinite;
+}
+
+.fire-streak[data-level="dim"] {
+  filter: saturate(0.88);
 }
 
 .fire-streak[data-level="low"] {
-  opacity: 0.82;
-  box-shadow: 0 0 12px rgba(217, 111, 77, 0.22);
+  box-shadow:
+    0 0 0 3px rgba(217, 111, 77, 0.08),
+    0 0 14px rgba(217, 111, 77, 0.24);
 }
 
 .fire-streak[data-level="active"] {
-  opacity: 1;
   box-shadow: 0 0 18px rgba(217, 111, 77, 0.32);
-  animation: streakPulse 1.8s ease-in-out infinite;
-}
-
-.fire-streak[data-level="active"]::after,
-.fire-streak[data-level="strong"]::after {
-  opacity: 1;
-  transform: translateY(0) scale(1);
+  animation-duration: 1.35s;
 }
 
 .fire-streak[data-level="strong"] {
-  opacity: 1;
   box-shadow:
     0 0 18px rgba(255, 178, 69, 0.42),
     0 0 30px rgba(217, 111, 77, 0.28);
-  animation: streakPulse 1.2s ease-in-out infinite;
+  animation-duration: 1.05s;
 }
 
-@keyframes streakPulse {
+@keyframes flameFlicker {
   0%,
   100% {
-    transform: translateY(0) scale(1);
+    transform: translateY(0) rotate(-1deg) scale(1);
   }
 
   50% {
-    transform: translateY(-1px) scale(1.05);
+    transform: translateY(-1px) rotate(1.5deg) scale(1.06, 0.96);
+  }
+}
+
+@keyframes innerFlame {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.94;
+  }
+
+  50% {
+    transform: translateY(2px) scale(0.88, 1.08);
+    opacity: 0.72;
+  }
+}
+
+@keyframes emberBlink {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: translateY(0);
+  }
+
+  50% {
+    opacity: 0.95;
+    transform: translateY(-2px);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fire-streak {
+  .fire-streak,
+  .fire-streak::before,
+  .fire-streak::after {
     animation: none !important;
   }
 }
@@ -2069,6 +2162,42 @@ textarea {
     padding: 14px;
   }
 
+  body[data-page="dashboard"] .hero-panel {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  body[data-page="dashboard"] .hero-panel p {
+    display: none;
+  }
+
+  body[data-page="dashboard"] .hero-panel .primary-action {
+    width: auto;
+    min-height: 40px;
+    justify-self: start;
+    padding: 0 14px;
+  }
+
+  .dashboard-summary {
+    display: flex;
+    gap: 10px;
+    margin-inline: -12px;
+    overflow-x: auto;
+    padding: 0 12px 8px;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  .dashboard-summary::-webkit-scrollbar {
+    display: none;
+  }
+
+  .dashboard-summary .metric-card {
+    flex: 0 0 150px;
+    scroll-snap-align: start;
+  }
+
   .hero-panel,
   .page-intro,
   .content-panel,
@@ -2090,6 +2219,24 @@ textarea {
     flex-direction: column;
   }
 
+  .install-prompt {
+    right: 12px;
+    bottom: 12px;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .install-prompt p {
+    display: none;
+  }
+
+  .install-actions .primary-action {
+    width: auto;
+    min-height: 36px;
+    padding: 0 12px;
+  }
+
   .ges-countdown-panel,
   .notification-item,
   .study-snapshot,
@@ -2098,7 +2245,21 @@ textarea {
   }
 
   .countdown-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .countdown-grid span {
+    min-height: 64px;
+    border-radius: 12px;
+  }
+
+  .notification-list {
+    max-height: 330px;
+  }
+
+  .notification-list .notification-item:nth-of-type(n + 5) {
+    display: none;
   }
 
   .hero-panel h1,
@@ -2125,6 +2286,11 @@ textarea {
 
   .secondary-action {
     width: 100%;
+  }
+
+  body[data-page="dashboard"] .hero-panel .primary-action,
+  .install-actions .primary-action {
+    width: auto;
   }
 
   .table-wrap {
@@ -2166,6 +2332,18 @@ textarea {
 
   body[data-page="dashboard"] .page-header {
     display: none;
+  }
+
+  body[data-page="dashboard"] .hero-panel h1 {
+    font-size: clamp(1.28rem, 6.2vw, 1.68rem);
+  }
+
+  body[data-page="dashboard"] .control-row,
+  body[data-page="dashboard"] .study-snapshot,
+  body[data-page="dashboard"] .notification-center,
+  body[data-page="dashboard"] .content-panel,
+  body[data-page="dashboard"] .activity-panel {
+    margin-bottom: 12px;
   }
 
   .hero-panel h1,

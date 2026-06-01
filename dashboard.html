@@ -40,7 +40,7 @@
         });
       });
     </script>
-    <link rel="stylesheet" href="./styles.css?v=20260601a" />
+    <link rel="stylesheet" href="./styles.css?v=20260601b" />
   </head>
   <body data-page="dashboard">
     <!-- APP SHELL: Holds the sidebar, header, dashboard content, and activity panel. -->
@@ -110,20 +110,20 @@
             />
           </label>
 
-          <!-- TIMETABLE SNAPSHOT COMPONENT: Shows the next CBT item. -->
+          <!-- TIMETABLE SNAPSHOT COMPONENT: Shows the next listed paper without cluttering the dashboard. -->
           <article class="next-exam-card">
-            <span>Next CBT</span>
-            <strong id="nextExamTitle">GES 107</strong>
-            <small id="nextExamMeta">Tue, 26 May - Morning</small>
+            <span>Onto the next</span>
+            <strong id="nextExamTitle">Next paper</strong>
+            <small id="nextExamMeta">Fresh page. Clean focus.</small>
           </article>
         </section>
 
-        <!-- GES/GST COUNTDOWN COMPONENT: Tracks the next matching CBT row and advances automatically. -->
+        <!-- GES/GST COUNTDOWN COMPONENT: Refreshing exam momentum message plus the next countdown. -->
         <section class="ges-countdown-panel" aria-label="GES and GST examination countdown">
           <div>
-            <p class="eyebrow">GES/GST exam countdown</p>
-            <h2 id="gesCountdownTitle">Next CBT paper</h2>
-            <p id="gesCountdownMeta">Loading timetable...</p>
+            <p class="eyebrow">GES is wrapped</p>
+            <h2 id="gesCountdownTitle">Onto the next, clean and steady.</h2>
+            <p id="gesCountdownMeta">Loading the next useful countdown...</p>
           </div>
           <div class="countdown-grid" id="gesCountdownGrid" aria-label="Time remaining"></div>
         </section>
@@ -152,7 +152,7 @@
         </section>
 
         <!-- METRICS COMPONENT: Summarizes current dashboard information. -->
-        <section class="metrics-grid" aria-label="Dashboard summary">
+        <section class="metrics-grid dashboard-summary" aria-label="Dashboard summary">
           <article class="metric-card">
             <span id="courseCount">0</span>
             <small>first semester courses</small>
@@ -208,6 +208,6 @@
       </main>
     </div>
 
-    <script type="module" src="./app.js?v=20260601a"></script>
+    <script type="module" src="./app.js?v=20260601b"></script>
   </body>
 </html>

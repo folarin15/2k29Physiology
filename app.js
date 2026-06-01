@@ -1,12 +1,14 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260601a";
-import { createBackend } from "./supabase-service.js?v=20260601a";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260601a";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260601b";
+import { createBackend } from "./supabase-service.js?v=20260601b";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260601b";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
 const ONESIGNAL_PROMPT_KEY = "physiology2k29.onesignalPromptAsked";
 const NOTIFICATION_READ_KEY = "physiology2k29.readNotifications";
 const NOTIFICATION_COLLAPSED_KEY = "physiology2k29.notificationCenterCollapsed";
+const INSTALL_DISMISSED_KEY = "physiology2k29.installPromptDismissed";
+const INSTALL_ACCEPTED_KEY = "physiology2k29.installPromptAccepted";
 const BULK_ALLOWED_EXTENSIONS = new Set([".pdf", ".ppt", ".pptx", ".doc", ".docx", ".png", ".jpg", ".jpeg"]);
 
 const state = {
@@ -41,6 +43,7 @@ const state = {
     subscriptionId: "",
   },
   pushListenerAttached: false,
+  installPromptEvent: null,
   live: {
     resources: { loaded: false, ids: new Set() },
     announcements: { loaded: false, ids: new Set() },
@@ -213,10 +216,8 @@ function getStreakFireLevel(streak) {
 
 function updateStreakFire(streak) {
   const level = getStreakFireLevel(streak);
-  const fill = Math.min(100, Math.max(0, streak) * 14);
   getElements(".fire-streak").forEach((icon) => {
     icon.dataset.level = level;
-    icon.style.setProperty("--streak-fill", `${fill}%`);
   });
 }
 
@@ -502,6 +503,60 @@ function runOneSignal(callback) {
   });
 }
 
+function isStandaloneApp() {
+  return window.matchMedia?.("(display-mode: standalone)")?.matches || window.navigator.standalone === true;
+}
+
+function isIosBrowser() {
+  return /iphone|ipad|ipod/i.test(window.navigator.userAgent || "");
+}
+
+function hasStoredInstallDecision() {
+  try {
+    return Boolean(localStorage.getItem(INSTALL_DISMISSED_KEY) || localStorage.getItem(INSTALL_ACCEPTED_KEY));
+  } catch {
+    return false;
+  }
+}
+
+function shouldShowInstallPrompt() {
+  if (document.body.dataset.portal === "staff" || !isDashboardPage() || isStandaloneApp() || hasStoredInstallDecision()) return false;
+  return Boolean(state.installPromptEvent || isIosBrowser());
+}
+
+/* HOME SCREEN PROMPT: Shows only when the browser says the portal is not installed yet. */
+function renderInstallPrompt() {
+  const existingPanel = getElement("#installPrompt");
+  if (!shouldShowInstallPrompt()) {
+    existingPanel?.remove();
+    return;
+  }
+
+  const main = getElement(".main-area");
+  if (!main || existingPanel) return;
+
+  const isIos = isIosBrowser() && !state.installPromptEvent;
+  const panel = document.createElement("section");
+  panel.id = "installPrompt";
+  panel.className = "install-prompt";
+  panel.innerHTML = `
+    <div>
+      <span class="material-symbols-rounded" aria-hidden="true">add_to_home_screen</span>
+      <div>
+        <strong>Keep PhysioK29 one tap away.</strong>
+        <p>${isIos ? "On iPhone, use Share, then Add to Home Screen." : "Install the portal on this device for faster access before classes and papers."}</p>
+      </div>
+    </div>
+    <div class="install-actions">
+      ${isIos ? "" : `<button class="primary-action" type="button" data-install-app>Install</button>`}
+      <button class="icon-button" type="button" data-dismiss-install aria-label="Dismiss install prompt">
+        <span class="material-symbols-rounded" aria-hidden="true">close</span>
+      </button>
+    </div>
+  `;
+  main.appendChild(panel);
+}
+
 /* PUSH NOTIFICATIONS: Links OneSignal browser push to the saved student profile. */
 async function connectPushNotifications(session, shouldPrompt = false, options = {}) {
   if (!session?.memberId || !window.OneSignalDeferred) return null;
@@ -552,6 +607,56 @@ async function connectPushNotifications(session, shouldPrompt = false, options =
   }).catch((error) => {
     console.warn("OneSignal setup skipped:", error);
     return null;
+  });
+}
+
+function connectInstallPrompt() {
+  window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    state.installPromptEvent = event;
+    renderInstallPrompt();
+  });
+
+  window.addEventListener("appinstalled", () => {
+    try {
+      localStorage.setItem(INSTALL_ACCEPTED_KEY, "true");
+    } catch {
+      // The app is installed even if storage is unavailable.
+    }
+    state.installPromptEvent = null;
+    getElement("#installPrompt")?.remove();
+  });
+
+  document.addEventListener("click", async (event) => {
+    const installButton = event.target.closest("[data-install-app]");
+    const dismissButton = event.target.closest("[data-dismiss-install]");
+
+    if (dismissButton) {
+      try {
+        localStorage.setItem(INSTALL_DISMISSED_KEY, "true");
+      } catch {
+        // Dismissal is best-effort.
+      }
+      getElement("#installPrompt")?.remove();
+      return;
+    }
+
+    if (!installButton || !state.installPromptEvent) return;
+
+    installButton.disabled = true;
+    try {
+      await state.installPromptEvent.prompt();
+      const choice = await state.installPromptEvent.userChoice;
+      if (choice?.outcome === "accepted") {
+        localStorage.setItem(INSTALL_ACCEPTED_KEY, "true");
+        getElement("#installPrompt")?.remove();
+      }
+      state.installPromptEvent = null;
+    } catch (error) {
+      showToast(error.message || "Install prompt could not open.", "error");
+    } finally {
+      installButton.disabled = false;
+    }
   });
 }
 
@@ -1004,16 +1109,16 @@ function renderNextExam() {
   const now = new Date();
   const next = getNextTimetableItem(now);
   if (!next) {
-    title.textContent = "CBT complete";
-    meta.textContent = "All listed timetable rows have passed.";
+    title.textContent = "GES is wrapped";
+    meta.textContent = "Onto the next. Breathe, reset, then move with clean focus.";
     return;
   }
 
   const isCurrent = now >= next.start && now < next.end;
   title.textContent = next.course;
   meta.textContent = isCurrent
-    ? `Now until ${next.time.split("-")[1].trim()} - ${next.batch}`
-    : `${formatExamDate(next.start)} - ${next.time} - ${next.batch}`;
+    ? `Live now until ${next.time.split("-")[1].trim()} - ${next.batch}`
+    : `Onto the next: ${formatExamDate(next.start)} - ${next.time} - ${next.batch}`;
 }
 
 /* GES/GST COUNTDOWN: Keeps the nearest matching CBT row visible and advances after each batch. */
@@ -1026,8 +1131,8 @@ function renderGesCountdown() {
   const now = new Date();
   const next = getNextTrackedCbtItem(now);
   if (!next) {
-    title.textContent = "CBT complete";
-    meta.textContent = "All listed exam rows have passed.";
+    title.textContent = "GES is done. Onto the next.";
+    meta.textContent = "Take a minute to unwind, recharge, and come back lighter. The next paper gets a fresher version of you.";
     grid.innerHTML = ["Days", "Hours", "Minutes", "Seconds"]
       .map((label) => `<span><strong>0</strong><small>${label}</small></span>`)
       .join("");
@@ -1039,8 +1144,8 @@ function renderGesCountdown() {
   const upcomingCount = getUpcomingTrackedCbtItems(now).length;
   title.textContent = `${next.course} ${next.batch}`;
   meta.textContent = isCurrent
-    ? `In progress now. Ends ${next.time.split("-")[1].trim()}. ${upcomingCount} row${upcomingCount === 1 ? "" : "s"} still active.`
-    : `${formatFullExamDate(next.start)}. ${upcomingCount} row${upcomingCount === 1 ? "" : "s"} still upcoming.`;
+    ? `You are in it now. Ends ${next.time.split("-")[1].trim()}. Stay calm and finish clean.`
+    : `GES is wrapped. Onto the next: ${formatFullExamDate(next.start)}. Reset, then lock in.`;
   grid.innerHTML = formatCountdownParts(target, now)
     .map(
       (part) => `
@@ -1668,6 +1773,7 @@ function renderExtractionTools() {
 function renderAll() {
   renderSiteCredit();
   renderScholarGreeting();
+  renderInstallPrompt();
   renderNotificationSetup();
   renderDashboardMetrics();
   renderResourceCards();
@@ -3132,6 +3238,7 @@ async function init() {
   connectSuggestionForm();
   connectStaffActions();
   connectCopyButtons();
+  connectInstallPrompt();
   connectNotificationSetup();
   connectNotificationCenter();
   connectResourceEngagement();
