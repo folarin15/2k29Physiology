@@ -20,15 +20,12 @@ const state = {
   resourceProgress: [],
   resourceFeedback: [],
   studyEvents: [],
-  questions: [],
-  extractionJobs: [],
   staffUser: null,
   staffRole: null,
   realtimeUnsubscribe: null,
   membersUnsubscribe: null,
   suggestionsUnsubscribe: null,
   engagementUnsubscribe: null,
-  questionUnsubscribe: null,
   study: {
     setup: null,
     questions: [],
@@ -144,27 +141,6 @@ function getQuizMode() {
 
 function quizModeLabel(mode = getQuizMode()) {
   return mode === "exam" ? "Hardcore Exam Room" : "Quiz Mode";
-}
-
-function getQuestionStats() {
-  if (!state.questions.length && state.study.setup?.courses) {
-    const courses = state.study.setup.courses;
-    return Object.entries(courses).reduce(
-      (stats, [courseCode, info]) => {
-        const count = Number(info?.count || 0);
-        stats.total += count;
-        stats.courses[courseCode] = count;
-        return stats;
-      },
-      { total: 0, courses: {} }
-    );
-  }
-
-  return state.questions.reduce((stats, question) => {
-    stats.total += 1;
-    stats.courses[question.courseCode] = (stats.courses[question.courseCode] || 0) + 1;
-    return stats;
-  }, { total: 0, courses: {} });
 }
 
 function getCourseTitle(courseCode) {
@@ -1748,36 +1724,6 @@ function renderStaffSummary() {
   `;
 }
 
-function renderExtractionTools() {
-  const panel = getElement("#questionExtractionPanel");
-  const list = getElement("#questionExtractionList");
-  const questionCount = getElement("#questionBankCount");
-  const progress = getElement("#questionExtractionProgress");
-  if (!panel && !list && !questionCount) return;
-
-  const stats = getQuestionStats();
-  if (questionCount) questionCount.textContent = `${stats.total} questions`;
-  if (progress) progress.hidden = true;
-
-  if (list) {
-    list.innerHTML = state.extractionJobs.length
-      ? state.extractionJobs
-          .slice(0, 12)
-          .map((job) => {
-            const resource = state.resources.find((item) => item.id === job.resourceId);
-            return `
-              <li data-tone="${job.status === "completed" ? "success" : job.status === "failed" ? "error" : "muted"}">
-                <strong>${escapeHtml(resource?.title || "Resource")}</strong>
-                <span>${escapeHtml(job.status)} - ${job.questionCount} question${job.questionCount === 1 ? "" : "s"}</span>
-                ${job.error ? `<small>${escapeHtml(job.error)}</small>` : ""}
-              </li>
-            `;
-          })
-          .join("")
-      : `<li data-tone="muted">No extraction jobs yet. Run a backfill to start building the question bank.</li>`;
-  }
-}
-
 function renderAll() {
   renderSiteCredit();
   renderScholarGreeting();
@@ -1795,7 +1741,6 @@ function renderAll() {
   renderMembersTable();
   renderStaffLists();
   renderStaffSummary();
-  renderExtractionTools();
   renderStudyDashboard();
 }
 
@@ -2150,28 +2095,6 @@ function connectStaffPortal(allowedRoles) {
       };
     }
 
-    if (canEnter && !state.questionUnsubscribe && getElement("#questionExtractionPanel")) {
-      const questionUnsubscribe = state.backend.watchQuestionBank(
-        (questions) => {
-          state.questions = questions;
-          renderExtractionTools();
-          renderStaffSummary();
-        },
-        (error) => showToast(error.message || "Could not load question bank.", "error")
-      );
-      const jobUnsubscribe = state.backend.watchExtractionJobs(
-        (jobs) => {
-          state.extractionJobs = jobs;
-          renderExtractionTools();
-        },
-        (error) => showToast(error.message || "Could not load extraction jobs.", "error")
-      );
-      state.questionUnsubscribe = () => {
-        questionUnsubscribe?.();
-        jobUnsubscribe?.();
-      };
-    }
-
     if (canEnter && !state.realtimeUnsubscribe) {
       state.realtimeUnsubscribe = connectRealtimeData();
     }
@@ -2197,14 +2120,6 @@ function connectStaffPortal(allowedRoles) {
       state.resourceFeedback = [];
       state.studyEvents = [];
       renderStaffSummary();
-    }
-
-    if (!canEnter && state.questionUnsubscribe) {
-      state.questionUnsubscribe();
-      state.questionUnsubscribe = null;
-      state.questions = [];
-      state.extractionJobs = [];
-      renderExtractionTools();
     }
 
     if (!canEnter && state.realtimeUnsubscribe) {
@@ -2903,51 +2818,6 @@ function connectResourceEngagement() {
   });
 }
 
-/* QUESTION EXTRACTION: Staff controls for AI extraction and existing-resource backfill. */
-function connectQuestionExtractionTools() {
-  document.addEventListener("click", async (event) => {
-    const extractButton = event.target.closest("[data-extract-resource]");
-    const backfillButton = event.target.closest("[data-backfill-questions]");
-    const status = getElement("#questionExtractionStatus");
-
-    try {
-      if (extractButton) {
-        extractButton.disabled = true;
-        if (status) status.textContent = "Extracting questions from this resource...";
-        const result = await state.backend.extractResourceQuestions(extractButton.dataset.extractResource);
-        if (status) {
-          status.textContent = `${result.status}: ${result.questionCount || 0} question${result.questionCount === 1 ? "" : "s"}${result.error ? ` - ${result.error}` : ""}.`;
-        }
-        showToast("Question extraction finished.");
-        extractButton.disabled = false;
-      }
-
-      if (backfillButton) {
-        backfillButton.disabled = true;
-        const progress = getElement("#questionExtractionProgress");
-        if (progress) {
-          progress.hidden = false;
-          progress.querySelector("span").style.width = "35%";
-        }
-        if (status) status.textContent = "Backfilling a small batch of existing resources...";
-        const result = await state.backend.backfillQuestionExtraction(3);
-        if (progress) progress.querySelector("span").style.width = "100%";
-        const failed = (result.results || []).filter((item) => item.status === "failed" && item.error);
-        if (status) {
-          status.textContent = `Smallest files first. Processed ${result.processed || 0}: ${result.completed || 0} completed, ${result.failed || 0} failed, ${result.skipped || 0} skipped, ${result.questions || 0} questions.${failed[0] ? ` First error: ${failed[0].error}` : ""}`;
-        }
-        showToast("Backfill batch finished.");
-        backfillButton.disabled = false;
-      }
-    } catch (error) {
-      if (extractButton) extractButton.disabled = false;
-      if (backfillButton) backfillButton.disabled = false;
-      if (status) status.textContent = error.message || "Question extraction failed.";
-      showToast(error.message || "Question extraction failed.", "error");
-    }
-  });
-}
-
 /* QUIZ MODE: Starts practice/exam sessions and submits answers securely through the portal function. */
 function connectQuizMode() {
   const setupForm = getElement("#quizSetupForm");
@@ -3250,7 +3120,6 @@ async function init() {
   connectNotificationSetup();
   connectNotificationCenter();
   connectResourceEngagement();
-  connectQuestionExtractionTools();
   connectQuizMode();
   connectTimetableDownload();
   window.setInterval(() => {

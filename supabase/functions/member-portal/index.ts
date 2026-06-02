@@ -178,6 +178,8 @@ async function logAttempt(
   clientKey: string,
   matricNumber: string,
   success: boolean,
+  submittedName = "",
+  failureReason = "",
 ) {
   await supabase
     .from("member_access_attempts")
@@ -185,6 +187,8 @@ async function logAttempt(
       action,
       client_key: clientKey,
       matric_number: matricNumber || null,
+      submitted_name: submittedName || null,
+      failure_reason: failureReason || null,
       success,
     })
     .then(({ error }) => {
@@ -353,7 +357,7 @@ Deno.serve(async (req) => {
       });
 
       const success = Boolean(memberId && !error);
-      await logAttempt(supabase, "register", clientKey, matricNumber, success);
+      await logAttempt(supabase, "register", clientKey, matricNumber, success, name, error?.message || "");
 
       if (!success) {
         return jsonResponse(req, { error: genericVerifyError }, 403);

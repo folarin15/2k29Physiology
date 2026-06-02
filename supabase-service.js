@@ -189,17 +189,6 @@ function mapQuestion(row) {
   };
 }
 
-function mapExtractionJob(row) {
-  return {
-    id: row.id,
-    resourceId: row.resource_id,
-    status: row.status,
-    questionCount: Number(row.question_count || 0),
-    error: row.error || "",
-    updatedAtMs: toMillis(row.updated_at),
-  };
-}
-
 function mapStudyEvent(row) {
   return {
     id: row.id,
@@ -311,22 +300,6 @@ export async function createBackend() {
       submitQuizAttempt: async () => {
         throw new Error("Add your Supabase config before submitting quizzes.");
       },
-      watchQuestionBank: (callback) => {
-        offlineNotice("watchQuestionBank");
-        callback([]);
-        return () => undefined;
-      },
-      watchExtractionJobs: (callback) => {
-        offlineNotice("watchExtractionJobs");
-        callback([]);
-        return () => undefined;
-      },
-      extractResourceQuestions: async () => {
-        throw new Error("Add your Supabase config before extracting questions.");
-      },
-      backfillQuestionExtraction: async () => {
-        throw new Error("Add your Supabase config before extracting questions.");
-      },
     };
   }
 
@@ -358,15 +331,6 @@ export async function createBackend() {
     });
 
     if (error) throw error;
-  }
-
-  async function invokeQuestionExtractor(payload) {
-    const { data, error } = await supabase.functions.invoke("question-extractor", {
-      body: payload,
-    });
-    if (error) throw error;
-    if (data?.error) throw new Error(data.error);
-    return data;
   }
 
   async function callMemberPortal(action, payload = {}) {
@@ -786,58 +750,6 @@ export async function createBackend() {
       return subscribeAndReload("portal-study-events", "study_events", load);
     },
 
-    watchQuestionBank(callback, onError = console.error) {
-      async function load() {
-        const { data, error } = await supabase
-          .from("question_bank")
-          .select("id, course_code, topic, question_text, options, difficulty, source_hint, created_at")
-          .order("created_at", { ascending: false })
-          .limit(500);
-
-        if (error) {
-          onError(error);
-          return;
-        }
-
-        callback((data || []).map(mapQuestion));
-      }
-
-      return subscribeAndReload("portal-question-bank", "question_bank", load);
-    },
-
-    watchExtractionJobs(callback, onError = console.error) {
-      async function load() {
-        const { data, error } = await supabase
-          .from("question_extraction_jobs")
-          .select("*")
-          .order("updated_at", { ascending: false })
-          .limit(200);
-
-        if (error) {
-          onError(error);
-          return;
-        }
-
-        callback((data || []).map(mapExtractionJob));
-      }
-
-      return subscribeAndReload("portal-question-jobs", "question_extraction_jobs", load);
-    },
-
-    async extractResourceQuestions(resourceId) {
-      return invokeQuestionExtractor({
-        action: "extract-resource",
-        resourceId,
-      });
-    },
-
-    async backfillQuestionExtraction(limit = 3) {
-      return invokeQuestionExtractor({
-        action: "backfill",
-        limit,
-      });
-    },
-
     async uploadResource(formData, file, onProgress) {
       const user = await getCurrentUser();
       if (!user) throw new Error("Please sign in as a course rep first.");
@@ -895,13 +807,6 @@ export async function createBackend() {
         courseCode,
         resourceType,
       }).catch((error) => console.warn("Push notification skipped:", error));
-
-      if (insertedResource?.id) {
-        invokeQuestionExtractor({
-          action: "extract-resource",
-          resourceId: insertedResource.id,
-        }).catch((error) => console.warn("Question extraction skipped:", error));
-      }
     },
 
     async postAnnouncement(formData) {
