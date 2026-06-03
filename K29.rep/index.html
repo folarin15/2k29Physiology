@@ -31,7 +31,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Instrument+Sans:wght@400;450;500;600;650&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260603a" />
+    <link rel="stylesheet" href="./styles.css?v=20260603b" />
   </head>
   <body data-page="rep" data-portal="staff" data-portal-role="rep">
     <!-- APP SHELL: Protected portal frame for Ayanfe and Raphael. -->
@@ -68,7 +68,7 @@
               <strong>Rep Portal</strong>
             </div>
           </div>
-          <button class="ghost-action" id="staffSignOut" type="button">
+          <button class="ghost-action" id="staffSignOut" type="button" hidden>
             <span class="material-symbols-rounded" aria-hidden="true">logout</span>
             Sign out
           </button>
@@ -97,6 +97,7 @@
             </button>
             <p class="form-status" id="staffStatus"></p>
           </form>
+          <div class="staff-diagnostic" id="staffDiagnostic" data-tone="muted" aria-live="polite"></div>
         </section>
 
         <!-- STAFF PORTAL COMPONENT: Hidden until the logged-in user has rep/admin role. -->
@@ -111,9 +112,18 @@
             <div class="metrics-grid staff-summary-grid" id="staffSummaryGrid"></div>
           </section>
 
+          <nav class="staff-section-tabs" aria-label="Rep portal sections">
+            <a href="#staffUpload">Upload</a>
+            <a href="#staffNews">News</a>
+            <a href="#staffManage">Files</a>
+            <a href="#staffAnnouncements">Posts</a>
+            <a href="#staffSuggestions">Suggestions</a>
+            <a href="#staffMembers">Members</a>
+          </nav>
+
           <div class="staff-grid">
             <!-- RESOURCE UPLOAD COMPONENT: Sends files to Supabase Storage. -->
-            <section class="content-panel">
+            <section class="content-panel" id="staffUpload">
               <div class="section-header">
                 <div>
                   <p class="eyebrow">Resource upload</p>
@@ -154,7 +164,7 @@
             </section>
 
             <!-- ANNOUNCEMENT COMPONENT: Posts class news to Supabase. -->
-            <section class="content-panel">
+            <section class="content-panel" id="staffNews">
               <div class="section-header">
                 <div>
                   <p class="eyebrow">Announcement</p>
@@ -188,7 +198,7 @@
           </div>
 
           <!-- MANAGE RESOURCES COMPONENT: Reps can delete resources they posted. -->
-          <section class="content-panel">
+          <section class="content-panel" id="staffManage">
             <div class="section-header">
               <div>
                 <p class="eyebrow">Posted files</p>
@@ -211,7 +221,7 @@
           </section>
 
           <!-- MANAGE ANNOUNCEMENTS COMPONENT: Reps can delete announcements they posted. -->
-          <section class="content-panel">
+          <section class="content-panel" id="staffAnnouncements">
             <div class="section-header">
               <div>
                 <p class="eyebrow">Class board</p>
@@ -234,7 +244,7 @@
           </section>
 
           <!-- SUGGESTIONS COMPONENT: Private suggestions from checked-in students. -->
-          <section class="content-panel">
+          <section class="content-panel" id="staffSuggestions">
             <div class="section-header">
               <div>
                 <p class="eyebrow">Student feedback</p>
@@ -258,7 +268,7 @@
           </section>
 
           <!-- MEMBERS COMPONENT: Private class list visible to reps and admin. -->
-          <section class="content-panel">
+          <section class="content-panel" id="staffMembers">
             <div class="section-header">
               <div>
                 <p class="eyebrow">Private list</p>
@@ -285,6 +295,6 @@
       </main>
     </div>
 
-    <script type="module" src="./app.js?v=20260603a"></script>
+    <script type="module" src="./app.js?v=20260603b"></script>
   </body>
 </html>

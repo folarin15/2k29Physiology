@@ -31,7 +31,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Instrument+Sans:wght@400;450;500;600;650&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260603a" />
+    <link rel="stylesheet" href="./styles.css?v=20260603b" />
   </head>
   <body data-page="admin" data-portal="staff" data-portal-role="admin">
     <!-- APP SHELL: Protected admin frame for the site owner. -->
@@ -68,7 +68,7 @@
               <strong>Admin Portal</strong>
             </div>
           </div>
-          <button class="ghost-action" id="staffSignOut" type="button">
+          <button class="ghost-action" id="staffSignOut" type="button" hidden>
             <span class="material-symbols-rounded" aria-hidden="true">logout</span>
             Sign out
           </button>
@@ -97,6 +97,7 @@
             </button>
             <p class="form-status" id="staffStatus"></p>
           </form>
+          <div class="staff-diagnostic" id="staffDiagnostic" data-tone="muted" aria-live="polite"></div>
         </section>
 
         <!-- ADMIN PORTAL COMPONENT: Hidden until the logged-in user has admin role. -->
@@ -111,9 +112,18 @@
             <div class="metrics-grid staff-summary-grid" id="staffSummaryGrid"></div>
           </section>
 
+          <nav class="staff-section-tabs" aria-label="Admin portal sections">
+            <a href="#staffUpload">Upload</a>
+            <a href="#staffBulkUpload">Bulk</a>
+            <a href="#staffNews">News</a>
+            <a href="#staffMembers">Members</a>
+            <a href="#staffManage">Manage</a>
+            <a href="#staffSuggestions">Suggestions</a>
+          </nav>
+
           <div class="staff-grid">
             <!-- RESOURCE UPLOAD COMPONENT: Admin has the same posting controls as reps. -->
-            <section class="content-panel">
+            <section class="content-panel" id="staffUpload">
               <div class="section-header">
                 <div>
                   <p class="eyebrow">Resource upload</p>
@@ -154,7 +164,7 @@
             </section>
 
             <!-- BULK UPLOAD COMPONENT: Lets admin load a prepared course folder in one batch. -->
-            <section class="content-panel bulk-upload-panel">
+            <section class="content-panel bulk-upload-panel" id="staffBulkUpload">
               <div class="section-header">
                 <div>
                   <p class="eyebrow">Bulk upload</p>
@@ -192,7 +202,7 @@
             </section>
 
             <!-- ANNOUNCEMENT COMPONENT: Admin can post official class updates. -->
-            <section class="content-panel">
+            <section class="content-panel" id="staffNews">
               <div class="section-header">
                 <div>
                   <p class="eyebrow">Announcement</p>
@@ -226,7 +236,7 @@
           </div>
 
           <!-- MEMBERS COMPONENT: Private class list visible to admin, with delete controls. -->
-          <section class="content-panel">
+          <section class="content-panel" id="staffMembers">
             <div class="section-header">
               <div>
                 <p class="eyebrow">Private list</p>
@@ -253,7 +263,7 @@
 
           <div class="staff-grid">
             <!-- RESOURCE ADMIN COMPONENT: Lets admin remove any resource. -->
-            <section class="content-panel">
+            <section class="content-panel" id="staffManage">
               <div class="section-header">
                 <div>
                   <p class="eyebrow">Resources</p>
@@ -300,7 +310,7 @@
           </div>
 
           <!-- SUGGESTIONS ADMIN COMPONENT: Admin can review and delete student suggestions. -->
-          <section class="content-panel">
+          <section class="content-panel" id="staffSuggestions">
             <div class="section-header">
               <div>
                 <p class="eyebrow">Student feedback</p>
@@ -340,6 +350,6 @@
       </main>
     </div>
 
-    <script type="module" src="./app.js?v=20260603a"></script>
+    <script type="module" src="./app.js?v=20260603b"></script>
   </body>
 </html>

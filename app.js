@@ -1,6 +1,6 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260603a";
-import { createBackend } from "./supabase-service.js?v=20260603a";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260603a";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260603b";
+import { createBackend } from "./supabase-service.js?v=20260603b";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260603b";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
@@ -774,6 +774,18 @@ async function ensureMemberOnboarding() {
         Matric number
         <input name="matricNumber" type="text" placeholder="e.g. 123456" autocomplete="off" required />
       </label>
+      <details class="signin-help">
+        <summary>
+          <span class="material-symbols-rounded" aria-hidden="true">help</span>
+          Having trouble signing in?
+        </summary>
+        <ul>
+          <li>Use your matric number without spaces.</li>
+          <li>Type at least two names from the class list. Order is flexible.</li>
+          <li>Hyphens, joined names, and common spelling differences are accepted.</li>
+          <li>If it still fails, send your full name, matric number, and what you typed to a course rep.</li>
+        </ul>
+      </details>
       <button class="primary-action" type="submit">Enter portal</button>
       <p class="form-status" id="memberOnboardingStatus"></p>
     </form>
@@ -2007,24 +2019,54 @@ function ensureAiDetailsButton(uploadForm, uploadStatus) {
   return button;
 }
 
+function describeStaffLoginError(error) {
+  const message = String(error?.message || "").toLowerCase();
+  if (!message) return "The portal could not complete sign-in. Check the email, password, and network.";
+  if (message.includes("invalid login") || message.includes("invalid credentials")) {
+    return "Supabase rejected the email or password. Re-enter both carefully, then try again.";
+  }
+  if (message.includes("email not confirmed")) {
+    return "This staff account exists but the email has not been confirmed in Supabase Auth.";
+  }
+  if (message.includes("failed to fetch") || message.includes("network") || message.includes("timeout")) {
+    return "The browser could not reach Supabase. Check the connection and try again.";
+  }
+  return error.message || "Could not sign in.";
+}
+
+function setStaffDiagnostic(element, message, tone = "muted") {
+  if (!element) return;
+  element.dataset.tone = tone;
+  element.textContent = message;
+}
+
 /* REP/ADMIN AUTH: Protects staff portals through Supabase Auth + staff_roles table. */
 function connectStaffPortal(allowedRoles) {
   const loginForm = getElement("#staffLoginForm");
   const portal = getElement("#staffPortal");
   const loginPanel = getElement("#staffLoginPanel");
   const status = getElement("#staffStatus");
+  const diagnostic = getElement("#staffDiagnostic");
   const signOut = getElement("#staffSignOut");
   if (!loginForm || !portal || !loginPanel) return;
+
+  setStaffDiagnostic(
+    diagnostic,
+    "Step 1 checks the email/password. Step 2 checks whether the account has the right staff role.",
+  );
 
   loginForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const formData = new FormData(loginForm);
     try {
       status.textContent = "Signing in...";
+      setStaffDiagnostic(diagnostic, "Checking Supabase Auth credentials...");
       await state.backend.signInRep(String(formData.get("email")), String(formData.get("password")));
-      status.textContent = "";
+      status.textContent = "Credentials accepted. Checking portal access...";
+      setStaffDiagnostic(diagnostic, "Credentials accepted. Checking staff_roles now.", "success");
     } catch (error) {
-      status.textContent = error.message || "Could not sign in.";
+      status.textContent = "Could not sign in.";
+      setStaffDiagnostic(diagnostic, describeStaffLoginError(error), "error");
     }
   });
 
@@ -2038,7 +2080,29 @@ function connectStaffPortal(allowedRoles) {
     state.staffRole = canEnter ? role.role : null;
     portal.hidden = !canEnter;
     loginPanel.hidden = canEnter;
-    if (signOut) signOut.hidden = !canEnter;
+    if (signOut) signOut.hidden = !user;
+
+    if (canEnter) {
+      status.textContent = "";
+      setStaffDiagnostic(diagnostic, "Portal access confirmed.", "success");
+    } else if (user && !role) {
+      status.textContent = "Signed in, but no staff role was found.";
+      setStaffDiagnostic(
+        diagnostic,
+        "The account exists in Auth, but staff_roles has no matching admin/rep row for it.",
+        "error",
+      );
+    } else if (user && role && !allowedRoles.includes(role.role)) {
+      const target = role.role === "admin" ? "the admin portal" : "the rep portal";
+      status.textContent = `Signed in as ${role.role}, but this page does not allow that role.`;
+      setStaffDiagnostic(diagnostic, `Open ${target}, or update this user's role in staff_roles.`, "error");
+    } else if (!user) {
+      status.textContent = "";
+      setStaffDiagnostic(
+        diagnostic,
+        "Step 1 checks the email/password. Step 2 checks whether the account has the right staff role.",
+      );
+    }
 
     if (canEnter && !state.membersUnsubscribe && getElement("#membersTableBody")) {
       state.membersUnsubscribe = state.backend.watchMembers(
@@ -2131,10 +2195,6 @@ function connectStaffPortal(allowedRoles) {
     }
 
     renderStaffLists();
-
-    if (user && !canEnter) {
-      status.textContent = "This account is not allowed to access this portal.";
-    }
   });
 }
 
