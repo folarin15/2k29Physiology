@@ -1,6 +1,6 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260603b";
-import { createBackend } from "./supabase-service.js?v=20260603b";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260603b";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260603c";
+import { createBackend } from "./supabase-service.js?v=20260603c";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260603c";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
@@ -785,6 +785,10 @@ async function ensureMemberOnboarding() {
           <li>Hyphens, joined names, and common spelling differences are accepted.</li>
           <li>If it still fails, send your full name, matric number, and what you typed to a course rep.</li>
         </ul>
+        <a class="signin-support-link" href="https://wa.link/757ou3" target="_blank" rel="noopener">
+          <span class="material-symbols-rounded" aria-hidden="true">chat</span>
+          Message support on WhatsApp
+        </a>
       </details>
       <button class="primary-action" type="submit">Enter portal</button>
       <p class="form-status" id="memberOnboardingStatus"></p>

@@ -1595,6 +1595,27 @@ body[data-page="dashboard"] .dashboard-summary .metric-card small {
   padding-left: 20px;
 }
 
+.signin-support-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  margin-top: 12px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fffaf0;
+  padding: 0 13px;
+  font-size: 0.9rem;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.signin-support-link:hover,
+.signin-support-link:focus-visible {
+  background: var(--mint-dark);
+  outline: none;
+}
+
 .staff-diagnostic {
   max-width: 560px;
   margin-top: 14px;
