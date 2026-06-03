@@ -29,7 +29,7 @@ const rootFiles = [
   "timetable.html",
 ];
 
-const folders = ["assets", "K29.admin", "K29.rep", "K29.temp"];
+const folders = ["assets", "K29.admin", "K29.rep"];
 
 async function copyIfExists(source, target) {
   try {

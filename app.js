@@ -1,6 +1,6 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260601b";
-import { createBackend } from "./supabase-service.js?v=20260601b";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260601b";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260603a";
+import { createBackend } from "./supabase-service.js?v=20260603a";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260603a";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
@@ -2838,7 +2838,7 @@ function connectQuizMode() {
     const limit = Math.max(5, Math.min(120, requestedLimit));
 
     if (!courseCode) {
-      if (status) status.textContent = "No extracted questions are available yet. Ask admin to run the backfill.";
+      if (status) status.textContent = "No questions are available for this selection yet.";
       return;
     }
 
