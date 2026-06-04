@@ -1,6 +1,6 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260604a";
-import { createBackend } from "./supabase-service.js?v=20260604a";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260604a";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260604b";
+import { createBackend } from "./supabase-service.js?v=20260604b";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260604b";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
@@ -9,6 +9,7 @@ const NOTIFICATION_READ_KEY = "physiology2k29.readNotifications";
 const NOTIFICATION_COLLAPSED_KEY = "physiology2k29.notificationCenterCollapsed";
 const INSTALL_DISMISSED_KEY = "physiology2k29.installPromptDismissed";
 const INSTALL_ACCEPTED_KEY = "physiology2k29.installPromptAccepted";
+const INSTALL_DISMISS_SNOOZE_MS = 7 * 24 * 60 * 60 * 1000;
 const BULK_ALLOWED_EXTENSIONS = new Set([".pdf", ".ppt", ".pptx", ".doc", ".docx", ".png", ".jpg", ".jpeg"]);
 
 const state = {
@@ -489,7 +490,9 @@ function isIosBrowser() {
 
 function hasStoredInstallDecision() {
   try {
-    return Boolean(localStorage.getItem(INSTALL_DISMISSED_KEY) || localStorage.getItem(INSTALL_ACCEPTED_KEY));
+    if (localStorage.getItem(INSTALL_ACCEPTED_KEY)) return true;
+    const dismissedAt = Number(localStorage.getItem(INSTALL_DISMISSED_KEY) || 0);
+    return dismissedAt > 0 && Date.now() - dismissedAt < INSTALL_DISMISS_SNOOZE_MS;
   } catch {
     return false;
   }
@@ -609,7 +612,7 @@ function connectInstallPrompt() {
 
     if (dismissButton) {
       try {
-        localStorage.setItem(INSTALL_DISMISSED_KEY, "true");
+        localStorage.setItem(INSTALL_DISMISSED_KEY, String(Date.now()));
       } catch {
         // Dismissal is best-effort.
       }
@@ -3017,7 +3020,7 @@ function createTimetablePdfBlob() {
       "0.09 0.11 0.12 rg",
       pdfText(margin, 548, "PhysioK29 CBT Timetable", 20, "F2"),
       "0.39 0.44 0.42 rg",
-      pdfText(margin, 528, "Current GES/GST rows matched to Physiology Class 2k29 registration.", 10),
+      pdfText(margin, 528, "Final faculty exam rows matched to Physiology Class 2k29 courses.", 10),
       pdfText(margin, 512, `Generated from the class portal. Page ${pageNumber} of ${totalPages}.`, 9),
       "0.88 0.96 0.93 rg",
       `${margin} ${headerBottom} ${tableWidth} 28 re f`,
@@ -3098,6 +3101,121 @@ function createTimetablePdfBlob() {
   return new Blob([pdf], { type: "application/pdf" });
 }
 
+/* MEMBERS PDF: Gives staff a clean offline class list without exposing internal ids. */
+function createMembersPdfBlob() {
+  const pageWidth = 842;
+  const pageHeight = 595;
+  const margin = 34;
+  const tableWidth = pageWidth - margin * 2;
+  const rowHeight = 22;
+  const rowsPerPage = 18;
+  const members = [...state.members].sort((a, b) => a.name.localeCompare(b.name));
+  const columns = [
+    { label: "No.", width: 38, value: (_, index) => String(index + 1), max: 5 },
+    { label: "Name", width: 230, value: (member) => member.name, max: 35 },
+    { label: "Matric", width: 92, value: (member) => member.matricNumber, max: 14 },
+    { label: "Push", width: 84, value: (member) => (member.notificationEnabled ? "On" : "Off"), max: 8 },
+    { label: "Streak", width: 80, value: (member) => `${getMemberStreak(member.id)} day(s)`, max: 12 },
+    { label: "Last seen", width: tableWidth - 524, value: (member) => formatDate(member.lastSeenAtMs || member.createdAtMs), max: 32 },
+  ];
+  const pages = [];
+
+  for (let start = 0; start < members.length || (start === 0 && members.length === 0); start += rowsPerPage) {
+    const pageRows = members.slice(start, start + rowsPerPage);
+    const pageNumber = pages.length + 1;
+    const totalPages = Math.ceil(Math.max(members.length, 1) / rowsPerPage) || 1;
+    const tableTop = 468;
+    const headerBottom = tableTop - 26;
+    const operations = [
+      "1 1 1 rg 0 0 842 595 re f",
+      "0.09 0.11 0.12 rg",
+      pdfText(margin, 548, "PhysioK29 Class Members", 20, "F2"),
+      "0.39 0.44 0.42 rg",
+      pdfText(margin, 528, `${members.length} registered member${members.length === 1 ? "" : "s"}. Generated from the staff portal.`, 10),
+      pdfText(margin, 512, `Page ${pageNumber} of ${totalPages}`, 9),
+      "0.88 0.96 0.93 rg",
+      `${margin} ${headerBottom} ${tableWidth} 26 re f`,
+      "0.82 0.80 0.74 RG",
+      `${margin} ${headerBottom} ${tableWidth} 26 re S`,
+    ];
+
+    let cursorX = margin;
+    columns.forEach((column) => {
+      operations.push("0.09 0.11 0.12 rg", pdfText(cursorX + 7, tableTop - 17, column.label, 9, "F2"));
+      cursorX += column.width;
+    });
+
+    pageRows.forEach((member, rowIndex) => {
+      const rowTop = headerBottom - rowIndex * rowHeight;
+      const rowBottom = rowTop - rowHeight;
+      operations.push("0.82 0.80 0.74 RG", pdfLine(margin, rowBottom, margin + tableWidth, rowBottom));
+      cursorX = margin;
+      columns.forEach((column) => {
+        const cell = fitPdfText(column.value(member, start + rowIndex), column.max);
+        operations.push("0.09 0.11 0.12 rg", pdfText(cursorX + 7, rowBottom + 8, cell, 8.5));
+        cursorX += column.width;
+      });
+    });
+
+    if (!pageRows.length) {
+      operations.push("0.39 0.44 0.42 rg", pdfText(margin + 7, headerBottom - 18, "No class members available yet.", 10));
+    }
+
+    operations.push(
+      "0.39 0.44 0.42 rg",
+      pdfText(margin, 44, "Private class list. Keep within Physiology 2k29 staff use.", 9),
+      pdfText(pageWidth - 132, 44, "PhysioK29", 9, "F2")
+    );
+    pages.push(operations.join("\n"));
+  }
+
+  const maxObjectId = 4 + pages.length * 2;
+  const regularFontId = 3;
+  const boldFontId = 4;
+  const objects = [
+    { id: 1, body: "<< /Type /Catalog /Pages 2 0 R >>" },
+    {
+      id: 2,
+      body: `<< /Type /Pages /Kids [${pages.map((_, index) => `${5 + index * 2} 0 R`).join(" ")}] /Count ${
+        pages.length
+      } >>`,
+    },
+    { id: regularFontId, body: "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>" },
+    { id: boldFontId, body: "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>" },
+  ];
+
+  pages.forEach((content, index) => {
+    const pageId = 5 + index * 2;
+    const contentId = pageId + 1;
+    objects.push({
+      id: pageId,
+      body: `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 ${regularFontId} 0 R /F2 ${boldFontId} 0 R >> >> /Contents ${contentId} 0 R >>`,
+    });
+    objects.push({
+      id: contentId,
+      body: `<< /Length ${content.length} >>\nstream\n${content}\nendstream`,
+    });
+  });
+
+  const offsets = new Array(maxObjectId + 1).fill(0);
+  let pdf = "%PDF-1.4\n";
+  objects
+    .sort((a, b) => a.id - b.id)
+    .forEach((object) => {
+      offsets[object.id] = pdf.length;
+      pdf += `${object.id} 0 obj\n${object.body}\nendobj\n`;
+    });
+
+  const xrefStart = pdf.length;
+  pdf += `xref\n0 ${maxObjectId + 1}\n0000000000 65535 f \n`;
+  for (let id = 1; id <= maxObjectId; id += 1) {
+    pdf += `${String(offsets[id]).padStart(10, "0")} 00000 n \n`;
+  }
+  pdf += `trailer\n<< /Size ${maxObjectId + 1} /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF`;
+
+  return new Blob([pdf], { type: "application/pdf" });
+}
+
 /* TIMETABLE DOWNLOAD: Builds a PDF file from the displayed CBT rows. */
 function connectTimetableDownload() {
   const button = getElement("#downloadTimetable");
@@ -3108,7 +3226,29 @@ function connectTimetableDownload() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "physiok29-ges-gst-cbt-timetable.pdf";
+    link.download = "physiok29-final-exam-timetable.pdf";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  });
+}
+
+/* MEMBERS DOWNLOAD: Lets reps and admin download the private members list as a PDF. */
+function connectMembersPdfDownload() {
+  const button = getElement("#downloadMembersPdf");
+  if (!button) return;
+
+  button.addEventListener("click", () => {
+    if (!state.members.length) {
+      showToast("No class members available to download yet.", "error");
+      return;
+    }
+    const blob = createMembersPdfBlob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `physiok29-class-members-${new Date().toISOString().slice(0, 10)}.pdf`;
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -3186,6 +3326,7 @@ async function init() {
   connectResourceEngagement();
   connectQuizMode();
   connectTimetableDownload();
+  connectMembersPdfDownload();
   window.setInterval(() => {
     renderNextExam();
     renderGesCountdown();

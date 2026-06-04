@@ -590,6 +590,20 @@ textarea {
   padding: 0 14px;
 }
 
+.section-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+.compact-action {
+  min-height: 38px;
+  padding: 0 13px;
+  font-size: 0.9rem;
+}
+
 /* GES COUNTDOWN: Dashboard timer for the next visible GES CBT row. */
 .ges-countdown-panel,
 .notification-center {
@@ -2424,6 +2438,15 @@ body[data-page="dashboard"] .study-snapshot .metric-card {
     width: auto;
     min-height: 36px;
     padding: 0 12px;
+  }
+
+  .section-actions {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .section-actions .compact-action {
+    width: 100%;
   }
 
   .ges-countdown-panel,
