@@ -1,6 +1,6 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260604b";
-import { createBackend } from "./supabase-service.js?v=20260604b";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260604b";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260605a";
+import { createBackend } from "./supabase-service.js?v=20260605a";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260605a";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
@@ -2285,7 +2285,7 @@ function connectRepForms() {
 
       try {
         uploadStatus.textContent = "Uploading...";
-        await state.backend.uploadResource(
+        const result = await state.backend.uploadResource(
           {
             title: String(formData.get("title")).trim(),
             courseCode: String(formData.get("courseCode")),
@@ -2300,7 +2300,9 @@ function connectRepForms() {
         );
         uploadForm.reset();
         populateCourseSelects();
-        uploadStatus.textContent = "Upload saved.";
+        uploadStatus.textContent = result?.notification?.ok
+          ? "Upload saved. Push alert sent."
+          : `Upload saved. Push alert failed: ${result?.notification?.error || "check notification setup."}`;
       } catch (error) {
         uploadStatus.textContent = error.message || "Upload failed.";
       }
@@ -2313,13 +2315,15 @@ function connectRepForms() {
       const formData = new FormData(announcementForm);
       try {
         announcementStatus.textContent = "Posting announcement...";
-        await state.backend.postAnnouncement({
+        const result = await state.backend.postAnnouncement({
           title: String(formData.get("title")).trim(),
           message: String(formData.get("message")).trim(),
           priority: String(formData.get("priority")),
         });
         announcementForm.reset();
-        announcementStatus.textContent = "Announcement posted.";
+        announcementStatus.textContent = result?.notification?.ok
+          ? "Announcement posted. Push alert sent."
+          : `Announcement posted. Push alert failed: ${result?.notification?.error || "check notification setup."}`;
       } catch (error) {
         announcementStatus.textContent = error.message || "Announcement failed.";
       }

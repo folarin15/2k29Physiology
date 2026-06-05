@@ -1,4 +1,4 @@
-import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260604b";
+import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260605a";
 
 const SUPABASE_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
@@ -323,14 +323,34 @@ export async function createBackend() {
   }
 
   async function notifyPortal(payload) {
-    const { error } = await supabase.functions.invoke("send-portal-notification", {
+    const { data, error } = await supabase.functions.invoke("send-portal-notification", {
       body: {
         url: "https://2k29physiology.pxxl.click/dashboard.html",
         ...payload,
       },
     });
 
-    if (error) throw error;
+    if (error) {
+      let details = null;
+      try {
+        details = await error.context?.json?.();
+      } catch {
+        details = null;
+      }
+      throw new Error(details?.error || error.message || "Push notification failed.");
+    }
+    if (data?.error) throw new Error(data.error);
+    return data || { ok: true };
+  }
+
+  async function tryNotifyPortal(payload) {
+    try {
+      const data = await notifyPortal(payload);
+      return { ok: true, id: data.notificationId || null };
+    } catch (error) {
+      console.warn("Push notification skipped:", error);
+      return { ok: false, error: error.message || "Push notification failed." };
+    }
   }
 
   async function callMemberPortal(action, payload = {}) {
@@ -801,12 +821,13 @@ export async function createBackend() {
         throw insertError;
       }
 
-      notifyPortal({
+      const notification = await tryNotifyPortal({
         type: "resource",
         title: resourceTitle,
         courseCode,
         resourceType,
-      }).catch((error) => console.warn("Push notification skipped:", error));
+      });
+      return { id: insertedResource.id, notification };
     },
 
     async postAnnouncement(formData) {
@@ -830,11 +851,12 @@ export async function createBackend() {
 
       if (error) throw error;
 
-      notifyPortal({
+      const notification = await tryNotifyPortal({
         type: "announcement",
         title: announcementTitle,
         message: announcementMessage,
-      }).catch((error) => console.warn("Push notification skipped:", error));
+      });
+      return { notification };
     },
 
     async submitSuggestion(formData) {
