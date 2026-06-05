@@ -1429,6 +1429,81 @@ body[data-page="dashboard"] .dashboard-summary .metric-card small {
   color: rgba(22, 115, 92, 0.72);
 }
 
+@media (max-width: 760px) {
+  body[data-page="timetable"] .table-wrap {
+    overflow: visible;
+  }
+
+  body[data-page="timetable"] .timetable-table {
+    min-width: 0;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+  }
+
+  body[data-page="timetable"] .timetable-table thead {
+    display: none;
+  }
+
+  body[data-page="timetable"] .timetable-table tbody,
+  body[data-page="timetable"] .timetable-table tr,
+  body[data-page="timetable"] .timetable-table td {
+    display: block;
+    width: 100%;
+  }
+
+  body[data-page="timetable"] .timetable-table tr {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: #fffefa;
+    box-shadow: 0 10px 26px rgba(31, 34, 30, 0.06);
+  }
+
+  body[data-page="timetable"] .timetable-table td {
+    display: grid;
+    grid-template-columns: minmax(96px, 0.38fr) minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(223, 217, 204, 0.65);
+  }
+
+  body[data-page="timetable"] .timetable-table td:last-child {
+    border-bottom: 0;
+  }
+
+  body[data-page="timetable"] .timetable-table td::before {
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 650;
+    text-transform: uppercase;
+  }
+
+  body[data-page="timetable"] .timetable-table td:nth-child(1)::before {
+    content: "Course";
+  }
+
+  body[data-page="timetable"] .timetable-table td:nth-child(2)::before {
+    content: "Day";
+  }
+
+  body[data-page="timetable"] .timetable-table td:nth-child(3)::before {
+    content: "Date";
+  }
+
+  body[data-page="timetable"] .timetable-table td:nth-child(4)::before {
+    content: "Batch";
+  }
+
+  body[data-page="timetable"] .timetable-table td:nth-child(5)::before {
+    content: "Duration";
+  }
+
+  body[data-page="timetable"] .timetable-table td:nth-child(6)::before {
+    content: "Time";
+  }
+}
+
 /* REPS PAGE: Profile cards and simple upload/update guide. */
 .rep-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2456,6 +2531,24 @@ body[data-page="dashboard"] .study-snapshot .metric-card {
     grid-template-columns: 1fr;
   }
 
+  body[data-page="dashboard"] .study-snapshot {
+    align-items: stretch;
+    grid-template-columns: 1fr;
+  }
+
+  body[data-page="dashboard"] .study-snapshot .study-metrics {
+    min-width: 0;
+  }
+
+  .study-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .streak-card {
+    min-width: 0;
+  }
+
   .countdown-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 7px;
@@ -2464,6 +2557,14 @@ body[data-page="dashboard"] .study-snapshot .metric-card {
   .countdown-grid span {
     min-height: 64px;
     border-radius: 12px;
+  }
+
+  .countdown-grid strong {
+    font-size: clamp(1rem, 5.4vw, 1.45rem);
+  }
+
+  .countdown-grid small {
+    font-size: 0.68rem;
   }
 
   .notification-list {
@@ -2567,6 +2668,16 @@ body[data-page="dashboard"] .study-snapshot .metric-card {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .study-hero,
+  .study-snapshot {
+    gap: 12px;
+  }
+
+  .study-hero .study-metrics,
+  .study-snapshot .study-metrics {
+    width: 100%;
+  }
+
   .metric-card span {
     font-size: 1.35rem;
   }
@@ -2579,6 +2690,27 @@ body[data-page="dashboard"] .study-snapshot .metric-card {
   .course-grid,
   .topic-tracker {
     grid-template-columns: 1fr;
+  }
+
+  .countdown-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .countdown-grid span {
+    min-height: 58px;
+    padding: 8px 4px;
+  }
+
+  .study-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .study-metrics .metric-card {
+    min-height: 70px;
+  }
+
+  .streak-display {
+    justify-content: center;
   }
 
   .member-card {
