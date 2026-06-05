@@ -2531,6 +2531,19 @@ body[data-page="dashboard"] .study-snapshot .metric-card {
     grid-template-columns: 1fr;
   }
 
+  body[data-page="dashboard"] .ges-countdown-panel {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  body[data-page="dashboard"] .ges-countdown-panel > div {
+    min-width: 0;
+  }
+
+  body[data-page="dashboard"] .ges-countdown-panel .countdown-grid {
+    width: 100%;
+  }
+
   body[data-page="dashboard"] .study-snapshot {
     align-items: stretch;
     grid-template-columns: 1fr;
@@ -2652,6 +2665,7 @@ body[data-page="dashboard"] .study-snapshot .metric-card {
   }
 
   body[data-page="dashboard"] .control-row,
+  body[data-page="dashboard"] .ges-countdown-panel,
   body[data-page="dashboard"] .study-snapshot,
   body[data-page="dashboard"] .notification-center,
   body[data-page="dashboard"] .content-panel,
