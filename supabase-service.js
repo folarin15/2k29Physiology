@@ -1,4 +1,4 @@
-import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260605c";
+import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260606a";
 
 const SUPABASE_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
@@ -21,7 +21,11 @@ async function loadSupabaseClient() {
           detectSessionInUrl: true,
         },
       })
-    );
+    ).catch((error) => {
+      console.warn("Supabase client unavailable; using offline portal shell.", error);
+      clientPromise = null;
+      return null;
+    });
   }
 
   return clientPromise;
@@ -202,7 +206,7 @@ function mapStudyEvent(row) {
 }
 
 function offlineNotice(methodName) {
-  console.warn(`${methodName} skipped because Supabase is not configured yet.`);
+  console.warn(`${methodName} skipped because Supabase is unavailable or not configured yet.`);
 }
 
 /* BACKEND FACTORY: Exposes one app-shaped API over Supabase Auth, Storage, and tables. */

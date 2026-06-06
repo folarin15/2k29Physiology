@@ -2,15 +2,71 @@
   "name": "PhysioK29",
   "short_name": "PhysioK29",
   "description": "Class portal for Physiology Class 2k29.",
-  "start_url": "./dashboard.html",
+  "id": "/?app=physiok29",
+  "start_url": "/dashboard.html",
+  "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
   "background_color": "#f8f6ef",
   "theme_color": "#171b1f",
+  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "./assets/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/favicon.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/ui-logo.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Open the class dashboard.",
+      "url": "/dashboard.html",
+      "icons": [{ "src": "./assets/favicon.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Timetable",
+      "short_name": "Timetable",
+      "description": "Open the exam timetable.",
+      "url": "/timetable.html",
+      "icons": [{ "src": "./assets/favicon.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Quiz Mode",
+      "short_name": "Quiz",
+      "description": "Open practice questions.",
+      "url": "/quiz.html",
+      "icons": [{ "src": "./assets/favicon.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Exam Room",
+      "short_name": "Exam",
+      "description": "Open timed CBT practice.",
+      "url": "/exam-room.html",
+      "icons": [{ "src": "./assets/favicon.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "./assets/og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "categories": ["education", "productivity"]
 }

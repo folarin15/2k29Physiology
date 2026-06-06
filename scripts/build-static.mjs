@@ -15,6 +15,7 @@ const rootFiles = [
   "exam.html",
   "index.html",
   "OneSignalSDKWorker.js",
+  "offline.html",
   "quiz.html",
   "reader.html",
   "reader.js",

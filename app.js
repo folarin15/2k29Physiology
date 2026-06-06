@@ -1,6 +1,6 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260605c";
-import { createBackend } from "./supabase-service.js?v=20260605c";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260605c";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260606a";
+import { createBackend } from "./supabase-service.js?v=20260606a";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260606a";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
@@ -501,6 +501,69 @@ function hasStoredInstallDecision() {
 function shouldShowInstallPrompt() {
   if (document.body.dataset.portal === "staff" || !isDashboardPage() || isStandaloneApp() || hasStoredInstallDecision()) return false;
   return Boolean(state.installPromptEvent || isIosBrowser());
+}
+
+/* APP WORKER: Registers the root OneSignal worker that also owns the offline shell cache. */
+function registerPortalServiceWorker() {
+  if (!("serviceWorker" in navigator) || window.location.protocol === "file:") return;
+
+  navigator.serviceWorker.register("/OneSignalSDKWorker.js", { scope: "/" }).catch((error) => {
+    console.warn("Portal service worker registration skipped:", error);
+  });
+}
+
+/* OFFLINE STATUS: Keeps students aware when they are seeing cached shell pages. */
+function renderConnectionStatus(tone = navigator.onLine ? "online" : "offline") {
+  const existingPanel = getElement("#connectionStatus");
+  if (document.body.dataset.portal === "staff") {
+    existingPanel?.remove();
+    return;
+  }
+
+  const isOffline = tone === "offline" || navigator.onLine === false;
+  const isBackOnline = tone === "restored" && navigator.onLine !== false;
+  if (!isOffline && !isBackOnline) {
+    existingPanel?.remove();
+    return;
+  }
+
+  const main = getElement(".main-area");
+  if (!main) return;
+
+  let panel = existingPanel;
+  if (!panel) {
+    panel = document.createElement("section");
+    panel.id = "connectionStatus";
+    panel.className = "connection-status";
+    const anchor = getElement(".page-header") || main.firstElementChild;
+    if (anchor) {
+      anchor.insertAdjacentElement("afterend", panel);
+    } else {
+      main.prepend(panel);
+    }
+  }
+
+  panel.dataset.tone = isOffline ? "offline" : "online";
+  panel.innerHTML = `
+    <span class="material-symbols-rounded" aria-hidden="true">${isOffline ? "cloud_off" : "cloud_done"}</span>
+    <div>
+      <strong>${isOffline ? "Offline mode" : "Back online"}</strong>
+      <p>${isOffline ? "Showing saved portal pages. Live uploads, announcements, and private lists will refresh when your connection returns." : "Connection restored. Live class updates are reconnecting."}</p>
+    </div>
+  `;
+
+  if (isBackOnline) {
+    window.setTimeout(() => panel.remove(), 3600);
+  }
+}
+
+function connectConnectionStatus() {
+  renderConnectionStatus();
+  window.addEventListener("offline", () => renderConnectionStatus("offline"));
+  window.addEventListener("online", () => {
+    renderConnectionStatus("restored");
+    startPublicRealtimeData();
+  });
 }
 
 /* HOME SCREEN PROMPT: Shows only when the browser says the portal is not installed yet. */
@@ -3313,10 +3376,12 @@ function startPublicRealtimeData() {
 }
 
 async function init() {
+  registerPortalServiceWorker();
   state.backend = await createBackend();
   setMemberGate(!getMemberSession()?.memberId);
   populateCourseSelects();
   renderAll();
+  connectConnectionStatus();
   connectSearch();
   connectStaffPortal(document.body.dataset.portalRole === "admin" ? ["admin"] : ["rep", "admin"]);
   connectRepForms();
