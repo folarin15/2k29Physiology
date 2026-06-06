@@ -31,7 +31,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Instrument+Sans:wght@400;450;500;600;650&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260606a" />
+    <link rel="stylesheet" href="./styles.css?v=20260606b" />
   </head>
   <body data-page="admin" data-portal="staff" data-portal-role="admin">
     <!-- APP SHELL: Protected admin frame for the site owner. -->
@@ -116,6 +116,7 @@
             <a href="#staffUpload">Upload</a>
             <a href="#staffBulkUpload">Bulk</a>
             <a href="#staffNews">News</a>
+            <a href="#staffStudyAnalytics">Study</a>
             <a href="#staffMembers">Members</a>
             <a href="#staffManage">Manage</a>
             <a href="#staffSuggestions">Suggestions</a>
@@ -234,6 +235,65 @@
               </form>
             </section>
           </div>
+
+          <!-- STUDY ANALYTICS COMPONENT: Admin-only quiz, exam-room, streak, and topic engagement view. -->
+          <section class="content-panel staff-study-panel" id="staffStudyAnalytics">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Study analytics</p>
+                <h2>Quiz and exam-room activity</h2>
+              </div>
+              <div class="section-actions study-filter-actions">
+                <label>
+                  Course
+                  <select id="staffStudyCourseFilter">
+                    <option value="">All courses</option>
+                  </select>
+                </label>
+                <label>
+                  Topic
+                  <select id="staffStudyTopicFilter">
+                    <option value="">All topics</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <p class="form-help">
+              Streaks come from real study events: reader opens, submitted quizzes, and submitted exam-room attempts.
+              Durations come from completed quiz/exam sessions.
+            </p>
+            <div class="metrics-grid staff-study-grid" id="staffStudyAnalyticsGrid"></div>
+            <div class="staff-study-layout">
+              <section class="study-leaderboard">
+                <div class="section-header compact-header">
+                  <div>
+                    <p class="eyebrow">Leaderboard</p>
+                    <h3>Most active students</h3>
+                  </div>
+                </div>
+                <div class="table-wrap">
+                  <table class="timetable-table">
+                    <thead>
+                      <tr>
+                        <th>Student</th>
+                        <th>Attempts</th>
+                        <th>Avg score</th>
+                        <th>Study time</th>
+                        <th>Streak</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="staffStudyLeaderboardBody"></tbody>
+                  </table>
+                </div>
+              </section>
+              <aside class="member-history-panel" id="memberStudyHistoryPanel">
+                <p class="eyebrow">Member history</p>
+                <h3>Select a student</h3>
+                <p>Tap History beside any member or leaderboard row to view their quiz and exam-room record.</p>
+              </aside>
+            </div>
+          </section>
 
           <!-- MEMBERS COMPONENT: Private class list visible to admin, with delete controls. -->
           <section class="content-panel" id="staffMembers">
@@ -356,6 +416,6 @@
       </main>
     </div>
 
-    <script type="module" src="./app.js?v=20260606a"></script>
+    <script type="module" src="./app.js?v=20260606b"></script>
   </body>
 </html>

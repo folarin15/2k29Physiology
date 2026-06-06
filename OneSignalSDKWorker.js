@@ -2,7 +2,7 @@
 importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js");
 
 /* OFFLINE SHELL: Keeps the student-facing portal usable when the network drops. */
-const PORTAL_CACHE = "physiok29-shell-20260606a";
+const PORTAL_CACHE = "physiok29-shell-20260606b";
 const OFFLINE_URL = "/offline.html";
 const STAFF_PATHS = ["/K29.admin", "/K29.rep", "/admin.html", "/rep.html"];
 const APP_SHELL_URLS = [

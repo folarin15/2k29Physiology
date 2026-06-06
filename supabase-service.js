@@ -1,4 +1,4 @@
-import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260606a";
+import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260606b";
 
 const SUPABASE_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
@@ -205,6 +205,40 @@ function mapStudyEvent(row) {
   };
 }
 
+function mapQuizAttempt(row) {
+  const questionCount = Number(row.question_count || 0);
+  const score = Number(row.score || 0);
+  return {
+    id: row.id,
+    memberId: row.member_id,
+    mode: row.mode || "practice",
+    courseCode: row.course_code || "",
+    topic: row.topic || "",
+    questionCount,
+    score,
+    percent: questionCount ? Math.round((score / questionCount) * 100) : 0,
+    durationSeconds: Number(row.duration_seconds || 0),
+    motivationText: row.motivation_text || "",
+    startedAtMs: toMillis(row.started_at),
+    submittedAtMs: toMillis(row.submitted_at),
+  };
+}
+
+function mapTopicPerformance(row) {
+  const attempts = Number(row.attempts || 0);
+  const correct = Number(row.correct || 0);
+  return {
+    id: row.id,
+    memberId: row.member_id,
+    courseCode: row.course_code || "",
+    topic: row.topic || "General",
+    attempts,
+    correct,
+    accuracy: attempts ? Math.round((correct / attempts) * 100) : 0,
+    updatedAtMs: toMillis(row.updated_at),
+  };
+}
+
 function offlineNotice(methodName) {
   console.warn(`${methodName} skipped because Supabase is unavailable or not configured yet.`);
 }
@@ -261,6 +295,16 @@ export async function createBackend() {
       },
       watchStudyEvents: (callback) => {
         offlineNotice("watchStudyEvents");
+        callback([]);
+        return () => undefined;
+      },
+      watchQuizAttempts: (callback) => {
+        offlineNotice("watchQuizAttempts");
+        callback([]);
+        return () => undefined;
+      },
+      watchTopicPerformance: (callback) => {
+        offlineNotice("watchTopicPerformance");
         callback([]);
         return () => undefined;
       },
@@ -772,6 +816,44 @@ export async function createBackend() {
       }
 
       return subscribeAndReload("portal-study-events", "study_events", load);
+    },
+
+    watchQuizAttempts(callback, onError = console.error) {
+      async function load() {
+        const { data, error } = await supabase
+          .from("quiz_attempts")
+          .select("id, member_id, mode, course_code, topic, question_count, score, duration_seconds, motivation_text, started_at, submitted_at")
+          .order("submitted_at", { ascending: false })
+          .limit(8000);
+
+        if (error) {
+          onError(error);
+          return;
+        }
+
+        callback((data || []).map(mapQuizAttempt));
+      }
+
+      return subscribeAndReload("portal-quiz-attempts", "quiz_attempts", load);
+    },
+
+    watchTopicPerformance(callback, onError = console.error) {
+      async function load() {
+        const { data, error } = await supabase
+          .from("topic_performance")
+          .select("id, member_id, course_code, topic, attempts, correct, updated_at")
+          .order("updated_at", { ascending: false })
+          .limit(8000);
+
+        if (error) {
+          onError(error);
+          return;
+        }
+
+        callback((data || []).map(mapTopicPerformance));
+      }
+
+      return subscribeAndReload("portal-topic-performance", "topic_performance", load);
     },
 
     async uploadResource(formData, file, onProgress) {

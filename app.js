@@ -1,6 +1,6 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260606a";
-import { createBackend } from "./supabase-service.js?v=20260606a";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260606a";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260606b";
+import { createBackend } from "./supabase-service.js?v=20260606b";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260606b";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
@@ -21,8 +21,11 @@ const state = {
   resourceProgress: [],
   resourceFeedback: [],
   studyEvents: [],
+  quizAttempts: [],
+  topicPerformance: [],
   staffUser: null,
   staffRole: null,
+  staffStudySelectedMemberId: "",
   realtimeUnsubscribe: null,
   membersUnsubscribe: null,
   suggestionsUnsubscribe: null,
@@ -178,6 +181,62 @@ function getMemberStudyEvents(memberId) {
 
 function getMemberStreak(memberId) {
   return calculateStudyStreak(getMemberStudyEvents(memberId));
+}
+
+function getMemberQuizAttempts(memberId, attempts = state.quizAttempts) {
+  return attempts.filter((attempt) => attempt.memberId === memberId);
+}
+
+function formatDuration(totalSeconds = 0) {
+  const seconds = Math.max(0, Number(totalSeconds || 0));
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  if (hours) return `${hours}h ${minutes}m`;
+  if (minutes) return `${minutes}m`;
+  return `${seconds}s`;
+}
+
+function formatScorePercent(score = 0, total = 0) {
+  return Number(total || 0) ? `${Math.round((Number(score || 0) / Number(total || 0)) * 100)}%` : "No score";
+}
+
+function getFilteredQuizAttempts() {
+  const courseCode = getElement("#staffStudyCourseFilter")?.value || "";
+  const topic = getElement("#staffStudyTopicFilter")?.value || "";
+  return state.quizAttempts.filter(
+    (attempt) => (!courseCode || attempt.courseCode === courseCode) && (!topic || (attempt.topic || "General") === topic)
+  );
+}
+
+function summarizeMemberStudy(memberId, attempts = state.quizAttempts) {
+  const memberAttempts = getMemberQuizAttempts(memberId, attempts);
+  const questionCount = memberAttempts.reduce((sum, attempt) => sum + Number(attempt.questionCount || 0), 0);
+  const score = memberAttempts.reduce((sum, attempt) => sum + Number(attempt.score || 0), 0);
+  const durationSeconds = memberAttempts.reduce((sum, attempt) => sum + Number(attempt.durationSeconds || 0), 0);
+  const quizCount = memberAttempts.filter((attempt) => attempt.mode === "practice").length;
+  const examCount = memberAttempts.filter((attempt) => attempt.mode === "exam").length;
+  const lastAttemptAtMs = memberAttempts.reduce((latest, attempt) => Math.max(latest, Number(attempt.submittedAtMs || 0)), 0);
+
+  return {
+    attempts: memberAttempts,
+    attemptCount: memberAttempts.length,
+    quizCount,
+    examCount,
+    questionCount,
+    score,
+    durationSeconds,
+    percent: questionCount ? Math.round((score / questionCount) * 100) : 0,
+    streak: getMemberStreak(memberId),
+    lastAttemptAtMs,
+  };
+}
+
+function getTopicPerformanceForFilter() {
+  const courseCode = getElement("#staffStudyCourseFilter")?.value || "";
+  const topic = getElement("#staffStudyTopicFilter")?.value || "";
+  return state.topicPerformance.filter(
+    (item) => (!courseCode || item.courseCode === courseCode) && (!topic || (item.topic || "General") === topic)
+  );
 }
 
 function getStudySummary() {
@@ -1640,6 +1699,8 @@ function renderMembersTable() {
   if (!body) return;
 
   const canDeleteMembers = isAdminPortal();
+  const canViewHistory = Boolean(getElement("#memberStudyHistoryPanel"));
+  const hasActionColumn = canDeleteMembers || canViewHistory;
   const subscribedMembers = state.members.filter((member) => member.notificationEnabled).length;
   if (count) count.textContent = `${state.members.length} members, ${subscribedMembers} with push`;
 
@@ -1661,15 +1722,20 @@ function renderMembersTable() {
               <td>${getMemberStreak(member.id)} day${getMemberStreak(member.id) === 1 ? "" : "s"}</td>
               <td>${formatDate(member.lastSeenAtMs || member.createdAtMs)}</td>
               ${
-                canDeleteMembers
-                  ? `<td><button class="danger-link" data-delete-member="${member.id}">Delete</button></td>`
+                hasActionColumn
+                  ? `<td>
+                      <div class="table-actions">
+                        ${canViewHistory ? `<button class="ghost-link" data-view-member-history="${member.id}">History</button>` : ""}
+                        ${canDeleteMembers ? `<button class="danger-link" data-delete-member="${member.id}">Delete</button>` : ""}
+                      </div>
+                    </td>`
                   : ""
               }
             </tr>
           `
         )
         .join("")
-    : `<tr><td colspan="${canDeleteMembers ? 6 : 5}">No class members yet.</td></tr>`;
+    : `<tr><td colspan="${hasActionColumn ? 6 : 5}">No class members yet.</td></tr>`;
 }
 
 function renderStaffLists() {
@@ -1806,6 +1872,218 @@ function renderStaffSummary() {
   `;
 }
 
+function renderStaffStudyFilters() {
+  const courseFilter = getElement("#staffStudyCourseFilter");
+  const topicFilter = getElement("#staffStudyTopicFilter");
+  if (!courseFilter || !topicFilter) return;
+
+  const selectedCourse = courseFilter.value;
+  const selectedTopic = topicFilter.value;
+  const courseCodes = [
+    ...new Set([
+      ...state.quizAttempts.map((attempt) => attempt.courseCode).filter(Boolean),
+      ...state.topicPerformance.map((item) => item.courseCode).filter(Boolean),
+    ]),
+  ].sort();
+  const courses = courseCodes.length ? courseCodes : firstSemesterCourses.map((course) => course.code);
+
+  courseFilter.innerHTML = `
+    <option value="">All courses</option>
+    ${courses
+      .map(
+        (courseCode) => `<option value="${escapeHtml(courseCode)}">${escapeHtml(courseCode)} - ${escapeHtml(getCourseTitle(courseCode))}</option>`
+      )
+      .join("")}
+  `;
+  courseFilter.value = courses.includes(selectedCourse) ? selectedCourse : "";
+
+  const topics = [
+    ...new Set([
+      ...state.quizAttempts
+        .filter((attempt) => !courseFilter.value || attempt.courseCode === courseFilter.value)
+        .map((attempt) => attempt.topic || "General"),
+      ...state.topicPerformance
+        .filter((item) => !courseFilter.value || item.courseCode === courseFilter.value)
+        .map((item) => item.topic || "General"),
+    ]),
+  ].sort((a, b) => a.localeCompare(b));
+
+  topicFilter.innerHTML = `
+    <option value="">All topics</option>
+    ${topics.map((topic) => `<option value="${escapeHtml(topic)}">${escapeHtml(topic)}</option>`).join("")}
+  `;
+  topicFilter.value = topics.includes(selectedTopic) ? selectedTopic : "";
+}
+
+function renderMemberStudyHistory(memberId = state.staffStudySelectedMemberId) {
+  const panel = getElement("#memberStudyHistoryPanel");
+  if (!panel) return;
+
+  const member = state.members.find((item) => item.id === memberId);
+  if (!member) {
+    panel.innerHTML = `
+      <p class="eyebrow">Member history</p>
+      <h3>Select a student</h3>
+      <p>Tap History beside any member or leaderboard row to view their quiz and exam-room record.</p>
+    `;
+    return;
+  }
+
+  const summary = summarizeMemberStudy(member.id);
+  const recentAttempts = summary.attempts.slice(0, 10);
+  const topicRows = state.topicPerformance
+    .filter((item) => item.memberId === member.id)
+    .sort((a, b) => b.updatedAtMs - a.updatedAtMs)
+    .slice(0, 8);
+
+  panel.innerHTML = `
+    <p class="eyebrow">Member history</p>
+    <h3>${escapeHtml(member.name)}</h3>
+    <p>${escapeHtml(member.matricNumber)} - ${summary.attemptCount} attempt${summary.attemptCount === 1 ? "" : "s"} logged.</p>
+    <div class="history-stat-grid">
+      <span><strong>${summary.percent || 0}%</strong><small>average score</small></span>
+      <span><strong>${formatDuration(summary.durationSeconds)}</strong><small>quiz/exam time</small></span>
+      <span><strong>${summary.streak}</strong><small>day streak</small></span>
+      <span><strong>${summary.examCount}</strong><small>exam-room attempts</small></span>
+    </div>
+    <div class="member-history-section">
+      <strong>Recent attempts</strong>
+      ${
+        recentAttempts.length
+          ? recentAttempts
+              .map(
+                (attempt) => `
+                  <article class="attempt-history-card">
+                    <div>
+                      <span class="status-pill" data-tone="${attempt.mode === "exam" ? "success" : "muted"}">
+                        ${attempt.mode === "exam" ? "Exam room" : "Quiz mode"}
+                      </span>
+                      <strong>${escapeHtml(attempt.courseCode)}${attempt.topic ? ` - ${escapeHtml(attempt.topic)}` : ""}</strong>
+                    </div>
+                    <p>${attempt.score} of ${attempt.questionCount} (${attempt.percent}%) - ${formatDuration(attempt.durationSeconds)}</p>
+                    <small>${formatDate(attempt.submittedAtMs)}</small>
+                  </article>
+                `
+              )
+              .join("")
+          : `<p>No quiz or exam-room attempt yet.</p>`
+      }
+    </div>
+    <div class="member-history-section">
+      <strong>Topic performance</strong>
+      ${
+        topicRows.length
+          ? topicRows
+              .map(
+                (topic) => `
+                  <article class="topic-history-row">
+                    <span>${escapeHtml(topic.courseCode)} - ${escapeHtml(topic.topic)}</span>
+                    <strong>${topic.accuracy}%</strong>
+                    <small>${topic.correct}/${topic.attempts} correct</small>
+                  </article>
+                `
+              )
+              .join("")
+          : `<p>No topic record yet.</p>`
+      }
+    </div>
+  `;
+}
+
+function renderStaffStudyAnalytics() {
+  const grid = getElement("#staffStudyAnalyticsGrid");
+  const leaderboard = getElement("#staffStudyLeaderboardBody");
+  if (!grid && !leaderboard) return;
+
+  renderStaffStudyFilters();
+
+  const filteredAttempts = getFilteredQuizAttempts();
+  const filteredMemberIds = new Set(filteredAttempts.map((attempt) => attempt.memberId));
+  const summaries = state.members
+    .map((member) => ({ member, summary: summarizeMemberStudy(member.id, filteredAttempts) }))
+    .filter(({ summary }) => summary.attemptCount > 0)
+    .sort((a, b) => {
+      if (b.summary.durationSeconds !== a.summary.durationSeconds) return b.summary.durationSeconds - a.summary.durationSeconds;
+      return b.summary.percent - a.summary.percent;
+    });
+  const totalQuestions = filteredAttempts.reduce((sum, attempt) => sum + Number(attempt.questionCount || 0), 0);
+  const totalScore = filteredAttempts.reduce((sum, attempt) => sum + Number(attempt.score || 0), 0);
+  const totalDuration = filteredAttempts.reduce((sum, attempt) => sum + Number(attempt.durationSeconds || 0), 0);
+  const examAttempts = filteredAttempts.filter((attempt) => attempt.mode === "exam").length;
+  const topScore = summaries
+    .filter(({ summary }) => summary.questionCount > 0)
+    .sort((a, b) => b.summary.percent - a.summary.percent || b.summary.questionCount - a.summary.questionCount)[0];
+  const topStreak = state.members
+    .map((member) => ({ member, streak: getMemberStreak(member.id) }))
+    .sort((a, b) => b.streak - a.streak)[0];
+  const topicBest = getTopicPerformanceForFilter()
+    .filter((item) => filteredMemberIds.has(item.memberId) || !filteredAttempts.length)
+    .sort((a, b) => b.accuracy - a.accuracy || b.attempts - a.attempts)[0];
+  const topicBestMember = topicBest ? state.members.find((member) => member.id === topicBest.memberId) : null;
+
+  if (grid) {
+    grid.innerHTML = `
+      <article class="metric-card staff-summary-card">
+        <span>${summaries.length}</span>
+        <small>students attempted</small>
+      </article>
+      <article class="metric-card staff-summary-card">
+        <span>${filteredAttempts.length}</span>
+        <small>quiz/exam submissions</small>
+      </article>
+      <article class="metric-card staff-summary-card">
+        <span>${formatScorePercent(totalScore, totalQuestions)}</span>
+        <small>class average score</small>
+      </article>
+      <article class="metric-card staff-summary-card">
+        <span>${formatDuration(totalDuration)}</span>
+        <small>tracked quiz/exam time</small>
+      </article>
+      <article class="metric-card staff-summary-card">
+        <span>${topScore ? escapeHtml(getScholarDisplayName(topScore.member)) : "None"}</span>
+        <small>${topScore ? `${topScore.summary.percent}% general top` : "highest general score"}</small>
+      </article>
+      <article class="metric-card staff-summary-card">
+        <span>${topicBestMember ? escapeHtml(getScholarDisplayName(topicBestMember)) : "None"}</span>
+        <small>${topicBest ? `${topicBest.accuracy}% in ${escapeHtml(topicBest.topic)}` : "topic leader"}</small>
+      </article>
+      <article class="metric-card staff-summary-card">
+        <span>${examAttempts}</span>
+        <small>exam-room attempts</small>
+      </article>
+      <article class="metric-card staff-summary-card">
+        <span>${topStreak?.streak || 0}</span>
+        <small>${topStreak?.member ? `${escapeHtml(getScholarDisplayName(topStreak.member))} streak` : "top streak"}</small>
+      </article>
+    `;
+  }
+
+  if (leaderboard) {
+    leaderboard.innerHTML = summaries.length
+      ? summaries
+          .slice(0, 20)
+          .map(
+            ({ member, summary }, index) => `
+              <tr>
+                <td>
+                  <strong>${index + 1}. ${escapeHtml(member.name)}</strong>
+                  <small>${escapeHtml(member.matricNumber)}</small>
+                </td>
+                <td>${summary.attemptCount} total<br /><small>${summary.quizCount} quiz, ${summary.examCount} exam</small></td>
+                <td>${summary.percent}%<br /><small>${summary.score}/${summary.questionCount}</small></td>
+                <td>${formatDuration(summary.durationSeconds)}</td>
+                <td>${summary.streak} day${summary.streak === 1 ? "" : "s"}</td>
+                <td><button class="ghost-link" data-view-member-history="${member.id}">History</button></td>
+              </tr>
+            `
+          )
+          .join("")
+      : `<tr><td colspan="6">No quiz or exam-room attempts for this filter yet.</td></tr>`;
+  }
+
+  renderMemberStudyHistory();
+}
+
 function renderAll() {
   renderSiteCredit();
   renderScholarGreeting();
@@ -1823,6 +2101,7 @@ function renderAll() {
   renderMembersTable();
   renderStaffLists();
   renderStaffSummary();
+  renderStaffStudyAnalytics();
   renderStudyDashboard();
 }
 
@@ -2181,6 +2460,7 @@ function connectStaffPortal(allowedRoles) {
           renderDashboardMetrics();
           renderMembersTable();
           renderStaffSummary();
+          renderStaffStudyAnalytics();
         },
         (error) => showToast(error.message || "Could not load members.", "error")
       );
@@ -2204,6 +2484,7 @@ function connectStaffPortal(allowedRoles) {
           state.resourceProgress = rows;
           renderStaffSummary();
           renderMembersTable();
+          renderStaffStudyAnalytics();
         },
         (error) => showToast(error.message || "Could not load reader progress.", "error")
       );
@@ -2219,13 +2500,36 @@ function connectStaffPortal(allowedRoles) {
           state.studyEvents = rows;
           renderStaffSummary();
           renderMembersTable();
+          renderStaffStudyAnalytics();
         },
         (error) => showToast(error.message || "Could not load study streaks.", "error")
       );
+      const attemptsUnsubscribe = getElement("#staffStudyAnalyticsGrid")
+        ? state.backend.watchQuizAttempts(
+            (rows) => {
+              state.quizAttempts = rows;
+              renderStaffSummary();
+              renderMembersTable();
+              renderStaffStudyAnalytics();
+            },
+            (error) => showToast(error.message || "Could not load quiz attempts.", "error")
+          )
+        : null;
+      const topicPerformanceUnsubscribe = getElement("#staffStudyAnalyticsGrid")
+        ? state.backend.watchTopicPerformance(
+            (rows) => {
+              state.topicPerformance = rows;
+              renderStaffStudyAnalytics();
+            },
+            (error) => showToast(error.message || "Could not load topic performance.", "error")
+          )
+        : null;
       state.engagementUnsubscribe = () => {
         progressUnsubscribe?.();
         feedbackUnsubscribe?.();
         studyUnsubscribe?.();
+        attemptsUnsubscribe?.();
+        topicPerformanceUnsubscribe?.();
       };
     }
 
@@ -2253,7 +2557,11 @@ function connectStaffPortal(allowedRoles) {
       state.resourceProgress = [];
       state.resourceFeedback = [];
       state.studyEvents = [];
+      state.quizAttempts = [];
+      state.topicPerformance = [];
+      state.staffStudySelectedMemberId = "";
       renderStaffSummary();
+      renderStaffStudyAnalytics();
     }
 
     if (!canEnter && state.realtimeUnsubscribe) {
@@ -2793,6 +3101,7 @@ function connectStaffActions() {
     const editResourceButton = event.target.closest("[data-edit-resource]");
     const editAnnouncementButton = event.target.closest("[data-edit-announcement]");
     const viewSuggestionButton = event.target.closest("[data-view-suggestion]");
+    const historyButton = event.target.closest("[data-view-member-history]");
     const resourceButton = event.target.closest("[data-delete-resource]");
     const announcementButton = event.target.closest("[data-delete-announcement]");
     const suggestionButton = event.target.closest("[data-delete-suggestion]");
@@ -2816,6 +3125,13 @@ function connectStaffActions() {
       if (viewSuggestionButton) {
         const suggestion = state.suggestions.find((item) => item.id === viewSuggestionButton.dataset.viewSuggestion);
         openSuggestionModal(suggestion);
+        return;
+      }
+
+      if (historyButton) {
+        state.staffStudySelectedMemberId = historyButton.dataset.viewMemberHistory || "";
+        renderMemberStudyHistory();
+        getElement("#memberStudyHistoryPanel")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
         return;
       }
 
@@ -2850,6 +3166,18 @@ function connectStaffActions() {
       showToast(error.message || "Action failed.", "error");
     }
   });
+}
+
+function connectStaffAnalytics() {
+  const courseFilter = getElement("#staffStudyCourseFilter");
+  const topicFilter = getElement("#staffStudyTopicFilter");
+
+  courseFilter?.addEventListener("change", () => {
+    if (topicFilter) topicFilter.value = "";
+    renderStaffStudyAnalytics();
+  });
+
+  topicFilter?.addEventListener("change", renderStaffStudyAnalytics);
 }
 
 /* COPY BUTTONS: Copies class rep phone numbers from the reps page. */
@@ -3388,6 +3716,7 @@ async function init() {
   connectGenericBulkUpload();
   connectSuggestionForm();
   connectStaffActions();
+  connectStaffAnalytics();
   connectCopyButtons();
   connectInstallPrompt();
   connectNotificationSetup();
