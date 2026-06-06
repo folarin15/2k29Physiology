@@ -1,6 +1,6 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260606b";
-import { createBackend } from "./supabase-service.js?v=20260606b";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260606b";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260608a";
+import { createBackend } from "./supabase-service.js?v=20260608a";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260608a";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
