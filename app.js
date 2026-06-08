@@ -33,6 +33,8 @@ const state = {
   study: {
     setup: null,
     questions: [],
+    answers: {},
+    currentIndex: 0,
     startedAt: 0,
     timerId: null,
     warnings: 0,
@@ -481,6 +483,75 @@ function showToast(message, tone = "default") {
   window.setTimeout(() => toast.classList.remove("show"), 4200);
 }
 
+/* BOOT LOADER: Gives the portal a polished wait state while session checks finish. */
+function renderBootLoader(message = "Opening portal") {
+  if (getElement("#portalBootLoader")) {
+    updateBootLoader(message);
+    return;
+  }
+
+  const loader = document.createElement("section");
+  loader.id = "portalBootLoader";
+  loader.className = "portal-boot-loader";
+  loader.setAttribute("aria-live", "polite");
+  loader.setAttribute("aria-label", "PhysioK29 is loading");
+  loader.innerHTML = `
+    <article class="boot-loader-card">
+      <div class="boot-loader-logo">
+        <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
+        <span class="boot-loader-ring" aria-hidden="true"></span>
+      </div>
+      <p class="eyebrow">PhysioK29</p>
+      <h2>Preparing your class portal</h2>
+      <p id="bootLoaderStatus">${escapeHtml(message)}</p>
+      <div class="boot-loader-dots" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </article>
+  `;
+  document.body.appendChild(loader);
+  document.body.dataset.booting = "true";
+}
+
+function updateBootLoader(message) {
+  const status = getElement("#bootLoaderStatus");
+  if (status) status.textContent = message;
+}
+
+function hideBootLoader() {
+  const loader = getElement("#portalBootLoader");
+  document.body.dataset.booting = "false";
+  if (!loader) return;
+  loader.classList.add("is-hiding");
+  window.setTimeout(() => loader.remove(), 260);
+}
+
+function showBootLoaderError(message) {
+  const loader = getElement("#portalBootLoader");
+  if (!loader) {
+    renderBootLoader("The portal could not start.");
+    return showBootLoaderError(message);
+  }
+
+  loader.dataset.tone = "error";
+  loader.classList.remove("is-hiding");
+  loader.querySelector(".boot-loader-ring")?.setAttribute("aria-hidden", "true");
+  updateBootLoader(message || "The portal could not start. Check your connection and reload.");
+  const card = loader.querySelector(".boot-loader-card");
+  if (card && !card.querySelector("[data-reload-portal]")) {
+    card.insertAdjacentHTML(
+      "beforeend",
+      `<button class="secondary-action" type="button" data-reload-portal>
+        <span class="material-symbols-rounded" aria-hidden="true">refresh</span>
+        Reload portal
+      </button>`
+    );
+    card.querySelector("[data-reload-portal]")?.addEventListener("click", () => window.location.reload());
+  }
+}
+
 function getPushSubscriptionState(OneSignal) {
   const subscription = OneSignal?.User?.PushSubscription;
   const subscriptionId = subscription?.id || "";
@@ -808,8 +879,133 @@ function renderSiteCredit() {
 
   const credit = document.createElement("footer");
   credit.className = "site-credit";
-  credit.textContent = "Copyright 2026 Maverick";
+  credit.textContent = "Built to help K29 students stay organized, study better, and prepare with confidence. Copyright 2026 Maverick.";
   main.appendChild(credit);
+}
+
+/* STUDENT GUIDE: Lightweight in-page tour for classmates who are new to the portal. */
+function openSiteGuide() {
+  if (getElement("#siteGuideModal")) return;
+
+  const overlay = document.createElement("section");
+  overlay.id = "siteGuideModal";
+  overlay.className = "edit-modal site-guide-modal";
+  overlay.innerHTML = `
+    <article class="edit-card site-guide-card">
+      <header>
+        <div>
+          <p class="eyebrow">Quick guide</p>
+          <h2>How to use PhysioK29</h2>
+          <p class="form-help">PhysioK29 keeps class resources, announcements, quizzes, exam tools, and feedback in one secure place for verified K29 students.</p>
+        </div>
+        <button type="button" class="icon-button" data-close-edit aria-label="Close guide">
+          <span class="material-symbols-rounded" aria-hidden="true">close</span>
+        </button>
+      </header>
+      <ol class="guide-list">
+        <li><strong>Start on Dashboard.</strong> Check what is happening today: new resources, announcements, countdowns, weak topics, and your study streak.</li>
+        <li><strong>Use Courses for materials.</strong> Pick a course to find lecture notes, PDFs, documents, revision files, and other uploaded resources.</li>
+        <li><strong>Study inside the Reader.</strong> Open files on the site, move between pages, zoom, mark materials as done, or flag urgent resources.</li>
+        <li><strong>Use Quiz Mode for revision.</strong> Choose a course or topic, answer shuffled questions, then review your score, corrections, and explanations.</li>
+        <li><strong>Use Exam Room for pressure practice.</strong> It gives you timed CBT-style attempts and tracks them separately from normal quizzes.</li>
+        <li><strong>Use Timetable and Exam Mode.</strong> Confirm dates, download the PDF timetable, and focus on last-minute resources before papers.</li>
+        <li><strong>Use Suggestions and Reps.</strong> Send feedback through the portal or contact Ayanfe and Raphael clearly when you need help.</li>
+        <li><strong>Turn on notifications.</strong> New uploads and announcements can reach you faster. If browser push fails, the in-site notification center still keeps updates.</li>
+      </ol>
+      <div class="guide-actions">
+        <a class="primary-action" href="./courses.html"><span class="material-symbols-rounded" aria-hidden="true">folder_open</span>Open courses</a>
+        <a class="secondary-action" href="./quiz.html"><span class="material-symbols-rounded" aria-hidden="true">quiz</span>Start quiz</a>
+        <a class="ghost-action" href="https://wa.link/757ou3" target="_blank" rel="noopener">
+          <span class="material-symbols-rounded" aria-hidden="true">chat</span>
+          Get help
+        </a>
+      </div>
+    </article>
+  `;
+
+  document.body.appendChild(overlay);
+  overlay.querySelector("[data-close-edit]")?.addEventListener("click", closeEditModal);
+}
+
+function connectSiteGuide() {
+  document.addEventListener("click", (event) => {
+    const guideButton = event.target.closest("[data-open-site-guide]");
+    if (!guideButton) return;
+    event.preventDefault();
+    openSiteGuide();
+  });
+}
+
+/* STREAK SUMMARY: Lets students tap the dashboard streak for a compact study pulse. */
+function openStreakSummary() {
+  if (getElement("#streakSummaryModal")) return;
+
+  const summary = getStudySummary();
+  const streak = Number(summary.streak || 0);
+  const weakTopics = summary.weakTopics || [];
+  const level = getStreakFireLevel(streak);
+  const message =
+    streak >= 7
+      ? "Strong run. Keep it steady and protect the habit."
+      : streak >= 3
+        ? "The rhythm is forming. One focused session today keeps it alive."
+        : streak >= 1
+          ? "Good start. Come back tomorrow and let it become a pattern."
+          : "Start with one quiz or one reader session. The streak begins from action.";
+
+  const overlay = document.createElement("section");
+  overlay.id = "streakSummaryModal";
+  overlay.className = "edit-modal streak-summary-modal";
+  overlay.innerHTML = `
+    <article class="edit-card streak-summary-card">
+      <header>
+        <div>
+          <p class="eyebrow">Study pulse</p>
+          <h2>Your streak is ${streak} day${streak === 1 ? "" : "s"}</h2>
+          <p class="form-help">${escapeHtml(message)}</p>
+        </div>
+        <button type="button" class="icon-button" data-close-edit aria-label="Close streak summary">
+          <span class="material-symbols-rounded" aria-hidden="true">close</span>
+        </button>
+      </header>
+      <div class="streak-summary-visual" data-level="${level}">
+        <span class="streak-orb" aria-hidden="true">
+          <i class="fire-streak"></i>
+          <i class="streak-spark streak-spark-one"></i>
+          <i class="streak-spark streak-spark-two"></i>
+        </span>
+        <strong>${streak}</strong>
+        <small>day streak</small>
+      </div>
+      <div class="streak-summary-grid">
+        <article>
+          <strong>${weakTopics.length}</strong>
+          <small>weak topic${weakTopics.length === 1 ? "" : "s"} to repair</small>
+        </article>
+        <article>
+          <strong>${streak ? "Active" : "Ready"}</strong>
+          <small>${streak ? "study rhythm" : "start today"}</small>
+        </article>
+      </div>
+      <div class="guide-actions">
+        <a class="primary-action" href="./quiz.html"><span class="material-symbols-rounded" aria-hidden="true">quiz</span>Take a quiz</a>
+        <a class="secondary-action" href="./exam-room.html"><span class="material-symbols-rounded" aria-hidden="true">timer</span>Exam room</a>
+      </div>
+    </article>
+  `;
+
+  document.body.appendChild(overlay);
+  updateStreakFire(streak);
+  overlay.querySelector("[data-close-edit]")?.addEventListener("click", closeEditModal);
+}
+
+function connectStreakSummary() {
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-open-streak-summary]");
+    if (!button) return;
+    event.preventDefault();
+    openStreakSummary();
+  });
 }
 
 /* SCHOLAR GREETING: Uses the checked-in student's second name on the dashboard only. */
@@ -899,7 +1095,7 @@ async function ensureMemberOnboarding() {
         Matric number
         <input name="matricNumber" type="text" placeholder="e.g. 123456" autocomplete="off" required />
       </label>
-      <details class="signin-help">
+      <details class="signin-help" id="memberSigninHelp" hidden>
         <summary>
           <span class="material-symbols-rounded" aria-hidden="true">help</span>
           Having trouble signing in?
@@ -923,6 +1119,7 @@ async function ensureMemberOnboarding() {
 
   const form = getElement("#memberOnboardingForm");
   const status = getElement("#memberOnboardingStatus");
+  const signinHelp = getElement("#memberSigninHelp");
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -953,6 +1150,10 @@ async function ensureMemberOnboarding() {
       startPublicRealtimeData();
     } catch (error) {
       status.textContent = error.message || "Could not save profile. Please try again.";
+      if (signinHelp) {
+        signinHelp.hidden = false;
+        signinHelp.open = true;
+      }
     }
   });
 
@@ -1123,11 +1324,11 @@ function renderResourceCards(items = state.resources) {
       <article class="resource-card setup-card">
         <span class="course-code">No uploads yet</span>
         <div>
-          <h3>${isSupabaseConfigured() ? "Waiting for course reps" : "Supabase setup needed"}</h3>
+          <h3>${isSupabaseConfigured() ? "Waiting for course reps" : "Portal connection needed"}</h3>
           <p>${
             isSupabaseConfigured()
               ? "New slides and materials will appear here once they are posted."
-              : "Paste your Supabase project URL and anon key in supabase-config.js to activate live resources."
+              : "Live resources are not connected yet. Ask the portal admin to finish setup."
           }</p>
         </div>
         <a class="card-action" href="./courses.html">View courses</a>
@@ -1581,36 +1782,62 @@ function renderQuizQuestions() {
   const meta = getElement("#quizPlayerMeta");
   if (!form || !panel) return;
 
+  const questions = state.study.questions || [];
+  const total = questions.length;
+  const currentIndex = Math.max(0, Math.min(Number(state.study.currentIndex || 0), Math.max(0, total - 1)));
+  state.study.currentIndex = currentIndex;
+  const question = questions[currentIndex];
+  const answeredCount = questions.filter((item) => state.study.answers?.[item.id]).length;
+
   if (title) title.textContent = state.study.mode === "exam" ? "Simulated exam attempt" : "Practice questions";
-  if (meta) meta.textContent = `${quizModeLabel(state.study.mode)} - ${escapeHtml(state.study.courseCode || "")}`;
+  if (meta) meta.textContent = `${quizModeLabel(state.study.mode)} - ${state.study.courseCode || ""}`;
   panel.hidden = false;
   if (resultPanel) resultPanel.hidden = true;
 
-  form.innerHTML = state.study.questions
-    .map(
-      (question, index) => `
-        <fieldset class="quiz-question-card">
-          <legend>
-            <span>Question ${index + 1}</span>
-            <small>${escapeHtml(question.topic || "General")} - ${escapeHtml(question.difficulty || "Medium")}</small>
-          </legend>
-          <p>${escapeHtml(question.question)}</p>
-          <div class="quiz-options">
-            ${(question.options || [])
-              .map(
-                (option) => `
-                  <label>
-                    <input type="radio" name="question-${question.id}" value="${escapeHtml(option)}" />
-                    <span>${escapeHtml(option)}</span>
-                  </label>
-                `
-              )
-              .join("")}
-          </div>
-        </fieldset>
-      `
-    )
-    .join("");
+  if (!question) {
+    form.innerHTML = `<p class="form-help">No question is ready for this attempt.</p>`;
+    return;
+  }
+
+  form.innerHTML = `
+    <div class="quiz-progress-row" aria-live="polite">
+      <span>Question ${currentIndex + 1} of ${total}</span>
+      <small>${answeredCount} answered</small>
+    </div>
+    <fieldset class="quiz-question-card" data-focused="true">
+      <legend>
+        <span>Question ${currentIndex + 1}</span>
+        <small>${escapeHtml(question.topic || "General")} - ${escapeHtml(question.difficulty || "Medium")}</small>
+      </legend>
+      <p>${escapeHtml(question.question)}</p>
+      <div class="quiz-options">
+        ${(question.options || [])
+          .map((option) => {
+            const selected = state.study.answers?.[question.id] === option;
+            return `
+              <label data-selected="${selected ? "true" : "false"}">
+                <input
+                  type="radio"
+                  name="question-${question.id}"
+                  value="${escapeHtml(option)}"
+                  ${selected ? "checked" : ""}
+                />
+                <span>${escapeHtml(option)}</span>
+              </label>
+            `;
+          })
+          .join("")}
+      </div>
+    </fieldset>
+    <div class="quiz-nav-actions">
+      <button class="secondary-action" type="button" data-quiz-nav="prev" ${currentIndex === 0 ? "disabled" : ""}>
+        Previous
+      </button>
+      <button class="secondary-action" type="button" data-quiz-nav="next" ${currentIndex >= total - 1 ? "disabled" : ""}>
+        Next question
+      </button>
+    </div>
+  `;
 }
 
 function renderQuizResults(data) {
@@ -1618,6 +1845,23 @@ function renderQuizResults(data) {
   if (!panel) return;
 
   const percent = data.total ? Math.round((Number(data.score || 0) / Number(data.total)) * 100) : 0;
+  const total = Number(data.total || 0);
+  const score = Number(data.score || 0);
+  const missed = Math.max(0, total - score);
+  const unanswered = (data.results || []).filter((result) => !result.selectedAnswer).length;
+  const questionTopics = new Map((state.study.questions || []).map((question) => [String(question.id), question.topic]));
+  const weakTopics = (data.results || [])
+    .filter((result) => !result.correct)
+    .reduce((topics, result) => {
+      const topic = result.topic || questionTopics.get(String(result.questionId)) || "General";
+      topics.set(topic, (topics.get(topic) || 0) + 1);
+      return topics;
+    }, new Map());
+  const focusTopics = [...weakTopics.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([topic]) => topic);
+
   panel.hidden = false;
   panel.innerHTML = `
     <div class="section-header">
@@ -1625,9 +1869,33 @@ function renderQuizResults(data) {
         <p class="eyebrow">Attempt complete</p>
         <h2>${percent}% score</h2>
       </div>
-      <span class="soft-pill">${Number(data.score || 0)} of ${Number(data.total || 0)}</span>
+      <span class="soft-pill">${score} of ${total}</span>
     </div>
     <p class="result-motivation">${escapeHtml(data.motivation || "Attempt saved. Review your misses and try again.")}</p>
+    <div class="result-insight-grid">
+      <article>
+        <strong>${score}</strong>
+        <span>correct</span>
+      </article>
+      <article>
+        <strong>${missed}</strong>
+        <span>to review</span>
+      </article>
+      <article>
+        <strong>${formatDuration(Math.floor((Date.now() - state.study.startedAt) / 1000))}</strong>
+        <span>time spent</span>
+      </article>
+    </div>
+    <div class="result-focus-note">
+      <strong>Focus next:</strong>
+      <span>${
+        focusTopics.length
+          ? escapeHtml(focusTopics.join(", "))
+          : unanswered
+            ? "Answer every question before submitting next time."
+            : "You kept this attempt clean. Push into a harder set next."
+      }</span>
+    </div>
     <div class="quiz-review-list">
       ${(data.results || [])
         .map(
@@ -2372,13 +2640,13 @@ function describeStaffLoginError(error) {
   const message = String(error?.message || "").toLowerCase();
   if (!message) return "The portal could not complete sign-in. Check the email, password, and network.";
   if (message.includes("invalid login") || message.includes("invalid credentials")) {
-    return "Supabase rejected the email or password. Re-enter both carefully, then try again.";
+    return "The email or password was not accepted. Re-enter both carefully, then try again.";
   }
   if (message.includes("email not confirmed")) {
-    return "This staff account exists but the email has not been confirmed in Supabase Auth.";
+    return "This staff account exists, but the email has not been confirmed yet.";
   }
   if (message.includes("failed to fetch") || message.includes("network") || message.includes("timeout")) {
-    return "The browser could not reach Supabase. Check the connection and try again.";
+    return "The portal could not reach the class system. Check the connection and try again.";
   }
   return error.message || "Could not sign in.";
 }
@@ -2409,10 +2677,10 @@ function connectStaffPortal(allowedRoles) {
     const formData = new FormData(loginForm);
     try {
       status.textContent = "Signing in...";
-      setStaffDiagnostic(diagnostic, "Checking Supabase Auth credentials...");
+      setStaffDiagnostic(diagnostic, "Checking staff sign-in details...");
       await state.backend.signInRep(String(formData.get("email")), String(formData.get("password")));
       status.textContent = "Credentials accepted. Checking portal access...";
-      setStaffDiagnostic(diagnostic, "Credentials accepted. Checking staff_roles now.", "success");
+      setStaffDiagnostic(diagnostic, "Credentials accepted. Checking portal access now.", "success");
     } catch (error) {
       status.textContent = "Could not sign in.";
       setStaffDiagnostic(diagnostic, describeStaffLoginError(error), "error");
@@ -2438,13 +2706,13 @@ function connectStaffPortal(allowedRoles) {
       status.textContent = "Signed in, but no staff role was found.";
       setStaffDiagnostic(
         diagnostic,
-        "The account exists in Auth, but staff_roles has no matching admin/rep row for it.",
+        "This account exists, but it has not been approved for this staff portal yet.",
         "error",
       );
     } else if (user && role && !allowedRoles.includes(role.role)) {
       const target = role.role === "admin" ? "the admin portal" : "the rep portal";
       status.textContent = `Signed in as ${role.role}, but this page does not allow that role.`;
-      setStaffDiagnostic(diagnostic, `Open ${target}, or update this user's role in staff_roles.`, "error");
+      setStaffDiagnostic(diagnostic, `Open ${target}, or ask the admin to update this user's portal access.`, "error");
     } else if (!user) {
       status.textContent = "";
       setStaffDiagnostic(
@@ -2672,8 +2940,8 @@ function connectRepForms() {
         uploadForm.reset();
         populateCourseSelects();
         uploadStatus.textContent = result?.notification?.ok
-          ? "Upload saved. Push alert sent."
-          : `Upload saved. Push alert failed: ${result?.notification?.error || "check notification setup."}`;
+          ? "Upload saved. Instant alert sent."
+          : "Upload saved. The instant alert could not be sent, but the file is already visible in the portal.";
       } catch (error) {
         uploadStatus.textContent = error.message || "Upload failed.";
       }
@@ -2693,8 +2961,8 @@ function connectRepForms() {
         });
         announcementForm.reset();
         announcementStatus.textContent = result?.notification?.ok
-          ? "Announcement posted. Push alert sent."
-          : `Announcement posted. Push alert failed: ${result?.notification?.error || "check notification setup."}`;
+          ? "Announcement posted. Instant alert sent."
+          : "Announcement posted. The instant alert could not be sent, but students can see the update in the portal.";
       } catch (error) {
         announcementStatus.textContent = error.message || "Announcement failed.";
       }
@@ -3180,6 +3448,65 @@ function connectStaffAnalytics() {
   topicFilter?.addEventListener("change", renderStaffStudyAnalytics);
 }
 
+/* STAFF TABS: Turns staff portals into app-like workspaces instead of long scroll pages. */
+function connectStaffTabs() {
+  const tabNav = getElement(".staff-section-tabs");
+  const portal = getElement("#staffPortal");
+  if (!tabNav || !portal) return;
+
+  const tabs = getElements(".staff-section-tabs a")
+    .map((link) => ({
+      link,
+      id: link.getAttribute("href")?.replace("#", "") || "",
+    }))
+    .filter((tab) => tab.id);
+  const tabIds = new Set(tabs.map((tab) => tab.id));
+  const panels = getElements("#staffPortal .content-panel")
+    .map((panel) => ({
+      panel,
+      id: panel.dataset.staffPanel || panel.id || "",
+    }))
+    .filter((item) => tabIds.has(item.id));
+
+  function activateTab(nextId, shouldUpdateHash = true) {
+    const activeId = tabIds.has(nextId) ? nextId : tabs[0]?.id;
+    if (!activeId) return;
+
+    tabs.forEach(({ link, id }) => {
+      const isActive = id === activeId;
+      link.dataset.active = String(isActive);
+      link.setAttribute("aria-selected", String(isActive));
+      link.tabIndex = isActive ? 0 : -1;
+    });
+
+    panels.forEach(({ panel, id }) => {
+      panel.hidden = id !== activeId;
+    });
+
+    getElements("#staffPortal .staff-grid").forEach((grid) => {
+      const visiblePanels = [...grid.querySelectorAll(".content-panel")].filter((panel) => !panel.hidden);
+      grid.hidden = visiblePanels.length === 0;
+      grid.dataset.visibleCount = String(visiblePanels.length);
+    });
+
+    portal.dataset.activeStaffTab = activeId;
+    if (shouldUpdateHash) {
+      history.replaceState(null, "", `${window.location.pathname}${window.location.search}#${activeId}`);
+    }
+  }
+
+  tabNav.setAttribute("role", "tablist");
+  tabs.forEach(({ link, id }) => {
+    link.setAttribute("role", "tab");
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      activateTab(id);
+    });
+  });
+
+  activateTab(window.location.hash.replace("#", ""), false);
+}
+
 /* COPY BUTTONS: Copies class rep phone numbers from the reps page. */
 function connectCopyButtons() {
   getElements("[data-copy]").forEach((button) => {
@@ -3285,9 +3612,29 @@ function connectQuizMode() {
   const setupForm = getElement("#quizSetupForm");
   const courseSelect = getElement("#quizCourseSelect");
   const submitButton = getElement("#submitQuizAttempt");
+  const answerForm = getElement("#quizAnswerForm");
   if (!setupForm && !submitButton) return;
 
   courseSelect?.addEventListener("change", populateQuizTopicSelect);
+
+  answerForm?.addEventListener("change", (event) => {
+    const input = event.target.closest?.('input[type="radio"][name^="question-"]');
+    if (!input) return;
+    const questionId = input.name.replace("question-", "");
+    state.study.answers = { ...(state.study.answers || {}), [questionId]: input.value };
+    renderQuizQuestions();
+  });
+
+  answerForm?.addEventListener("click", (event) => {
+    const navButton = event.target.closest?.("[data-quiz-nav]");
+    if (!navButton) return;
+    const direction = navButton.dataset.quizNav;
+    const total = state.study.questions.length;
+    const nextIndex =
+      direction === "next" ? Number(state.study.currentIndex || 0) + 1 : Number(state.study.currentIndex || 0) - 1;
+    state.study.currentIndex = Math.max(0, Math.min(nextIndex, Math.max(0, total - 1)));
+    renderQuizQuestions();
+  });
 
   setupForm?.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -3309,6 +3656,8 @@ function connectQuizMode() {
       state.study.mode = mode;
       state.study.courseCode = courseCode;
       state.study.topic = topic;
+      state.study.answers = {};
+      state.study.currentIndex = 0;
       const data = await state.backend.getQuizQuestions({ mode, courseCode, topic, limit });
       state.study.questions = data.questions || [];
       if (!state.study.questions.length) {
@@ -3330,8 +3679,7 @@ function connectQuizMode() {
     const status = getElement("#quizStatus");
     const answers = state.study.questions.map((question) => ({
       questionId: question.id,
-      selectedAnswer:
-        getElements(`input[name="question-${question.id}"]`).find((option) => option.checked)?.value || "",
+      selectedAnswer: state.study.answers?.[question.id] || "",
     }));
     const durationSeconds = Math.floor((Date.now() - state.study.startedAt) / 1000);
 
@@ -3704,11 +4052,15 @@ function startPublicRealtimeData() {
 }
 
 async function init() {
+  renderBootLoader("Opening portal");
   registerPortalServiceWorker();
+  updateBootLoader("Connecting to class portal");
   state.backend = await createBackend();
+  updateBootLoader("Checking your session");
   setMemberGate(!getMemberSession()?.memberId);
   populateCourseSelects();
   renderAll();
+  updateBootLoader("Preparing page tools");
   connectConnectionStatus();
   connectSearch();
   connectStaffPortal(document.body.dataset.portalRole === "admin" ? ["admin"] : ["rep", "admin"]);
@@ -3717,7 +4069,10 @@ async function init() {
   connectSuggestionForm();
   connectStaffActions();
   connectStaffAnalytics();
+  connectStaffTabs();
   connectCopyButtons();
+  connectSiteGuide();
+  connectStreakSummary();
   connectInstallPrompt();
   connectNotificationSetup();
   connectNotificationCenter();
@@ -3730,14 +4085,18 @@ async function init() {
     renderGesCountdown();
     renderExamMode();
   }, 1000);
+  updateBootLoader("Verifying class access");
   const memberReady = await ensureMemberOnboarding();
   if (memberReady) {
+    updateBootLoader("Syncing study tools");
     await loadQuizSetup();
     startPublicRealtimeData();
   }
+  hideBootLoader();
 }
 
 init().catch((error) => {
   console.error(error);
+  showBootLoaderError(error.message || "The portal could not start.");
   showToast(error.message || "The portal could not start.", "error");
 });

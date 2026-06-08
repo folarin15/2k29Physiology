@@ -6,7 +6,7 @@
     <title>PhysioK29 - Dashboard</title>
     <meta
       name="description"
-      content="PhysioK29 is the class portal for Physiology 2k29: slides, announcements, timetable checks, rep contacts, and suggestions."
+      content="PhysioK29 is the secure class portal for K29 students: class resources, announcements, quizzes, exam tools, and study progress in one place."
     />
     <meta property="og:site_name" content="PhysioK29" />
     <meta property="og:title" content="PhysioK29 - Physiology Class 2k29" />
@@ -79,9 +79,15 @@
           </div>
 
           <!-- REPS SUMMARY COMPONENT: Shows the two class reps as trusted contacts. -->
-          <div class="rep-mini-card" aria-label="Class representatives">
-            <span>Course reps</span>
-            <strong>Ayanfe and Raphael</strong>
+          <div class="header-actions" aria-label="Dashboard support actions">
+            <button class="ghost-action compact-action" type="button" data-open-site-guide>
+              <span class="material-symbols-rounded" aria-hidden="true">help</span>
+              How to use
+            </button>
+            <a class="ghost-action compact-action" href="./reps.html">
+              <span class="material-symbols-rounded" aria-hidden="true">groups</span>
+              Reps
+            </a>
           </div>
         </header>
 
@@ -89,10 +95,10 @@
         <section class="hero-panel">
           <div>
             <p class="eyebrow">Class operations</p>
-            <h1>Your calm home for slides, updates, and timetable checks.</h1>
+            <h1>Everything K29 students need, in one calm place.</h1>
             <p>
-              Find current materials without scrolling through chats. New uploads
-              and announcements appear here as soon as the reps or admin post them.
+              Stay updated, access verified study materials, practice questions,
+              prepare for exams, and keep track of progress without digging through old chats.
             </p>
           </div>
           <a class="primary-action" href="./courses.html"><span class="material-symbols-rounded" aria-hidden="true">menu_book</span>Browse courses</a>
@@ -118,6 +124,30 @@
           </article>
         </section>
 
+        <!-- QUICK START COMPONENT: Reduces dashboard confusion by putting the most common actions first. -->
+        <section class="quick-start-panel" aria-label="Quick portal actions">
+          <a href="./courses.html">
+            <span class="material-symbols-rounded" aria-hidden="true">folder_open</span>
+            <strong>Find materials</strong>
+            <small>Lecture notes, PDFs, PQs, and revision files by course.</small>
+          </a>
+          <a href="./quiz.html">
+            <span class="material-symbols-rounded" aria-hidden="true">quiz</span>
+            <strong>Practice quiz</strong>
+            <small>Answer questions and review corrections instantly.</small>
+          </a>
+          <a href="./exam-room.html">
+            <span class="material-symbols-rounded" aria-hidden="true">timer</span>
+            <strong>Exam room</strong>
+            <small>Timed CBT-style practice for serious preparation.</small>
+          </a>
+          <button type="button" data-open-site-guide>
+            <span class="material-symbols-rounded" aria-hidden="true">explore</span>
+            <strong>New here?</strong>
+            <small>See how the portal works in less than a minute.</small>
+          </button>
+        </section>
+
         <!-- GES/GST COUNTDOWN COMPONENT: Refreshing exam momentum message plus the next countdown. -->
         <section class="ges-countdown-panel" aria-label="GES and GST examination countdown">
           <div>
@@ -132,26 +162,31 @@
         <section class="study-snapshot content-panel" id="dashboardStudyPanel">
           <div>
             <p class="eyebrow">Study streak</p>
-            <h2>Keep your revision visible.</h2>
+            <h2>Keep revision moving.</h2>
             <p id="studyMotivation">Start a quiz or open a reader file to begin tracking study activity.</p>
           </div>
-          <div class="metrics-grid study-metrics">
-            <article class="metric-card streak-card">
+          <button class="streak-orb-card" type="button" data-open-streak-summary aria-label="Open study streak summary">
+            <span class="streak-orb" aria-hidden="true">
+              <i class="fire-streak"></i>
+              <i class="streak-spark streak-spark-one"></i>
+              <i class="streak-spark streak-spark-two"></i>
+            </span>
+            <span>
               <span class="streak-display">
-                <i class="fire-streak" aria-hidden="true"></i>
                 <strong id="dashboardStudyStreak">0</strong>
+                <small>day streak</small>
               </span>
-              <small>day streak</small>
-            </article>
-          </div>
-          <div class="topic-tracker" id="studentTopicTracker"></div>
+              <small class="streak-hint">Tap for your study pulse</small>
+            </span>
+          </button>
+          <div class="topic-tracker dashboard-topic-tracker" id="studentTopicTracker"></div>
           <div class="study-actions">
             <a class="primary-action" href="./quiz.html"><span class="material-symbols-rounded" aria-hidden="true">quiz</span>Practice quiz</a>
             <a class="secondary-action" href="./exam-room.html"><span class="material-symbols-rounded" aria-hidden="true">timer</span>Exam room</a>
           </div>
         </section>
 
-        <!-- METRICS COMPONENT: Summarizes current dashboard information. -->
+        <!-- METRICS COMPONENT: Compact portal snapshot for orientation, kept secondary to actions. -->
         <section class="metrics-grid dashboard-summary" aria-label="Dashboard summary">
           <article class="metric-card">
             <span id="courseCount">0</span>

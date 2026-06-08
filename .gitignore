@@ -6,4 +6,6 @@ supabase/.temp/
 .codex-tmp/
 dist/
 build/
+outputs/
+K29.temp/
 *.log

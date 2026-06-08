@@ -251,7 +251,7 @@ export async function createBackend() {
     return {
       ready: false,
       signInRep: async () => {
-        throw new Error("Add your Supabase URL and anon key before signing in.");
+        throw new Error("The portal is not connected yet. Ask the admin to finish setup.");
       },
       signOutRep: async () => undefined,
       onAuth: (callback) => {
@@ -309,44 +309,44 @@ export async function createBackend() {
         return () => undefined;
       },
       uploadResource: async () => {
-        throw new Error("Add your Supabase config before uploading files.");
+        throw new Error("Uploads are not connected yet. Ask the admin to finish setup.");
       },
       postAnnouncement: async () => {
-        throw new Error("Add your Supabase config before posting announcements.");
+        throw new Error("Announcements are not connected yet. Ask the admin to finish setup.");
       },
       updateResource: async () => {
-        throw new Error("Add your Supabase config before editing resources.");
+        throw new Error("Resource editing is not connected yet. Ask the admin to finish setup.");
       },
       updateAnnouncement: async () => {
-        throw new Error("Add your Supabase config before editing announcements.");
+        throw new Error("Announcement editing is not connected yet. Ask the admin to finish setup.");
       },
       generateResourceDetails: async () => {
-        throw new Error("Add your Supabase config before generating upload details.");
+        throw new Error("Auto-title is not connected yet. Add the title and context manually for now.");
       },
       deleteResource: async () => {
-        throw new Error("Add your Supabase config before deleting resources.");
+        throw new Error("Resource deletion is not connected yet. Ask the admin to finish setup.");
       },
       deleteAnnouncement: async () => {
-        throw new Error("Add your Supabase config before deleting announcements.");
+        throw new Error("Announcement deletion is not connected yet. Ask the admin to finish setup.");
       },
       submitSuggestion: async () => {
-        throw new Error("Add your Supabase config before sending suggestions.");
+        throw new Error("Suggestions are not connected yet. Please message a course rep for now.");
       },
       deleteSuggestion: async () => {
-        throw new Error("Add your Supabase config before deleting suggestions.");
+        throw new Error("Suggestion deletion is not connected yet. Ask the admin to finish setup.");
       },
       deleteMember: async () => {
-        throw new Error("Add your Supabase config before deleting members.");
+        throw new Error("Member management is not connected yet. Ask the admin to finish setup.");
       },
       getReaderResource: async () => {
-        throw new Error("Add your Supabase config before opening the reader.");
+        throw new Error("The reader is not connected yet. Try downloading from the course page later.");
       },
       saveResourceProgress: async () => undefined,
       saveResourceFeedback: async () => ({ helpful: false, helpfulCount: 0 }),
       getQuizSetup: async () => ({ courses: {}, summary: { streak: 0, weakTopics: [] } }),
       getQuizQuestions: async () => ({ questions: [], summary: { streak: 0, weakTopics: [] } }),
       submitQuizAttempt: async () => {
-        throw new Error("Add your Supabase config before submitting quizzes.");
+        throw new Error("Quiz submission is not connected yet. Try again later.");
       },
     };
   }
@@ -860,7 +860,7 @@ export async function createBackend() {
       const user = await getCurrentUser();
       if (!user) throw new Error("Please sign in as a course rep first.");
       if (!(file instanceof File) || !file.name) throw new Error("Choose a file to upload.");
-      if (file.size > MAX_UPLOAD_BYTES) throw new Error("Keep files under 50 MB on the free storage plan.");
+      if (file.size > MAX_UPLOAD_BYTES) throw new Error("Keep files under 50 MB so uploads stay fast and reliable.");
 
       const role = await getRole(user.id);
       if (!role || !["rep", "admin"].includes(role.role)) {

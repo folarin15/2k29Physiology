@@ -89,19 +89,15 @@ self.addEventListener("fetch", (event) => {
 
   if (isCacheableAsset(request)) {
     event.respondWith(
-      caches.match(request, { ignoreSearch: true }).then((cachedResponse) => {
-        const freshResponse = fetch(request)
-          .then((response) => {
-            if (response.ok) {
-              const copy = response.clone();
-              caches.open(PORTAL_CACHE).then((cache) => cache.put(request, copy));
-            }
-            return response;
-          })
-          .catch(() => cachedResponse);
-
-        return cachedResponse || freshResponse;
-      })
+      fetch(request)
+        .then((response) => {
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(PORTAL_CACHE).then((cache) => cache.put(request, copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match(request, { ignoreSearch: true }))
     );
   }
 });

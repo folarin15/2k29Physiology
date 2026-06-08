@@ -74,7 +74,7 @@
           </button>
         </header>
 
-        <!-- LOGIN COMPONENT: Supabase Auth email/password sign-in for admin. -->
+        <!-- LOGIN COMPONENT: Email/password sign-in for admin. -->
         <section class="content-panel auth-panel" id="staffLoginPanel">
           <div class="section-header">
             <div>
@@ -120,6 +120,7 @@
             <a href="#staffMembers">Members</a>
             <a href="#staffManage">Manage</a>
             <a href="#staffSuggestions">Suggestions</a>
+            <a href="#staffAccess">Access</a>
           </nav>
 
           <div class="staff-grid">
@@ -352,7 +353,7 @@
             </section>
 
             <!-- ANNOUNCEMENT ADMIN COMPONENT: Lets admin remove any post. -->
-            <section class="content-panel">
+            <section class="content-panel" data-staff-panel="staffManage">
               <div class="section-header">
                 <div>
                   <p class="eyebrow">News</p>
@@ -399,17 +400,17 @@
             </div>
           </section>
 
-          <!-- ROLE GUIDE COMPONENT: Explains how to seed admin and reps in Supabase. -->
-          <section class="content-panel">
+          <!-- ROLE GUIDE COMPONENT: Explains staff access setup without exposing implementation details. -->
+          <section class="content-panel" id="staffAccess">
             <div class="section-header">
               <div>
-                <p class="eyebrow">Role setup</p>
-                <h2>How to add reps/admin</h2>
+                <p class="eyebrow">Staff access</p>
+                <h2>How to approve reps/admin</h2>
               </div>
             </div>
             <p class="form-help">
-              Create Supabase Auth users, then add matching rows in staff_roles.
-              Use role "admin" for the owner account and "rep" for Ayanfe/Raphael.
+              Create the staff account, then approve the person for the correct portal role.
+              Use admin access for the owner account and rep access for Ayanfe/Raphael.
             </p>
           </section>
         </section>
