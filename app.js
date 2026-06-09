@@ -1,6 +1,6 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260608a";
-import { createBackend } from "./supabase-service.js?v=20260608a";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260608a";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260608b";
+import { createBackend } from "./supabase-service.js?v=20260608b";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260608b";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
@@ -1791,6 +1791,7 @@ function renderQuizQuestions() {
 
   if (title) title.textContent = state.study.mode === "exam" ? "Simulated exam attempt" : "Practice questions";
   if (meta) meta.textContent = `${quizModeLabel(state.study.mode)} - ${state.study.courseCode || ""}`;
+  document.body.dataset.quizFocus = "active";
   panel.hidden = false;
   if (resultPanel) resultPanel.hidden = true;
 
@@ -1843,6 +1844,10 @@ function renderQuizQuestions() {
 function renderQuizResults(data) {
   const panel = getElement("#quizResultPanel");
   if (!panel) return;
+
+  document.body.dataset.quizFocus = "result";
+  const playerPanel = getElement("#quizPlayerPanel");
+  if (playerPanel) playerPanel.hidden = true;
 
   const percent = data.total ? Math.round((Number(data.score || 0) / Number(data.total)) * 100) : 0;
   const total = Number(data.total || 0);
@@ -3615,6 +3620,7 @@ function connectQuizMode() {
   const answerForm = getElement("#quizAnswerForm");
   if (!setupForm && !submitButton) return;
 
+  document.body.dataset.quizFocus = "setup";
   courseSelect?.addEventListener("change", populateQuizTopicSelect);
 
   answerForm?.addEventListener("change", (event) => {

@@ -2765,6 +2765,64 @@ body[data-portal="staff"] #staffPortal > .staff-grid {
   margin-bottom: 18px;
 }
 
+body[data-page="quiz"] .app-shell,
+body[data-page="exam-room"] .app-shell {
+  grid-template-columns: 1fr;
+}
+
+body[data-page="quiz"] .sidebar,
+body[data-page="exam-room"] .sidebar {
+  display: none;
+}
+
+body[data-page="quiz"] .main-area,
+body[data-page="exam-room"] .main-area {
+  width: min(100%, 980px);
+  max-width: 980px;
+  margin-inline: auto;
+}
+
+body[data-quiz-focus="active"],
+body[data-quiz-focus="result"] {
+  background:
+    radial-gradient(circle at 50% -10%, rgba(42, 157, 127, 0.12), transparent 34%),
+    var(--paper);
+}
+
+body[data-quiz-focus="active"] .page-header,
+body[data-quiz-focus="active"] .study-hero,
+body[data-quiz-focus="active"] #quizSetupPanel,
+body[data-quiz-focus="active"] .site-credit,
+body[data-quiz-focus="active"] .connection-status,
+body[data-quiz-focus="active"] .notification-setup,
+body[data-quiz-focus="result"] .page-header,
+body[data-quiz-focus="result"] .study-hero,
+body[data-quiz-focus="result"] #quizSetupPanel,
+body[data-quiz-focus="result"] .site-credit,
+body[data-quiz-focus="result"] .connection-status,
+body[data-quiz-focus="result"] .notification-setup {
+  display: none;
+}
+
+body[data-quiz-focus="active"] .main-area,
+body[data-quiz-focus="result"] .main-area {
+  display: grid;
+  align-content: center;
+  min-height: 100dvh;
+  padding: clamp(16px, 3vw, 36px);
+}
+
+body[data-quiz-focus="active"] .quiz-player-panel,
+body[data-quiz-focus="result"] .quiz-result-panel {
+  width: min(100%, 880px);
+  margin: 0 auto;
+  border-radius: 22px;
+}
+
+body[data-quiz-focus="active"] .quiz-player-panel {
+  padding: clamp(16px, 3vw, 28px);
+}
+
 .study-snapshot {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(220px, 0.45fr);
