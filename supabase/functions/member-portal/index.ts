@@ -86,6 +86,35 @@ function cleanText(value: unknown, maxLength: number) {
     .slice(0, maxLength);
 }
 
+function quizTopicGroup(value: unknown) {
+  const topic = cleanText(value || "General", 100);
+  const normalized = topic.toLowerCase();
+  if (!topic || normalized === "general") return "General";
+
+  const groups: Array<[string, RegExp]> = [
+    ["Cell Biology", /\b(cell|membrane|cytosol|cytoplasm|organelle|ribosome|lysosome|peroxisome|mitochondria|chloroplast|golgi|reticulum|cytoskeleton|junction|transport|microscopy|prokary|eukary|plant cell)\b/i],
+    ["Genetics And Molecular Biology", /\b(gene|genetic|dna|rna|chromosome|chromatin|replication|transcription|translation|codon|nucleic|purine|pyrimidine|histone|inheritance)\b/i],
+    ["Biochemistry", /\b(protein|lipid|carbohydrate|enzyme|glycolysis|macromolecule|amino|phospholipid|triglyceride)\b/i],
+    ["Botany", /\b(botany|plant|leaf|stem|root|flower|vascular|xylem|phloem|stomata|mesophyll|epidermis|raunkiaer)\b/i],
+    ["Chemistry Basics", /\b(acid|base|salt|kinetic|rate|reaction|equilibrium|ph|poh|hydronium|chem)\b/i],
+    ["Computer Fundamentals", /\b(computer|memory|storage|software|hardware|network|internet|binary|programming|processor|cpu|alu)\b/i],
+    ["Physics", /\b(physics|heat|thermodynamic|wave|motion|force|energy|electric|magnet)\b/i],
+    ["Mathematics", /\b(math|calculus|algebra|function|limit|differentiation|integration|matrix)\b/i],
+    ["French", /\b(french|fran|greeting|number|culture)\b/i],
+  ];
+
+  for (const [group, pattern] of groups) {
+    if (pattern.test(topic)) return group;
+  }
+
+  return topic
+    .split(/\s[-–—:|/]\s|\s-\s|:/)[0]
+    .replace(/\b(and|or|the|of|in)\b/g, (word) => word.toLowerCase())
+    .replace(/\w\S*/g, (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .slice(0, 60)
+    .trim() || "General";
+}
+
 function cleanUuid(value: unknown) {
   const id = String(value || "").trim();
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)
@@ -591,7 +620,7 @@ Deno.serve(async (req) => {
       const courses: Record<string, { count: number; topics: Record<string, number> }> = {};
       for (const row of rows || []) {
         const courseCode = String(row.course_code || "");
-        const topic = String(row.topic || "General");
+        const topic = quizTopicGroup(row.topic);
         courses[courseCode] = courses[courseCode] || { count: 0, topics: {} };
         courses[courseCode].count += 1;
         courses[courseCode].topics[topic] = (courses[courseCode].topics[topic] || 0) + 1;
@@ -614,13 +643,13 @@ Deno.serve(async (req) => {
         .select("id, course_code, topic, question_text, options, difficulty, source_hint")
         .eq("status", "published")
         .eq("course_code", courseCode)
-        .limit(200);
+        .limit(topic ? 1000 : 200);
 
-      if (topic) query = query.eq("topic", topic);
       const { data: rows, error } = await query;
       if (error) throw error;
 
-      const questions = shuffle(rows || []).slice(0, limit).map(publicQuestion);
+      const pool = topic ? (rows || []).filter((row) => quizTopicGroup(row.topic) === topic) : rows || [];
+      const questions = shuffle(pool).slice(0, limit).map(publicQuestion);
       return jsonResponse(req, {
         mode,
         courseCode,
