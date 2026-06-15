@@ -1,6 +1,6 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260608b";
-import { createBackend } from "./supabase-service.js?v=20260608b";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260608b";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260615b";
+import { createBackend } from "./supabase-service.js?v=20260615b";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260615b";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
@@ -82,6 +82,28 @@ function escapeHtml(value = "") {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function polishQuestionText(value = "") {
+  return stripSiteEmoji(value)
+    .replace(/\b(?:according to|based on|from|in)\s+(?:the\s+)?(?:provided\s+)?(?:text|document|notes?|material|slide|pdf)\b[:,]?\s*/gi, "")
+    .replace(/\b(?:as\s+)?(?:stated|seen|shown)\s+(?:in|on)\s+(?:the\s+)?(?:text|document|notes?|slide|pdf)\b[:,]?\s*/gi, "")
+    .replace(/\b(?:page|pg\.?)\s*\d+\b[:,]?\s*/gi, "")
+    .replace(/\bwas\s+this\s+in\s+(?:the\s+)?(?:document|text|notes?|slide|pdf)\??/gi, "Which option best answers the question?")
+    .replace(/\bwhich\s+of\s+these\s+was\s+mentioned\s+in\s+(?:the\s+)?(?:document|text|notes?|slide|pdf)\??/gi, "Which option is correct?")
+    .replace(/\s+([?.!,;:])/g, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function polishedExplanationText(result = {}) {
+  const raw = result.explanation || result.sourceHint || "";
+  const cleaned = polishQuestionText(raw);
+  if (cleaned) return cleaned;
+  if (result.correctAnswer) {
+    return `${result.correctAnswer} is the correct answer. Review the topic again and compare why the other options do not match the concept.`;
+  }
+  return "Review the topic again and focus on the key idea behind the correct option.";
 }
 
 function courseAnchor(code) {
@@ -506,8 +528,9 @@ function renderBootLoader(message = "Opening portal") {
         <span class="boot-loader-ring" aria-hidden="true"></span>
       </div>
       <p class="eyebrow">PhysioK29</p>
-      <h2>Preparing your class portal</h2>
+      <h2>Opening your study space</h2>
       <p id="bootLoaderStatus">${escapeHtml(message)}</p>
+      <div class="boot-loader-progress" aria-hidden="true"><span></span></div>
       <div class="boot-loader-dots" aria-hidden="true">
         <span></span>
         <span></span>
@@ -1401,25 +1424,59 @@ function renderCourseGrid() {
 /* TIMETABLE PAGE: Renders the CBT rows from the extracted document. */
 function renderTimetable() {
   const body = getElement("#timetableBody");
+  const cards = getElement("#timetableCardGrid");
   const count = getElement("#timetablePageCount");
-  if (!body) return;
+  if (!body && !cards) return;
 
   if (count) count.textContent = `${cbtTimetable.length} rows`;
 
-  body.innerHTML = cbtTimetable
-    .map(
-      (item) => `
-        <tr data-status="${getTimetableStatus(item)}">
-          <td>${item.course}</td>
-          <td>${item.day}</td>
-          <td>${item.date}</td>
-          <td>${item.batch}</td>
-          <td>${item.duration}</td>
-          <td>${item.time}</td>
-        </tr>
-      `
-    )
-    .join("");
+  if (cards) {
+    cards.innerHTML = cbtTimetable
+      .map((item) => {
+        const course = findCourse(item.course);
+        return `
+          <article class="exam-date-card" data-status="${getTimetableStatus(item)}">
+            <div class="exam-date-main">
+              <span class="course-code">${escapeHtml(item.course)}</span>
+              <h2>${escapeHtml(course?.title || item.course)}</h2>
+              <p>${escapeHtml(item.day)}, ${escapeHtml(formatFullExamDate(getTimetableWindow(item).start))}</p>
+            </div>
+            <dl>
+              <div>
+                <dt>Time</dt>
+                <dd>${escapeHtml(item.time)}</dd>
+              </div>
+              <div>
+                <dt>Duration</dt>
+                <dd>${escapeHtml(item.duration)}</dd>
+              </div>
+              <div>
+                <dt>Venue / mode</dt>
+                <dd>${escapeHtml(item.batch)}</dd>
+              </div>
+            </dl>
+          </article>
+        `;
+      })
+      .join("");
+  }
+
+  if (body) {
+    body.innerHTML = cbtTimetable
+      .map(
+        (item) => `
+          <tr data-status="${getTimetableStatus(item)}">
+            <td>${item.course}</td>
+            <td>${item.day}</td>
+            <td>${item.date}</td>
+            <td>${item.batch}</td>
+            <td>${item.duration}</td>
+            <td>${item.time}</td>
+          </tr>
+        `
+      )
+      .join("");
+  }
 }
 
 /* NEXT CBT CARD: Automatically advances after each exam time passes. */
@@ -1500,7 +1557,7 @@ function getLastMinuteResources(limit = 10) {
 async function loadStudyGuideData() {
   if (document.body.dataset.page !== "exam" || state.studyGuide.length) return;
   try {
-    const response = await fetch("./bio-study-guide.json?v=20260615a", { cache: "no-store" });
+    const response = await fetch("./bio-study-guide.json?v=20260615b", { cache: "no-store" });
     if (!response.ok) throw new Error("Study guide data is not available yet.");
     const guide = await response.json();
     state.studyGuide = Array.isArray(guide) ? guide : [];
@@ -1708,6 +1765,7 @@ function renderExamMode() {
           <span>${escapeHtml(activeCard.label)}</span>
           <strong data-front>${escapeHtml(activeCard.front)}</strong>
           <small data-back>${escapeHtml(activeCard.back)}</small>
+          <em>Tap to reveal</em>
         </button>
         <div class="flashcard-controls" aria-label="Flashcard controls">
           <button class="mini-action" type="button" data-flashcard-nav="prev">
@@ -2011,6 +2069,7 @@ function renderQuizQuestions() {
   state.study.currentIndex = currentIndex;
   const question = questions[currentIndex];
   const answeredCount = questions.filter((item) => state.study.answers?.[item.id]).length;
+  const progressPercent = total ? Math.round(((currentIndex + 1) / total) * 100) : 0;
 
   if (title) title.textContent = state.study.mode === "exam" ? "Simulated exam attempt" : "Practice questions";
   if (meta) meta.textContent = `${quizModeLabel(state.study.mode)} - ${state.study.courseCode || ""}`;
@@ -2024,16 +2083,24 @@ function renderQuizQuestions() {
   }
 
   form.innerHTML = `
+    <div class="quiz-attempt-bar">
+      <button class="ghost-action quiz-exit-action" type="button" data-exit-quiz>
+        <span class="material-symbols-rounded" aria-hidden="true">close</span>
+        Exit ${state.study.mode === "exam" ? "exam mode" : "quiz"}
+      </button>
+      <span>${escapeHtml(state.study.courseCode || "Course")}${state.study.topic ? ` - ${escapeHtml(state.study.topic)}` : ""}</span>
+    </div>
     <div class="quiz-progress-row" aria-live="polite">
       <span>Question ${currentIndex + 1} of ${total}</span>
       <small>${answeredCount} answered</small>
     </div>
+    <div class="quiz-progress-track" aria-hidden="true"><span style="width: ${progressPercent}%"></span></div>
     <fieldset class="quiz-question-card" data-focused="true">
       <legend>
         <span>Question ${currentIndex + 1}</span>
         <small>${escapeHtml(question.topic || "General")} - ${escapeHtml(question.difficulty || "Medium")}</small>
       </legend>
-      <p>${escapeHtml(question.question)}</p>
+      <p>${escapeHtml(polishQuestionText(question.question))}</p>
       <div class="quiz-options">
         ${(question.options || [])
           .map((option) => {
@@ -2059,6 +2126,9 @@ function renderQuizQuestions() {
       </button>
       <button class="secondary-action" type="button" data-quiz-nav="next" ${currentIndex >= total - 1 ? "disabled" : ""}>
         Next question
+      </button>
+      <button class="primary-action" type="button" data-review-submit>
+        Review and submit
       </button>
     </div>
   `;
@@ -2129,10 +2199,10 @@ function renderQuizResults(data) {
         .map(
           (result) => `
             <article class="quiz-review-card" data-correct="${result.correct ? "true" : "false"}">
-              <strong>${escapeHtml(result.question)}</strong>
+              <strong>${escapeHtml(polishQuestionText(result.question))}</strong>
               <p>Your answer: ${escapeHtml(result.selectedAnswer || "No answer")}</p>
               <p>Correct answer: ${escapeHtml(result.correctAnswer || "")}</p>
-              <small>${escapeHtml(result.explanation || result.sourceHint || "")}</small>
+              <small>${escapeHtml(polishedExplanationText(result))}</small>
             </article>
           `
         )
@@ -3896,6 +3966,30 @@ function connectQuizMode() {
 
   answerForm?.addEventListener("click", (event) => {
     const navButton = event.target.closest?.("[data-quiz-nav]");
+    const exitButton = event.target.closest?.("[data-exit-quiz]");
+    const reviewButton = event.target.closest?.("[data-review-submit]");
+
+    if (exitButton) {
+      const shouldExit = confirm("Exit this attempt? Your current answers will not be submitted.");
+      if (!shouldExit) return;
+      stopQuizTimer();
+      state.study.questions = [];
+      state.study.answers = {};
+      state.study.currentIndex = 0;
+      document.body.dataset.quizFocus = "setup";
+      const playerPanel = getElement("#quizPlayerPanel");
+      const resultPanel = getElement("#quizResultPanel");
+      if (playerPanel) playerPanel.hidden = true;
+      if (resultPanel) resultPanel.hidden = true;
+      getElement("#quizSetupPanel")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
+    if (reviewButton) {
+      submitButton?.click();
+      return;
+    }
+
     if (!navButton) return;
     const direction = navButton.dataset.quizNav;
     const total = state.study.questions.length;
@@ -3944,6 +4038,10 @@ function connectQuizMode() {
 
   submitButton?.addEventListener("click", async () => {
     if (!state.study.questions.length) return;
+    const unanswered = state.study.questions.filter((question) => !state.study.answers?.[question.id]).length;
+    if (unanswered && !confirm(`${unanswered} question${unanswered === 1 ? " is" : "s are"} unanswered. Submit anyway?`)) {
+      return;
+    }
     submitButton.disabled = true;
     const status = getElement("#quizStatus");
     const answers = state.study.questions.map((question) => ({
