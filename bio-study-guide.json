@@ -1,0 +1,405 @@
+[
+  {
+    "courseCode": "BIO 101",
+    "topic": "Principles of Cell Biology and Organization",
+    "summary": "The cell is the basic structural and functional unit of life. This module explores cell theory, the differences between prokaryotic and eukaryotic cells, organelle functions, and the levels of organization from tissues to organ systems.",
+    "subtopics": [
+      {
+        "title": "Cell Theory and Structure",
+        "keyPoints": [
+          "Cells arise only from the division of existing cells",
+          "All living things are composed of one or more cells",
+          "Eukaryotic cells are compartmentalized and roughly ten times larger than prokaryotes",
+          "The cell membrane is a fluid mosaic consisting of 45 percent protein, 45% lipid, and 10% carbohydrate"
+        ],
+        "definitions": [
+          "Cell: The basic unit of structure and function in living things",
+          "Intrinsic Proteins: Proteins that span the entire width of the cell membrane",
+          "Organelles: Small membrane-bound units within a cell that perform specialized functions"
+        ],
+        "processes": [
+          "Membrane Transport: Materials move via diffusion, osmosis, active transport, endocytosis, and exocytosis",
+          "Independent Existence: The ability of solitary cells to survive alone under suitable conditions"
+        ],
+        "examTraps": [
+          "Assuming all cells have mitochondria (only Eukaryotes do)",
+          "Confusing colonial organisms where cells survive alone with multicellular organisms where specialized cells cannot"
+        ],
+        "possibleQuestionPoints": [
+          "Comparison of DNA location in prokaryotes vs eukaryotes",
+          "Role of cholesterol in membrane fluidity",
+          "Function of the mitochondrial cristae and matrix"
+        ],
+        "mustKnow": [
+          "Robert Hooke first recorded cell observations in 1663 using cork",
+          "The cell membrane is self-sealing and can divide without bursting"
+        ]
+      },
+      {
+        "title": "Levels of Organization and Tissues",
+        "keyPoints": [
+          "Cells performing the same function form tissues",
+          "Grouped tissues form organs, and grouped organs form systems",
+          "There are eleven major organ systems in vertebrates"
+        ],
+        "definitions": [
+          "Tissue: A group of connected cells with the same structure and function",
+          "Epithelium: Sheet-like layers of cells covering body surfaces and internal cavities",
+          "Extracellular Fluid (ECF): The fluid environment bathing cells, containing required ions and nutrients"
+        ],
+        "processes": [
+          "Cellular Communication: Individual cells perform specialized functions coordinated by complex signaling systems",
+          "Bone Reshaping: Continuous process of mineral removal by osteoclasts and building by osteoblasts"
+        ],
+        "examTraps": [
+          "Thinking the pancreas belongs to only one system (it is both endocrine and digestive)",
+          "Assuming all connective tissue is hard (blood is a fluid connective tissue)"
+        ],
+        "possibleQuestionPoints": [
+          "Types of epithelial cell shapes: squamous, cuboidal, and columnar",
+          "The six major types of vertebrate connective tissue",
+          "Structural unit of bone known as the osteon"
+        ],
+        "mustKnow": [
+          "H, O, C, and N make up over 99 percent of atoms in the human body",
+          "Epithelial tissues protect against bacterial and viral invasion"
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "BIO 101",
+    "topic": "Macromolecules and the Chemistry of Life",
+    "summary": "Biological phenomena are governed by the chemistry of four major classes of macromolecules: carbohydrates, lipids, proteins, and nucleic acids. Their structures determine their specific biological functions.",
+    "subtopics": [
+      {
+        "title": "Biomolecular Hierarchy and Interactions",
+        "keyPoints": [
+          "Simple molecules serve as units for building complex metabolites and macromolecules",
+          "Weak chemical forces like hydrogen bonds and van der Waals interactions mediate biomolecular recognition",
+          "Biopolymers are directional and built from chiral monomers"
+        ],
+        "definitions": [
+          "Polymer: A long molecule consisting of many similar building blocks called monomers",
+          "Chirality: The geometric property of molecules being non-superimposable on their mirror images",
+          "Denaturation: The loss of a protein's native conformation due to environmental changes like pH or temperature"
+        ],
+        "processes": [
+          "Dehydration Reaction: Synthesis of a polymer by removing a water molecule",
+          "Hydrolysis: Breakdown of a polymer by adding a water molecule"
+        ],
+        "examTraps": [
+          "Classifying lipids as polymers (they are macromolecules but do not form long monomer chains)",
+          "Assuming denaturation destroys the primary sequence of amino acids (it affects 3D shape only)"
+        ],
+        "possibleQuestionPoints": [
+          "Energy levels of different weak bonds",
+          "The role of chaperonins in protein folding",
+          "Directionality of a polypeptide (N-terminus to C-terminus)"
+        ],
+        "mustKnow": [
+          "A single amino acid substitution causes Sickle-cell disease",
+          "Proteins account for more than 50 percent of the dry mass of most cells"
+        ]
+      },
+      {
+        "title": "Structure and Function of Major Classes",
+        "keyPoints": [
+          "Carbohydrates serve as fuel and structural material",
+          "Lipids are hydrophobic and include fats, phospholipids, and steroids",
+          "Nucleic acids store and transmit hereditary information"
+        ],
+        "definitions": [
+          "Glycosidic Linkage: The covalent bond joining two monosaccharides",
+          "Saturated Fat: A fat with the maximum number of hydrogen atoms and no double bonds",
+          "Nucleotide: Building block of nucleic acids consisting of a base, sugar, and phosphate"
+        ],
+        "processes": [
+          "Protein Conformation: The twisting and folding of polypeptides into a unique functional shape",
+          "X-ray Crystallography: A method used by scientists to determine a protein's 3D structure"
+        ],
+        "examTraps": [
+          "Confusing alpha-glucose (helical starch) with beta-glucose (straight cellulose)",
+          "Missing that RNA uses Uracil while DNA uses Thymine"
+        ],
+        "possibleQuestionPoints": [
+          "Difference between purines and pyrimidines",
+          "Components of sucrose, maltose, and lactose",
+          "Structural roles of chitin in arthropods and fungi"
+        ],
+        "mustKnow": [
+          "DNA exists as an anti-parallel double helix",
+          "The four levels of protein structure: Primary, Secondary, Tertiary, and Quaternary"
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "BIO 101",
+    "topic": "Bioenergetics and Cellular Metabolism",
+    "summary": "Bioenergetics focuses on energy transformations in living cells. It details how organisms acquire and utilize energy through metabolic pathways to perform biological work.",
+    "subtopics": [
+      {
+        "title": "Thermodynamics and Free Energy",
+        "keyPoints": [
+          "Energy transformations obey the laws of thermodynamics",
+          "Cells are isothermal systems functioning at constant temperature and pressure",
+          "ATP is the primary energy currency of the cell"
+        ],
+        "definitions": [
+          "Bioenergetics: The study of energy changes in biological reactions",
+          "Exergonic: A spontaneous reaction that releases free energy (negative Delta G)",
+          "Endergonic: A non-spontaneous reaction requiring energy input (positive Delta G)"
+        ],
+        "processes": [
+          "Metabolism: The sum of all catabolic (breakdown) and anabolic (synthesis) reactions",
+          "Oxidative Phosphorylation: The process of synthesizing ATP when ADP levels are high"
+        ],
+        "examTraps": [
+          "Confusing enthalpy (heat content) with entropy (disorder)",
+          "Assuming a reaction at equilibrium (Delta G = 0) can perform work"
+        ],
+        "possibleQuestionPoints": [
+          "Application of the Gibbs Free Energy equation",
+          "Energy charge and the ATP/ADP ratio",
+          "Characteristics of high-energy compounds (liberating at least 7 Cal/mol)"
+        ],
+        "mustKnow": [
+          "First Law of Thermodynamics: Energy cannot be created or destroyed",
+          "Second Law of Thermodynamics: The entropy of the universe always increases"
+        ]
+      },
+      {
+        "title": "Cellular Respiration Pathways",
+        "keyPoints": [
+          "Respiration combines oxygen with glucose to release energy",
+          "Glycolysis is an anaerobic process occurring in the cytosol",
+          "Aerobic respiration yields significantly more ATP than anaerobic pathways"
+        ],
+        "definitions": [
+          "Glycolysis: The breakdown of one glucose molecule into two pyruvate molecules",
+          "Fermentation: The process following glycolysis when oxygen is absent to regenerate NAD+",
+          "Krebs Cycle: A series of reactions in the mitochondria producing energy-storing molecules"
+        ],
+        "processes": [
+          "Stage 1: Glycolysis converts glucose to pyruvate",
+          "Stage 2: The Krebs cycle and Electron Transport Chain produce the bulk of cellular ATP"
+        ],
+        "examTraps": [
+          "Thinking glycolysis happens in the mitochondria (it occurs in the cytoplasm)",
+          "Miscounting the net ATP gain of glycolysis (net gain is 2 ATP)"
+        ],
+        "possibleQuestionPoints": [
+          "Products of the Krebs Cycle",
+          "The role of oxygen as the final electron acceptor",
+          "Comparison of aerobic vs anaerobic energy yields"
+        ],
+        "mustKnow": [
+          "Carbon dioxide and water are the waste products of respiration",
+          "Enzymes like PFK regulate the steps of glycolysis"
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "BIO 101",
+    "topic": "Genetics and Molecular Biology",
+    "summary": "This topic covers the principles of heredity established by Mendel and the molecular mechanisms of the Central Dogma, including DNA replication, transcription, and translation.",
+    "subtopics": [
+      {
+        "title": "Mendelian Genetics",
+        "keyPoints": [
+          "Genes are carried on chromosomes and occur in pairs",
+          "Traits are determined by dominant and recessive alleles",
+          "Sexual reproduction creates new combinations of genes through fertilization"
+        ],
+        "definitions": [
+          "Genetics: The branch of biology dealing with heredity and variation",
+          "Allele: Different versions of a gene for the same trait",
+          "Dihybrid Cross: A mating involving parents that differ in two independent traits"
+        ],
+        "processes": [
+          "Segregation: Mendel's principle that alleles separate during gamete formation",
+          "Test Cross: Breeding an organism of unknown genotype with a homozygous recessive individual"
+        ],
+        "examTraps": [
+          "Confusing phenotype (outward appearance) with genotype (genetic makeup)",
+          "Applying the 3:1 ratio to a dihybrid cross instead of a monohybrid cross"
+        ],
+        "possibleQuestionPoints": [
+          "Mendel's seven traits in pea plants",
+          "Calculating probabilities of genetic disorders like Gaucher Disease",
+          "Determining F2 phenotypic ratios (9:3:3:1 for dihybrid crosses)"
+        ],
+        "mustKnow": [
+          "Gregor Mendel is the father of modern genetics",
+          "Pure lines were used for eight years to establish basic genetic laws"
+        ]
+      },
+      {
+        "title": "The Central Dogma and Gene Expression",
+        "keyPoints": [
+          "DNA stores genetic information, which is transcribed to RNA and translated into proteins",
+          "The genetic code is written in triplets called codons",
+          "Mutations are heritable changes in the DNA sequence"
+        ],
+        "definitions": [
+          "Transcription: Synthesis of mRNA using a DNA template strand",
+          "Translation: The process of building proteins at the ribosome using mRNA instructions",
+          "Anticodon: A triplet of bases on tRNA complementary to an mRNA codon"
+        ],
+        "processes": [
+          "DNA Replication: Semi-conservative process where DNA unwinds to form a replication fork",
+          "Protein Synthesis: Initiation, elongation, and termination stages at the ribosome"
+        ],
+        "examTraps": [
+          "Synthesizing mRNA in the 3' to 5' direction (mRNA is synthesized 5' to 3' using a 3' to 5' template)",
+          "Assuming all mutations are harmful (some are silent or beneficial)"
+        ],
+        "possibleQuestionPoints": [
+          "Differences between the leading and lagging strands",
+          "The role of DNA Polymerase and Helicase",
+          "The 64 possible codons and the 3 stop signals (UAA, UAG, UGA)"
+        ],
+        "mustKnow": [
+          "The start codon is always AUG, coding for Methionine",
+          "Humans have 46 chromosomes (23 pairs)"
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "BIO 101",
+    "topic": "Embryology and Human Development",
+    "summary": "Embryology explores the prenatal development of organisms. It details the timeline from fertilization to the formation of complex structures and organ systems.",
+    "subtopics": [
+      {
+        "title": "Early Embryonic Events",
+        "keyPoints": [
+          "The embryonic period covers the first eight weeks of development",
+          "Basic body plans and major structures are established during this phase",
+          "Cleavage involves rapid mitotic divisions without significant cell growth"
+        ],
+        "definitions": [
+          "Zygote: The single cell formed by the fusion of sperm and ovum",
+          "Morula: A 16-cell mass that enters the uterus roughly 96 hours post-fertilization",
+          "Gastrulation: Reorganization of the blastula into a three-layered gastrula"
+        ],
+        "processes": [
+          "Fertilization: Typically occurs in the ampulla of the fallopian tube",
+          "Implantation: The process where the blastocyst attaches to the uterine wall, completed by day 11"
+        ],
+        "examTraps": [
+          "Confusing the trophoblast (forms placenta) with the inner cell mass (forms embryo)",
+          "Misidentifying the location of fertilization as the uterus instead of the fallopian tube"
+        ],
+        "possibleQuestionPoints": [
+          "The three germ layers and their structural derivatives",
+          "The transition from morula to blastocyst",
+          "Specific days associated with cleavage stages"
+        ],
+        "mustKnow": [
+          "Genetic sex is determined at the time of fertilization",
+          "By the end of week 8, the embryo has all adult structures in precursor form"
+        ]
+      },
+      {
+        "title": "Fetal Development and Support",
+        "keyPoints": [
+          "The fetal period extends from week 9 until birth (week 38)",
+          "The placenta serves as the interface for nutrient and waste exchange",
+          "Fetal circulation is distinct from adult circulation"
+        ],
+        "definitions": [
+          "Decidua: The modified endometrial lining of the uterus during pregnancy",
+          "Placenta: A discoid organ responsible for nourishing the fetus",
+          "Amnion: The innermost membrane enclosing the watery environment of the fetus"
+        ],
+        "processes": [
+          "Organogenesis: The production and development of organs from germ layers",
+          "Placentation: The formation and arrangement of the placenta in the uterus"
+        ],
+        "examTraps": [
+          "Assuming the umbilical vein carries deoxygenated blood (it actually carries oxygenated blood to the fetus)",
+          "Confusing the chorion with the amnion"
+        ],
+        "possibleQuestionPoints": [
+          "Structure of the placental villi and intervillous space",
+          "The role of the umbilical cord",
+          "Growth milestones during the 17-20 week period"
+        ],
+        "mustKnow": [
+          "The fetal period is primarily characterized by growth and maturation",
+          "The umbilical vein carries O2 and nutrients, while arteries carry CO2 and waste"
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "BIO 101",
+    "topic": "Bioethics and Scientific Integrity",
+    "summary": "Bioethics provides the framework for balancing the benefits and risks of biological research. Scientific integrity demands intellectual honesty and responsibility from researchers and institutions.",
+    "subtopics": [
+      {
+        "title": "Principles of Bioethics",
+        "keyPoints": [
+          "Bioethics guides behavior in biomedicine and biotechnology",
+          "Moral judgments are often influenced by cultural and religious beliefs",
+          "Four major ethical systems include Natural Law, Proportionalism, Consequentialism, and Pragmatism"
+        ],
+        "definitions": [
+          "Autonomy: Respect for a rational individual's right to make un-coerced, informed decisions",
+          "Beneficence: The obligation to identify and maximize benefits for others",
+          "Non-maleficence: The fundamental duty to do no harm"
+        ],
+        "processes": [
+          "Ethical Decision Making: Using structured tools to resolve dilemmas in medicine and agriculture",
+          "Informed Consent: Ensuring individuals understand risks before participating in research or consuming GMOs"
+        ],
+        "examTraps": [
+          "Thinking bioethics only applies to medicine (it also covers environment and agriculture)",
+          "Confusing justice (fair treatment) with beneficence (doing good)"
+        ],
+        "possibleQuestionPoints": [
+          "The four principles of bioethics",
+          "Ethical concerns surrounding GMOs and cloning",
+          "The scope of research involving human subjects"
+        ],
+        "mustKnow": [
+          "Justice ensures fair treatment and equity through reasonable dispute resolution",
+          "Bioethics is necessary because economic incentives are not enough to protect public health"
+        ]
+      },
+      {
+        "title": "Scientific Integrity and Misconduct",
+        "keyPoints": [
+          "Scientific integrity is both an individual commitment and an institutional responsibility",
+          "Institutions must promote an environment of trustworthiness and lawfulness",
+          "Codes of conduct provide shared standards and positive support for ethical action"
+        ],
+        "definitions": [
+          "Fabrication: Making up data or information at any stage of the scientific process",
+          "Falsification: Manipulating research materials or results to inaccurately represent a record",
+          "Plagiarism: Appropriating another person's ideas or words without credit"
+        ],
+        "processes": [
+          "Peer Review: Ensuring fairness and accuracy in the reporting of scientific findings",
+          "Humane Animal Care: Adhering to ethical standards in research involving living subjects"
+        ],
+        "examTraps": [
+          "Assuming plagiarism only refers to direct word-for-word copying (it also includes ideas and processes)",
+          "Thinking fabrication and falsification are the same (fabrication is making up data; falsification is altering it)"
+        ],
+        "possibleQuestionPoints": [
+          "Elements of integrity in research",
+          "The role of codes of conduct in professional life",
+          "Consequences of ethical failure in the biotech industry"
+        ],
+        "mustKnow": [
+          "Intellectual honesty is the core requirement for proposing and reporting research",
+          "Transparency in conflicts of interest is essential for maintaining scientific credibility"
+        ]
+      }
+    ]
+  }
+]

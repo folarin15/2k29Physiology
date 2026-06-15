@@ -23,6 +23,10 @@ const state = {
   studyEvents: [],
   quizAttempts: [],
   topicPerformance: [],
+  studyGuide: [],
+  selectedStudyGuideCourse: "BIO 101",
+  selectedStudyGuideTopic: "",
+  studyGuideFlashcardIndex: 0,
   staffUser: null,
   staffRole: null,
   staffStudySelectedMemberId: "",
@@ -1493,65 +1497,284 @@ function getLastMinuteResources(limit = 10) {
     .slice(0, limit);
 }
 
+async function loadStudyGuideData() {
+  if (document.body.dataset.page !== "exam" || state.studyGuide.length) return;
+  try {
+    const response = await fetch("./bio-study-guide.json?v=20260615a", { cache: "no-store" });
+    if (!response.ok) throw new Error("Study guide data is not available yet.");
+    const guide = await response.json();
+    state.studyGuide = Array.isArray(guide) ? guide : [];
+    state.selectedStudyGuideTopic = state.studyGuide[0]?.topic || "";
+  } catch (error) {
+    console.warn(error);
+    state.studyGuide = [];
+  }
+}
+
+function splitDefinitionLine(line = "") {
+  const [term, ...rest] = String(line).split(":");
+  return {
+    term: stripSiteEmoji(term || "Key idea"),
+    meaning: stripSiteEmoji(rest.join(":") || line),
+  };
+}
+
+function studyGuideTopic() {
+  return (
+    studyGuideTopicsForCourse().find((topic) => topic.topic === state.selectedStudyGuideTopic) ||
+    studyGuideTopicsForCourse()[0] ||
+    null
+  );
+}
+
+function studyGuideTopicsForCourse(courseCode = state.selectedStudyGuideCourse) {
+  return state.studyGuide.filter((topic) => topic.courseCode === courseCode);
+}
+
+function studyList(items = [], tone = "default") {
+  const cleanItems = items.map(stripSiteEmoji).filter(Boolean);
+  if (!cleanItems.length) return "";
+  return `
+    <ul class="smart-list" data-tone="${tone}">
+      ${cleanItems.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+    </ul>
+  `;
+}
+
+function buildFlashcards(topic) {
+  return (topic?.subtopics || [])
+    .flatMap((subtopic) => [
+      ...(subtopic.definitions || []).map((definition) => {
+        const parsed = splitDefinitionLine(definition);
+        return {
+          label: subtopic.title,
+          front: parsed.term,
+          back: parsed.meaning,
+        };
+      }),
+      ...(subtopic.processes || []).map((process) => {
+        const parsed = splitDefinitionLine(process);
+        return {
+          label: subtopic.title,
+          front: parsed.term,
+          back: parsed.meaning,
+        };
+      }),
+    ])
+    .filter((card) => card.front && card.back)
+    .slice(0, 12);
+}
+
+function guideResourceMatches(topic) {
+  const courseCode = topic?.courseCode || state.selectedStudyGuideCourse || "BIO 101";
+  const keywords = [
+    topic?.topic,
+    ...(topic?.subtopics || []).map((subtopic) => subtopic.title),
+    courseCode,
+  ]
+    .map((item) => String(item || "").toLowerCase())
+    .filter(Boolean);
+
+  return state.resources
+    .filter((resource) => resource.courseCode === courseCode)
+    .filter((resource) => {
+      const haystack = `${resource.title} ${resource.note || ""} ${resource.fileName || ""}`.toLowerCase();
+      return keywords.some((keyword) => haystack.includes(keyword.split(" ")[0]));
+    })
+    .slice(0, 6);
+}
+
 function renderExamMode() {
-  const title = getElement("#examCountdownTitle");
-  const meta = getElement("#examCountdownMeta");
-  const grid = getElement("#examCountdownGrid");
-  const body = getElement("#examTimetableBody");
-  const resources = getElement("#examResourceGrid");
-  if (!title || !meta || !grid || !resources) return;
+  const courseSelect = getElement("#studyGuideCourseSelect");
+  const topicList = getElement("#studyGuideTopicList");
+  const summary = getElement("#studyGuideSummary");
+  const flashcards = getElement("#studyGuideFlashcards");
+  const subtopics = getElement("#studyGuideSubtopics");
+  const sources = getElement("#studyGuideSources");
+  if (!topicList || !summary || !flashcards || !subtopics || !sources) return;
 
-  const now = new Date();
-  const next = getNextTrackedCbtItem(now);
-  if (!next) {
-    title.textContent = "CBT complete";
-    meta.textContent = "All listed GES/GST rows have passed.";
-    grid.innerHTML = ["Days", "Hours", "Minutes", "Seconds"]
-      .map((label) => `<span><strong>0</strong><small>${label}</small></span>`)
-      .join("");
-  } else {
-    const isCurrent = now >= next.start && now < next.end;
-    const target = isCurrent ? next.end : next.start;
-    title.textContent = `${next.course} ${next.batch}`;
-    meta.textContent = isCurrent ? `In progress now. Ends ${next.time.split("-")[1].trim()}.` : formatFullExamDate(next.start);
-    grid.innerHTML = formatCountdownParts(target, now)
+  if (courseSelect && !courseSelect.dataset.ready) {
+    courseSelect.innerHTML = firstSemesterCourses
       .map(
-        (part) => `
-          <span>
-            <strong>${String(part.value).padStart(2, "0")}</strong>
-            <small>${part.label}</small>
-          </span>
-        `
+        (course) =>
+          `<option value="${escapeHtml(course.code)}" ${course.code === state.selectedStudyGuideCourse ? "selected" : ""}>${escapeHtml(
+            `${course.code} - ${course.title}`
+          )}</option>`
       )
       .join("");
+    courseSelect.dataset.ready = "true";
   }
 
-  if (body) {
-    body.innerHTML = getUpcomingTrackedCbtItems(now)
-      .map(
-        (item) => `
-          <tr data-status="${getTimetableStatus(item, now)}">
-            <td>${item.course}</td>
-            <td>${item.date}</td>
-            <td>${item.batch}</td>
-            <td>${item.time}</td>
-          </tr>
+  if (!state.studyGuide.length) {
+    summary.innerHTML = `
+      <p class="eyebrow">Study guide</p>
+      <h2>Guide is still loading</h2>
+      <p>The BIO 101 smart guide will appear here once the local study outline is ready.</p>
+    `;
+    topicList.innerHTML = "";
+    flashcards.innerHTML = "";
+    subtopics.innerHTML = "";
+    sources.innerHTML = `<a class="source-link-card" href="./courses.html?course=BIO%20101">Open BIO 101 resources</a>`;
+    return;
+  }
+
+  const course = findCourse(state.selectedStudyGuideCourse) || {
+    code: state.selectedStudyGuideCourse,
+    title: state.selectedStudyGuideCourse,
+  };
+  const courseTopics = studyGuideTopicsForCourse();
+  if (!courseTopics.length) {
+    topicList.innerHTML = `<div class="empty-state">No structured guide for this course yet.</div>`;
+    summary.innerHTML = `
+      <p class="eyebrow">${escapeHtml(course.code)} guide</p>
+      <h2>${escapeHtml(course.title)}</h2>
+      <p>
+        A smart breakdown has not been added for this course yet. You can still use the uploaded materials and quiz bank while we build the guide.
+      </p>
+      <div class="smart-summary-actions">
+        <a class="secondary-action" href="./courses.html?course=${encodeURIComponent(course.code)}">
+          <span class="material-symbols-rounded" aria-hidden="true">menu_book</span>
+          Open resources
+        </a>
+        <a class="secondary-action" href="./quiz.html">
+          <span class="material-symbols-rounded" aria-hidden="true">quiz</span>
+          Practise questions
+        </a>
+      </div>
+    `;
+    flashcards.innerHTML = `<p class="empty-state">Flashcards will appear after a structured guide is added for ${escapeHtml(course.code)}.</p>`;
+    subtopics.innerHTML = "";
+    const courseResources = state.resources.filter((resource) => resource.courseCode === course.code).slice(0, 6);
+    sources.innerHTML = [
+      `<a class="source-link-card" href="./courses.html?course=${encodeURIComponent(course.code)}">
+        <span class="material-symbols-rounded" aria-hidden="true">menu_book</span>
+        <strong>Open ${escapeHtml(course.code)} course page</strong>
+        <small>Read or download the uploaded class materials for this course.</small>
+      </a>`,
+      ...courseResources.map(
+        (resource) => `
+          <a class="source-link-card" href="${escapeHtml(resourceReaderLink(resource))}">
+            <span class="material-symbols-rounded" aria-hidden="true">description</span>
+            <strong>${escapeHtml(resource.title)}</strong>
+            <small>${escapeHtml(resource.note || resource.fileName || `${course.code} material`)}</small>
+          </a>
         `
-      )
-      .join("");
+      ),
+    ].join("");
+    return;
   }
 
-  const lastMinute = getLastMinuteResources();
-  resources.innerHTML = lastMinute.length
-    ? lastMinute.map(resourceCard).join("")
-    : `<article class="resource-card setup-card">
-        <span class="course-code">No revision picks yet</span>
-        <div>
-          <h3>Last-minute resources will appear here</h3>
-          <p>Past questions, mocks, tests, solved material, and revision files will show in this focused exam view.</p>
+  if (!courseTopics.some((item) => item.topic === state.selectedStudyGuideTopic)) {
+    state.selectedStudyGuideTopic = courseTopics[0].topic;
+  }
+  const topic = studyGuideTopic();
+  topicList.innerHTML = courseTopics
+    .map(
+      (item, index) => `
+        <button class="smart-topic-button" type="button" data-study-topic="${escapeHtml(item.topic)}" data-active="${
+        item.topic === topic.topic
+      }">
+          <span>${String(index + 1).padStart(2, "0")}</span>
+          <strong>${escapeHtml(item.topic)}</strong>
+        </button>
+      `
+    )
+    .join("");
+
+  const topicCourse = findCourse(topic.courseCode) || { code: topic.courseCode, title: topic.courseCode };
+  summary.innerHTML = `
+    <p class="eyebrow">${escapeHtml(topicCourse.code)} guide</p>
+    <h2>${escapeHtml(topic.topic)}</h2>
+    <p>${escapeHtml(topic.summary || "A focused breakdown of this BIO 101 topic.")}</p>
+    <div class="smart-summary-actions">
+      <a class="secondary-action" href="./quiz.html">
+        <span class="material-symbols-rounded" aria-hidden="true">quiz</span>
+        Practise questions
+      </a>
+      <a class="secondary-action" href="./courses.html?course=${encodeURIComponent(topic.courseCode || state.selectedStudyGuideCourse)}">
+        <span class="material-symbols-rounded" aria-hidden="true">menu_book</span>
+        Find slides
+      </a>
+    </div>
+  `;
+
+  const cards = buildFlashcards(topic);
+  if (state.studyGuideFlashcardIndex >= cards.length) state.studyGuideFlashcardIndex = 0;
+  const activeCard = cards[state.studyGuideFlashcardIndex];
+  flashcards.innerHTML = activeCard
+    ? `
+      <div class="flashcard-stage">
+        <button class="study-flashcard" type="button" data-flashcard>
+          <span>${escapeHtml(activeCard.label)}</span>
+          <strong data-front>${escapeHtml(activeCard.front)}</strong>
+          <small data-back>${escapeHtml(activeCard.back)}</small>
+        </button>
+        <div class="flashcard-controls" aria-label="Flashcard controls">
+          <button class="mini-action" type="button" data-flashcard-nav="prev">
+            <span class="material-symbols-rounded" aria-hidden="true">chevron_left</span>
+            Previous
+          </button>
+          <span>${state.studyGuideFlashcardIndex + 1} of ${cards.length}</span>
+          <button class="mini-action" type="button" data-flashcard-nav="next">
+            Next
+            <span class="material-symbols-rounded" aria-hidden="true">chevron_right</span>
+          </button>
         </div>
-        <a class="card-action" href="./courses.html">Browse all courses</a>
-      </article>`;
+      </div>
+    `
+    : `<p class="empty-state">No flashcards have been added for this topic yet.</p>`;
+
+  subtopics.innerHTML = (topic.subtopics || [])
+    .map(
+      (subtopic, index) => `
+        <article class="smart-subtopic-card">
+          <header>
+            <span>${String(index + 1).padStart(2, "0")}</span>
+            <div>
+              <p class="eyebrow">Study block</p>
+              <h3>${escapeHtml(subtopic.title)}</h3>
+            </div>
+          </header>
+          <div class="smart-subtopic-grid">
+            <section>
+              <h4>Understand it like this</h4>
+              ${studyList(subtopic.keyPoints || [], "learn")}
+            </section>
+            <section>
+              <h4>Must know</h4>
+              ${studyList(subtopic.mustKnow || [], "must")}
+            </section>
+            <section>
+              <h4>Exam traps</h4>
+              ${studyList(subtopic.examTraps || [], "trap")}
+            </section>
+            <section>
+              <h4>Possible question angles</h4>
+              ${studyList(subtopic.possibleQuestionPoints || [], "question")}
+            </section>
+          </div>
+        </article>
+      `
+    )
+    .join("");
+
+  const matchedResources = guideResourceMatches(topic);
+  sources.innerHTML = [
+    `<a class="source-link-card" href="./courses.html?course=${encodeURIComponent(topic.courseCode || state.selectedStudyGuideCourse)}">
+      <span class="material-symbols-rounded" aria-hidden="true">menu_book</span>
+      <strong>Open ${escapeHtml(topic.courseCode || state.selectedStudyGuideCourse)} course page</strong>
+      <small>Use the search bar to find the matching slide or compiled note.</small>
+    </a>`,
+    ...matchedResources.map(
+      (resource) => `
+        <a class="source-link-card" href="${escapeHtml(resourceReaderLink(resource))}">
+          <span class="material-symbols-rounded" aria-hidden="true">description</span>
+          <strong>${escapeHtml(resource.title)}</strong>
+          <small>${escapeHtml(resource.note || resource.fileName || "BIO 101 material")}</small>
+        </a>
+      `
+    ),
+  ].join("");
 }
 
 function getNotificationItems() {
@@ -3560,6 +3783,46 @@ function connectNotificationSetup() {
   });
 }
 
+function connectStudyGuide() {
+  if (document.body.dataset.page !== "exam") return;
+
+  document.addEventListener("change", (event) => {
+    const courseSelect = event.target.closest("#studyGuideCourseSelect");
+    if (!courseSelect) return;
+    state.selectedStudyGuideCourse = courseSelect.value;
+    state.selectedStudyGuideTopic = studyGuideTopicsForCourse(courseSelect.value)[0]?.topic || "";
+    state.studyGuideFlashcardIndex = 0;
+    renderExamMode();
+  });
+
+  document.addEventListener("click", (event) => {
+    const topicButton = event.target.closest("[data-study-topic]");
+    const flashcard = event.target.closest("[data-flashcard]");
+    const flashcardNav = event.target.closest("[data-flashcard-nav]");
+
+    if (topicButton) {
+      state.selectedStudyGuideTopic = topicButton.dataset.studyTopic;
+      state.studyGuideFlashcardIndex = 0;
+      renderExamMode();
+      getElement("#studyGuideSummary")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
+    if (flashcardNav) {
+      const cards = buildFlashcards(studyGuideTopic());
+      if (!cards.length) return;
+      const direction = flashcardNav.dataset.flashcardNav === "prev" ? -1 : 1;
+      state.studyGuideFlashcardIndex = (state.studyGuideFlashcardIndex + direction + cards.length) % cards.length;
+      renderExamMode();
+      return;
+    }
+
+    if (flashcard) {
+      flashcard.toggleAttribute("data-revealed");
+    }
+  });
+}
+
 /* RESOURCE ENGAGEMENT: Lets students tag progress, vote helpful, and download course ZIPs. */
 function connectResourceEngagement() {
   document.addEventListener("click", async (event) => {
@@ -4065,6 +4328,7 @@ async function init() {
   updateBootLoader("Checking your session");
   setMemberGate(!getMemberSession()?.memberId);
   populateCourseSelects();
+  await loadStudyGuideData();
   renderAll();
   updateBootLoader("Preparing page tools");
   connectConnectionStatus();
@@ -4082,6 +4346,7 @@ async function init() {
   connectInstallPrompt();
   connectNotificationSetup();
   connectNotificationCenter();
+  connectStudyGuide();
   connectResourceEngagement();
   connectQuizMode();
   connectTimetableDownload();
