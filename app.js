@@ -1,6 +1,6 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260615b";
-import { createBackend } from "./supabase-service.js?v=20260615b";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260615b";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260615c";
+import { createBackend } from "./supabase-service.js?v=20260615c";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260615c";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
@@ -1557,7 +1557,7 @@ function getLastMinuteResources(limit = 10) {
 async function loadStudyGuideData() {
   if (document.body.dataset.page !== "exam" || state.studyGuide.length) return;
   try {
-    const response = await fetch("./bio-study-guide.json?v=20260615b", { cache: "no-store" });
+    const response = await fetch("./bio-study-guide.json?v=20260615c", { cache: "no-store" });
     if (!response.ok) throw new Error("Study guide data is not available yet.");
     const guide = await response.json();
     state.studyGuide = Array.isArray(guide) ? guide : [];
@@ -4332,15 +4332,27 @@ function connectTimetableDownload() {
   if (!button) return;
 
   button.addEventListener("click", () => {
-    const blob = createTimetablePdfBlob();
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "physiok29-final-exam-timetable.pdf";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    window.setTimeout(() => URL.revokeObjectURL(url), 0);
+    try {
+      button.disabled = true;
+      const blob = createTimetablePdfBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "physiok29-final-exam-timetable.pdf";
+      link.target = "_blank";
+      link.rel = "noopener";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      showToast("Timetable PDF is downloading.");
+      window.setTimeout(() => URL.revokeObjectURL(url), 30000);
+    } catch (error) {
+      showToast(error.message || "Could not download timetable PDF.", "error");
+    } finally {
+      window.setTimeout(() => {
+        button.disabled = false;
+      }, 600);
+    }
   });
 }
 
