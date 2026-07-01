@@ -39,9 +39,9 @@
       "icons": [{ "src": "./assets/favicon.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
-      "name": "Timetable",
-      "short_name": "Timetable",
-      "description": "Open the exam timetable.",
+      "name": "Resumption",
+      "short_name": "Resume",
+      "description": "Open the second-semester resumption countdown.",
       "url": "/timetable.html",
       "icons": [{ "src": "./assets/favicon.png", "sizes": "192x192", "type": "image/png" }]
     },

@@ -3,16 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PhysioK29 - Timetable</title>
+    <title>PhysioK29 - Resumption</title>
     <meta
       name="description"
-      content="Download and view the current GES/GST CBT timetable for Physiology Class 2k29."
+      content="Count down to second-semester resumption for Physiology Class 2k29."
     />
     <meta property="og:site_name" content="PhysioK29" />
     <meta property="og:title" content="PhysioK29 - Physiology Class 2k29" />
     <meta
       property="og:description"
-      content="Slides, announcements, CBT timetable, rep contacts, and suggestions for Physiology Class 2k29."
+      content="Slides, announcements, resumption countdown, rep contacts, and suggestions for Physiology Class 2k29."
     />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="./assets/og-image.png" />
@@ -61,15 +61,15 @@
           <a class="nav-link" href="./quiz.html"><span class="material-symbols-rounded" aria-hidden="true">quiz</span>Quiz Mode</a>
           <a class="nav-link" href="./exam-room.html"><span class="material-symbols-rounded" aria-hidden="true">timer</span>Exam Room</a>
           <a class="nav-link" href="./exam.html"><span class="material-symbols-rounded" aria-hidden="true">psychology_alt</span>Smart Guide</a>
-          <a class="nav-link active" href="./timetable.html"><span class="material-symbols-rounded" aria-hidden="true">calendar_month</span>Timetable</a>
+          <a class="nav-link active" href="./timetable.html"><span class="material-symbols-rounded" aria-hidden="true">event_available</span>Resumption</a>
           <a class="nav-link" href="./reps.html"><span class="material-symbols-rounded" aria-hidden="true">groups</span>Reps</a>
           <a class="nav-link" href="./suggestions.html"><span class="material-symbols-rounded" aria-hidden="true">forum</span>Suggestions</a>
         </nav>
 
-        <!-- TIMETABLE TIP COMPONENT: Practical reminder for students. -->
+        <!-- RESUMPTION TIP COMPONENT: Sets the post-exam tone for students. -->
         <section class="sidebar-note">
-          <strong>Batch check</strong>
-          <p>Confirm your exact batch before exam day; the board lists official time windows.</p>
+          <strong>Rest window</strong>
+          <p>Exams are done. Use the break to unwind, refresh, and ease into second semester.</p>
         </section>
       </aside>
 
@@ -80,46 +80,47 @@
             <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
             <div class="plaque-text">
               <span>PhysioK29</span>
-          <strong>Exam Timetable</strong>
+              <strong>Resumption Countdown</strong>
             </div>
           </div>
-          <button class="ghost-action" id="downloadTimetable" type="button">
-            <span class="material-symbols-rounded" aria-hidden="true">download</span>
-            Download PDF
-          </button>
+          <a class="ghost-action" href="./dashboard.html">
+            <span class="material-symbols-rounded" aria-hidden="true">space_dashboard</span>
+            Dashboard
+          </a>
         </header>
 
-        <!-- TIMETABLE INTRO COMPONENT: Clarifies that the table is filtered to registered courses. -->
+        <!-- RESUMPTION INTRO COMPONENT: Replaces exam pressure with a calm return message. -->
         <section class="page-intro">
-          <p class="eyebrow">First semester exams</p>
-          <h1>Your exam schedule, cleaned up for quick checks.</h1>
+          <p class="eyebrow">Second semester</p>
+          <h1>First-semester exams are done. Time to breathe.</h1>
           <p>
-            Pulled from the department timetable and shown only for the courses currently on the class portal.
+            Unwind, refresh, sleep properly, and prepare gently. Second semester resumes on
+            Monday, July 13, 2026.
           </p>
         </section>
 
-        <!-- TIMETABLE CARD COMPONENT: Mobile-first summary of each paper. -->
-        <section class="exam-card-grid" id="timetableCardGrid" aria-label="Readable exam timetable"></section>
+        <!-- RESUMPTION CARD COMPONENT: JavaScript renders the rest message and resumption details. -->
+        <section class="exam-card-grid" id="timetableCardGrid" aria-label="Second semester resumption details"></section>
 
-        <!-- TIMETABLE TABLE COMPONENT: JavaScript renders the official batch rows here. -->
+        <!-- POST-EXAM STATE COMPONENT: Keeps old timetable space useful without showing stale rows. -->
         <section class="content-panel">
           <div class="section-header">
             <div>
-              <p class="eyebrow">Exam rows</p>
-              <h2>Timetable</h2>
+              <p class="eyebrow">Countdown</p>
+              <h2>Resumption status</h2>
             </div>
-            <span id="timetablePageCount" class="soft-pill">0 rows</span>
+            <span id="timetablePageCount" class="soft-pill">Loading...</span>
           </div>
           <div class="table-wrap">
             <table class="timetable-table">
               <thead>
                 <tr>
-                  <th>Course</th>
-                  <th>Day</th>
-                  <th>Date</th>
-                  <th>Batch</th>
-                  <th>Duration</th>
-                  <th>Time</th>
+                  <th>Stage</th>
+                  <th>Status</th>
+                  <th>Exam board</th>
+                  <th>Now</th>
+                  <th>Until</th>
+                  <th>Message</th>
                 </tr>
               </thead>
               <tbody id="timetableBody"></tbody>

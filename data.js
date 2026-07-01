@@ -32,73 +32,17 @@ export const firstSemesterCourses = [
   { code: "COS 101", title: "Introduction to Computing Sciences", type: "Compulsory", units: 3 },
 ];
 
-/* TIMETABLE DATA: Final faculty examination rows for Physiology 2k29 first-semester courses. */
-export const cbtTimetable = [
-  {
-    course: "BIO 101",
-    day: "Tuesday",
-    date: "16/06/2026",
-    batch: "CBT Centre, Ajibode",
-    duration: "3 hours",
-    time: "12:00 PM - 3:00 PM",
-  },
-  {
-    course: "MTH 102",
-    day: "Thursday",
-    date: "18/06/2026",
-    batch: "CBN Lecture Theatre / FLT",
-    duration: "3 hours",
-    time: "12:00 PM - 3:00 PM",
-  },
-  {
-    course: "MTH 101",
-    day: "Saturday",
-    date: "20/06/2026",
-    batch: "CBN Lecture Theatre / FLT",
-    duration: "3 hours",
-    time: "12:00 PM - 3:00 PM",
-  },
-  {
-    course: "PHY 101",
-    day: "Tuesday",
-    date: "23/06/2026",
-    batch: "CBT Exam Only",
-    duration: "3 hours",
-    time: "8:00 AM - 11:00 AM",
-  },
-  {
-    course: "BOT 102",
-    day: "Wednesday",
-    date: "24/06/2026",
-    batch: "CBN Lecture Theatre / FLT",
-    duration: "3 hours",
-    time: "3:30 PM - 6:30 PM",
-  },
-  {
-    course: "COS 101",
-    day: "Wednesday",
-    date: "24/06/2026",
-    batch: "CBT Exam",
-    duration: "3 hours",
-    time: "12:00 PM - 3:00 PM",
-  },
-  {
-    course: "CHM 101",
-    day: "Thursday",
-    date: "25/06/2026",
-    batch: "CBT Exam",
-    duration: "3 hours",
-    time: "12:00 PM - 3:00 PM",
-  },
-  {
-    course: "PHY 103",
-    day: "Monday",
-    date: "29/06/2026",
-    batch: "CBT DLC (Distance Learning Centre)",
-    duration: "3 hours",
-    time: "8:00 AM - 11:00 AM",
-  },
-];
+/* RESUMPTION DATA: Exams are over; the portal now counts down to second-semester resumption. */
+export const secondSemesterResumption = {
+  title: "Second semester resumption",
+  date: "2026-07-13T00:00:00+01:00",
+  displayDate: "Monday, July 13, 2026",
+  message:
+    "Exams are done. Unwind, refresh, sleep properly, and give yourself room to breathe before second semester begins.",
+};
+
+/* TIMETABLE DATA: Cleared after the end of first-semester exams. */
+export const cbtTimetable = [];
 
 export const resourceTypes = ["Slide", "Note", "Textbook", "Practical", "Past Question", "Assignment", "Link"];
 

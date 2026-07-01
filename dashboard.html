@@ -12,7 +12,7 @@
     <meta property="og:title" content="PhysioK29 - Physiology Class 2k29" />
     <meta
       property="og:description"
-      content="Slides, announcements, CBT timetable, rep contacts, and suggestions for Physiology Class 2k29."
+      content="Slides, announcements, resumption countdown, rep contacts, and suggestions for Physiology Class 2k29."
     />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="./assets/og-image.png" />
@@ -61,7 +61,7 @@
           <a class="nav-link" href="./quiz.html"><span class="material-symbols-rounded" aria-hidden="true">quiz</span>Quiz Mode</a>
           <a class="nav-link" href="./exam-room.html"><span class="material-symbols-rounded" aria-hidden="true">timer</span>Exam Room</a>
           <a class="nav-link" href="./exam.html"><span class="material-symbols-rounded" aria-hidden="true">timer</span>Exam Mode</a>
-          <a class="nav-link" href="./timetable.html"><span class="material-symbols-rounded" aria-hidden="true">calendar_month</span>Timetable</a>
+          <a class="nav-link" href="./timetable.html"><span class="material-symbols-rounded" aria-hidden="true">event_available</span>Resumption</a>
           <a class="nav-link" href="./reps.html"><span class="material-symbols-rounded" aria-hidden="true">groups</span>Reps</a>
           <a class="nav-link" href="./suggestions.html"><span class="material-symbols-rounded" aria-hidden="true">forum</span>Suggestions</a>
         </nav>
@@ -104,8 +104,8 @@
           <a class="primary-action" href="./courses.html"><span class="material-symbols-rounded" aria-hidden="true">menu_book</span>Browse courses</a>
         </section>
 
-        <!-- SEARCH + TIMETABLE ROW: Search live resources and keep the next CBT visible. -->
-        <section class="control-row" aria-label="Search and timetable preview">
+        <!-- SEARCH + RESUMPTION ROW: Search live resources and keep the resumption countdown visible. -->
+        <section class="control-row" aria-label="Search and resumption preview">
           <label class="search-box">
             <span class="material-symbols-rounded" aria-hidden="true">search</span>
             <input
@@ -116,11 +116,11 @@
             />
           </label>
 
-          <!-- TIMETABLE SNAPSHOT COMPONENT: Shows the next listed paper without cluttering the dashboard. -->
+          <!-- RESUMPTION SNAPSHOT COMPONENT: Keeps the post-exam break and return date visible. -->
           <article class="next-exam-card">
-            <span>Onto the next</span>
-            <strong id="nextExamTitle">Next paper</strong>
-            <small id="nextExamMeta">Fresh page. Clean focus.</small>
+            <span>Second semester</span>
+            <strong id="nextExamTitle">Resumption countdown</strong>
+            <small id="nextExamMeta">Rest, reset, and return ready.</small>
           </article>
         </section>
 
@@ -148,12 +148,12 @@
           </button>
         </section>
 
-        <!-- GES/GST COUNTDOWN COMPONENT: Refreshing exam momentum message plus the next countdown. -->
-        <section class="ges-countdown-panel" aria-label="GES and GST examination countdown">
+        <!-- RESUMPTION COUNTDOWN COMPONENT: Post-exam reset message plus the return countdown. -->
+        <section class="ges-countdown-panel" aria-label="Second semester resumption countdown">
           <div>
-            <p class="eyebrow">GES is wrapped</p>
-            <h2 id="gesCountdownTitle">Onto the next, clean and steady.</h2>
-            <p id="gesCountdownMeta">Loading the next useful countdown...</p>
+            <p class="eyebrow">Post-exam reset</p>
+            <h2 id="gesCountdownTitle">Exams are over. Breathe before second semester.</h2>
+            <p id="gesCountdownMeta">Loading the resumption countdown...</p>
           </div>
           <div class="countdown-grid" id="gesCountdownGrid" aria-label="Time remaining"></div>
         </section>
@@ -198,7 +198,7 @@
           </article>
           <article class="metric-card">
             <span id="timetableCount">0</span>
-            <small>CBT timetable rows</small>
+            <small>days to resumption</small>
           </article>
         </section>
 

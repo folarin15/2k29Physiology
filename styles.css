@@ -1359,7 +1359,7 @@ textarea {
   font-size: 0.9rem;
 }
 
-/* GES COUNTDOWN: Dashboard timer for the next visible GES CBT row. */
+/* RESUMPTION COUNTDOWN: Dashboard timer for the second-semester return date. */
 .ges-countdown-panel,
 .notification-center {
   width: 100%;

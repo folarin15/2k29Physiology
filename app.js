@@ -1,4 +1,4 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes } from "./data.js?v=20260615c";
+import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes, secondSemesterResumption } from "./data.js?v=20260615c";
 import { createBackend } from "./supabase-service.js?v=20260615c";
 import { isSupabaseConfigured } from "./supabase-config.js?v=20260615c";
 
@@ -382,6 +382,10 @@ function getNextTrackedCbtItem(now = new Date()) {
   return getUpcomingTrackedCbtItems(now)[0];
 }
 
+function getResumptionDate() {
+  return new Date(secondSemesterResumption.date);
+}
+
 function formatCountdownParts(targetDate, now = new Date()) {
   const totalSeconds = Math.max(0, Math.floor((targetDate - now) / 1000));
   const days = Math.floor(totalSeconds / 86400);
@@ -743,7 +747,7 @@ function renderInstallPrompt() {
       <span class="material-symbols-rounded" aria-hidden="true">add_to_home_screen</span>
       <div>
         <strong>Keep PhysioK29 one tap away.</strong>
-        <p>${isIos ? "On iPhone, use Share, then Add to Home Screen." : "Install the portal on this device for faster access before classes and papers."}</p>
+        <p>${isIos ? "On iPhone, use Share, then Add to Home Screen." : "Install the portal on this device for faster access before second semester starts."}</p>
       </div>
     </div>
     <div class="install-actions">
@@ -923,7 +927,7 @@ function openSiteGuide() {
         <div>
           <p class="eyebrow">Quick guide</p>
           <h2>How to use PhysioK29</h2>
-          <p class="form-help">PhysioK29 keeps class resources, announcements, quizzes, exam tools, and feedback in one secure place for verified K29 students.</p>
+          <p class="form-help">PhysioK29 keeps class resources, announcements, quizzes, resumption updates, and feedback in one secure place for verified K29 students.</p>
         </div>
         <button type="button" class="icon-button" data-close-edit aria-label="Close guide">
           <span class="material-symbols-rounded" aria-hidden="true">close</span>
@@ -935,7 +939,7 @@ function openSiteGuide() {
         <li><strong>Study inside the Reader.</strong> Open files on the site, move between pages, zoom, mark materials as done, or flag urgent resources.</li>
         <li><strong>Use Quiz Mode for revision.</strong> Choose a course or topic, answer shuffled questions, then review your score, corrections, and explanations.</li>
         <li><strong>Use Exam Room for pressure practice.</strong> It gives you timed CBT-style attempts and tracks them separately from normal quizzes.</li>
-        <li><strong>Use Timetable and Exam Mode.</strong> Confirm dates, download the PDF timetable, and focus on last-minute resources before papers.</li>
+        <li><strong>Use Resumption and Smart Guide.</strong> Watch the return countdown, rest properly, then ease back into study with the guide and course materials.</li>
         <li><strong>Use Suggestions and Reps.</strong> Send feedback through the portal or contact Ayanfe and Raphael clearly when you need help.</li>
         <li><strong>Turn on notifications.</strong> New uploads and announcements can reach you faster. If browser push fails, the in-site notification center still keeps updates.</li>
       </ol>
@@ -1195,7 +1199,7 @@ function renderDashboardMetrics() {
 
   if (courseCount) courseCount.textContent = firstSemesterCourses.length;
   if (resourceCount) resourceCount.textContent = state.resources.length;
-  if (timetableCount) timetableCount.textContent = cbtTimetable.length;
+  if (timetableCount) timetableCount.textContent = formatCountdownParts(getResumptionDate())[0].value;
 }
 
 function progressBadge(resource) {
@@ -1421,86 +1425,71 @@ function renderCourseGrid() {
     .join("");
 }
 
-/* TIMETABLE PAGE: Renders the CBT rows from the extracted document. */
+/* RESUMPTION PAGE: Replaces the finished exam timetable with a calm second-semester countdown. */
 function renderTimetable() {
   const body = getElement("#timetableBody");
   const cards = getElement("#timetableCardGrid");
   const count = getElement("#timetablePageCount");
   if (!body && !cards) return;
 
-  if (count) count.textContent = `${cbtTimetable.length} rows`;
+  const now = new Date();
+  const resumptionDate = getResumptionDate();
+  const hasResumed = now >= resumptionDate;
+  const countdownParts = formatCountdownParts(resumptionDate, now);
+
+  if (count) count.textContent = hasResumed ? "Second semester has resumed" : `${countdownParts[0].value} days left`;
 
   if (cards) {
-    cards.innerHTML = cbtTimetable
-      .map((item) => {
-        const course = findCourse(item.course);
-        return `
-          <article class="exam-date-card" data-status="${getTimetableStatus(item)}">
-            <div class="exam-date-main">
-              <span class="course-code">${escapeHtml(item.course)}</span>
-              <h2>${escapeHtml(course?.title || item.course)}</h2>
-              <p>${escapeHtml(item.day)}, ${escapeHtml(formatFullExamDate(getTimetableWindow(item).start))}</p>
-            </div>
-            <dl>
-              <div>
-                <dt>Time</dt>
-                <dd>${escapeHtml(item.time)}</dd>
-              </div>
-              <div>
-                <dt>Duration</dt>
-                <dd>${escapeHtml(item.duration)}</dd>
-              </div>
-              <div>
-                <dt>Venue / mode</dt>
-                <dd>${escapeHtml(item.batch)}</dd>
-              </div>
-            </dl>
-          </article>
-        `;
-      })
-      .join("");
+    cards.innerHTML = `
+      <article class="exam-date-card" data-status="current">
+        <div class="exam-date-main">
+          <span class="course-code">Post-exam reset</span>
+          <h2>${hasResumed ? "Welcome back to second semester." : "Rest first. Second semester is loading."}</h2>
+          <p>${escapeHtml(secondSemesterResumption.message)}</p>
+        </div>
+        <dl>
+          <div>
+            <dt>Resumption</dt>
+            <dd>${escapeHtml(secondSemesterResumption.displayDate)}</dd>
+          </div>
+          <div>
+            <dt>Focus now</dt>
+            <dd>Unwind, refresh, and prepare gently.</dd>
+          </div>
+          <div>
+            <dt>Class mood</dt>
+            <dd>No exam timetable for now. Enjoy the break.</dd>
+          </div>
+        </dl>
+      </article>
+    `;
   }
 
   if (body) {
-    body.innerHTML = cbtTimetable
-      .map(
-        (item) => `
-          <tr data-status="${getTimetableStatus(item)}">
-            <td>${item.course}</td>
-            <td>${item.day}</td>
-            <td>${item.date}</td>
-            <td>${item.batch}</td>
-            <td>${item.duration}</td>
-            <td>${item.time}</td>
-          </tr>
-        `
-      )
-      .join("");
+    body.innerHTML = `
+      <tr data-status="current">
+        <td>All first-semester papers</td>
+        <td>Done</td>
+        <td>Cleared</td>
+        <td>Rest window</td>
+        <td>Until ${escapeHtml(secondSemesterResumption.displayDate)}</td>
+        <td>Unwind and refresh</td>
+      </tr>
+    `;
   }
 }
 
-/* NEXT CBT CARD: Automatically advances after each exam time passes. */
+/* NEXT STEP CARD: Keeps the dashboard focused on resumption after exams. */
 function renderNextExam() {
   const title = getElement("#nextExamTitle");
   const meta = getElement("#nextExamMeta");
   if (!title || !meta) return;
 
-  const now = new Date();
-  const next = getNextTimetableItem(now);
-  if (!next) {
-    title.textContent = "GES is wrapped";
-    meta.textContent = "Onto the next. Breathe, reset, then move with clean focus.";
-    return;
-  }
-
-  const isCurrent = now >= next.start && now < next.end;
-  title.textContent = next.course;
-  meta.textContent = isCurrent
-    ? `Live now until ${next.time.split("-")[1].trim()} - ${next.batch}`
-    : `Onto the next: ${formatExamDate(next.start)} - ${next.time} - ${next.batch}`;
+  title.textContent = "Resumption countdown";
+  meta.textContent = `${secondSemesterResumption.displayDate}. Rest, reset, and return ready for second semester.`;
 }
 
-/* GES/GST COUNTDOWN: Keeps the nearest matching CBT row visible and advances after each batch. */
+/* RESUMPTION COUNTDOWN: Gives the class a calm post-exam reset message. */
 function renderGesCountdown() {
   const title = getElement("#gesCountdownTitle");
   const meta = getElement("#gesCountdownMeta");
@@ -1508,24 +1497,19 @@ function renderGesCountdown() {
   if (!title || !meta || !grid) return;
 
   const now = new Date();
-  const next = getNextTrackedCbtItem(now);
-  if (!next) {
-    title.textContent = "GES is done. Onto the next.";
-    meta.textContent = "Take a minute to unwind, recharge, and come back lighter. The next paper gets a fresher version of you.";
+  const resumptionDate = getResumptionDate();
+  if (now >= resumptionDate) {
+    title.textContent = "Welcome back. Second semester has resumed.";
+    meta.textContent = "Ease back in, check new updates, and start the semester with a clean rhythm.";
     grid.innerHTML = ["Days", "Hours", "Minutes", "Seconds"]
       .map((label) => `<span><strong>0</strong><small>${label}</small></span>`)
       .join("");
     return;
   }
 
-  const isCurrent = now >= next.start && now < next.end;
-  const target = isCurrent ? next.end : next.start;
-  const upcomingCount = getUpcomingTrackedCbtItems(now).length;
-  title.textContent = `${next.course} ${next.batch}`;
-  meta.textContent = isCurrent
-    ? `You are in it now. Ends ${next.time.split("-")[1].trim()}. Stay calm and finish clean.`
-    : `GES is wrapped. Onto the next: ${formatFullExamDate(next.start)}. Reset, then lock in.`;
-  grid.innerHTML = formatCountdownParts(target, now)
+  title.textContent = "Exams are over. Breathe before second semester.";
+  meta.textContent = `Resumption is ${secondSemesterResumption.displayDate}. Unwind, refresh, sleep well, and prepare gently for the next stretch.`;
+  grid.innerHTML = formatCountdownParts(resumptionDate, now)
     .map(
       (part) => `
         <span>
@@ -4101,8 +4085,11 @@ function pdfLine(x1, y1, x2, y2) {
   return `${x1} ${y1} m ${x2} ${y2} l S`;
 }
 
-/* TIMETABLE PDF: Generates a compact landscape PDF for offline timetable sharing. */
+/* LEGACY TIMETABLE PDF: Kept only so older cached buttons fail gracefully after exams. */
 function createTimetablePdfBlob() {
+  if (!cbtTimetable.length) {
+    throw new Error("The exam timetable has been cleared now that exams are over.");
+  }
   const pageWidth = 842;
   const pageHeight = 595;
   const margin = 36;
@@ -4128,7 +4115,7 @@ function createTimetablePdfBlob() {
     const operations = [
       "1 1 1 rg 0 0 842 595 re f",
       "0.09 0.11 0.12 rg",
-      pdfText(margin, 548, "PhysioK29 CBT Timetable", 20, "F2"),
+      pdfText(margin, 548, "PhysioK29 Exam Timetable", 20, "F2"),
       "0.39 0.44 0.42 rg",
       pdfText(margin, 528, "Final faculty exam rows matched to Physiology Class 2k29 courses.", 10),
       pdfText(margin, 512, `Generated from the class portal. Page ${pageNumber} of ${totalPages}.`, 9),
@@ -4158,7 +4145,7 @@ function createTimetablePdfBlob() {
 
     operations.push(
       "0.39 0.44 0.42 rg",
-      pdfText(margin, 44, "Confirm your exact CBT batch before exam day.", 9),
+      pdfText(margin, 44, "Archived first-semester exam timetable.", 9),
       pdfText(pageWidth - 132, 44, "PhysioK29", 9, "F2")
     );
     pages.push(operations.join("\n"));
@@ -4326,7 +4313,7 @@ function createMembersPdfBlob() {
   return new Blob([pdf], { type: "application/pdf" });
 }
 
-/* TIMETABLE DOWNLOAD: Builds a PDF file from the displayed CBT rows. */
+/* TIMETABLE DOWNLOAD: No visible button remains after exams; this guards older cached markup. */
 function connectTimetableDownload() {
   const button = getElement("#downloadTimetable");
   if (!button) return;
@@ -4347,7 +4334,7 @@ function connectTimetableDownload() {
       showToast("Timetable PDF is downloading.");
       window.setTimeout(() => URL.revokeObjectURL(url), 30000);
     } catch (error) {
-      showToast(error.message || "Could not download timetable PDF.", "error");
+      showToast(error.message || "The exam timetable has been cleared.", "error");
     } finally {
       window.setTimeout(() => {
         button.disabled = false;
