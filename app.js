@@ -1,6 +1,6 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes, secondSemesterResumption } from "./data.js?v=20260615c";
-import { createBackend } from "./supabase-service.js?v=20260615c";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260615c";
+import { BREAK_LOCK_UNTIL, cbtTimetable, findCourse, firstSemesterCourses, resourceTypes, secondSemesterResumption } from "./data.js?v=20260704";
+import { createBackend } from "./supabase-service.js?v=20260704";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260704";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
@@ -384,6 +384,43 @@ function getNextTrackedCbtItem(now = new Date()) {
 
 function getResumptionDate() {
   return new Date(secondSemesterResumption.date);
+}
+
+/* BREAK LOCK: Returns true while the portal is in semester-break lockdown mode. */
+function isBreakLockActive() {
+  return Date.now() < BREAK_LOCK_UNTIL.getTime();
+}
+
+/* BREAK LOCK NAV: Dims and disables nav links to locked pages during break. */
+function renderBreakLockNav() {
+  if (!isBreakLockActive()) return;
+  const OPEN_HREFS = ["./dashboard.html", "./reps.html", "./suggestions.html"];
+  document.querySelectorAll(".nav-link").forEach((link) => {
+    const href = link.getAttribute("href") || "";
+    const isOpen = OPEN_HREFS.some((h) => href.endsWith(h.replace("./", "")));
+    if (!isOpen) {
+      link.setAttribute("aria-disabled", "true");
+      link.dataset.breakLocked = "true";
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        showToast("This section opens on July 11 when second semester begins.");
+      });
+    }
+  });
+  /* Hide the break-mode quick-action CTAs that link to locked pages */
+  document.querySelectorAll("[data-break-hide]").forEach((el) => {
+    el.hidden = true;
+  });
+}
+
+/* BREAK LOCK REDIRECT: Sends students back to dashboard if they navigate directly to a locked page. */
+function enforceBreakLock() {
+  if (!isBreakLockActive()) return;
+  const page = document.body.dataset.page || "";
+  const OPEN_PAGES = ["dashboard", "reps", "suggestions"];
+  if (!OPEN_PAGES.includes(page)) {
+    window.location.replace("./dashboard.html");
+  }
 }
 
 function formatCountdownParts(targetDate, now = new Date()) {
@@ -2346,8 +2383,8 @@ function renderStaffLists() {
             (suggestion) => `
               <tr>
                 <td>
-                  <strong>${escapeHtml(suggestion.name)}</strong>
-                  <small>${escapeHtml(suggestion.matricNumber)}</small>
+                  <strong>${suggestion.isAnonymous ? "Anonymous" : escapeHtml(suggestion.name)}</strong>
+                  <small>${suggestion.isAnonymous ? "---" : escapeHtml(suggestion.matricNumber)}</small>
                 </td>
                 <td>${escapeHtml(suggestion.category || "General")}</td>
                 <td>
@@ -2463,6 +2500,12 @@ function renderStaffStudyFilters() {
     ${topics.map((topic) => `<option value="${escapeHtml(topic)}">${escapeHtml(topic)}</option>`).join("")}
   `;
   topicFilter.value = topics.includes(selectedTopic) ? selectedTopic : "";
+
+  const memberHistoryPanel = getElement("#memberStudyHistoryPanel");
+  if (memberHistoryPanel && !state.members.find(m => m.id === state.staffStudySelectedMemberId)) {
+    state.staffStudySelectedMemberId = "";
+    renderMemberStudyHistory();
+  }
 }
 
 function renderMemberStudyHistory(memberId = state.staffStudySelectedMemberId) {
@@ -3020,7 +3063,7 @@ function connectStaffPortal(allowedRoles) {
       state.suggestionsUnsubscribe = state.backend.watchSuggestions(
         (suggestions) => {
           state.suggestions = suggestions;
-          rememberLiveItems("suggestions", suggestions, (item) => `New suggestion from ${item.name}.`);
+          rememberLiveItems("suggestions", suggestions, (item) => `New suggestion from ${item.isAnonymous ? "anonymous" : item.name}.`);
           renderStaffLists();
           renderStaffSummary();
         },
@@ -3359,7 +3402,24 @@ function connectGenericBulkUpload() {
 function connectSuggestionForm() {
   const form = getElement("#suggestionForm");
   const status = getElement("#suggestionStatus");
+  const anonToggle = getElement("#suggestionAnonymous");
+  const anonLabel = getElement("#anonSendingAs");
   if (!form) return;
+
+  /* ANONYMOUS TOGGLE: Update the 'Sending as' label when toggled. */
+  function updateAnonLabel() {
+    if (!anonLabel) return;
+    const session = getMemberSession();
+    if (!session?.name) { anonLabel.hidden = true; return; }
+    const isAnon = anonToggle?.checked;
+    anonLabel.textContent = isAnon
+      ? "Sending anonymously — reps will not see your name."
+      : `Sending as ${session.name} (${session.matricNumber})`;
+    anonLabel.hidden = false;
+  }
+
+  anonToggle?.addEventListener("change", updateAnonLabel);
+  updateAnonLabel();
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -3370,6 +3430,7 @@ function connectSuggestionForm() {
     }
 
     const formData = new FormData(form);
+    const isAnonymous = Boolean(anonToggle?.checked);
     try {
       status.textContent = "Sending suggestion...";
       await state.backend.submitSuggestion({
@@ -3377,10 +3438,15 @@ function connectSuggestionForm() {
         matricNumber: session.matricNumber,
         category: String(formData.get("category")),
         message: String(formData.get("message")).trim(),
+        isAnonymous,
       });
       form.reset();
-      status.textContent = "Suggestion sent. Thank you.";
-      showToast("Suggestion sent to the reps and admin.");
+      if (anonToggle) anonToggle.checked = false;
+      updateAnonLabel();
+      status.textContent = isAnonymous
+        ? "Suggestion sent anonymously. Thank you."
+        : "Suggestion sent. Thank you.";
+      showToast(isAnonymous ? "Suggestion sent anonymously." : "Suggestion sent to the reps and admin.");
     } catch (error) {
       status.textContent = error.message || "Could not send suggestion.";
     }
@@ -3592,8 +3658,8 @@ function downloadSuggestionImage(suggestion) {
 
   context.fillStyle = "#67706c";
   context.font = "400 24px Inter, Arial, sans-serif";
-  context.fillText(`From: ${stripSiteEmoji(suggestion.name)}`, 140, 720);
-  context.fillText(`Matric: ${stripSiteEmoji(suggestion.matricNumber)}`, 140, 758);
+  context.fillText(`From: ${suggestion.isAnonymous ? "Anonymous" : stripSiteEmoji(suggestion.name)}`, 140, 720);
+  context.fillText(`Matric: ${suggestion.isAnonymous ? "---" : stripSiteEmoji(suggestion.matricNumber)}`, 140, 758);
   context.fillText(`Sent: ${formatDate(suggestion.createdAtMs)}`, 760, 758);
 
   context.fillStyle = "rgba(23, 27, 31, 0.45)";
@@ -3602,7 +3668,7 @@ function downloadSuggestionImage(suggestion) {
 
   const link = document.createElement("a");
   link.href = canvas.toDataURL("image/png");
-  link.download = `physiok29-suggestion-${stripSiteEmoji(suggestion.matricNumber || "student")}.png`;
+  link.download = `physiok29-suggestion-${suggestion.isAnonymous ? "anonymous" : stripSiteEmoji(suggestion.matricNumber || "student")}.png`;
   document.body.appendChild(link);
   link.click();
   link.remove();
@@ -3620,7 +3686,7 @@ function openSuggestionModal(suggestion) {
       <div class="edit-card-head">
         <div>
           <p class="eyebrow">${escapeHtml(suggestion.category || "General")}</p>
-          <h2>${escapeHtml(suggestion.name)}</h2>
+          <h2>${suggestion.isAnonymous ? "Anonymous" : escapeHtml(suggestion.name)}</h2>
         </div>
         <button type="button" class="icon-button" data-close-edit aria-label="Close suggestion">
           <span class="material-symbols-rounded" aria-hidden="true">close</span>
@@ -3629,7 +3695,7 @@ function openSuggestionModal(suggestion) {
       <div class="suggestion-art-card">
         <p>${escapeHtml(suggestion.message)}</p>
         <div>
-          <span>${escapeHtml(suggestion.matricNumber)}</span>
+          <span>${suggestion.isAnonymous ? "---" : escapeHtml(suggestion.matricNumber)}</span>
           <span>${formatDate(suggestion.createdAtMs)}</span>
         </div>
       </div>
@@ -4335,104 +4401,6 @@ function connectTimetableDownload() {
       window.setTimeout(() => URL.revokeObjectURL(url), 30000);
     } catch (error) {
       showToast(error.message || "The exam timetable has been cleared.", "error");
-    } finally {
-      window.setTimeout(() => {
-        button.disabled = false;
-      }, 600);
-    }
-  });
-}
-
-/* MEMBERS DOWNLOAD: Lets reps and admin download the private members list as a PDF. */
-function connectMembersPdfDownload() {
-  const button = getElement("#downloadMembersPdf");
-  if (!button) return;
-
-  button.addEventListener("click", () => {
-    if (!state.members.length) {
-      showToast("No class members available to download yet.", "error");
-      return;
-    }
-    const blob = createMembersPdfBlob();
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `physiok29-class-members-${new Date().toISOString().slice(0, 10)}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    window.setTimeout(() => URL.revokeObjectURL(url), 0);
-  });
-}
-
-/* NOTIFICATION CENTER ACTIONS: Lets students clear the in-site unread badge. */
-function connectNotificationCenter() {
-  const button = getElement("#markNotificationsRead");
-  if (!button) return;
-
-  button.addEventListener("click", () => {
-    const isCompact = getElement(".notification-center")?.dataset.compact === "true";
-    if (isCompact) {
-      saveNotificationCenterCollapsed(false);
-      renderNotificationCenter();
-      return;
-    }
-
-    saveReadNotificationIds(new Set(getNotificationItems().map((item) => item.id)));
-    saveNotificationCenterCollapsed(true);
-    renderNotificationCenter();
-    showToast("Notification center marked as read.");
-  });
-}
-
-function connectRealtimeData() {
-  const unsubscribeResources = state.backend.watchResources(
-    (resources) => {
-      state.resources = resources;
-      rememberLiveItems("resources", resources, (item) => `New ${item.type || "resource"} posted: ${item.title}`);
-      renderAll();
-    },
-    (error) => showToast(error.message || "Could not load resources.", "error")
-  );
-
-  const unsubscribeAnnouncements = state.backend.watchAnnouncements(
-    (announcements) => {
-      state.announcements = announcements;
-      rememberLiveItems("announcements", announcements, (item) => `New announcement: ${item.title}`);
-      renderAll();
-    },
-    (error) => showToast(error.message || "Could not load announcements.", "error")
-  );
-
-  renderMembersTable();
-
-  return () => {
-    unsubscribeResources?.();
-    unsubscribeAnnouncements?.();
-  };
-}
-
-function startPublicRealtimeData() {
-  if (document.body.dataset.portal === "staff" || state.realtimeUnsubscribe) return;
-  state.realtimeUnsubscribe = connectRealtimeData();
-}
-
-async function init() {
-  renderBootLoader("Opening portal");
-  registerPortalServiceWorker();
-  updateBootLoader("Connecting to class portal");
-  state.backend = await createBackend();
-  updateBootLoader("Checking your session");
-  setMemberGate(!getMemberSession()?.memberId);
-  populateCourseSelects();
-  await loadStudyGuideData();
-  renderAll();
-  updateBootLoader("Preparing page tools");
-  connectConnectionStatus();
-  connectSearch();
-  connectStaffPortal(document.body.dataset.portalRole === "admin" ? ["admin"] : ["rep", "admin"]);
-  connectRepForms();
-  connectGenericBulkUpload();
   connectSuggestionForm();
   connectStaffActions();
   connectStaffAnalytics();

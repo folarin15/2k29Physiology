@@ -98,7 +98,6 @@
           </p>
         </section>
 
-        <!-- SUGGESTION FORM COMPONENT: Sends student feedback to the protected staff portals. -->
         <section class="content-panel suggestion-panel">
           <div class="section-header">
             <div>
@@ -121,6 +120,20 @@
               Message
               <textarea name="message" placeholder="Write the suggestion clearly enough for the reps to act on it." required></textarea>
             </label>
+
+            <!-- ANONYMOUS TOGGLE: When checked, reps see 'Anonymous'. Admin always sees real identity. -->
+            <label class="anon-toggle-label">
+              <span class="anon-toggle-track">
+                <input type="checkbox" id="suggestionAnonymous" name="anonymous" />
+                <span class="anon-toggle-knob" aria-hidden="true"></span>
+              </span>
+              <span class="anon-toggle-text">
+                <strong>Send anonymously</strong>
+                <small>Reps won't see your name. Admin can always verify for security.</small>
+              </span>
+            </label>
+            <p class="anon-sending-as form-help" id="anonSendingAs" hidden></p>
+
             <button class="primary-action" type="submit">
               <span class="material-symbols-rounded" aria-hidden="true">send</span>
               Send suggestion

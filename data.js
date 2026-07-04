@@ -32,6 +32,9 @@ export const firstSemesterCourses = [
   { code: "COS 101", title: "Introduction to Computing Sciences", type: "Compulsory", units: 3 },
 ];
 
+/* BREAK LOCK: Pages other than dashboard, reps, and suggestions redirect here until this date. */
+export const BREAK_LOCK_UNTIL = new Date("2026-07-11T00:00:00+01:00");
+
 /* RESUMPTION DATA: Semester-break message and second-semester countdown. */
 export const secondSemesterResumption = {
   title: "Second semester resumption",
