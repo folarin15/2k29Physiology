@@ -938,7 +938,7 @@ function openSiteGuide() {
         <li><strong>Use Courses for materials.</strong> Pick a course to find lecture notes, PDFs, documents, revision files, and other uploaded resources.</li>
         <li><strong>Study inside the Reader.</strong> Open files on the site, move between pages, zoom, mark materials as done, or flag urgent resources.</li>
         <li><strong>Use Quiz Mode for revision.</strong> Choose a course or topic, answer shuffled questions, then review your score, corrections, and explanations.</li>
-        <li><strong>Use Exam Room for pressure practice.</strong> It gives you timed CBT-style attempts and tracks them separately from normal quizzes.</li>
+        <li><strong>Use Exam Room later.</strong> It gives you timed CBT-style attempts when the serious revision season returns.</li>
         <li><strong>Use Resumption and Smart Guide.</strong> Watch the return countdown, rest properly, then ease back into study with the guide and course materials.</li>
         <li><strong>Use Suggestions and Reps.</strong> Send feedback through the portal or contact Ayanfe and Raphael clearly when you need help.</li>
         <li><strong>Turn on notifications.</strong> New uploads and announcements can reach you faster. If browser push fails, the in-site notification center still keeps updates.</li>
@@ -1443,8 +1443,8 @@ function renderTimetable() {
     cards.innerHTML = `
       <article class="exam-date-card" data-status="current">
         <div class="exam-date-main">
-          <span class="course-code">Post-exam reset</span>
-          <h2>${hasResumed ? "Welcome back to second semester." : "Rest first. Second semester is loading."}</h2>
+          <span class="course-code">Semester Break</span>
+          <h2>${hasResumed ? "Welcome back. We are ready for you." : "Welcome home. Second semester is loading."}</h2>
           <p>${escapeHtml(secondSemesterResumption.message)}</p>
         </div>
         <dl>
@@ -1454,11 +1454,11 @@ function renderTimetable() {
           </div>
           <div>
             <dt>Focus now</dt>
-            <dd>Unwind, refresh, and prepare gently.</dd>
+            <dd>Rest, reconnect, and recharge at your own pace.</dd>
           </div>
           <div>
             <dt>Class mood</dt>
-            <dd>No exam timetable for now. Enjoy the break.</dd>
+            <dd>Semester break is active. Enjoy it fully.</dd>
           </div>
         </dl>
       </article>
@@ -1468,12 +1468,12 @@ function renderTimetable() {
   if (body) {
     body.innerHTML = `
       <tr data-status="current">
-        <td>All first-semester papers</td>
-        <td>Done</td>
-        <td>Cleared</td>
-        <td>Rest window</td>
+        <td>Semester break</td>
+        <td>Active</td>
+        <td>Portal ready</td>
+        <td>Rest and recharge</td>
         <td>Until ${escapeHtml(secondSemesterResumption.displayDate)}</td>
-        <td>Unwind and refresh</td>
+        <td>Enjoy the break - you have earned it</td>
       </tr>
     `;
   }
@@ -1485,8 +1485,8 @@ function renderNextExam() {
   const meta = getElement("#nextExamMeta");
   if (!title || !meta) return;
 
-  title.textContent = "Resumption countdown";
-  meta.textContent = `${secondSemesterResumption.displayDate}. Rest, reset, and return ready for second semester.`;
+  title.textContent = "Semester break";
+  meta.textContent = `${secondSemesterResumption.displayDate}. Rest now; your notes and quizzes will be ready when you return.`;
 }
 
 /* RESUMPTION COUNTDOWN: Gives the class a calm post-exam reset message. */
@@ -1499,7 +1499,7 @@ function renderGesCountdown() {
   const now = new Date();
   const resumptionDate = getResumptionDate();
   if (now >= resumptionDate) {
-    title.textContent = "Welcome back. Second semester has resumed.";
+    title.textContent = "Welcome back. We are right here with you.";
     meta.textContent = "Ease back in, check new updates, and start the semester with a clean rhythm.";
     grid.innerHTML = ["Days", "Hours", "Minutes", "Seconds"]
       .map((label) => `<span><strong>0</strong><small>${label}</small></span>`)
@@ -1507,8 +1507,8 @@ function renderGesCountdown() {
     return;
   }
 
-  title.textContent = "Exams are over. Breathe before second semester.";
-  meta.textContent = `Resumption is ${secondSemesterResumption.displayDate}. Unwind, refresh, sleep well, and prepare gently for the next stretch.`;
+  title.textContent = "The semester may be on pause, but your journey isn't.";
+  meta.textContent = `Resumption is ${secondSemesterResumption.displayDate}. Rest, reconnect with the people you love, and recharge at your own pace.`;
   grid.innerHTML = formatCountdownParts(resumptionDate, now)
     .map(
       (part) => `
@@ -4117,7 +4117,7 @@ function createTimetablePdfBlob() {
       "0.09 0.11 0.12 rg",
       pdfText(margin, 548, "PhysioK29 Exam Timetable", 20, "F2"),
       "0.39 0.44 0.42 rg",
-      pdfText(margin, 528, "Final faculty exam rows matched to Physiology Class 2k29 courses.", 10),
+      pdfText(margin, 528, "Archived faculty exam rows matched to Physiology Class 2k29 courses.", 10),
       pdfText(margin, 512, `Generated from the class portal. Page ${pageNumber} of ${totalPages}.`, 9),
       "0.88 0.96 0.93 rg",
       `${margin} ${headerBottom} ${tableWidth} 28 re f`,

@@ -614,6 +614,83 @@ textarea {
   line-height: 1.55;
 }
 
+.semester-break-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 0.96fr) minmax(320px, 0.72fr);
+  align-items: center;
+  gap: clamp(18px, 4vw, 44px);
+  min-height: 430px;
+  padding: clamp(24px, 4.5vw, 54px);
+  border-color: rgba(216, 199, 77, 0.28);
+  background:
+    radial-gradient(circle at 84% 18%, rgba(255, 214, 108, 0.24), transparent 32%),
+    linear-gradient(135deg, rgba(42, 157, 127, 0.12), transparent 42%),
+    linear-gradient(180deg, rgba(255, 253, 248, 0.98), rgba(255, 250, 234, 0.9));
+}
+
+.semester-break-copy {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.semester-break-copy h1 {
+  font-size: clamp(2.7rem, 7vw, 5.8rem);
+  line-height: 0.95;
+}
+
+.semester-break-copy .hero-lead {
+  max-width: 620px;
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--display-font);
+  font-size: clamp(1.18rem, 2.4vw, 1.75rem);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.semester-break-copy p:not(.eyebrow):not(.hero-lead):not(.hero-signoff) {
+  max-width: 640px;
+  margin: 0;
+  font-size: clamp(1rem, 1.4vw, 1.12rem);
+  overflow-wrap: anywhere;
+}
+
+.hero-signoff {
+  margin: 0;
+  color: var(--clay);
+  font-weight: 650;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.break-illustration {
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  margin: 0;
+  border: 1px solid rgba(42, 157, 127, 0.16);
+  border-radius: 26px;
+  background:
+    linear-gradient(135deg, rgba(255, 253, 248, 0.78), rgba(232, 249, 242, 0.64));
+  box-shadow: var(--soft-shadow);
+  overflow: hidden;
+}
+
+.break-illustration img {
+  width: min(100%, 520px);
+  height: 100%;
+  min-height: 300px;
+  object-fit: cover;
+}
+
 .eyebrow {
   margin: 0 0 8px;
   color: var(--clay);
@@ -1383,10 +1460,15 @@ textarea {
 }
 
 body[data-page="dashboard"] .ges-countdown-panel {
-  grid-template-columns: minmax(0, 1fr) minmax(240px, 340px);
-  gap: 14px;
-  margin-bottom: 14px;
-  padding: 14px;
+  grid-template-columns: minmax(0, 0.8fr) minmax(340px, 0.72fr);
+  gap: clamp(16px, 3vw, 34px);
+  margin-bottom: 18px;
+  padding: clamp(20px, 3.5vw, 34px);
+  border-color: rgba(92, 63, 125, 0.18);
+  background:
+    radial-gradient(circle at 14% 14%, rgba(216, 199, 77, 0.24), transparent 28%),
+    linear-gradient(135deg, rgba(255, 253, 248, 0.96), rgba(232, 249, 242, 0.82)),
+    #fffefa;
 }
 
 .ges-countdown-panel h2 {
@@ -1397,7 +1479,8 @@ body[data-page="dashboard"] .ges-countdown-panel {
 }
 
 body[data-page="dashboard"] .ges-countdown-panel h2 {
-  font-size: clamp(1.05rem, 2vw, 1.48rem);
+  font-size: clamp(1.6rem, 3.5vw, 3.1rem);
+  line-height: 1.02;
 }
 
 .ges-countdown-panel p {
@@ -1407,7 +1490,9 @@ body[data-page="dashboard"] .ges-countdown-panel h2 {
 }
 
 body[data-page="dashboard"] .ges-countdown-panel p {
-  margin-top: 5px;
+  margin-top: 10px;
+  max-width: 640px;
+  font-size: clamp(1rem, 1.3vw, 1.1rem);
 }
 
 .countdown-grid {
@@ -1426,7 +1511,12 @@ body[data-page="dashboard"] .ges-countdown-panel p {
 }
 
 body[data-page="dashboard"] .countdown-grid span {
-  min-height: 68px;
+  min-height: clamp(100px, 11vw, 150px);
+  border-color: rgba(92, 63, 125, 0.18);
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 248, 0.98), rgba(255, 246, 219, 0.86));
+  box-shadow: var(--soft-shadow);
 }
 
 .countdown-grid strong {
@@ -1443,7 +1533,7 @@ body[data-page="dashboard"] .countdown-grid span {
 }
 
 body[data-page="dashboard"] .countdown-grid strong {
-  font-size: clamp(1.1rem, 2.3vw, 1.55rem);
+  font-size: clamp(2rem, 5.6vw, 4.3rem);
 }
 
 /* NOTIFICATION CENTER: Reliable in-site history for uploads and announcements. */
@@ -1599,7 +1689,7 @@ body[data-page="dashboard"] .notification-item {
 }
 
 body[data-page="dashboard"] .hero-panel {
-  display: none;
+  display: grid;
 }
 
 body[data-page="dashboard"] .dashboard-summary {
@@ -2249,7 +2339,7 @@ body[data-page="dashboard"] .dashboard-summary .metric-card small {
   font-weight: 560;
 }
 
-/* COURSE PAGE: Wider grid for all first-semester courses. */
+/* COURSE PAGE: Wider grid for the current resource courses. */
 .course-grid {
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 }
@@ -3879,11 +3969,44 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
     display: none;
   }
 
+  body[data-page="dashboard"] .semester-break-hero {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 18px;
+  }
+
+  body[data-page="dashboard"] .semester-break-hero p {
+    display: block;
+  }
+
+  .semester-break-copy h1 {
+    font-size: clamp(2.4rem, 13vw, 4rem);
+  }
+
+  .semester-break-copy .hero-lead {
+    font-size: clamp(1.08rem, 5vw, 1.35rem);
+  }
+
+  .break-illustration {
+    min-height: 260px;
+    border-radius: 18px;
+  }
+
+  .break-illustration img {
+    min-height: 260px;
+  }
+
   body[data-page="dashboard"] .hero-panel .primary-action {
     width: auto;
     min-height: 40px;
     justify-self: start;
     padding: 0 14px;
+  }
+
+  body[data-page="dashboard"] .semester-break-hero .primary-action,
+  body[data-page="dashboard"] .semester-break-hero .secondary-action {
+    width: 100%;
+    justify-content: center;
   }
 
   .dashboard-summary {

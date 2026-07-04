@@ -1,4 +1,4 @@
-/* COURSE DATA: Fixed first-semester list from the registration document. */
+/* COURSE DATA: Current resource bank shown until second-semester courses are confirmed. */
 export const firstSemesterCourses = [
   { code: "PHY 101", title: "General Physics I", type: "Compulsory", units: 2 },
   { code: "PHY 103", title: "General Physics III", type: "Required", units: 2 },
@@ -32,16 +32,16 @@ export const firstSemesterCourses = [
   { code: "COS 101", title: "Introduction to Computing Sciences", type: "Compulsory", units: 3 },
 ];
 
-/* RESUMPTION DATA: Exams are over; the portal now counts down to second-semester resumption. */
+/* RESUMPTION DATA: Semester-break message and second-semester countdown. */
 export const secondSemesterResumption = {
   title: "Second semester resumption",
   date: "2026-07-13T00:00:00+01:00",
   displayDate: "Monday, July 13, 2026",
   message:
-    "Exams are done. Unwind, refresh, sleep properly, and give yourself room to breathe before second semester begins.",
+    "Take time to rest, reconnect with the people you love, and recharge at your own pace. When it is time to return, we will be right here with your notes, quizzes, and everything you need for another successful semester.",
 };
 
-/* TIMETABLE DATA: Cleared after the end of first-semester exams. */
+/* TIMETABLE DATA: Cleared now that the portal is in semester-break mode. */
 export const cbtTimetable = [];
 
 export const resourceTypes = ["Slide", "Note", "Textbook", "Practical", "Past Question", "Assignment", "Link"];

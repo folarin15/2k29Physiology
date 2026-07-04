@@ -6,7 +6,7 @@
     <title>PhysioK29 - Dashboard</title>
     <meta
       name="description"
-      content="PhysioK29 is the secure class portal for K29 students: class resources, announcements, quizzes, exam tools, and study progress in one place."
+      content="PhysioK29 is the secure class portal for K29 students: class resources, announcements, quizzes, resumption updates, and study support in one place."
     />
     <meta property="og:site_name" content="PhysioK29" />
     <meta property="og:title" content="PhysioK29 - Physiology Class 2k29" />
@@ -60,7 +60,7 @@
           <a class="nav-link" href="./courses.html"><span class="material-symbols-rounded" aria-hidden="true">menu_book</span>Courses</a>
           <a class="nav-link" href="./quiz.html"><span class="material-symbols-rounded" aria-hidden="true">quiz</span>Quiz Mode</a>
           <a class="nav-link" href="./exam-room.html"><span class="material-symbols-rounded" aria-hidden="true">timer</span>Exam Room</a>
-          <a class="nav-link" href="./exam.html"><span class="material-symbols-rounded" aria-hidden="true">timer</span>Exam Mode</a>
+          <a class="nav-link" href="./exam.html"><span class="material-symbols-rounded" aria-hidden="true">psychology_alt</span>Smart Guide</a>
           <a class="nav-link" href="./timetable.html"><span class="material-symbols-rounded" aria-hidden="true">event_available</span>Resumption</a>
           <a class="nav-link" href="./reps.html"><span class="material-symbols-rounded" aria-hidden="true">groups</span>Reps</a>
           <a class="nav-link" href="./suggestions.html"><span class="material-symbols-rounded" aria-hidden="true">forum</span>Suggestions</a>
@@ -91,36 +91,40 @@
           </div>
         </header>
 
-        <!-- HERO COMPONENT: Gives the dashboard a clear class identity and purpose. -->
-        <section class="hero-panel">
-          <div>
-            <p class="eyebrow">Class operations</p>
-            <h1>Everything K29 students need, in one calm place.</h1>
+        <!-- SEMESTER BREAK HERO: Sets the current portal mood before second semester begins. -->
+        <section class="hero-panel semester-break-hero">
+          <div class="semester-break-copy">
+            <p class="eyebrow">🌿 Semester Break</p>
+            <h1>Welcome home.</h1>
+            <p class="hero-lead">The semester may be on pause, but your journey isn't.</p>
             <p>
-              Stay updated, access verified study materials, practice questions,
-              prepare for exams, and keep track of progress without digging through old chats.
+              Take time to rest, reconnect with the people you love, and recharge at your own pace.
+              When it's time to return, we'll be right here with your notes, quizzes, and everything
+              you need for another successful semester.
             </p>
+            <p class="hero-signoff">Enjoy the break—you've earned it. ☀️</p>
+            <div class="hero-actions">
+              <a class="primary-action" href="./timetable.html"><span class="material-symbols-rounded" aria-hidden="true">event_available</span>View countdown</a>
+              <a class="secondary-action" href="./courses.html"><span class="material-symbols-rounded" aria-hidden="true">menu_book</span>Open notes</a>
+            </div>
           </div>
-          <a class="primary-action" href="./courses.html"><span class="material-symbols-rounded" aria-hidden="true">menu_book</span>Browse courses</a>
+          <figure class="break-illustration">
+            <img src="./assets/semester-break-hammock.svg" alt="Student relaxing in a hammock during semester break" />
+          </figure>
         </section>
 
         <!-- SEARCH + RESUMPTION ROW: Search live resources and keep the resumption countdown visible. -->
         <section class="control-row" aria-label="Search and resumption preview">
           <label class="search-box">
             <span class="material-symbols-rounded" aria-hidden="true">search</span>
-            <input
-              id="resourceSearch"
-              type="search"
-              placeholder="Search courses, uploads, resource types..."
-              autocomplete="off"
-            />
+            <input id="resourceSearch" type="search" placeholder="Search notes, quizzes, uploads..." autocomplete="off" />
           </label>
 
           <!-- RESUMPTION SNAPSHOT COMPONENT: Keeps the post-exam break and return date visible. -->
           <article class="next-exam-card">
-            <span>Second semester</span>
+            <span>Back soon</span>
             <strong id="nextExamTitle">Resumption countdown</strong>
-            <small id="nextExamMeta">Rest, reset, and return ready.</small>
+            <small id="nextExamMeta">Recharge now. Return ready.</small>
           </article>
         </section>
 
@@ -128,32 +132,32 @@
         <section class="quick-start-panel" aria-label="Quick portal actions">
           <a href="./courses.html">
             <span class="material-symbols-rounded" aria-hidden="true">folder_open</span>
-            <strong>Find materials</strong>
-            <small>Lecture notes, PDFs, PQs, and revision files by course.</small>
+            <strong>Open notes</strong>
+            <small>Your resources stay ready while you recharge.</small>
           </a>
           <a href="./quiz.html">
             <span class="material-symbols-rounded" aria-hidden="true">quiz</span>
-            <strong>Practice quiz</strong>
-            <small>Answer questions and review corrections instantly.</small>
+            <strong>Light revision</strong>
+            <small>Ease back in when your mind feels ready.</small>
           </a>
           <a href="./exam-room.html">
             <span class="material-symbols-rounded" aria-hidden="true">timer</span>
             <strong>Exam room</strong>
-            <small>Timed CBT-style practice for serious preparation.</small>
+            <small>Keep it for later when second semester begins.</small>
           </a>
           <button type="button" data-open-site-guide>
             <span class="material-symbols-rounded" aria-hidden="true">explore</span>
-            <strong>New here?</strong>
-            <small>See how the portal works in less than a minute.</small>
+            <strong>Need help?</strong>
+            <small>See how the portal supports you.</small>
           </button>
         </section>
 
         <!-- RESUMPTION COUNTDOWN COMPONENT: Post-exam reset message plus the return countdown. -->
         <section class="ges-countdown-panel" aria-label="Second semester resumption countdown">
           <div>
-            <p class="eyebrow">Post-exam reset</p>
-            <h2 id="gesCountdownTitle">Exams are over. Breathe before second semester.</h2>
-            <p id="gesCountdownMeta">Loading the resumption countdown...</p>
+            <p class="eyebrow">Resumption countdown</p>
+            <h2 id="gesCountdownTitle">Enjoy the break. We'll be ready when you return.</h2>
+            <p id="gesCountdownMeta">Counting down to second semester...</p>
           </div>
           <div class="countdown-grid" id="gesCountdownGrid" aria-label="Time remaining"></div>
         </section>
@@ -161,9 +165,9 @@
         <!-- STUDY SNAPSHOT COMPONENT: Shows streak and topic guidance without exposing question-bank counts. -->
         <section class="study-snapshot content-panel" id="dashboardStudyPanel">
           <div>
-            <p class="eyebrow">Study streak</p>
-            <h2>Keep revision moving.</h2>
-            <p id="studyMotivation">Start a quiz or open a reader file to begin tracking study activity.</p>
+            <p class="eyebrow">Gentle study</p>
+            <h2>Nothing heavy. Just stay connected.</h2>
+            <p id="studyMotivation">Your notes, reader, quizzes, and study pulse will be here whenever you are ready.</p>
           </div>
           <button class="streak-orb-card" type="button" data-open-streak-summary aria-label="Open study streak summary">
             <span class="streak-orb" aria-hidden="true">
@@ -190,7 +194,7 @@
         <section class="metrics-grid dashboard-summary" aria-label="Dashboard summary">
           <article class="metric-card">
             <span id="courseCount">0</span>
-            <small>first semester courses</small>
+            <small>resource courses</small>
           </article>
           <article class="metric-card">
             <span id="resourceCount">0</span>
