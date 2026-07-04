@@ -686,9 +686,9 @@ textarea {
 
 .break-illustration img {
   width: min(100%, 520px);
-  height: 100%;
-  min-height: 300px;
-  object-fit: cover;
+  height: auto;
+  max-height: 380px;
+  object-fit: contain;
 }
 
 .eyebrow {
@@ -3988,12 +3988,15 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
   }
 
   .break-illustration {
-    min-height: 260px;
+    min-height: unset;
+    height: auto;
     border-radius: 18px;
   }
 
   .break-illustration img {
-    min-height: 260px;
+    min-height: unset;
+    height: auto;
+    max-height: 260px;
   }
 
   body[data-page="dashboard"] .hero-panel .primary-action {
