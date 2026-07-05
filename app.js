@@ -4227,17 +4227,6 @@ function connectCopyButtons() {
   });
 }
 
-/* NOTIFICATION CENTER ACTIONS: Lets students clear the in-site unread badge. */
-function connectNotificationCenter() {
-  const button = getElement("#markNotificationsRead");
-  if (!button) return;
-
-  button.addEventListener("click", () => {
-    saveReadNotificationIds(new Set(getNotificationItems().map((item) => item.id)));
-    renderNotificationCenter();
-    showToast("Notification center marked as read.");
-  });
-}
 
 /* NOTIFICATION BUTTON: Lets students retry OneSignal permission setup from the dashboard. */
 function connectNotificationSetup() {
@@ -4795,7 +4784,6 @@ async function init() {
   connectStreakSummary();
   connectInstallPrompt();
   connectNotificationSetup();
-  connectNotificationCenter();
   connectStudyGuide();
   connectResourceEngagement();
   connectQuizMode();
