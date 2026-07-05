@@ -4828,6 +4828,21 @@ function connectTimetableDownload() {
 }
 
 async function init() {
+  renderBootLoader("Opening portal");
+  registerPortalServiceWorker();
+  updateBootLoader("Connecting to class portal");
+  state.backend = await createBackend();
+  updateBootLoader("Checking your session");
+  setMemberGate(!getMemberSession()?.memberId);
+  populateCourseSelects();
+  await loadStudyGuideData();
+  renderAll();
+  updateBootLoader("Preparing page tools");
+  connectConnectionStatus();
+  connectSearch();
+  connectStaffPortal(document.body.dataset.portalRole === "admin" ? ["admin"] : ["rep", "admin"]);
+  connectRepForms();
+  connectGenericBulkUpload();
   renderBreakLockNav();
   enforceBreakLock();
   renderEarlyAccessBadge();
