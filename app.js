@@ -4745,6 +4745,34 @@ function createMembersPdfBlob() {
   return new Blob([pdf], { type: "application/pdf" });
 }
 
+/* MEMBERS PDF DOWNLOAD: Exports the class members table as a PDF. */
+function connectMembersPdfDownload() {
+  const button = getElement("#downloadMembersPdf");
+  if (!button) return;
+
+  button.addEventListener("click", () => {
+    if (!state.members.length) {
+      showToast("No class members available to download yet.", "error");
+      return;
+    }
+    const blob = createMembersPdfBlob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `physiok29-class-members-${new Date().toISOString().slice(0, 10)}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  });
+}
+
+/* REALTIME DATA: Subscribes to live resource/announcement updates for non-staff pages. */
+function startPublicRealtimeData() {
+  if (document.body.dataset.portal === "staff" || state.realtimeUnsubscribe) return;
+  state.realtimeUnsubscribe = connectRealtimeData();
+}
+
 /* TIMETABLE DOWNLOAD: No visible button remains after exams; this guards older cached markup. */
 function connectTimetableDownload() {
   const button = getElement("#downloadTimetable");
