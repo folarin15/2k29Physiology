@@ -4767,6 +4767,34 @@ function connectMembersPdfDownload() {
   });
 }
 
+/* REALTIME DATA: Subscribes to live resource/announcement updates. */
+function connectRealtimeData() {
+  const unsubscribeResources = state.backend.watchResources(
+    (resources) => {
+      state.resources = resources;
+      rememberLiveItems("resources", resources, (item) => `New ${item.type || "resource"} posted: ${item.title}`);
+      renderAll();
+    },
+    (error) => showToast(error.message || "Could not load resources.", "error")
+  );
+
+  const unsubscribeAnnouncements = state.backend.watchAnnouncements(
+    (announcements) => {
+      state.announcements = announcements;
+      rememberLiveItems("announcements", announcements, (item) => `New announcement: ${item.title}`);
+      renderAll();
+    },
+    (error) => showToast(error.message || "Could not load announcements.", "error")
+  );
+
+  renderMembersTable();
+
+  return () => {
+    unsubscribeResources?.();
+    unsubscribeAnnouncements?.();
+  };
+}
+
 /* REALTIME DATA: Subscribes to live resource/announcement updates for non-staff pages. */
 function startPublicRealtimeData() {
   if (document.body.dataset.portal === "staff" || state.realtimeUnsubscribe) return;
