@@ -450,10 +450,7 @@ function connectEarlyAccess() {
   if (!btn || !input || !msg) return;
 
   if (isEarlyAccessActive()) {
-    msg.textContent = "Unlocked. Enjoy second-semester access.";
-    btn.textContent = "Unlocked";
-    btn.disabled = true;
-    input.disabled = true;
+    btn.closest("#earlyAccessBox")?.remove();
     return;
   }
 
