@@ -495,6 +495,23 @@ textarea {
   font-weight: 560;
 }
 
+.early-access-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(42, 157, 127, 0.13);
+  color: var(--mint-dark);
+  font-size: 0.78rem;
+  font-weight: 560;
+  white-space: nowrap;
+}
+
+.early-access-badge .material-symbols-rounded {
+  font-size: 1rem;
+}
+
 .header-actions {
   display: flex;
   flex-wrap: wrap;
@@ -689,6 +706,55 @@ textarea {
   height: auto;
   max-height: 380px;
   object-fit: contain;
+}
+
+.early-access-code {
+  margin-top: 14px;
+}
+
+.early-access-code label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.82rem;
+  font-weight: 560;
+  color: var(--ink);
+}
+
+.code-row {
+  display: flex;
+  gap: 8px;
+  max-width: 340px;
+}
+
+.code-row input {
+  flex: 1;
+  min-width: 0;
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fffefa;
+  font-family: inherit;
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  text-align: center;
+}
+
+.code-row input:focus {
+  outline: none;
+  border-color: var(--mint);
+  box-shadow: 0 0 0 3px rgba(42, 157, 127, 0.15);
+}
+
+.code-row .primary-action {
+  min-height: 42px;
+}
+
+#earlyAccessMsg {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.82rem;
+  color: var(--muted);
 }
 
 .eyebrow {
@@ -2282,6 +2348,19 @@ body[data-page="dashboard"] .dashboard-summary .metric-card small {
   border-style: dashed;
 }
 
+.card-action-group {
+  align-self: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.card-action-group .card-action {
+  align-self: auto;
+  flex: 1;
+  min-width: 0;
+}
+
 .card-action {
   align-self: end;
   display: inline-flex;
@@ -2920,6 +2999,180 @@ body[data-page="dashboard"] .dashboard-summary .metric-card small {
   box-shadow: inset 0 0 0 1px rgba(255, 250, 240, 0.12);
 }
 
+/* ADMIN DASHBOARD: Card-based landing with welcome header, summary metrics, pills, and preview cards. */
+#staffDashboard .admin-welcome {
+  margin-bottom: 18px;
+}
+
+#staffDashboard .admin-greeting {
+  color: var(--minted);
+  font-weight: 560;
+  margin: 0 0 10px;
+}
+
+#staffDashboard .admin-welcome h1 {
+  margin: 0;
+}
+
+#staffDashboard #adminWelcomeMeta {
+  color: var(--muted);
+  font-size: 0.94rem;
+  margin-top: 6px;
+}
+
+#staffDashboard .admin-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+#staffDashboard .admin-summary-grid .metric-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 88px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--card-bg);
+}
+
+#staffDashboard .admin-summary-grid .metric-card span {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--plum);
+  line-height: 1.1;
+}
+
+#staffDashboard .admin-summary-grid .metric-card small {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 4px;
+  display: block;
+}
+
+/* SECTION PILLS: Horizontal nav row in the dashboard. */
+#staffDashboard .admin-section-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+#staffDashboard .admin-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 100px;
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 0.88rem;
+  font-weight: 560;
+  text-decoration: none;
+  transition: background 160ms, border-color 160ms;
+}
+
+#staffDashboard .admin-pill:hover,
+#staffDashboard .admin-pill:focus-visible {
+  background: var(--mint-soft);
+  border-color: var(--mint);
+  color: var(--mint-dark);
+  outline: none;
+}
+
+#staffDashboard .admin-pill .material-symbols-rounded {
+  font-size: 1.15rem;
+}
+
+#staffDashboard .admin-pill[data-active="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fffaf0;
+}
+
+/* CARD GRID: Preview cards for each admin section. */
+#staffDashboard .admin-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+#staffDashboard .admin-card {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--card-bg);
+  transition: box-shadow 160ms, border-color 160ms;
+}
+
+#staffDashboard .admin-card:hover {
+  border-color: var(--mint);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+#staffDashboard .admin-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+#staffDashboard .admin-card-header .material-symbols-rounded {
+  font-size: 1.3rem;
+  color: var(--minted);
+}
+
+#staffDashboard .admin-card-header h3 {
+  font-size: 0.96rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--ink);
+}
+
+#staffDashboard .admin-card-body {
+  flex: 1;
+  font-size: 0.84rem;
+  color: var(--muted);
+  line-height: 1.45;
+  margin: 4px 0 14px;
+}
+
+#staffDashboard .admin-card-body strong {
+  color: var(--plum);
+  font-weight: 560;
+}
+
+#staffDashboard .admin-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+#staffDashboard .admin-card-stat {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+#staffDashboard .admin-card-stat strong {
+  color: var(--ink);
+}
+
+#staffDashboard .admin-card .compact-action {
+  font-size: 0.83rem;
+}
+
+body[data-portal="staff"] #staffPortal #staffDashboard[hidden] {
+  display: none;
+}
+
 body[data-portal="staff"] #staffPortal .content-panel[hidden] {
   display: none;
 }
@@ -3106,6 +3359,57 @@ body[data-portal="staff"] #staffPortal > .staff-grid {
   font-family: var(--display-font);
   font-size: 1.2rem;
   font-weight: 520;
+}
+
+.staff-monitor-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+  gap: 16px;
+  align-items: start;
+  margin-top: 16px;
+}
+
+.staff-monitor-feed {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255, 254, 250, 0.74);
+  padding: 14px;
+}
+
+.monitor-feed-list {
+  display: grid;
+  gap: 8px;
+}
+
+.monitor-feed-item {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.monitor-feed-item:last-child {
+  border-bottom: none;
+}
+
+.monitor-feed-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.monitor-feed-head strong {
+  font-size: 0.9rem;
+  font-weight: 560;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.monitor-feed-item p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted);
 }
 
 .member-history-panel {
@@ -3797,6 +4101,14 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
     grid-template-columns: 1fr;
   }
 
+  #staffDashboard .admin-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #staffDashboard .admin-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .member-history-panel {
     position: static;
   }
@@ -3885,11 +4197,16 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
   .course-grid,
   .rep-grid,
   .staff-study-layout,
+  .staff-monitor-layout,
   .study-leaderboard,
   .member-history-panel {
     width: 100%;
     max-width: 100%;
     min-width: 0;
+  }
+
+  .staff-monitor-layout {
+    grid-template-columns: 1fr;
   }
 
   .rep-grid {
@@ -3997,6 +4314,10 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
     min-height: unset;
     height: auto;
     max-height: 260px;
+  }
+
+  .early-access-code .code-row {
+    max-width: 100%;
   }
 
   body[data-page="dashboard"] .hero-panel .primary-action {
@@ -4253,6 +4574,11 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
     font-size: 1.15rem;
   }
 
+  /* Admin dashboard responsive */
+  #staffDashboard .admin-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
   body[data-page="dashboard"] .page-header {
     display: none;
   }
@@ -4433,6 +4759,14 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
     align-items: center;
   }
 
+  .card-action-group {
+    flex-direction: column;
+  }
+
+  .card-action-group .card-action {
+    justify-content: center;
+  }
+
   .course-resource-item .card-action {
     justify-content: center;
   }
@@ -4519,6 +4853,37 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
 
   body[data-portal="staff"] .timetable-table {
     min-width: 680px;
+  }
+
+  /* Admin dashboard responsive */
+  #staffDashboard .admin-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #staffDashboard .admin-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #staffDashboard .admin-section-pills {
+    gap: 6px;
+  }
+
+  #staffDashboard .admin-pill {
+    font-size: 0.82rem;
+    padding: 6px 12px;
+  }
+
+  #staffDashboard .admin-summary-grid .metric-card {
+    min-height: 72px;
+    padding: 12px 14px;
+  }
+
+  #staffDashboard .admin-summary-grid .metric-card span {
+    font-size: 1.3rem;
+  }
+
+  #staffDashboard .admin-card {
+    padding: 16px;
   }
 }
 

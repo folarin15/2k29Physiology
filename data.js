@@ -1,38 +1,18 @@
-/* COURSE DATA: Current resource bank shown until second-semester courses are confirmed. */
+/* COURSE DATA: Second-semester courses displayed after break lock releases on July 11. */
 export const firstSemesterCourses = [
-  { code: "PHY 101", title: "General Physics I", type: "Compulsory", units: 2 },
-  { code: "PHY 103", title: "General Physics III", type: "Required", units: 2 },
-  { code: "CHM 101", title: "General Chemistry I", type: "Compulsory", units: 2 },
-  { code: "BIO 101", title: "General Biology I", type: "Compulsory", units: 2 },
-  { code: "BOT 102", title: "Introductory Botany", type: "Required", units: 2 },
-  {
-    code: "MTH 101",
-    title: "Elementary Mathematics I: Algebra and Trigonometry",
-    type: "Compulsory",
-    units: 2,
-  },
-  {
-    code: "MTH 102",
-    title: "Elementary Mathematics II: Calculus",
-    type: "Compulsory",
-    units: 2,
-  },
-  {
-    code: "GES 107",
-    title: "Reproductive Health, STIs, Drugs and Mankind",
-    type: "Required",
-    units: 1,
-  },
-  { code: "GES 108", title: "Introduction to French", type: "Required", units: 1 },
+  { code: "PHY 102", title: "General Physics II", type: "Compulsory", units: 2 },
+  { code: "PHY 104", title: "Waves, Optics and Oscillations", type: "Required", units: 2 },
+  { code: "CHM 102", title: "General Chemistry II", type: "Compulsory", units: 2 },
+  { code: "BIO 102", title: "General Biology II", type: "Compulsory", units: 2 },
+  { code: "ZOO 101", title: "General Zoology I", type: "Compulsory", units: 2 },
+  { code: "ZOO 102", title: "General Zoology II", type: "Compulsory", units: 2 },
   { code: "GST 111", title: "Communication in English I", type: "Compulsory", units: 2 },
-  { code: "GST 112", title: "Nigerian Peoples and Culture", type: "Compulsory", units: 2 },
-  { code: "CHM 107", title: "General Chemistry Practical I", type: "Compulsory", units: 1 },
-  { code: "BIO 107", title: "General Biology Practical I", type: "Compulsory", units: 1 },
-  { code: "PHY 107", title: "General Practical Physics I", type: "Compulsory", units: 1 },
-  { code: "COS 101", title: "Introduction to Computing Sciences", type: "Compulsory", units: 3 },
+  { code: "CHM 108", title: "General Chemistry Practical II", type: "Compulsory", units: 1 },
+  { code: "BIO 108", title: "General Biology Practical II", type: "Compulsory", units: 1 },
+  { code: "PHY 108", title: "General Practical Physics II", type: "Compulsory", units: 1 },
 ];
 
-/* BREAK LOCK: Pages other than dashboard, reps, and suggestions redirect here until this date. */
+/* BREAK LOCK: Only the dashboard is accessible until this date. All other pages redirect to dashboard. */
 export const BREAK_LOCK_UNTIL = new Date("2026-07-11T00:00:00+01:00");
 
 /* RESUMPTION DATA: Semester-break message and second-semester countdown. */

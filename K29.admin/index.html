@@ -31,7 +31,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Instrument+Sans:wght@400;450;500;600;650&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260615c" />
+    <link rel="stylesheet" href="./styles.css?v=20260705" />
   </head>
   <body data-page="admin" data-portal="staff" data-portal-role="admin">
     <!-- APP SHELL: Protected admin frame for the site owner. -->
@@ -102,188 +102,194 @@
 
         <!-- ADMIN PORTAL COMPONENT: Hidden until the logged-in user has admin role. -->
         <section id="staffPortal" hidden>
-          <section class="content-panel staff-summary-panel">
-            <div class="section-header">
+          <!-- DASHBOARD TAB: Card-based overview as the default landing. -->
+          <section id="staffDashboard">
+            <!-- WELCOME HEADER: Time-based greeting with portal summary. -->
+            <div class="admin-welcome" id="adminWelcome">
               <div>
-                <p class="eyebrow">Portal pulse</p>
-                <h2>Admin summary</h2>
+                <p class="admin-greeting" id="adminGreeting">Good Evening</p>
+                <h1>Admin Portal</h1>
+                <p id="adminWelcomeMeta">Manage members, resources, announcements and uploads.</p>
               </div>
             </div>
-            <div class="metrics-grid staff-summary-grid" id="staffSummaryGrid"></div>
+
+            <!-- SUMMARY CARDS: Four premium metric cards. -->
+            <div class="admin-summary-grid" id="adminSummaryGrid"></div>
+
+            <!-- NAVIGATION PILLS: Tab navigation for drill-down sections. -->
+            <nav class="admin-section-pills" aria-label="Admin portal sections">
+              <a href="#staffUpload" class="admin-pill"><span class="material-symbols-rounded" aria-hidden="true">cloud_upload</span>Upload</a>
+              <a href="#staffBulkUpload" class="admin-pill"><span class="material-symbols-rounded" aria-hidden="true">drive_folder_upload</span>Bulk</a>
+              <a href="#staffNews" class="admin-pill"><span class="material-symbols-rounded" aria-hidden="true">campaign</span>News</a>
+              <a href="#staffMembers" class="admin-pill"><span class="material-symbols-rounded" aria-hidden="true">group</span>Members</a>
+              <a href="#staffManage" class="admin-pill"><span class="material-symbols-rounded" aria-hidden="true">manage_search</span>Resources</a>
+              <a href="#staffSuggestions" class="admin-pill"><span class="material-symbols-rounded" aria-hidden="true">forum</span>Suggestions</a>
+              <a href="#staffStudyAnalytics" class="admin-pill"><span class="material-symbols-rounded" aria-hidden="true">analytics</span>Study</a>
+              <a href="#staffAccess" class="admin-pill"><span class="material-symbols-rounded" aria-hidden="true">settings</span>Settings</a>
+            </nav>
+
+            <!-- CARD GRID: Preview cards for each section. -->
+            <div class="admin-card-grid" id="adminCardGrid"></div>
           </section>
 
-          <nav class="staff-section-tabs" aria-label="Admin portal sections">
+          <!-- TAB SECTIONS: Hidden-by-default detail views accessed via View All or pill nav. -->
+          <nav class="staff-section-tabs" aria-label="Admin portal sections" hidden>
             <a href="#staffUpload">Upload</a>
             <a href="#staffBulkUpload">Bulk</a>
             <a href="#staffNews">News</a>
-            <a href="#staffStudyAnalytics">Study</a>
             <a href="#staffMembers">Members</a>
             <a href="#staffManage">Manage</a>
             <a href="#staffSuggestions">Suggestions</a>
+            <a href="#staffStudyAnalytics">Study</a>
             <a href="#staffAccess">Access</a>
           </nav>
 
+          <!-- RESOURCE UPLOAD COMPONENT -->
+          <section class="content-panel" id="staffUpload">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Resource upload</p>
+                <h2>Add slides or files</h2>
+              </div>
+              <a class="ghost-action compact-action" href="#staffDashboard" data-staff-tab="dashboard">Dashboard</a>
+            </div>
+            <form class="portal-form" id="resourceUploadForm">
+              <label>Course<select name="courseCode" data-course-select required></select></label>
+              <label>Type<select name="type" data-type-select required></select></label>
+              <label>Title<input name="title" type="text" placeholder="e.g. PHY 102 Week 3 Slides" required /></label>
+              <label>Note<textarea name="note" placeholder="Short context for students"></textarea></label>
+              <label>File<input name="file" type="file" accept=".pdf,.ppt,.pptx,.doc,.docx,.png,.jpg,.jpeg" required /></label>
+              <button class="secondary-action ai-details-button" type="button" data-generate-resource-details="true">
+                <span class="material-symbols-rounded" aria-hidden="true">auto_awesome</span>Auto-title
+              </button>
+              <button class="primary-action" type="submit">
+                <span class="material-symbols-rounded" aria-hidden="true">cloud_upload</span>Upload file
+              </button>
+              <p class="form-status" id="uploadStatus"></p>
+            </form>
+          </section>
+
+          <!-- BULK UPLOAD COMPONENT -->
+          <section class="content-panel" id="staffBulkUpload">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Bulk upload</p>
+                <h2>Upload prepared folders</h2>
+              </div>
+              <a class="ghost-action compact-action" href="#staffDashboard" data-staff-tab="dashboard">Dashboard</a>
+            </div>
+            <form class="portal-form" id="genericBulkUploadForm">
+              <label>Prepared folder<input id="genericBulkFiles" type="file" webkitdirectory directory multiple accept=".pdf,.ppt,.pptx,.doc,.docx,.png,.jpg,.jpeg" /></label>
+              <label>ZIPs or loose files<input id="genericBulkLooseFiles" type="file" multiple accept=".zip,.pdf,.ppt,.pptx,.doc,.docx,.png,.jpg,.jpeg" /></label>
+              <button class="primary-action" type="submit">
+                <span class="material-symbols-rounded" aria-hidden="true">drive_folder_upload</span>Upload folder
+              </button>
+              <p class="form-status" id="genericBulkStatus"></p>
+              <ul class="bulk-upload-list" id="genericBulkList"></ul>
+            </form>
+          </section>
+
+          <!-- ANNOUNCEMENT COMPONENT -->
+          <section class="content-panel" id="staffNews">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Announcement</p>
+                <h2>Post class news</h2>
+              </div>
+              <a class="ghost-action compact-action" href="#staffDashboard" data-staff-tab="dashboard">Dashboard</a>
+            </div>
+            <form class="portal-form" id="announcementForm">
+              <label>Title<input name="title" type="text" placeholder="e.g. PHY practical update" required /></label>
+              <label>Priority<select name="priority" required><option value="Normal">Normal</option><option value="Important">Important</option><option value="Urgent">Urgent</option></select></label>
+              <label>Message<textarea name="message" placeholder="Write the full announcement" required></textarea></label>
+              <button class="primary-action" type="submit"><span class="material-symbols-rounded" aria-hidden="true">campaign</span>Post announcement</button>
+              <p class="form-status" id="announcementStatus"></p>
+            </form>
+          </section>
+
+          <!-- MEMBERS COMPONENT -->
+          <section class="content-panel" id="staffMembers">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Private list</p>
+                <h2>Class members</h2>
+              </div>
+              <div class="section-actions">
+                <span class="soft-pill" id="membersCount">0 members</span>
+                <button class="secondary-action compact-action" type="button" id="downloadMembersPdf">
+                  <span class="material-symbols-rounded" aria-hidden="true">picture_as_pdf</span>Download PDF
+                </button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="timetable-table">
+                <thead><tr><th>Name</th><th>Matric number</th><th>Status</th><th>Streak</th><th>Last seen</th><th>Action</th></tr></thead>
+                <tbody id="membersTableBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- RESOURCE + ANNOUNCEMENT MANAGEMENT -->
           <div class="staff-grid">
-            <!-- RESOURCE UPLOAD COMPONENT: Admin has the same posting controls as reps. -->
-            <section class="content-panel" id="staffUpload">
+            <section class="content-panel" id="staffManage">
               <div class="section-header">
-                <div>
-                  <p class="eyebrow">Resource upload</p>
-                  <h2>Add slides or files</h2>
-                </div>
+                <div><p class="eyebrow">Resources</p><h2>Manage resources</h2></div>
               </div>
-              <form class="portal-form" id="resourceUploadForm">
-                <label>
-                  Course
-                  <select name="courseCode" data-course-select required></select>
-                </label>
-                <label>
-                  Type
-                  <select name="type" data-type-select required></select>
-                </label>
-                <label>
-                  Title
-                  <input name="title" type="text" placeholder="e.g. CHM 101 Week 3 Slides" required />
-                </label>
-                <label>
-                  Note
-                  <textarea name="note" placeholder="Short context for students"></textarea>
-                </label>
-                <label>
-                  File
-                  <input name="file" type="file" accept=".pdf,.ppt,.pptx,.doc,.docx,.png,.jpg,.jpeg" required />
-                </label>
-                <button class="secondary-action ai-details-button" type="button" data-generate-resource-details="true">
-                  <span class="material-symbols-rounded" aria-hidden="true">auto_awesome</span>
-                  Auto-title
-                </button>
-                <button class="primary-action" type="submit">
-                  <span class="material-symbols-rounded" aria-hidden="true">cloud_upload</span>
-                  Upload file
-                </button>
-                <p class="form-status" id="uploadStatus"></p>
-              </form>
+              <div class="table-wrap">
+                <table class="timetable-table">
+                  <thead><tr><th>Title</th><th>Course</th><th>Added by</th><th>Action</th></tr></thead>
+                  <tbody id="staffResourcesBody"></tbody>
+                </table>
+              </div>
             </section>
-
-            <!-- BULK UPLOAD COMPONENT: Lets admin load a prepared course folder in one batch. -->
-            <section class="content-panel bulk-upload-panel" id="staffBulkUpload">
+            <section class="content-panel" data-staff-panel="staffManage">
               <div class="section-header">
-                <div>
-                  <p class="eyebrow">Bulk upload</p>
-                  <h2>Upload prepared folders</h2>
-                </div>
+                <div><p class="eyebrow">News</p><h2>Manage announcements</h2></div>
               </div>
-              <form class="portal-form" id="genericBulkUploadForm">
-                <label>
-                  Prepared folder
-                  <input
-                    id="genericBulkFiles"
-                    type="file"
-                    webkitdirectory
-                    directory
-                    multiple
-                    accept=".pdf,.ppt,.pptx,.doc,.docx,.png,.jpg,.jpeg"
-                  />
-                </label>
-                <label>
-                  ZIPs or loose files
-                  <input
-                    id="genericBulkLooseFiles"
-                    type="file"
-                    multiple
-                    accept=".zip,.pdf,.ppt,.pptx,.doc,.docx,.png,.jpg,.jpeg"
-                  />
-                </label>
-                <button class="primary-action" type="submit">
-                  <span class="material-symbols-rounded" aria-hidden="true">drive_folder_upload</span>
-                  Upload folder
-                </button>
-                <p class="form-status" id="genericBulkStatus"></p>
-                <ul class="bulk-upload-list" id="genericBulkList"></ul>
-              </form>
-            </section>
-
-            <!-- ANNOUNCEMENT COMPONENT: Admin can post official class updates. -->
-            <section class="content-panel" id="staffNews">
-              <div class="section-header">
-                <div>
-                  <p class="eyebrow">Announcement</p>
-                  <h2>Post class news</h2>
-                </div>
+              <div class="table-wrap">
+                <table class="timetable-table">
+                  <thead><tr><th>Title</th><th>Priority</th><th>Posted by</th><th>Action</th></tr></thead>
+                  <tbody id="staffAnnouncementsBody"></tbody>
+                </table>
               </div>
-              <form class="portal-form" id="announcementForm">
-                <label>
-                  Title
-                  <input name="title" type="text" placeholder="e.g. PHY practical update" required />
-                </label>
-                <label>
-                  Priority
-                  <select name="priority" required>
-                    <option value="Normal">Normal</option>
-                    <option value="Important">Important</option>
-                    <option value="Urgent">Urgent</option>
-                  </select>
-                </label>
-                <label>
-                  Message
-                  <textarea name="message" placeholder="Write the full announcement" required></textarea>
-                </label>
-                <button class="primary-action" type="submit">
-                  <span class="material-symbols-rounded" aria-hidden="true">campaign</span>
-                  Post announcement
-                </button>
-                <p class="form-status" id="announcementStatus"></p>
-              </form>
             </section>
           </div>
 
-          <!-- STUDY ANALYTICS COMPONENT: Admin-only quiz, exam-room, streak, and topic engagement view. -->
-          <section class="content-panel staff-study-panel" id="staffStudyAnalytics">
+          <!-- SUGGESTIONS ADMIN COMPONENT -->
+          <section class="content-panel" id="staffSuggestions">
             <div class="section-header">
               <div>
-                <p class="eyebrow">Study analytics</p>
-                <h2>Quiz and exam-room activity</h2>
-              </div>
-              <div class="section-actions study-filter-actions">
-                <label>
-                  Course
-                  <select id="staffStudyCourseFilter">
-                    <option value="">All courses</option>
-                  </select>
-                </label>
-                <label>
-                  Topic
-                  <select id="staffStudyTopicFilter">
-                    <option value="">All topics</option>
-                  </select>
-                </label>
+                <p class="eyebrow">Student feedback</p>
+                <h2>Suggestions</h2>
               </div>
             </div>
-            <p class="form-help">
-              Streaks come from real study events: reader opens, submitted quizzes, and submitted exam-room attempts.
-              Durations come from completed quiz/exam sessions.
-            </p>
+            <div class="table-wrap">
+              <table class="timetable-table suggestions-table">
+                <thead><tr><th>Student</th><th>Type</th><th>Message</th><th>Sent</th><th>Action</th></tr></thead>
+                <tbody id="staffSuggestionsBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- STUDY ANALYTICS COMPONENT -->
+          <section class="content-panel staff-study-panel" id="staffStudyAnalytics">
+            <div class="section-header">
+              <div><p class="eyebrow">Study analytics</p><h2>Quiz and exam-room activity</h2></div>
+              <div class="section-actions study-filter-actions">
+                <label>Course<select id="staffStudyCourseFilter"><option value="">All courses</option></select></label>
+                <label>Topic<select id="staffStudyTopicFilter"><option value="">All topics</option></select></label>
+              </div>
+            </div>
+            <p class="form-help">Streaks come from real study events: reader opens, submitted quizzes, and submitted exam-room attempts. Durations come from completed quiz/exam sessions.</p>
             <div class="metrics-grid staff-study-grid" id="staffStudyAnalyticsGrid"></div>
             <div class="staff-study-layout">
               <section class="study-leaderboard">
                 <div class="section-header compact-header">
-                  <div>
-                    <p class="eyebrow">Leaderboard</p>
-                    <h3>Most active students</h3>
-                  </div>
+                  <div><p class="eyebrow">Leaderboard</p><h3>Most active students</h3></div>
                 </div>
                 <div class="table-wrap">
                   <table class="timetable-table">
-                    <thead>
-                      <tr>
-                        <th>Student</th>
-                        <th>Attempts</th>
-                        <th>Avg score</th>
-                        <th>Study time</th>
-                        <th>Streak</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
+                    <thead><tr><th>Student</th><th>Attempts</th><th>Avg score</th><th>Study time</th><th>Streak</th><th>Action</th></tr></thead>
                     <tbody id="staffStudyLeaderboardBody"></tbody>
                   </table>
                 </div>
@@ -296,127 +302,17 @@
             </div>
           </section>
 
-          <!-- MEMBERS COMPONENT: Private class list visible to admin, with delete controls. -->
-          <section class="content-panel" id="staffMembers">
-            <div class="section-header">
-              <div>
-                <p class="eyebrow">Private list</p>
-                <h2>Class members</h2>
-              </div>
-              <div class="section-actions">
-                <span class="soft-pill" id="membersCount">0 members</span>
-                <button class="secondary-action compact-action" type="button" id="downloadMembersPdf">
-                  <span class="material-symbols-rounded" aria-hidden="true">picture_as_pdf</span>
-                  Download PDF
-                </button>
-              </div>
-            </div>
-            <div class="table-wrap">
-              <table class="timetable-table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Matric number</th>
-                    <th>Status</th>
-                    <th>Streak</th>
-                    <th>Last seen</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody id="membersTableBody"></tbody>
-              </table>
-            </div>
-          </section>
-
-          <div class="staff-grid">
-            <!-- RESOURCE ADMIN COMPONENT: Lets admin remove any resource. -->
-            <section class="content-panel" id="staffManage">
-              <div class="section-header">
-                <div>
-                  <p class="eyebrow">Resources</p>
-                  <h2>Manage resources</h2>
-                </div>
-              </div>
-              <div class="table-wrap">
-                <table class="timetable-table">
-                  <thead>
-                    <tr>
-                      <th>Title</th>
-                      <th>Course</th>
-                      <th>Added by</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody id="staffResourcesBody"></tbody>
-                </table>
-              </div>
-            </section>
-
-            <!-- ANNOUNCEMENT ADMIN COMPONENT: Lets admin remove any post. -->
-            <section class="content-panel" data-staff-panel="staffManage">
-              <div class="section-header">
-                <div>
-                  <p class="eyebrow">News</p>
-                  <h2>Manage announcements</h2>
-                </div>
-              </div>
-              <div class="table-wrap">
-                <table class="timetable-table">
-                  <thead>
-                    <tr>
-                      <th>Title</th>
-                      <th>Priority</th>
-                      <th>Posted by</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody id="staffAnnouncementsBody"></tbody>
-                </table>
-              </div>
-            </section>
-          </div>
-
-          <!-- SUGGESTIONS ADMIN COMPONENT: Admin can review and delete student suggestions. -->
-          <section class="content-panel" id="staffSuggestions">
-            <div class="section-header">
-              <div>
-                <p class="eyebrow">Student feedback</p>
-                <h2>Suggestions</h2>
-              </div>
-            </div>
-            <div class="table-wrap">
-              <table class="timetable-table suggestions-table">
-                <thead>
-                  <tr>
-                    <th>Student</th>
-                    <th>Type</th>
-                    <th>Message</th>
-                    <th>Sent</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody id="staffSuggestionsBody"></tbody>
-              </table>
-            </div>
-          </section>
-
-          <!-- ROLE GUIDE COMPONENT: Explains staff access setup without exposing implementation details. -->
+          <!-- ROLE GUIDE COMPONENT -->
           <section class="content-panel" id="staffAccess">
             <div class="section-header">
-              <div>
-                <p class="eyebrow">Staff access</p>
-                <h2>How to approve reps/admin</h2>
-              </div>
+              <div><p class="eyebrow">Staff access</p><h2>How to approve reps/admin</h2></div>
             </div>
-            <p class="form-help">
-              Create the staff account, then approve the person for the correct portal role.
-              Use admin access for the owner account and rep access for Ayanfe/Raphael.
-            </p>
+            <p class="form-help">Create the staff account, then approve the person for the correct portal role. Use admin access for the owner account and rep access for Ayanfe/Raphael.</p>
           </section>
         </section>
       </main>
     </div>
 
-    <script type="module" src="./app.js?v=20260615c"></script>
+    <script type="module" src="./app.js?v=20260705"></script>
   </body>
 </html>

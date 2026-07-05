@@ -40,7 +40,7 @@
         });
       });
     </script>
-    <link rel="stylesheet" href="./styles.css?v=20260704" />
+    <link rel="stylesheet" href="./styles.css?v=20260705" />
   </head>
   <body data-page="dashboard">
     <!-- APP SHELL: Holds the sidebar, header, dashboard content, and activity panel. -->
@@ -80,6 +80,10 @@
 
           <!-- REPS SUMMARY COMPONENT: Shows the two class reps as trusted contacts. -->
           <div class="header-actions" aria-label="Dashboard support actions">
+            <span class="early-access-badge" id="earlyAccessBadge" hidden>
+              <span class="material-symbols-rounded" aria-hidden="true">lock_open</span>
+              Early Access
+            </span>
             <button class="ghost-action compact-action" type="button" data-open-site-guide>
               <span class="material-symbols-rounded" aria-hidden="true">help</span>
               How to use
@@ -107,6 +111,14 @@
               <a class="primary-action" href="./timetable.html"><span class="material-symbols-rounded" aria-hidden="true">event_available</span>View countdown</a>
               <a class="secondary-action" href="./courses.html"><span class="material-symbols-rounded" aria-hidden="true">menu_book</span>Open notes</a>
             </div>
+            <div class="early-access-code" id="earlyAccessBox">
+              <label for="earlyAccessInput">Early-access code</label>
+              <div class="code-row">
+                <input id="earlyAccessInput" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="Enter code" autocomplete="off" />
+                <button class="primary-action" id="earlyAccessBtn">Unlock</button>
+              </div>
+              <small id="earlyAccessMsg"></small>
+            </div>
           </div>
           <figure class="break-illustration">
             <img src="./assets/semester-break-illustration.jpg" alt="Minimal line-art illustration of a student relaxing in a hammock during semester break" />
@@ -120,11 +132,11 @@
             <input id="resourceSearch" type="search" placeholder="Search notes, quizzes, uploads..." autocomplete="off" />
           </label>
 
-          <!-- RESUMPTION SNAPSHOT COMPONENT: Keeps the post-exam break and return date visible. -->
+          <!-- RESUMPTION SNAPSHOT COMPONENT: Shows days until full public access opens. -->
           <article class="next-exam-card">
-            <span>Back soon</span>
-            <strong id="nextExamTitle">Resumption countdown</strong>
-            <small id="nextExamMeta">Recharge now. Return ready.</small>
+            <span>Opening</span>
+            <strong id="nextExamTitle">Full access countdown</strong>
+            <small id="nextExamMeta">Early access available now.</small>
           </article>
         </section>
 
@@ -132,18 +144,18 @@
         <section class="quick-start-panel" aria-label="Quick portal actions">
           <a href="./courses.html">
             <span class="material-symbols-rounded" aria-hidden="true">folder_open</span>
-            <strong>Open notes</strong>
-            <small>Your resources stay ready while you recharge.</small>
+            <strong>Course notes</strong>
+            <small>Browse second-semester resources by subject.</small>
           </a>
           <a href="./quiz.html">
             <span class="material-symbols-rounded" aria-hidden="true">quiz</span>
-            <strong>Light revision</strong>
-            <small>Ease back in when your mind feels ready.</small>
+            <strong>Practice quiz</strong>
+            <small>Test yourself with past questions and mock exams.</small>
           </a>
           <a href="./exam-room.html">
             <span class="material-symbols-rounded" aria-hidden="true">timer</span>
             <strong>Exam room</strong>
-            <small>Keep it for later when second semester begins.</small>
+            <small>Timed CBT practice for serious revision.</small>
           </a>
           <button type="button" data-open-site-guide>
             <span class="material-symbols-rounded" aria-hidden="true">explore</span>
@@ -152,22 +164,22 @@
           </button>
         </section>
 
-        <!-- RESUMPTION COUNTDOWN COMPONENT: Post-exam reset message plus the return countdown. -->
+        <!-- RESUMPTION COUNTDOWN COMPONENT: Shows time until full public access is unlocked. -->
         <section class="ges-countdown-panel" aria-label="Second semester resumption countdown">
           <div>
-            <p class="eyebrow">Resumption countdown</p>
-            <h2 id="gesCountdownTitle">Enjoy the break. We'll be ready when you return.</h2>
-            <p id="gesCountdownMeta">Counting down to second semester...</p>
+            <p class="eyebrow">Public access opens</p>
+            <h2 id="gesCountdownTitle">Second-semester resources are loaded and ready.</h2>
+            <p id="gesCountdownMeta">Full access for everyone on July 11.</p>
           </div>
           <div class="countdown-grid" id="gesCountdownGrid" aria-label="Time remaining"></div>
         </section>
 
-        <!-- STUDY SNAPSHOT COMPONENT: Shows streak and topic guidance without exposing question-bank counts. -->
+        <!-- STUDY SNAPSHOT COMPONENT: Shows streak and topic guidance for second-semester prep. -->
         <section class="study-snapshot content-panel" id="dashboardStudyPanel">
           <div>
-            <p class="eyebrow">Gentle study</p>
-            <h2>Nothing heavy. Just stay connected.</h2>
-            <p id="studyMotivation">Your notes, reader, quizzes, and study pulse will be here whenever you are ready.</p>
+            <p class="eyebrow">Study now</p>
+            <h2>Get ahead of the class.</h2>
+            <p id="studyMotivation">Jump into second-semester notes, past questions, and quizzes—available now with early access.</p>
           </div>
           <button class="streak-orb-card" type="button" data-open-streak-summary aria-label="Open study streak summary">
             <span class="streak-orb" aria-hidden="true">
@@ -247,6 +259,6 @@
       </main>
     </div>
 
-    <script type="module" src="./app.js?v=20260704"></script>
+    <script type="module" src="./app.js?v=20260705"></script>
   </body>
 </html>
