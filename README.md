@@ -5,7 +5,7 @@ Vanilla HTML/CSS/JS portal for Physiology Class 2k29, hosted on Pxxl with Supaba
 ## Public Links
 
 - `dashboard.html`: dashboard, latest resources, and announcements.
-- `courses.html`: first-semester course resource bank.
+- `courses.html`: course resource bank.
 - `timetable.html`: second-semester resumption countdown and post-exam reset message.
 - `reps.html`: Ayanfe/Raphael contacts and WhatsApp links.
 - `suggestions.html`: student suggestion form.

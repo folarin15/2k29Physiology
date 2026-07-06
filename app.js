@@ -1,6 +1,6 @@
-import { cbtTimetable, findCourse, firstSemesterCourses, resourceTypes, secondSemesterResumption } from "./data.js?v=20260615c";
-import { createBackend } from "./supabase-service.js?v=20260615c";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260615c";
+import { BREAK_LOCK_UNTIL, cbtTimetable, findCourse, firstSemesterCourses, resourceTypes, secondSemesterResumption } from "./data.js?v=20260704";
+import { createBackend } from "./supabase-service.js?v=20260704";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260704";
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
@@ -24,7 +24,7 @@ const state = {
   quizAttempts: [],
   topicPerformance: [],
   studyGuide: [],
-  selectedStudyGuideCourse: "BIO 101",
+  selectedStudyGuideCourse: "",
   selectedStudyGuideTopic: "",
   studyGuideFlashcardIndex: 0,
   staffUser: null,
@@ -384,6 +384,92 @@ function getNextTrackedCbtItem(now = new Date()) {
 
 function getResumptionDate() {
   return new Date(secondSemesterResumption.date);
+}
+
+const EARLY_ACCESS_KEY = "physiology2k29.earlyAccess";
+const EARLY_ACCESS_CODE = "7085";
+
+function isEarlyAccessActive() {
+  try {
+    return localStorage.getItem(EARLY_ACCESS_KEY) === EARLY_ACCESS_CODE;
+  } catch { return false; }
+}
+
+/* BREAK LOCK: Returns true while the portal is in semester-break lockdown mode. */
+function isBreakLockActive() {
+  if (isEarlyAccessActive()) return false;
+  return Date.now() < BREAK_LOCK_UNTIL.getTime();
+}
+
+/* BREAK LOCK NAV: Dims and disables nav links to locked pages during break. */
+function renderBreakLockNav() {
+  if (!isBreakLockActive()) return;
+  const OPEN_HREFS = ["./dashboard.html"];
+  document.querySelectorAll(".nav-link").forEach((link) => {
+    const href = link.getAttribute("href") || "";
+    const isOpen = OPEN_HREFS.some((h) => href.endsWith(h.replace("./", "")));
+    if (!isOpen) {
+      link.setAttribute("aria-disabled", "true");
+      link.dataset.breakLocked = "true";
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        showToast("Full access opens July 11. Enter your early-access code on the dashboard to unlock now.");
+      });
+    }
+  });
+  /* Hide the break-mode quick-action CTAs that link to locked pages */
+  document.querySelectorAll("[data-break-hide]").forEach((el) => {
+    el.hidden = true;
+  });
+}
+
+/* BREAK LOCK REDIRECT: Sends students back to dashboard if they navigate directly to a locked page. */
+function enforceBreakLock() {
+  if (!isBreakLockActive()) return;
+  const page = document.body.dataset.page || "";
+  const OPEN_PAGES = ["dashboard"];
+  if (!OPEN_PAGES.includes(page)) {
+    window.location.replace("./dashboard.html");
+  }
+}
+
+/* EARLY ACCESS BADGE: Shows a persistent badge on the dashboard header when early access is active. */
+function renderEarlyAccessBadge() {
+  const badge = getElement("#earlyAccessBadge");
+  if (!badge) return;
+  badge.hidden = !isEarlyAccessActive();
+}
+
+/* EARLY ACCESS: Handles passcode entry on the dashboard to unlock the portal before July 11. */
+function connectEarlyAccess() {
+  renderEarlyAccessBadge();
+
+  const btn = getElement("#earlyAccessBtn");
+  const input = getElement("#earlyAccessInput");
+  const msg = getElement("#earlyAccessMsg");
+  if (!btn || !input || !msg) return;
+
+  if (isEarlyAccessActive()) {
+    btn.closest("#earlyAccessBox")?.remove();
+    return;
+  }
+
+  btn.addEventListener("click", () => {
+    const code = input.value.trim();
+    if (code !== EARLY_ACCESS_CODE) {
+      msg.textContent = "Incorrect code. Try again.";
+      return;
+    }
+    try { localStorage.setItem(EARLY_ACCESS_KEY, code); } catch {}
+    msg.textContent = "Access granted. Reloading...";
+    btn.disabled = true;
+    input.disabled = true;
+    window.location.reload();
+  });
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") btn.click();
+  });
 }
 
 function formatCountdownParts(targetDate, now = new Date()) {
@@ -938,7 +1024,7 @@ function openSiteGuide() {
         <li><strong>Use Courses for materials.</strong> Pick a course to find lecture notes, PDFs, documents, revision files, and other uploaded resources.</li>
         <li><strong>Study inside the Reader.</strong> Open files on the site, move between pages, zoom, mark materials as done, or flag urgent resources.</li>
         <li><strong>Use Quiz Mode for revision.</strong> Choose a course or topic, answer shuffled questions, then review your score, corrections, and explanations.</li>
-        <li><strong>Use Exam Room for pressure practice.</strong> It gives you timed CBT-style attempts and tracks them separately from normal quizzes.</li>
+        <li><strong>Use Exam Room later.</strong> It gives you timed CBT-style attempts when the serious revision season returns.</li>
         <li><strong>Use Resumption and Smart Guide.</strong> Watch the return countdown, rest properly, then ease back into study with the guide and course materials.</li>
         <li><strong>Use Suggestions and Reps.</strong> Send feedback through the portal or contact Ayanfe and Raphael clearly when you need help.</li>
         <li><strong>Turn on notifications.</strong> New uploads and announcements can reach you faster. If browser push fails, the in-site notification center still keeps updates.</li>
@@ -1253,10 +1339,17 @@ function resourceCard(resource) {
         <span>${formatDate(resource.createdAtMs)}</span>
       </div>
       ${resourceEngagementRow(resource)}
-      <a class="card-action" href="${escapeHtml(resourceUrl)}">
-        <span class="material-symbols-rounded" aria-hidden="true">chrome_reader_mode</span>
-        Read inside
-      </a>
+      <div class="card-action-group">
+        <a class="card-action" href="${escapeHtml(resourceUrl)}">
+          <span class="material-symbols-rounded" aria-hidden="true">chrome_reader_mode</span>
+          Read inside
+        </a>
+        ${resource.downloadUrl && resource.fileName ? `
+        <button class="card-action" type="button" data-download-resource="${escapeHtml(resource.id)}">
+          <span class="material-symbols-rounded" aria-hidden="true">download</span>
+          Download
+        </button>` : ""}
+      </div>
     </article>
   `;
 }
@@ -1274,6 +1367,7 @@ function normalizeResourceGroup(resource) {
 
 function courseResourceItem(resource) {
   const resourceUrl = resourceReaderLink(resource);
+  const canDownload = resource.downloadUrl && resource.fileName;
   return `
     <article class="course-resource-item">
       <div>
@@ -1281,10 +1375,17 @@ function courseResourceItem(resource) {
         <p>${escapeHtml(resource.note || resource.fileName || "Uploaded class material")}</p>
         ${resourceEngagementRow(resource)}
       </div>
-      <a class="card-action" href="${escapeHtml(resourceUrl)}">
-        <span class="material-symbols-rounded" aria-hidden="true">chrome_reader_mode</span>
-        Read
-      </a>
+      <div class="card-action-group">
+        <a class="card-action" href="${escapeHtml(resourceUrl)}">
+          <span class="material-symbols-rounded" aria-hidden="true">chrome_reader_mode</span>
+          Read
+        </a>
+        ${canDownload ? `
+        <button class="card-action" type="button" data-download-resource="${escapeHtml(resource.id)}">
+          <span class="material-symbols-rounded" aria-hidden="true">download</span>
+          Download
+        </button>` : ""}
+      </div>
     </article>
   `;
 }
@@ -1443,8 +1544,8 @@ function renderTimetable() {
     cards.innerHTML = `
       <article class="exam-date-card" data-status="current">
         <div class="exam-date-main">
-          <span class="course-code">Post-exam reset</span>
-          <h2>${hasResumed ? "Welcome back to second semester." : "Rest first. Second semester is loading."}</h2>
+          <span class="course-code">Semester Break</span>
+          <h2>${hasResumed ? "Welcome back. We are ready for you." : "Welcome home. Second semester is loading."}</h2>
           <p>${escapeHtml(secondSemesterResumption.message)}</p>
         </div>
         <dl>
@@ -1454,11 +1555,11 @@ function renderTimetable() {
           </div>
           <div>
             <dt>Focus now</dt>
-            <dd>Unwind, refresh, and prepare gently.</dd>
+            <dd>Rest, reconnect, and recharge at your own pace.</dd>
           </div>
           <div>
             <dt>Class mood</dt>
-            <dd>No exam timetable for now. Enjoy the break.</dd>
+            <dd>Semester break is active. Enjoy it fully.</dd>
           </div>
         </dl>
       </article>
@@ -1468,12 +1569,12 @@ function renderTimetable() {
   if (body) {
     body.innerHTML = `
       <tr data-status="current">
-        <td>All first-semester papers</td>
-        <td>Done</td>
-        <td>Cleared</td>
-        <td>Rest window</td>
+        <td>Semester break</td>
+        <td>Active</td>
+        <td>Portal ready</td>
+        <td>Rest and recharge</td>
         <td>Until ${escapeHtml(secondSemesterResumption.displayDate)}</td>
-        <td>Unwind and refresh</td>
+        <td>Enjoy the break - you have earned it</td>
       </tr>
     `;
   }
@@ -1485,8 +1586,8 @@ function renderNextExam() {
   const meta = getElement("#nextExamMeta");
   if (!title || !meta) return;
 
-  title.textContent = "Resumption countdown";
-  meta.textContent = `${secondSemesterResumption.displayDate}. Rest, reset, and return ready for second semester.`;
+  title.textContent = "Semester break";
+  meta.textContent = `${secondSemesterResumption.displayDate}. Rest now; your notes and quizzes will be ready when you return.`;
 }
 
 /* RESUMPTION COUNTDOWN: Gives the class a calm post-exam reset message. */
@@ -1499,7 +1600,7 @@ function renderGesCountdown() {
   const now = new Date();
   const resumptionDate = getResumptionDate();
   if (now >= resumptionDate) {
-    title.textContent = "Welcome back. Second semester has resumed.";
+    title.textContent = "Welcome back. We are right here with you.";
     meta.textContent = "Ease back in, check new updates, and start the semester with a clean rhythm.";
     grid.innerHTML = ["Days", "Hours", "Minutes", "Seconds"]
       .map((label) => `<span><strong>0</strong><small>${label}</small></span>`)
@@ -1507,8 +1608,8 @@ function renderGesCountdown() {
     return;
   }
 
-  title.textContent = "Exams are over. Breathe before second semester.";
-  meta.textContent = `Resumption is ${secondSemesterResumption.displayDate}. Unwind, refresh, sleep well, and prepare gently for the next stretch.`;
+  title.textContent = "The semester may be on pause, but your journey isn't.";
+  meta.textContent = `Resumption is ${secondSemesterResumption.displayDate}. Rest, reconnect with the people you love, and recharge at your own pace.`;
   grid.innerHTML = formatCountdownParts(resumptionDate, now)
     .map(
       (part) => `
@@ -1607,7 +1708,7 @@ function buildFlashcards(topic) {
 }
 
 function guideResourceMatches(topic) {
-  const courseCode = topic?.courseCode || state.selectedStudyGuideCourse || "BIO 101";
+  const courseCode = topic?.courseCode || state.selectedStudyGuideCourse || firstSemesterCourses[0]?.code || "";
   const keywords = [
     topic?.topic,
     ...(topic?.subtopics || []).map((subtopic) => subtopic.title),
@@ -1650,12 +1751,12 @@ function renderExamMode() {
     summary.innerHTML = `
       <p class="eyebrow">Study guide</p>
       <h2>Guide is still loading</h2>
-      <p>The BIO 101 smart guide will appear here once the local study outline is ready.</p>
+      <p>Your study guide will appear here once a study outline is available.</p>
     `;
     topicList.innerHTML = "";
     flashcards.innerHTML = "";
     subtopics.innerHTML = "";
-    sources.innerHTML = `<a class="source-link-card" href="./courses.html?course=BIO%20101">Open BIO 101 resources</a>`;
+    sources.innerHTML = `<a class="source-link-card" href="./courses.html">Browse all course resources</a>`;
     return;
   }
 
@@ -1726,7 +1827,7 @@ function renderExamMode() {
   summary.innerHTML = `
     <p class="eyebrow">${escapeHtml(topicCourse.code)} guide</p>
     <h2>${escapeHtml(topic.topic)}</h2>
-    <p>${escapeHtml(topic.summary || "A focused breakdown of this BIO 101 topic.")}</p>
+    <p>${escapeHtml(topic.summary || "A focused breakdown of this topic.")}</p>
     <div class="smart-summary-actions">
       <a class="secondary-action" href="./quiz.html">
         <span class="material-symbols-rounded" aria-hidden="true">quiz</span>
@@ -1812,7 +1913,7 @@ function renderExamMode() {
         <a class="source-link-card" href="${escapeHtml(resourceReaderLink(resource))}">
           <span class="material-symbols-rounded" aria-hidden="true">description</span>
           <strong>${escapeHtml(resource.title)}</strong>
-          <small>${escapeHtml(resource.note || resource.fileName || "BIO 101 material")}</small>
+          <small>${escapeHtml(resource.note || resource.fileName || resource.title || "Course material")}</small>
         </a>
       `
     ),
@@ -2346,8 +2447,8 @@ function renderStaffLists() {
             (suggestion) => `
               <tr>
                 <td>
-                  <strong>${escapeHtml(suggestion.name)}</strong>
-                  <small>${escapeHtml(suggestion.matricNumber)}</small>
+                  <strong>${suggestion.isAnonymous ? "Anonymous" : escapeHtml(suggestion.name)}</strong>
+                  <small>${suggestion.isAnonymous ? "---" : escapeHtml(suggestion.matricNumber)}</small>
                 </td>
                 <td>${escapeHtml(suggestion.category || "General")}</td>
                 <td>
@@ -2372,6 +2473,144 @@ function renderStaffLists() {
           .join("")
       : `<tr><td colspan="5">No suggestions yet.</td></tr>`;
   }
+}
+
+/* ADMIN DASHBOARD: Card-based landing with welcome greeting, summary metrics, and preview cards. */
+function renderAdminDashboard() {
+  const greeting = getElement("#adminGreeting");
+  const summaryGrid = getElement("#adminSummaryGrid");
+  const cardGrid = getElement("#adminCardGrid");
+  if (!cardGrid) return;
+
+  /* Time-based greeting */
+  if (greeting) {
+    const hour = new Date().getHours();
+    const timeGreeting = hour < 12 ? "Good Morning" : hour < 17 ? "Good Afternoon" : "Good Evening";
+    greeting.textContent = timeGreeting;
+  }
+
+  /* Summary cards */
+  if (summaryGrid) {
+    const resources = state.resources || [];
+    const members = state.members || [];
+    const suggestions = state.suggestions || [];
+    const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+    const totalResources = resources.length;
+    const totalMembers = members.length;
+    const totalSuggestions = suggestions.length;
+    const pendingSuggestions = suggestions.filter((s) => s.status === "pending").length;
+    const uploadsThisWeek = resources.filter((r) => Number(r.createdAtMs || 0) >= weekAgo).length;
+
+    summaryGrid.innerHTML = `
+      <article class="metric-card">
+        <span>${totalResources}</span>
+        <small>Total resources</small>
+      </article>
+      <article class="metric-card">
+        <span>${totalMembers}</span>
+        <small>Class members</small>
+      </article>
+      <article class="metric-card">
+        <span>${pendingSuggestions}</span>
+        <small>Pending suggestions</small>
+      </article>
+      <article class="metric-card">
+        <span>${uploadsThisWeek}</span>
+        <small>Uploaded this week</small>
+      </article>
+    `;
+  }
+
+  /* Preview cards for each section */
+  const resources = state.resources || [];
+  const members = state.members || [];
+  const suggestions = state.suggestions || [];
+  const pendingSuggestions = suggestions.filter((s) => s.status === "pending").length;
+  const newSuggestions = suggestions.filter((s) => s.createdAtMs > Date.now() - 7 * 24 * 60 * 60 * 1000).length;
+  const recentUploads = resources.filter((r) => Number(r.createdAtMs || 0) > Date.now() - 7 * 24 * 60 * 60 * 1000).length;
+
+  const coursesWithResources = new Set(resources.map((r) => r.courseCode).filter(Boolean)).size;
+
+  cardGrid.innerHTML = `
+    <article class="admin-card">
+      <div class="admin-card-header">
+        <span class="material-symbols-rounded" aria-hidden="true">cloud_upload</span>
+        <h3>Upload</h3>
+      </div>
+      <div class="admin-card-body">
+        <strong>${recentUploads}</strong> uploaded this week &middot; <strong>${resources.length}</strong> total
+      </div>
+      <div class="admin-card-footer">
+        <span class="admin-card-stat">Add slides or files</span>
+        <a class="ghost-action compact-action" href="#staffUpload" data-staff-tab="staffUpload">View All</a>
+      </div>
+    </article>
+    <article class="admin-card">
+      <div class="admin-card-header">
+        <span class="material-symbols-rounded" aria-hidden="true">campaign</span>
+        <h3>Announcements</h3>
+      </div>
+      <div class="admin-card-body">
+        Post class news, set priority, keep members informed.
+      </div>
+      <div class="admin-card-footer">
+        <span class="admin-card-stat"></span>
+        <a class="ghost-action compact-action" href="#staffNews" data-staff-tab="staffNews">View All</a>
+      </div>
+    </article>
+    <article class="admin-card">
+      <div class="admin-card-header">
+        <span class="material-symbols-rounded" aria-hidden="true">group</span>
+        <h3>Members</h3>
+      </div>
+      <div class="admin-card-body">
+        <strong>${members.length}</strong> registered members &middot; Manage status and access.
+      </div>
+      <div class="admin-card-footer">
+        <span class="admin-card-stat">${members.filter((m) => m.status === "active").length} active</span>
+        <a class="ghost-action compact-action" href="#staffMembers" data-staff-tab="staffMembers">View All</a>
+      </div>
+    </article>
+    <article class="admin-card">
+      <div class="admin-card-header">
+        <span class="material-symbols-rounded" aria-hidden="true">manage_search</span>
+        <h3>Resources</h3>
+      </div>
+      <div class="admin-card-body">
+        <strong>${coursesWithResources}</strong> courses with resources &middot; Manage and remove content.
+      </div>
+      <div class="admin-card-footer">
+        <span class="admin-card-stat">${resources.length} files</span>
+        <a class="ghost-action compact-action" href="#staffManage" data-staff-tab="staffManage">View All</a>
+      </div>
+    </article>
+    <article class="admin-card">
+      <div class="admin-card-header">
+        <span class="material-symbols-rounded" aria-hidden="true">forum</span>
+        <h3>Suggestions</h3>
+      </div>
+      <div class="admin-card-body">
+        <strong>${pendingSuggestions}</strong> pending &middot; <strong>${newSuggestions}</strong> new this week
+      </div>
+      <div class="admin-card-footer">
+        <span class="admin-card-stat">${suggestions.length} total</span>
+        <a class="ghost-action compact-action" href="#staffSuggestions" data-staff-tab="staffSuggestions">View All</a>
+      </div>
+    </article>
+    <article class="admin-card">
+      <div class="admin-card-header">
+        <span class="material-symbols-rounded" aria-hidden="true">analytics</span>
+        <h3>Study Analytics</h3>
+      </div>
+      <div class="admin-card-body">
+        Quiz attempts, leaderboard, topic performance, and member history.
+      </div>
+      <div class="admin-card-footer">
+        <span class="admin-card-stat">Track engagement</span>
+        <a class="ghost-action compact-action" href="#staffStudyAnalytics" data-staff-tab="staffStudyAnalytics">View All</a>
+      </div>
+    </article>
+  `;
 }
 
 function renderStaffSummary() {
@@ -2422,6 +2661,91 @@ function renderStaffSummary() {
   `;
 }
 
+/* STAFF MONITOR: Resource analytics — per-course counts, recent uploads, top engaged resources. */
+function renderStaffMonitor() {
+  const grid = getElement("#staffMonitorGrid");
+  const courseBody = getElement("#staffMonitorCourseBody");
+  const feed = getElement("#staffMonitorFeed");
+  if (!grid && !courseBody && !feed) return;
+
+  const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  const resources = state.resources || [];
+  const totalResources = resources.length;
+  const uploadsThisWeek = resources.filter((r) => Number(r.createdAtMs || 0) >= weekAgo).length;
+  const coursesWithResources = new Set(resources.map((r) => r.courseCode).filter(Boolean)).size;
+  const totalFileSize = resources.reduce((sum, r) => sum + Number(r.fileSize || 0), 0);
+  const sizeLabel = totalFileSize > 1e9
+    ? `${(totalFileSize / 1e9).toFixed(1)} GB`
+    : totalFileSize > 1e6
+      ? `${(totalFileSize / 1e6).toFixed(0)} MB`
+      : `${(totalFileSize / 1e3).toFixed(0)} KB`;
+
+  if (grid) {
+    grid.innerHTML = `
+      <article class="metric-card staff-summary-card">
+        <span>${totalResources}</span>
+        <small>total resources</small>
+      </article>
+      <article class="metric-card staff-summary-card">
+        <span>${coursesWithResources}</span>
+        <small>courses with resources</small>
+      </article>
+      <article class="metric-card staff-summary-card">
+        <span>${uploadsThisWeek}</span>
+        <small>uploaded this week</small>
+      </article>
+      <article class="metric-card staff-summary-card">
+        <span>${sizeLabel}</span>
+        <small>total file size</small>
+      </article>
+    `;
+  }
+
+  if (courseBody) {
+    const courseMap = new Map();
+    resources.forEach((r) => {
+      if (!r.courseCode) return;
+      if (!courseMap.has(r.courseCode)) courseMap.set(r.courseCode, []);
+      courseMap.get(r.courseCode).push(r);
+    });
+    const sorted = [...courseMap.entries()].sort((a, b) => b[1].length - a[1].length);
+    const courseTitles = {};
+    sorted.forEach(([code]) => {
+      const c = findCourse(code);
+      if (c) courseTitles[code] = c.title;
+    });
+
+    courseBody.innerHTML = sorted.length
+      ? sorted.map(([code, items]) => {
+          const latest = items.reduce((latest, r) => Math.max(latest, Number(r.createdAtMs || 0)), 0);
+          return `
+            <tr>
+              <td><strong>${escapeHtml(code)}</strong></td>
+              <td>${escapeHtml(courseTitles[code] || "")}</td>
+              <td>${items.length}</td>
+              <td>${latest ? formatDate(latest) : "—"}</td>
+            </tr>
+          `;
+        }).join("")
+      : `<tr><td colspan="4">No resources uploaded yet.</td></tr>`;
+  }
+
+  if (feed) {
+    const recent = [...resources].sort((a, b) => (Number(b.createdAtMs || 0)) - (Number(a.createdAtMs || 0))).slice(0, 15);
+    feed.innerHTML = recent.length
+      ? recent.map((r) => `
+          <article class="monitor-feed-item">
+            <div class="monitor-feed-head">
+              <strong>${escapeHtml(r.title)}</strong>
+              <span class="unit-pill">${escapeHtml(r.courseCode)}</span>
+            </div>
+            <p>${escapeHtml(r.uploadedBy || "Course rep")} — ${formatDate(r.createdAtMs)}</p>
+          </article>
+        `).join("")
+      : `<p class="empty-message">No upload activity yet.</p>`;
+  }
+}
+
 function renderStaffStudyFilters() {
   const courseFilter = getElement("#staffStudyCourseFilter");
   const topicFilter = getElement("#staffStudyTopicFilter");
@@ -2463,6 +2787,12 @@ function renderStaffStudyFilters() {
     ${topics.map((topic) => `<option value="${escapeHtml(topic)}">${escapeHtml(topic)}</option>`).join("")}
   `;
   topicFilter.value = topics.includes(selectedTopic) ? selectedTopic : "";
+
+  const memberHistoryPanel = getElement("#memberStudyHistoryPanel");
+  if (memberHistoryPanel && !state.members.find(m => m.id === state.staffStudySelectedMemberId)) {
+    state.staffStudySelectedMemberId = "";
+    renderMemberStudyHistory();
+  }
 }
 
 function renderMemberStudyHistory(memberId = state.staffStudySelectedMemberId) {
@@ -2651,7 +2981,9 @@ function renderAll() {
   renderMembersTable();
   renderStaffLists();
   renderStaffSummary();
-  renderStaffStudyAnalytics();
+      renderStaffMonitor();
+      renderStaffStudyAnalytics();
+  renderAdminDashboard();
   renderStudyDashboard();
 }
 
@@ -2796,11 +3128,11 @@ function findPossibleDuplicate({ courseCode, title, file }) {
 }
 
 function safeZipEntryName(value = "resource") {
-  return stripSiteEmoji(value)
+  return String(value)
     .replace(/[<>:"/\\|?*\x00-\x1F]+/g, "-")
     .replace(/\s+/g, " ")
     .trim()
-    .slice(0, 140) || "resource";
+    .slice(0, 200) || "resource";
 }
 
 function uniqueZipName(used, name) {
@@ -2841,7 +3173,8 @@ async function downloadCourseZip(courseCode) {
     const response = await fetch(resource.downloadUrl);
     if (!response.ok) throw new Error(`Could not download ${resource.title}.`);
     const bytes = new Uint8Array(await response.arrayBuffer());
-    const fileName = uniqueZipName(usedNames, resource.fileName || `${resource.title}.pdf`);
+    const originalName = resource.fileName || `${resource.title}.pdf`;
+    const fileName = uniqueZipName(usedNames, originalName);
     entries[fileName] = bytes;
   }
 
@@ -2850,12 +3183,37 @@ async function downloadCourseZip(courseCode) {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `${safeZipEntryName(course?.code || courseCode)}-${safeZipEntryName(course?.title || "resources")}.zip`;
+  const zipName = `${course?.code || courseCode} ${course?.title || "resources"}.zip`;
+  link.download = safeZipEntryName(zipName);
   document.body.appendChild(link);
   link.click();
   link.remove();
   window.setTimeout(() => URL.revokeObjectURL(url), 0);
   if (status) status.textContent = "Course ZIP downloaded.";
+}
+
+/* INDIVIDUAL RESOURCE DOWNLOAD: Fetches a single resource and saves it with its original filename. */
+async function downloadIndividualResource(resourceId) {
+  const resource = state.resources.find((r) => r.id === resourceId);
+  if (!resource || !resource.downloadUrl) {
+    showToast("This resource cannot be downloaded.", "error");
+    return;
+  }
+
+  const fileName = resource.fileName || `${resource.title || "resource"}.pdf`;
+  const response = await fetch(resource.downloadUrl);
+  if (!response.ok) throw new Error(`Could not download ${resource.title}.`);
+
+  const blob = await response.blob();
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  showToast(`Downloading ${fileName}`);
 }
 
 async function expandBulkInputFiles(files, status, list) {
@@ -3010,7 +3368,9 @@ function connectStaffPortal(allowedRoles) {
           renderDashboardMetrics();
           renderMembersTable();
           renderStaffSummary();
+          renderStaffMonitor();
           renderStaffStudyAnalytics();
+          renderAdminDashboard();
         },
         (error) => showToast(error.message || "Could not load members.", "error")
       );
@@ -3020,9 +3380,11 @@ function connectStaffPortal(allowedRoles) {
       state.suggestionsUnsubscribe = state.backend.watchSuggestions(
         (suggestions) => {
           state.suggestions = suggestions;
-          rememberLiveItems("suggestions", suggestions, (item) => `New suggestion from ${item.name}.`);
+          rememberLiveItems("suggestions", suggestions, (item) => `New suggestion from ${item.isAnonymous ? "anonymous" : item.name}.`);
           renderStaffLists();
           renderStaffSummary();
+          renderStaffMonitor();
+          renderAdminDashboard();
         },
         (error) => showToast(error.message || "Could not load suggestions.", "error")
       );
@@ -3033,6 +3395,8 @@ function connectStaffPortal(allowedRoles) {
         (rows) => {
           state.resourceProgress = rows;
           renderStaffSummary();
+          renderStaffMonitor();
+          renderAdminDashboard();
           renderMembersTable();
           renderStaffStudyAnalytics();
         },
@@ -3042,6 +3406,8 @@ function connectStaffPortal(allowedRoles) {
         (rows) => {
           state.resourceFeedback = rows;
           renderStaffSummary();
+          renderStaffMonitor();
+          renderAdminDashboard();
         },
         (error) => showToast(error.message || "Could not load helpful votes.", "error")
       );
@@ -3049,6 +3415,8 @@ function connectStaffPortal(allowedRoles) {
         (rows) => {
           state.studyEvents = rows;
           renderStaffSummary();
+          renderStaffMonitor();
+          renderAdminDashboard();
           renderMembersTable();
           renderStaffStudyAnalytics();
         },
@@ -3059,6 +3427,8 @@ function connectStaffPortal(allowedRoles) {
             (rows) => {
               state.quizAttempts = rows;
               renderStaffSummary();
+          renderStaffMonitor();
+          renderAdminDashboard();
               renderMembersTable();
               renderStaffStudyAnalytics();
             },
@@ -3111,6 +3481,7 @@ function connectStaffPortal(allowedRoles) {
       state.topicPerformance = [];
       state.staffStudySelectedMemberId = "";
       renderStaffSummary();
+  renderStaffMonitor();
       renderStaffStudyAnalytics();
     }
 
@@ -3122,6 +3493,7 @@ function connectStaffPortal(allowedRoles) {
       renderAll();
     }
 
+    renderAdminDashboard();
     renderStaffLists();
   });
 }
@@ -3359,7 +3731,24 @@ function connectGenericBulkUpload() {
 function connectSuggestionForm() {
   const form = getElement("#suggestionForm");
   const status = getElement("#suggestionStatus");
+  const anonToggle = getElement("#suggestionAnonymous");
+  const anonLabel = getElement("#anonSendingAs");
   if (!form) return;
+
+  /* ANONYMOUS TOGGLE: Update the 'Sending as' label when toggled. */
+  function updateAnonLabel() {
+    if (!anonLabel) return;
+    const session = getMemberSession();
+    if (!session?.name) { anonLabel.hidden = true; return; }
+    const isAnon = anonToggle?.checked;
+    anonLabel.textContent = isAnon
+      ? "Sending anonymously — reps will not see your name."
+      : `Sending as ${session.name} (${session.matricNumber})`;
+    anonLabel.hidden = false;
+  }
+
+  anonToggle?.addEventListener("change", updateAnonLabel);
+  updateAnonLabel();
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -3370,6 +3759,7 @@ function connectSuggestionForm() {
     }
 
     const formData = new FormData(form);
+    const isAnonymous = Boolean(anonToggle?.checked);
     try {
       status.textContent = "Sending suggestion...";
       await state.backend.submitSuggestion({
@@ -3377,10 +3767,15 @@ function connectSuggestionForm() {
         matricNumber: session.matricNumber,
         category: String(formData.get("category")),
         message: String(formData.get("message")).trim(),
+        isAnonymous,
       });
       form.reset();
-      status.textContent = "Suggestion sent. Thank you.";
-      showToast("Suggestion sent to the reps and admin.");
+      if (anonToggle) anonToggle.checked = false;
+      updateAnonLabel();
+      status.textContent = isAnonymous
+        ? "Suggestion sent anonymously. Thank you."
+        : "Suggestion sent. Thank you.";
+      showToast(isAnonymous ? "Suggestion sent anonymously." : "Suggestion sent to the reps and admin.");
     } catch (error) {
       status.textContent = error.message || "Could not send suggestion.";
     }
@@ -3592,8 +3987,8 @@ function downloadSuggestionImage(suggestion) {
 
   context.fillStyle = "#67706c";
   context.font = "400 24px Inter, Arial, sans-serif";
-  context.fillText(`From: ${stripSiteEmoji(suggestion.name)}`, 140, 720);
-  context.fillText(`Matric: ${stripSiteEmoji(suggestion.matricNumber)}`, 140, 758);
+  context.fillText(`From: ${suggestion.isAnonymous ? "Anonymous" : stripSiteEmoji(suggestion.name)}`, 140, 720);
+  context.fillText(`Matric: ${suggestion.isAnonymous ? "---" : stripSiteEmoji(suggestion.matricNumber)}`, 140, 758);
   context.fillText(`Sent: ${formatDate(suggestion.createdAtMs)}`, 760, 758);
 
   context.fillStyle = "rgba(23, 27, 31, 0.45)";
@@ -3602,7 +3997,7 @@ function downloadSuggestionImage(suggestion) {
 
   const link = document.createElement("a");
   link.href = canvas.toDataURL("image/png");
-  link.download = `physiok29-suggestion-${stripSiteEmoji(suggestion.matricNumber || "student")}.png`;
+  link.download = `physiok29-suggestion-${suggestion.isAnonymous ? "anonymous" : stripSiteEmoji(suggestion.matricNumber || "student")}.png`;
   document.body.appendChild(link);
   link.click();
   link.remove();
@@ -3620,7 +4015,7 @@ function openSuggestionModal(suggestion) {
       <div class="edit-card-head">
         <div>
           <p class="eyebrow">${escapeHtml(suggestion.category || "General")}</p>
-          <h2>${escapeHtml(suggestion.name)}</h2>
+          <h2>${suggestion.isAnonymous ? "Anonymous" : escapeHtml(suggestion.name)}</h2>
         </div>
         <button type="button" class="icon-button" data-close-edit aria-label="Close suggestion">
           <span class="material-symbols-rounded" aria-hidden="true">close</span>
@@ -3629,7 +4024,7 @@ function openSuggestionModal(suggestion) {
       <div class="suggestion-art-card">
         <p>${escapeHtml(suggestion.message)}</p>
         <div>
-          <span>${escapeHtml(suggestion.matricNumber)}</span>
+          <span>${suggestion.isAnonymous ? "---" : escapeHtml(suggestion.matricNumber)}</span>
           <span>${formatDate(suggestion.createdAtMs)}</span>
         </div>
       </div>
@@ -3734,15 +4129,19 @@ function connectStaffAnalytics() {
 function connectStaffTabs() {
   const tabNav = getElement(".staff-section-tabs");
   const portal = getElement("#staffPortal");
-  if (!tabNav || !portal) return;
+  const dashboard = getElement("#staffDashboard");
+  if (!portal) return;
 
+  const defaultTab = "staffDashboard";
   const tabs = getElements(".staff-section-tabs a")
     .map((link) => ({
       link,
       id: link.getAttribute("href")?.replace("#", "") || "",
     }))
     .filter((tab) => tab.id);
+  const pillLinks = getElements(".admin-pill");
   const tabIds = new Set(tabs.map((tab) => tab.id));
+  tabIds.add(defaultTab);
   const panels = getElements("#staffPortal .content-panel")
     .map((panel) => ({
       panel,
@@ -3751,39 +4150,60 @@ function connectStaffTabs() {
     .filter((item) => tabIds.has(item.id));
 
   function activateTab(nextId, shouldUpdateHash = true) {
-    const activeId = tabIds.has(nextId) ? nextId : tabs[0]?.id;
+    const activeId = tabIds.has(nextId) ? nextId : defaultTab;
     if (!activeId) return;
 
-    tabs.forEach(({ link, id }) => {
-      const isActive = id === activeId;
-      link.dataset.active = String(isActive);
-      link.setAttribute("aria-selected", String(isActive));
-      link.tabIndex = isActive ? 0 : -1;
+    if (dashboard) dashboard.hidden = activeId !== defaultTab;
+    if (tabNav) tabNav.hidden = activeId === defaultTab;
+    if (tabNav) {
+      tabs.forEach(({ link, id }) => {
+        const isActive = id === activeId;
+        link.dataset.active = String(isActive);
+        link.setAttribute("aria-selected", String(isActive));
+        link.tabIndex = isActive ? 0 : -1;
+      });
+    }
+    pillLinks.forEach((link) => {
+      const target = link.getAttribute("href")?.replace("#", "") || "";
+      link.dataset.active = String(target === activeId);
     });
-
     panels.forEach(({ panel, id }) => {
       panel.hidden = id !== activeId;
     });
-
     getElements("#staffPortal .staff-grid").forEach((grid) => {
-      const visiblePanels = [...grid.querySelectorAll(".content-panel")].filter((panel) => !panel.hidden);
-      grid.hidden = visiblePanels.length === 0;
-      grid.dataset.visibleCount = String(visiblePanels.length);
+      const visible = [...grid.querySelectorAll(".content-panel")].filter((p) => !p.hidden);
+      grid.hidden = visible.length === 0;
+      grid.dataset.visibleCount = String(visible.length);
     });
-
     portal.dataset.activeStaffTab = activeId;
     if (shouldUpdateHash) {
       history.replaceState(null, "", `${window.location.pathname}${window.location.search}#${activeId}`);
     }
   }
 
-  tabNav.setAttribute("role", "tablist");
+  if (tabNav) tabNav.setAttribute("role", "tablist");
   tabs.forEach(({ link, id }) => {
     link.setAttribute("role", "tab");
     link.addEventListener("click", (event) => {
       event.preventDefault();
       activateTab(id);
     });
+  });
+  pillLinks.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      const id = link.getAttribute("href")?.replace("#", "") || "";
+      if (id && tabIds.has(id)) activateTab(id);
+    });
+  });
+
+  /* Handle data-staff-tab buttons (e.g. "View All" in dashboard cards) */
+  portal.addEventListener("click", (event) => {
+    const btn = event.target.closest("[data-staff-tab]");
+    if (!btn) return;
+    event.preventDefault();
+    const id = btn.dataset.staffTab;
+    if (id && tabIds.has(id)) activateTab(id);
   });
 
   activateTab(window.location.hash.replace("#", ""), false);
@@ -3803,6 +4223,7 @@ function connectCopyButtons() {
     });
   });
 }
+
 
 /* NOTIFICATION BUTTON: Lets students retry OneSignal permission setup from the dashboard. */
 function connectNotificationSetup() {
@@ -3883,6 +4304,7 @@ function connectResourceEngagement() {
     const progressButton = event.target.closest("[data-progress-resource]");
     const helpfulButton = event.target.closest("[data-helpful-resource]");
     const zipButton = event.target.closest("[data-download-course-zip]");
+    const downloadButton = event.target.closest("[data-download-resource]");
 
     try {
       if (progressButton) {
@@ -3920,10 +4342,17 @@ function connectResourceEngagement() {
         await downloadCourseZip(zipButton.dataset.downloadCourseZip);
         zipButton.disabled = false;
       }
+
+      if (downloadButton) {
+        downloadButton.disabled = true;
+        await downloadIndividualResource(downloadButton.dataset.downloadResource);
+        downloadButton.disabled = false;
+      }
     } catch (error) {
       if (progressButton) progressButton.disabled = false;
       if (helpfulButton) helpfulButton.disabled = false;
       if (zipButton) zipButton.disabled = false;
+      if (downloadButton) downloadButton.disabled = false;
       showToast(error.message || "Action failed.", "error");
     }
   });
@@ -4117,7 +4546,7 @@ function createTimetablePdfBlob() {
       "0.09 0.11 0.12 rg",
       pdfText(margin, 548, "PhysioK29 Exam Timetable", 20, "F2"),
       "0.39 0.44 0.42 rg",
-      pdfText(margin, 528, "Final faculty exam rows matched to Physiology Class 2k29 courses.", 10),
+      pdfText(margin, 528, "Archived faculty exam rows matched to Physiology Class 2k29 courses.", 10),
       pdfText(margin, 512, `Generated from the class portal. Page ${pageNumber} of ${totalPages}.`, 9),
       "0.88 0.96 0.93 rg",
       `${margin} ${headerBottom} ${tableWidth} 28 re f`,
@@ -4145,7 +4574,7 @@ function createTimetablePdfBlob() {
 
     operations.push(
       "0.39 0.44 0.42 rg",
-      pdfText(margin, 44, "Archived first-semester exam timetable.", 9),
+      pdfText(margin, 44, "Archived exam timetable.", 9),
       pdfText(pageWidth - 132, 44, "PhysioK29", 9, "F2")
     );
     pages.push(operations.join("\n"));
@@ -4313,37 +4742,7 @@ function createMembersPdfBlob() {
   return new Blob([pdf], { type: "application/pdf" });
 }
 
-/* TIMETABLE DOWNLOAD: No visible button remains after exams; this guards older cached markup. */
-function connectTimetableDownload() {
-  const button = getElement("#downloadTimetable");
-  if (!button) return;
-
-  button.addEventListener("click", () => {
-    try {
-      button.disabled = true;
-      const blob = createTimetablePdfBlob();
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "physiok29-final-exam-timetable.pdf";
-      link.target = "_blank";
-      link.rel = "noopener";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      showToast("Timetable PDF is downloading.");
-      window.setTimeout(() => URL.revokeObjectURL(url), 30000);
-    } catch (error) {
-      showToast(error.message || "The exam timetable has been cleared.", "error");
-    } finally {
-      window.setTimeout(() => {
-        button.disabled = false;
-      }, 600);
-    }
-  });
-}
-
-/* MEMBERS DOWNLOAD: Lets reps and admin download the private members list as a PDF. */
+/* MEMBERS PDF DOWNLOAD: Exports the class members table as a PDF. */
 function connectMembersPdfDownload() {
   const button = getElement("#downloadMembersPdf");
   if (!button) return;
@@ -4365,26 +4764,7 @@ function connectMembersPdfDownload() {
   });
 }
 
-/* NOTIFICATION CENTER ACTIONS: Lets students clear the in-site unread badge. */
-function connectNotificationCenter() {
-  const button = getElement("#markNotificationsRead");
-  if (!button) return;
-
-  button.addEventListener("click", () => {
-    const isCompact = getElement(".notification-center")?.dataset.compact === "true";
-    if (isCompact) {
-      saveNotificationCenterCollapsed(false);
-      renderNotificationCenter();
-      return;
-    }
-
-    saveReadNotificationIds(new Set(getNotificationItems().map((item) => item.id)));
-    saveNotificationCenterCollapsed(true);
-    renderNotificationCenter();
-    showToast("Notification center marked as read.");
-  });
-}
-
+/* REALTIME DATA: Subscribes to live resource/announcement updates. */
 function connectRealtimeData() {
   const unsubscribeResources = state.backend.watchResources(
     (resources) => {
@@ -4412,9 +4792,36 @@ function connectRealtimeData() {
   };
 }
 
+/* REALTIME DATA: Subscribes to live resource/announcement updates for non-staff pages. */
 function startPublicRealtimeData() {
   if (document.body.dataset.portal === "staff" || state.realtimeUnsubscribe) return;
   state.realtimeUnsubscribe = connectRealtimeData();
+}
+
+/* TIMETABLE DOWNLOAD: No visible button remains after exams; this guards older cached markup. */
+function connectTimetableDownload() {
+  const button = getElement("#downloadTimetable");
+  if (!button) return;
+
+  button.addEventListener("click", () => {
+    try {
+      button.disabled = true;
+      const blob = createTimetablePdfBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "physiok29-final-exam-timetable.pdf";
+      link.target = "_blank";
+      link.rel = "noopener";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      showToast("Timetable PDF is downloading.");
+      window.setTimeout(() => URL.revokeObjectURL(url), 30000);
+    } catch (error) {
+      showToast(error.message || "The exam timetable has been cleared.", "error");
+    }
+  });
 }
 
 async function init() {
@@ -4433,6 +4840,9 @@ async function init() {
   connectStaffPortal(document.body.dataset.portalRole === "admin" ? ["admin"] : ["rep", "admin"]);
   connectRepForms();
   connectGenericBulkUpload();
+  renderBreakLockNav();
+  enforceBreakLock();
+  renderEarlyAccessBadge();
   connectSuggestionForm();
   connectStaffActions();
   connectStaffAnalytics();
@@ -4442,12 +4852,12 @@ async function init() {
   connectStreakSummary();
   connectInstallPrompt();
   connectNotificationSetup();
-  connectNotificationCenter();
   connectStudyGuide();
   connectResourceEngagement();
   connectQuizMode();
   connectTimetableDownload();
   connectMembersPdfDownload();
+  connectEarlyAccess();
   window.setInterval(() => {
     renderNextExam();
     renderGesCountdown();

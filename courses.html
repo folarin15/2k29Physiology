@@ -6,7 +6,7 @@
     <title>PhysioK29 - Courses</title>
     <meta
       name="description"
-      content="Browse first-semester course materials for Physiology Class 2k29."
+      content="Browse course materials for Physiology Class 2k29."
     />
     <meta property="og:site_name" content="PhysioK29" />
     <meta property="og:title" content="PhysioK29 - Physiology Class 2k29" />
@@ -40,7 +40,7 @@
         });
       });
     </script>
-    <link rel="stylesheet" href="./styles.css?v=20260615c" />
+    <link rel="stylesheet" href="./styles.css?v=20260705-4" />
   </head>
   <body data-page="courses">
     <!-- APP SHELL: Reuses the same sidebar pattern so every page feels connected. -->
@@ -60,18 +60,17 @@
           <a class="nav-link active" href="./courses.html"><span class="material-symbols-rounded" aria-hidden="true">menu_book</span>Courses</a>
           <a class="nav-link" href="./quiz.html"><span class="material-symbols-rounded" aria-hidden="true">quiz</span>Quiz Mode</a>
           <a class="nav-link" href="./exam-room.html"><span class="material-symbols-rounded" aria-hidden="true">timer</span>Exam Room</a>
-          <a class="nav-link" href="./exam.html"><span class="material-symbols-rounded" aria-hidden="true">timer</span>Exam Mode</a>
+          <a class="nav-link" href="./exam.html"><span class="material-symbols-rounded" aria-hidden="true">psychology_alt</span>Smart Guide</a>
           <a class="nav-link" href="./timetable.html"><span class="material-symbols-rounded" aria-hidden="true">event_available</span>Resumption</a>
           <a class="nav-link" href="./reps.html"><span class="material-symbols-rounded" aria-hidden="true">groups</span>Reps</a>
           <a class="nav-link" href="./suggestions.html"><span class="material-symbols-rounded" aria-hidden="true">forum</span>Suggestions</a>
         </nav>
 
-        <!-- SOURCE NOTE COMPONENT: Explains where the course list came from. -->
+        <!-- SOURCE NOTE COMPONENT: Confirms the course list reflects second-semester offerings. -->
         <section class="sidebar-note">
-          <strong>Source</strong>
+          <strong>Semester</strong>
           <p>
-            Courses are taken from the 2025/2026 course registration PDF and trimmed
-            to the first-semester set.
+            Second-semester courses are loaded. Full public access opens July 11 — early access available with a code.
           </p>
         </section>
       </aside>
@@ -83,23 +82,23 @@
             <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
             <div class="plaque-text">
               <span>PhysioK29</span>
-              <strong>First Semester Courses</strong>
+              <strong>Course Resources</strong>
             </div>
           </div>
-          <a class="ghost-action" href="./timetable.html">Open timetable</a>
+          <a class="ghost-action" href="./timetable.html">Open countdown</a>
         </header>
 
         <!-- COURSE INTRO COMPONENT: Gives students quick context before the grid. -->
         <section class="page-intro">
           <p class="eyebrow">Course bank</p>
-          <h1>Course resources without the stress of searching chats.</h1>
+          <h1>Your notes stay ready while the class rests.</h1>
           <p>
             Find lecture notes, PDFs, documents, revision resources, and other
             class materials arranged neatly by subject.
           </p>
         </section>
 
-        <!-- COURSE GRID COMPONENT: JavaScript renders all first-semester courses here. -->
+        <!-- COURSE GRID COMPONENT: JavaScript renders the current resource courses here. -->
         <section class="content-panel">
           <div class="section-header">
             <div>
@@ -113,6 +112,9 @@
       </main>
     </div>
 
-    <script type="module" src="./app.js?v=20260615c"></script>
+    <script type="module" src="./app.js?v=20260705-4"></script>
   </body>
 </html>
+
+
+

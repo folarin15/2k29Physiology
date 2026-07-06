@@ -950,6 +950,7 @@ export async function createBackend() {
         memberSession: getStoredMemberSession(),
         category: String(formData.category || "General").trim(),
         message: normalizeSuggestionMessage(formData.message),
+        isAnonymous: Boolean(formData.isAnonymous),
       });
     },
 

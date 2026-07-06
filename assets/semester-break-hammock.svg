@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 520" role="img" aria-labelledby="title desc">
+  <title id="title">Semester break hammock illustration</title>
+  <desc id="desc">A relaxed student resting in a hammock between two trees during semester break.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fffdf8"/>
+      <stop offset="1" stop-color="#e5f7ef"/>
+    </linearGradient>
+    <linearGradient id="sun" x1="0" x2="1">
+      <stop offset="0" stop-color="#ffd66c"/>
+      <stop offset="1" stop-color="#d96f4d"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#171b1f" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+  <rect width="760" height="520" rx="40" fill="url(#sky)"/>
+  <circle cx="612" cy="96" r="54" fill="url(#sun)" opacity="0.92"/>
+  <path d="M80 418c88-34 168-28 240-8 74 20 136 30 218-4 60-24 112-28 172-10v86H80z" fill="#d9efe5"/>
+  <path d="M61 436c70-20 144-21 220 4 72 24 144 26 218 0 75-26 142-24 210-1v55H61z" fill="#c9e7d7"/>
+  <g filter="url(#softShadow)">
+    <path d="M148 104c-10 88-18 188-18 318" fill="none" stroke="#5c3f2f" stroke-width="30" stroke-linecap="round"/>
+    <path d="M135 146c-47-20-74-49-88-85 43 9 78 29 101 63" fill="#2a9d7f"/>
+    <path d="M157 137c2-50 25-89 70-116 8 46-8 88-49 124" fill="#5fa8d3"/>
+    <path d="M166 158c52-24 99-27 141-9-38 34-86 43-143 27" fill="#d8c74d"/>
+    <path d="M626 109c9 82 15 179 11 312" fill="none" stroke="#5c3f2f" stroke-width="30" stroke-linecap="round"/>
+    <path d="M615 149c-49-22-78-53-90-92 46 10 82 32 106 68" fill="#2a9d7f"/>
+    <path d="M638 139c4-54 29-94 78-120 6 50-13 94-58 131" fill="#5fa8d3"/>
+    <path d="M647 163c54-25 103-27 146-7-41 35-91 44-148 26" fill="#d8c74d"/>
+  </g>
+  <path d="M163 258c100 68 314 70 454 0" fill="none" stroke="#171b1f" stroke-width="8" stroke-linecap="round"/>
+  <path d="M190 254c92 76 278 78 397 3-20 82-80 130-180 137-106 8-185-39-217-140z" fill="#fffdf8" stroke="#171b1f" stroke-width="6"/>
+  <path d="M215 273c86 50 233 53 338 5" fill="none" stroke="#e3ddd0" stroke-width="8" stroke-linecap="round"/>
+  <path d="M247 290c75 36 180 38 267 3" fill="none" stroke="#e3ddd0" stroke-width="7" stroke-linecap="round"/>
+  <g>
+    <path d="M322 262c24-18 60-20 88-5l68 38c17 10 23 31 12 47-11 17-35 20-52 8l-55-38-66 16c-24 6-47-8-53-31-4-15 3-27 58-35z" fill="#171b1f"/>
+    <circle cx="310" cy="248" r="28" fill="#4f2f22"/>
+    <path d="M288 247c2-31 22-47 49-37 18 7 25 25 17 45-18-14-40-15-66-8z" fill="#171b1f"/>
+    <path d="M342 287c43 14 86 37 129 70" fill="none" stroke="#4f2f22" stroke-width="17" stroke-linecap="round"/>
+    <path d="M381 310c30-9 68-7 111 5" fill="none" stroke="#d96f4d" stroke-width="19" stroke-linecap="round"/>
+    <path d="M333 276c-32 14-63 12-92-7" fill="none" stroke="#4f2f22" stroke-width="16" stroke-linecap="round"/>
+    <path d="M228 258c-12 8-22 9-31 4" fill="none" stroke="#4f2f22" stroke-width="13" stroke-linecap="round"/>
+    <path d="M410 255c22 9 44 22 64 40" fill="none" stroke="#5fa8d3" stroke-width="26" stroke-linecap="round"/>
+  </g>
+  <path d="M103 445h554" stroke="#171b1f" stroke-width="5" stroke-linecap="round" opacity="0.1"/>
+  <g fill="#5c3f7d" opacity="0.75">
+    <circle cx="226" cy="97" r="7"/>
+    <circle cx="252" cy="82" r="4"/>
+    <circle cx="543" cy="98" r="5"/>
+    <circle cx="573" cy="126" r="4"/>
+  </g>
+</svg>
