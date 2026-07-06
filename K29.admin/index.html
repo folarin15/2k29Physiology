@@ -376,27 +376,108 @@
             </section>
           </div>
 
-          <!-- SUGGESTIONS ADMIN COMPONENT: Admin can review and delete student suggestions. -->
+          <!-- SUGGESTIONS ADMIN COMPONENT: Admin can review and manage student suggestions. -->
           <section class="content-panel" id="staffSuggestions">
             <div class="section-header">
               <div>
                 <p class="eyebrow">Student feedback</p>
-                <h2>Suggestions</h2>
+                <h2>Suggestions Board</h2>
               </div>
             </div>
-            <div class="table-wrap">
-              <table class="timetable-table suggestions-table">
-                <thead>
-                  <tr>
-                    <th>Student</th>
-                    <th>Type</th>
-                    <th>Message</th>
-                    <th>Sent</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody id="staffSuggestionsBody"></tbody>
-              </table>
+
+            <div class="suggestions-workspace">
+              <!-- LEFT COLUMN: Feedback form -->
+              <div>
+                <div class="feedback-form-card">
+                  <div class="form-header">
+                    <div class="form-icon">💡</div>
+                    <div>
+                      <h2>Submit Feedback</h2>
+                      <p>Help improve the PHYSIOK29 portal.</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <label class="field-label">Category</label>
+                  <div class="category-grid">
+                    <button class="category-btn selected" data-category="resource">📚<br><br>Resource</button>
+                    <button class="category-btn" data-category="bug">🐞<br><br>Bug</button>
+                    <button class="category-btn" data-category="suggestion">💡<br><br>Suggestion</button>
+                    <button class="category-btn" data-category="complaint">📢<br><br>Complaint</button>
+                  </div>
+                  <label class="field-label">Feedback Title</label>
+                  <input class="feedback-input" type="text" placeholder="Example: Upload PHY103 Practical Manual">
+                  <label class="field-label">Description</label>
+                  <textarea class="feedback-textarea" rows="8" placeholder="Tell us more about your feedback..."></textarea>
+                  <div class="char-count">
+                    <span>Be as detailed as possible.</span>
+                    <span>0 / 500</span>
+                  </div>
+                  <div class="anonymous-toggle">
+                    <div>
+                      <strong>Submit Anonymously</strong>
+                      <span>Your identity will remain hidden.</span>
+                    </div>
+                    <input type="checkbox">
+                  </div>
+                  <button class="submit-feedback-btn">🚀 Submit Feedback</button>
+                </div>
+              </div>
+
+              <!-- RIGHT COLUMN: Stats + Search + Suggestions list -->
+              <div class="suggestions-sidebar">
+
+                <!-- STATS -->
+                <div class="suggestions-stats">
+                  <div class="stat-card">
+                    <div class="stat-value mint" id="adminTotalSuggestions">214</div>
+                    <div class="stat-label">Suggestions</div>
+                  </div>
+                  <div class="stat-card">
+                    <div class="stat-value blue" id="adminResolvedSuggestions">87</div>
+                    <div class="stat-label">Resolved</div>
+                  </div>
+                  <div class="stat-card">
+                    <div class="stat-value amber" id="adminPendingSuggestions">12</div>
+                    <div class="stat-label">Pending</div>
+                  </div>
+                </div>
+
+                <!-- SEARCH + FILTERS -->
+                <div class="search-filter-card">
+                  <input class="search-input" type="text" placeholder="🔍 Search suggestions...">
+                  <div class="filter-pills">
+                    <button class="filter-pill active">All</button>
+                    <button class="filter-pill">Resources</button>
+                    <button class="filter-pill">Bugs</button>
+                    <button class="filter-pill">Ideas</button>
+                    <button class="filter-pill">Resolved</button>
+                  </div>
+                </div>
+
+                <!-- SUGGESTIONS LIST (populated by JS) -->
+                <div id="adminSuggestionsList">
+                  <!-- suggestion cards rendered here -->
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Table fallback for data operations -->
+            <div hidden>
+              <div class="table-wrap">
+                <table class="timetable-table suggestions-table">
+                  <thead>
+                    <tr>
+                      <th>Student</th>
+                      <th>Type</th>
+                      <th>Message</th>
+                      <th>Sent</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="staffSuggestionsBody"></tbody>
+                </table>
+              </div>
             </div>
           </section>
 

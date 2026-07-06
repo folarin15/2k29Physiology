@@ -98,36 +98,166 @@
           </p>
         </section>
 
-        <!-- SUGGESTION FORM COMPONENT: Sends student feedback to the protected staff portals. -->
-        <section class="content-panel suggestion-panel">
-          <div class="section-header">
-            <div>
-              <p class="eyebrow">Send note</p>
-              <h2>What should we know?</h2>
+        <!-- SUGGESTIONS WORKSPACE: Two-column premium layout with form and recent suggestions. -->
+        <div class="suggestions-workspace">
+          <!-- LEFT COLUMN: Submit feedback form -->
+          <div>
+            <div class="feedback-form-card">
+              <div class="form-header">
+                <div class="form-icon">💡</div>
+                <div>
+                  <h2>Submit Feedback</h2>
+                  <p>Help improve the PHYSIOK29 portal.</p>
+                </div>
+              </div>
+              <hr>
+              <form id="suggestionForm">
+                <label class="field-label">Category</label>
+                <div class="category-grid">
+                  <button class="category-btn selected" type="button" data-category="resource">📚<br><br>Resource</button>
+                  <button class="category-btn" type="button" data-category="bug">🐞<br><br>Bug</button>
+                  <button class="category-btn" type="button" data-category="suggestion">💡<br><br>Suggestion</button>
+                  <button class="category-btn" type="button" data-category="complaint">📢<br><br>Complaint</button>
+                </div>
+                <input name="category" type="hidden" value="resource">
+                <label class="field-label">Feedback Title</label>
+                <input class="feedback-input" name="title" type="text" placeholder="Example: Upload PHY103 Practical Manual">
+                <label class="field-label">Description</label>
+                <textarea class="feedback-textarea" name="message" rows="8" placeholder="Tell us more about your feedback..."></textarea>
+                <div class="char-count">
+                  <span>Be as detailed as possible.</span>
+                  <span id="charCount">0 / 500</span>
+                </div>
+                <div class="anonymous-toggle">
+                  <div>
+                    <strong>Submit Anonymously</strong>
+                    <span>Your identity will remain hidden.</span>
+                  </div>
+                  <input name="anonymous" type="checkbox">
+                </div>
+                <button class="submit-feedback-btn" type="submit">🚀 Submit Feedback</button>
+              </form>
+              <p class="form-status" id="suggestionStatus"></p>
             </div>
           </div>
-          <form class="portal-form compact-form" id="suggestionForm">
-            <label>
-              Type
-              <select name="category" required>
-                <option value="Resource request">Resource request</option>
-                <option value="Broken link">Broken link</option>
-                <option value="Resumption question">Resumption question</option>
-                <option value="Class update">Class update</option>
-                <option value="General">General</option>
-              </select>
-            </label>
-            <label>
-              Message
-              <textarea name="message" placeholder="Write the suggestion clearly enough for the reps to act on it." required></textarea>
-            </label>
-            <button class="primary-action" type="submit">
-              <span class="material-symbols-rounded" aria-hidden="true">send</span>
-              Send suggestion
-            </button>
-            <p class="form-status" id="suggestionStatus"></p>
-          </form>
-        </section>
+
+          <!-- RIGHT COLUMN: Stats + Search + Recent Suggestions -->
+          <div class="suggestions-sidebar">
+
+            <!-- STATS -->
+            <div class="suggestions-stats">
+              <div class="stat-card">
+                <div class="stat-value mint">214</div>
+                <div class="stat-label">Suggestions</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value blue">87</div>
+                <div class="stat-label">Resolved</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value amber">12</div>
+                <div class="stat-label">Pending</div>
+              </div>
+            </div>
+
+            <!-- SEARCH + FILTERS -->
+            <div class="search-filter-card">
+              <input class="search-input" type="text" placeholder="🔍 Search suggestions...">
+              <div class="filter-pills">
+                <button class="filter-pill active">All</button>
+                <button class="filter-pill">Resources</button>
+                <button class="filter-pill">Bugs</button>
+                <button class="filter-pill">Ideas</button>
+                <button class="filter-pill">Resolved</button>
+              </div>
+            </div>
+
+            <!-- RECENT SUGGESTIONS -->
+            <div class="my-feedback-section">
+              <div class="section-head">
+                <div>
+                  <h3>Recent Suggestions</h3>
+                  <div style="color:var(--muted);margin-top:4px;font-size:14px;">Latest community feedback</div>
+                </div>
+                <button class="view-all-btn">View All</button>
+              </div>
+
+              <!-- suggestion card -->
+              <div class="suggestion-card">
+                <div class="card-top">
+                  <div>
+                    <div class="card-title">📚 Upload PHY103 Practical Manual</div>
+                    <div class="card-desc">Students have requested the practical manual before next week's laboratory session.</div>
+                  </div>
+                  <span class="status-badge under-review">Under Review</span>
+                </div>
+                <hr class="card-divider">
+                <div class="card-footer">
+                  <div class="card-meta">
+                    <span>👍 24</span>
+                    <span>💬 6</span>
+                    <span>👁 164</span>
+                  </div>
+                  <div class="card-time">Yesterday</div>
+                </div>
+              </div>
+
+              <!-- suggestion card -->
+              <div class="suggestion-card">
+                <div class="card-top">
+                  <div>
+                    <div class="card-title">🌙 Add Dark Mode</div>
+                    <div class="card-desc">Easier viewing during late-night study sessions.</div>
+                  </div>
+                  <span class="status-badge planned">Planned</span>
+                </div>
+                <hr class="card-divider">
+                <div class="card-footer">
+                  <div class="card-meta">
+                    <span>👍 81</span>
+                    <span>💬 17</span>
+                    <span>👁 312</span>
+                  </div>
+                  <div class="card-time">3 days ago</div>
+                </div>
+              </div>
+
+              <!-- suggestion card -->
+              <div class="suggestion-card">
+                <div class="card-top">
+                  <div>
+                    <div class="card-title">🐞 Login Session Timeout</div>
+                    <div class="card-desc">Users are occasionally logged out unexpectedly after inactivity.</div>
+                  </div>
+                  <span class="status-badge implemented">Implemented</span>
+                </div>
+                <hr class="card-divider">
+                <div class="card-footer">
+                  <div class="card-meta">
+                    <span>👍 39</span>
+                    <span>💬 12</span>
+                    <span>👁 98</span>
+                  </div>
+                  <div class="card-time">Last week</div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- CONTACT CARD -->
+            <div style="background:linear-gradient(135deg,var(--mint),var(--mint-dark));border-radius:24px;padding:28px;color:white;">
+              <div style="font-size:30px;">🎓</div>
+              <h3 style="margin-top:18px;margin-bottom:10px;font-size:24px;font-family:var(--display-font);font-weight:500;">Need Immediate Help?</h3>
+              <p style="color:rgba(255,255,255,.9);line-height:1.7;">
+                If your issue requires urgent attention, contact your class representative directly instead of submitting feedback.
+              </p>
+              <a href="./reps.html" style="margin-top:20px;display:block;width:100%;padding:16px;border:none;border-radius:16px;background:white;color:var(--mint-dark);font-weight:700;text-align:center;text-decoration:none;cursor:pointer;">
+                Contact Representatives
+              </a>
+            </div>
+
+          </div>
+        </div>
       </main>
     </div>
 
