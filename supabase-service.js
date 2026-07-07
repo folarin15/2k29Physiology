@@ -1,7 +1,7 @@
 import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260615c";
 
 const QUIZ_BANK_CACHE_KEY = "physiology2k29.quizBank";
-const QUIZ_BANK_URL = "./quiz-bank.json?v=20260707-1";
+const QUIZ_BANK_URL = "./quiz-bank.json?v=20260707-2";
 
 const SUPABASE_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
@@ -694,14 +694,14 @@ export async function createBackend() {
     },
 
     async getQuizSetup() {
+      const bank = await loadLocalQuizBank();
+      if (bank?.courses) return { courses: bank.courses, summary: { streak: 0, weakTopics: [] } };
       try {
         const data = await callMemberPortal("quiz-setup", {
           memberSession: getStoredMemberSession(),
         });
         if (data?.courses && Object.keys(data.courses).length > 0) return data;
       } catch {}
-      const bank = await loadLocalQuizBank();
-      if (bank?.courses) return { courses: bank.courses, summary: { streak: 0, weakTopics: [] } };
       return { courses: {}, summary: { streak: 0, weakTopics: [] } };
     },
 

@@ -40,7 +40,7 @@
         });
       });
     </script>
-    <link rel="stylesheet" href="./styles.css?v=20260615c" />
+    <link rel="stylesheet" href="./styles.css?v=20260707-2" />
   </head>
   <body data-page="suggestions">
     <!-- APP SHELL: Student suggestion page for structured feedback. -->
@@ -164,11 +164,12 @@
             <div class="search-filter-card">
               <input class="search-input" type="text" placeholder="🔍 Search suggestions...">
               <div class="filter-pills">
-                <button class="filter-pill active">All</button>
-                <button class="filter-pill">Resources</button>
-                <button class="filter-pill">Bugs</button>
-                <button class="filter-pill">Ideas</button>
-                <button class="filter-pill">Resolved</button>
+                <button class="filter-pill active" data-filter="all">All</button>
+                <button class="filter-pill" data-filter="resource">Resource</button>
+                <button class="filter-pill" data-filter="bug">Bug</button>
+                <button class="filter-pill" data-filter="suggestion">Suggestion</button>
+                <button class="filter-pill" data-filter="complaint">Complaint</button>
+                <button class="filter-pill" data-filter="resolved">Resolved</button>
               </div>
             </div>
 
@@ -261,6 +262,6 @@
       </main>
     </div>
 
-    <script type="module" src="./app.js?v=20260615c"></script>
+    <script type="module" src="./app.js?v=20260707-2"></script>
   </body>
 </html>
