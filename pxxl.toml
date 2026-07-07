@@ -1,5 +1,4 @@
 [build]
 framework = "static-site"
-installCommand = "npm install"
 buildCommand = "node scripts/build-static.mjs"
 outputDirectory = "dist"
