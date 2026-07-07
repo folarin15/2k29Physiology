@@ -1032,7 +1032,7 @@ function openSiteGuide() {
       <div class="guide-actions">
         <a class="primary-action" href="./courses.html"><span class="material-symbols-rounded" aria-hidden="true">folder_open</span>Open courses</a>
         <a class="secondary-action" href="./quiz.html"><span class="material-symbols-rounded" aria-hidden="true">quiz</span>Start quiz</a>
-        <a class="ghost-action" href="https://wa.link/757ou3" target="_blank" rel="noopener">
+        <a class="ghost-action external-link" href="https://wa.link/757ou3" target="_blank" rel="noopener">
           <span class="material-symbols-rounded" aria-hidden="true">chat</span>
           Get help
         </a>
@@ -1223,7 +1223,7 @@ async function ensureMemberOnboarding() {
           <li>Hyphens, joined names, and common spelling differences are accepted.</li>
           <li>If it still fails, send your full name, matric number, and what you typed to a course rep.</li>
         </ul>
-        <a class="signin-support-link" href="https://wa.link/757ou3" target="_blank" rel="noopener">
+        <a class="signin-support-link external-link" href="https://wa.link/757ou3" target="_blank" rel="noopener">
           <span class="material-symbols-rounded" aria-hidden="true">chat</span>
           Message support on WhatsApp
         </a>
@@ -1980,7 +1980,12 @@ function renderNotificationCenter() {
     return;
   }
 
-  const visibleLimit = isDashboardPage() ? 4 : 12;
+  const isNarrow = window.innerWidth <= 760;
+  const visibleLimit = isDashboardPage() ? (isNarrow ? 4 : 8) : 12;
+  const totalItems = items.length;
+  const hasMore = totalItems > visibleLimit;
+  list.dataset.showAll = "false";
+
   list.innerHTML = items
     .slice(0, visibleLimit)
     .map(
@@ -1998,7 +2003,7 @@ function renderNotificationCenter() {
         </article>
       `
     )
-    .join("");
+    .join("") + (hasMore ? `<button class="ghost-link" type="button" data-show-all-notifications style="justify-self:center;margin-top:8px">View all ${totalItems} notifications</button>` : "");
 }
 
 function renderTopicTracker(summary = getStudySummary()) {
@@ -2006,28 +2011,39 @@ function renderTopicTracker(summary = getStudySummary()) {
   if (!target) return;
 
   const weakTopics = summary.weakTopics || [];
-  if (!weakTopics.length && isDashboardPage()) {
+  if (!weakTopics.length && !summary.strongTopics?.length && isDashboardPage()) {
     target.hidden = true;
     target.innerHTML = "";
     return;
   }
 
   target.hidden = false;
-  target.innerHTML = weakTopics.length
-    ? weakTopics
-        .map(
-          (topic) => `
-            <article class="topic-chip">
-              <strong>${escapeHtml(topic.courseCode || "Course")}</strong>
-              <span>${escapeHtml(topic.topic || "General")}</span>
-              <small>${Number(topic.accuracy || 0)}% accuracy</small>
-            </article>
-          `
-        )
-        .join("")
+  const strongTopics = summary.strongTopics || [];
+  const chips = [
+    ...weakTopics.map(
+      (topic) => `
+        <article class="topic-chip">
+          <strong>${escapeHtml(topic.courseCode || "Course")}</strong>
+          <span>${escapeHtml(topic.topic || "General")}</span>
+          <small>${Number(topic.accuracy || 0)}% accuracy</small>
+        </article>
+      `
+    ),
+    ...strongTopics.map(
+      (topic) => `
+        <article class="topic-chip" data-tone="clear">
+          <strong>${escapeHtml(topic.courseCode || "Course")}</strong>
+          <span>${escapeHtml(topic.topic || "General")}</span>
+          <small>${Number(topic.accuracy || 0)}% — going well</small>
+        </article>
+      `
+    ),
+  ];
+  target.innerHTML = chips.length
+    ? chips.join("")
     : `<article class="topic-chip" data-tone="clear">
         <strong>Clear board</strong>
-        <span>Weak topics will appear after quizzes.</span>
+        <span>Topics will appear after quizzes.</span>
         <small>Start with any course</small>
       </article>`;
 }
@@ -2078,16 +2094,24 @@ function populateQuizControls() {
   if (!courseSelect) return;
 
   const courses = state.study.setup?.courses || {};
+  const hasAnyData = Object.keys(courses).length > 0;
   const available = firstSemesterCourses.filter((course) => courses[course.code]?.count);
-  courseSelect.innerHTML = available.length
-    ? available
-        .map(
-          (course) =>
-            `<option value="${course.code}">${course.code} - ${escapeHtml(course.title)}</option>`
-        )
-        .join("")
-    : `<option value="">Practice questions are not ready yet</option>`;
-  courseSelect.disabled = !available.length;
+
+  if (hasAnyData && !available.length) {
+    courseSelect.innerHTML = `<option value="">Question bank is being populated for your courses</option>`;
+    courseSelect.disabled = true;
+  } else if (available.length) {
+    courseSelect.innerHTML = available
+      .map(
+        (course) =>
+          `<option value="${course.code}">${course.code} - ${escapeHtml(course.title)}</option>`
+      )
+      .join("");
+    courseSelect.disabled = false;
+  } else {
+    courseSelect.innerHTML = `<option value="">Practice questions are not ready yet</option>`;
+    courseSelect.disabled = true;
+  }
   populateQuizTopicSelect();
 }
 
@@ -2101,6 +2125,34 @@ async function loadQuizSetup() {
   } catch (error) {
     const status = getElement("#quizStatus");
     if (status) status.textContent = error.message || "Could not load the study engine yet.";
+  }
+  renderQuizBankStatus();
+}
+
+function renderQuizBankStatus() {
+  const status = getElement("#quizStatus");
+  const setupForm = getElement("#quizSetupForm");
+  const courseSelect = getElement("#quizCourseSelect");
+  if (!setupForm) return;
+
+  const courses = state.study.setup?.courses || {};
+  const hasQuestions = Object.values(courses).some((c) => Number(c.count) > 0);
+
+  if (!hasQuestions && courseSelect?.disabled !== false) {
+    if (status) {
+      status.textContent = "The question bank is being updated. Check back soon for practice questions.";
+      status.style.color = "var(--muted)";
+    }
+    const submitBtn = setupForm.querySelector('[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
+  } else if (hasQuestions) {
+    if (status) {
+      status.textContent = "";
+      status.style.color = "";
+    }
+    const submitBtn = setupForm.querySelector('[type="submit"]');
+    if (submitBtn) submitBtn.disabled = false;
+    if (courseSelect) courseSelect.disabled = false;
   }
 }
 
@@ -2245,6 +2297,18 @@ function renderQuizResults(data) {
     .slice(0, 3)
     .map(([topic]) => topic);
 
+  const strongTopics = (data.results || [])
+    .filter((result) => result.correct)
+    .reduce((topics, result) => {
+      const topic = result.topic || questionTopics.get(String(result.questionId)) || "General";
+      topics.set(topic, (topics.get(topic) || 0) + 1);
+      return topics;
+    }, new Map());
+  const topStrong = [...strongTopics.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 2)
+    .map(([topic]) => topic);
+
   panel.hidden = false;
   panel.innerHTML = `
     <div class="section-header">
@@ -2278,6 +2342,7 @@ function renderQuizResults(data) {
             ? "Answer every question before submitting next time."
             : "You kept this attempt clean. Push into a harder set next."
       }</span>
+      ${topStrong.length ? `<br><strong>Going well:</strong> <span>${escapeHtml(topStrong.join(", "))}</span>` : ""}
     </div>
     <div class="quiz-review-list">
       ${(data.results || [])
@@ -4227,6 +4292,19 @@ function connectCopyButtons() {
 
 /* NOTIFICATION BUTTON: Lets students retry OneSignal permission setup from the dashboard. */
 function connectNotificationSetup() {
+  document.addEventListener("click", (event) => {
+    const showAllButton = event.target.closest("[data-show-all-notifications]");
+    if (showAllButton) {
+      const list = getElement("#notificationCenterList");
+      if (list) {
+        const showingAll = list.dataset.showAll === "true";
+        list.dataset.showAll = showingAll ? "false" : "true";
+        showAllButton.textContent = showingAll ? `View all ${getNotificationItems().length} notifications` : "Show fewer";
+      }
+      return;
+    }
+  });
+
   document.addEventListener("click", async (event) => {
     const button = event.target.closest("[data-enable-notifications]");
     if (!button) return;
@@ -4473,7 +4551,19 @@ function connectQuizMode() {
         durationSeconds,
         answers,
       });
-      state.study.setup = { ...(state.study.setup || {}), summary: data.summary || getStudySummary() };
+      const questionTopics = new Map((state.study.questions || []).map((q) => [String(q.id), q.topic]));
+      const strongTopics = (data.results || [])
+        .filter((r) => r.correct)
+        .reduce((map, r) => {
+          const topic = r.topic || questionTopics.get(String(r.questionId)) || "General";
+          map.set(topic, (map.get(topic) || 0) + 1);
+          return map;
+        }, new Map());
+      const summary = data.summary || getStudySummary();
+      summary.strongTopics = [...strongTopics.entries()]
+        .filter(([, count]) => count >= 2)
+        .map(([topic]) => ({ topic, accuracy: 100 }));
+      state.study.setup = { ...(state.study.setup || {}), summary };
       renderQuizResults(data);
       renderStudyDashboard();
       if (status) status.textContent = "";

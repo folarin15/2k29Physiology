@@ -1,1 +1,1389 @@
-[]
+[
+  {
+    "courseCode": "PHY 102",
+    "topic": "Electrostatics I: Charges, Forces & Fields",
+    "summary": "Electrostatics is the study of stationary electric charges. This block covers the nature of electric charge, atomic structure, ionization, charging methods (friction, conduction, induction), Coulomb's law, and the electric field concept — including field calculations for point charges, dipoles, and continuous charge distributions.",
+    "subtopics": [
+      {
+        "title": "Nature of Electric Charge",
+        "keyPoints": [
+          "Electric charge is a physical property of matter that is either positive or negative.",
+          "Macroscopic objects are typically electrically neutral (no net charge).",
+          "Unlike (opposite) charges attract; like charges repel.",
+          "Charge is quantized in integer multiples of the elementary charge e = 1.602 × 10⁻¹⁹ C.",
+          "Charge is conserved — the algebraic sum in a closed system is constant."
+        ],
+        "mustKnow": [
+          "An atom consists of a nucleus (protons and neutrons) surrounded by electrons.",
+          "An ion is an atom that has gained or lost electrons.",
+          "A positively charged object has lost electrons; a negatively charged object has gained electrons.",
+          "Electrons are the only mobile charges in solids; positive ions remain fixed in the lattice."
+        ],
+        "examTraps": [
+          "Do not say an object becomes positive by gaining protons — protons are bound in the nucleus.",
+          "A neutral object has equal numbers of protons and electrons, not zero charge.",
+          "Charge is quantized — any net charge must be an integer multiple of e."
+        ],
+        "possibleQuestionPoints": [
+          "Explain why a neutral object can be attracted to both positive and negative charges.",
+          "Calculate the number of electrons transferred when a given net charge is produced.",
+          "Compare the magnitudes of the four fundamental forces.",
+          "Determine the quark composition and net charge of protons and neutrons."
+        ],
+        "definitions": [
+          "Electric charge: A physical property of matter which is either positive or negative",
+          "Ion: An atom that has gained or lost electrons",
+          "Elementary charge (e): 1.602 × 10⁻¹⁹ Coulombs",
+          "Conductor: A material that allows charges to move easily (e.g., metals)",
+          "Insulator: A material that does not allow the transfer of electric charges (e.g., rubber, nylon)",
+          "Conservation of charge: The algebraic sum of charges in a closed system is constant"
+        ],
+        "processes": [
+          "Fundamental forces rank: Strong Force → Electromagnetic Force → Weak Force → Gravitational Force",
+          "Proton quark composition: Two up-quarks (+2/3e each) and one down-quark (−1/3e) = +e"
+        ]
+      },
+      {
+        "title": "Charging Methods",
+        "keyPoints": [
+          "Charging by rubbing (friction) transfers electrons between neutral objects through contact.",
+          "Charging by transfer (conduction) moves charges through direct physical contact via a conductor.",
+          "Charging by induction redistributes charges in an uncharged object due to proximity of a charged object.",
+          "Earthing is required during induction to retain the induced charge permanently."
+        ],
+        "mustKnow": [
+          "Rubbing plastic with fur gives plastic a negative charge (it gains electrons).",
+          "In induction, no physical contact occurs between the charged and the uncharged object.",
+          "Earthing allows electrons to flow into or out of the earth (the reservoir).",
+          "The three methods are friction, conduction, and induction."
+        ],
+        "examTraps": [
+          "Induction does NOT involve direct contact — only proximity.",
+          "You must connect to earth during induction for a permanent charge.",
+          "Do not confuse charging by conduction (contact) with charging by induction (proximity + earthing)."
+        ],
+        "possibleQuestionPoints": [
+          "Describe step-by-step how to charge a metal sphere by induction using a positively charged rod.",
+          "Explain why a comb rubbed through hair can pick up small paper pieces.",
+          "Compare and contrast charging by friction versus charging by conduction."
+        ],
+        "definitions": [
+          "Charging by friction: Method where friction transfers electrons between neutral objects",
+          "Charging by conduction: Charges move from a charged object to an uncharged one through physical contact",
+          "Charging by induction: Charges are redistributed in an uncharged object due to the proximity of a charged one",
+          "Earthing: Connecting an object to the ground to allow charge flow to or from the earth"
+        ]
+      },
+      {
+        "title": "Coulomb's Law & Electric Field",
+        "keyPoints": [
+          "Coulomb's Law: F = k |q₁q₂| / r², where k ≈ 8.988 × 10⁹ N·m²/C².",
+          "The force is along the straight line joining the two point charges.",
+          "The permittivity of free space ε₀ ≈ 8.854 × 10⁻¹² C²/N·m² relates to k: k = 1/(4πε₀).",
+          "Electric field E is defined as the force per unit test charge: E = F / q₀.",
+          "Electric field lines point outward from positive charges and inward toward negative charges."
+        ],
+        "mustKnow": [
+          "Electric field for a point charge: E = k |q| / r².",
+          "Field lines never intersect — the field has a unique direction at any point.",
+          "Closer field lines indicate a stronger field.",
+          "The principle of superposition: the resultant field is the vector sum of fields from individual charges.",
+          "An electric dipole is a pair of point charges with equal magnitude but opposite signs separated by a small distance."
+        ],
+        "examTraps": [
+          "Coulomb's law uses the magnitude of charges (absolute values) for force magnitude; direction must be determined separately.",
+          "The electric field is a vector; always consider both magnitude and direction.",
+          "E-field lines point away from positive charges, not toward them.",
+          "Field lines can never intersect — this would give two directions for the force at one point."
+        ],
+        "possibleQuestionPoints": [
+          "Calculate the net electric field at a point due to multiple point charges using vector addition.",
+          "Find the equilibrium position for a third charge placed between two fixed charges.",
+          "Determine the electric field at the center of a dipole.",
+          "Sketch electric field lines for a given charge configuration."
+        ],
+        "definitions": [
+          "Coulomb's Law: F = k |q₁q₂| / r², where k ≈ 8.988 × 10⁹ N·m²/C²",
+          "Permittivity of free space (ε₀): 8.854 × 10⁻¹² C²/N·m²",
+          "Electric field (E): The force per unit charge experienced by a test point charge",
+          "Electric dipole: A pair of point charges with equal magnitude but opposite signs separated by a distance",
+          "Electric field lines: Imaginary curves where the tangent gives the direction of E"
+        ]
+      },
+      {
+        "title": "Continuous Charge Distributions",
+        "keyPoints": [
+          "Linear charge density λ = Q/L (charge per unit length).",
+          "Surface charge density σ = Q/A (charge per unit area).",
+          "Volume charge density ρ = Q/V (charge per unit volume).",
+          "Electric field of an infinitely long charged line: E = λ / (2πε₀x).",
+          "Electric field of an infinitely large charged plate: E = σ / (2ε₀).",
+          "For a uniformly charged line segment of length 2a, the x-component at distance x is E_x = Q / (4πε₀x√(a² + x²))."
+        ],
+        "mustKnow": [
+          "As a → ∞, the line segment field approaches λ / (2πε₀x).",
+          "The infinite plate field is independent of distance from the plate.",
+          "Charge densities are used to account for continuous distributions of charge.",
+          "Integration is required to find fields from continuous charge distributions."
+        ],
+        "examTraps": [
+          "The infinite line formula uses 2π, not 4π.",
+          "The infinite plate formula uses 2ε₀, not ε₀.",
+          "Do not confuse λ (linear), σ (surface), and ρ (volume) charge densities.",
+          "The field from an infinite sheet is constant, it does not depend on distance."
+        ],
+        "possibleQuestionPoints": [
+          "Derive the electric field expression for a finite line charge using integration.",
+          "Find the electric field at a point near the center of a charged ring or disk.",
+          "Apply Gauss's law to find the field for symmetric charge distributions.",
+          "Calculate the force on a point charge placed near a charged infinite plate."
+        ],
+        "definitions": [
+          "Linear charge density (λ): The total charge Q divided by the length L",
+          "Surface charge density (σ): The total charge Q divided by the surface area A",
+          "Volume charge density (ρ): The total charge Q divided by the volume V",
+          "Infinite line field: E = λ / (2πε₀x)",
+          "Infinite plate field: E = σ / (2ε₀)"
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "PHY 102",
+    "topic": "Electrostatics II: Electric Potential & Capacitance",
+    "summary": "This block connects the work-energy theorem to electric forces, introduces electric potential and potential energy, and covers capacitors as energy-storage devices. Key ideas include conservative electric forces, potential V = U/q, the parallel-plate capacitor formula, dielectrics, and energy storage.",
+    "subtopics": [
+      {
+        "title": "Electric Potential & Energy",
+        "keyPoints": [
+          "Work-energy theorem: work done equals the change in kinetic energy (W = ΔK).",
+          "Electric forces are conservative; they store energy as electric potential energy U.",
+          "Electric potential energy for point charges: U = qq' / (4πε₀r).",
+          "Electric potential V = U/q (potential energy per unit charge), measured in Volts.",
+          "Potential decreases as a positive charge moves in the direction of the electric field.",
+          "Work done to move a charge through a potential difference: W = qV."
+        ],
+        "mustKnow": [
+          "The volt is the unit of electric potential: 1 V = 1 J/C.",
+          "For a uniform field: V = Ed (potential difference = field × distance).",
+          "Potential due to a point charge: V = kq / r.",
+          "The electron-volt (eV) is the energy gained by an electron moving through 1 V: 1 eV = 1.602 × 10⁻¹⁹ J."
+        ],
+        "examTraps": [
+          "Potential is a scalar, not a vector — add potentials algebraically, not as vectors.",
+          "The potential energy of a two-charge system can be negative (attractive) or positive (repulsive).",
+          "Do not confuse electric potential V (energy per charge) with electric potential energy U.",
+          "When a positive charge moves with the field, its potential energy decreases."
+        ],
+        "possibleQuestionPoints": [
+          "Calculate the work required to assemble a system of point charges.",
+          "Find the potential at a point due to a configuration of point charges.",
+          "Determine the speed of a charge accelerated through a potential difference.",
+          "Explain the relationship between electric field and potential gradient."
+        ],
+        "definitions": [
+          "Work-energy theorem: Work done equals the change in kinetic energy (W = ΔK)",
+          "Conservative force: A force that stores energy as potential energy (e.g., gravitational, electric)",
+          "Electric potential energy (U): The stored energy of a charge configuration",
+          "Electric potential (V): Potential energy per unit charge, measured in Volts",
+          "Electron-volt (eV): The energy gained by an electron moving through 1 V"
+        ],
+        "processes": [
+          "Work to move a charge through a potential difference: W = qV",
+          "Electron accelerated through 100 V gains kinetic energy of 100 eV = 1.602 × 10⁻¹⁷ J"
+        ]
+      },
+      {
+        "title": "Capacitors & Dielectrics",
+        "keyPoints": [
+          "A capacitor is a device that stores electric potential energy, consisting of two closely spaced oppositely charged conductors.",
+          "Capacitance C = Q / V; unit is the Farad (F).",
+          "Parallel plate capacitor: C = ε₀A / d.",
+          "Capacitors in series: 1/C_eq = 1/C₁ + 1/C₂ + ... (charge is the same on each).",
+          "Capacitors in parallel: C_eq = C₁ + C₂ + ... (voltage is the same across each).",
+          "Energy stored in a capacitor: U = ½ CV² = ½ QV = ½ Q²/C.",
+          "Inserting a dielectric increases capacitance by factor K (dielectric constant): C = KC₀."
+        ],
+        "mustKnow": [
+          "The Farad is a large unit; practical capacitors are in µF, nF, or pF.",
+          "Dielectric breakdown occurs when the electric field ionizes the insulator, making it conduct.",
+          "When a capacitor is disconnected from the battery before inserting a dielectric, charge remains constant.",
+          "When a capacitor stays connected to the battery while inserting a dielectric, voltage remains constant."
+        ],
+        "examTraps": [
+          "Capacitors in series combine like resistors in parallel (reciprocal sum).",
+          "Capacitors in parallel combine like resistors in series (direct sum).",
+          "Do not forget to convert units — watch for µF, nF, pF.",
+          "Energy stored is proportional to the square of the voltage, not the voltage itself.",
+          "In series, the charge Q is the same on each capacitor; in parallel, the voltage V is the same."
+        ],
+        "possibleQuestionPoints": [
+          "Find the equivalent capacitance of a mixed series-parallel network.",
+          "Calculate the charge and voltage on each capacitor in a network.",
+          "Determine the energy stored in a capacitor before and after inserting a dielectric.",
+          "Explain what happens to capacitance, voltage, charge, and energy when a dielectric is inserted."
+        ],
+        "definitions": [
+          "Capacitor: A device storing electric potential energy consisting of two closely spaced oppositely charged conductors",
+          "Capacitance (C): Ratio of charge magnitude to potential difference (C = Q / V); unit is Farad (F)",
+          "Parallel plate capacitance: C = ε₀A / d",
+          "Dielectric: An insulating material that increases capacitance by factor K",
+          "Dielectric constant (K): The factor by which capacitance increases when a dielectric is inserted",
+          "Dielectric breakdown: Ionization of an insulator under high electric field, making it conduct",
+          "Energy in a capacitor: U = ½ CV² = ½ QV = ½ Q²/C"
+        ],
+        "processes": [
+          "Dielectric insertion (battery disconnected): Charge Q constant, voltage V decreases by factor K, capacitance increases by factor K",
+          "Dielectric insertion (battery connected): Voltage V constant, charge Q increases by factor K, capacitance increases by factor K"
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "PHY 102",
+    "topic": "Current Electricity & DC Circuits",
+    "summary": "This block introduces electric current as charge flow, drift velocity, resistivity, Ohm's law, resistance combinations, Kirchhoff's rules, and measuring instruments. Master both the microscopic view (charge carriers, drift) and the macroscopic circuit analysis tools.",
+    "subtopics": [
+      {
+        "title": "Current, Resistance & Ohm's Law",
+        "keyPoints": [
+          "Electric current I = Q/t (net charge flowing per unit time); unit is the Ampere (A).",
+          "Conventional current flows from higher to lower potential (opposite to electron flow).",
+          "Drift velocity v_d is the slow net velocity of electrons (~10⁻⁴ m/s).",
+          "Current and drift velocity: I = nqv_dA (n = charge concentration, A = area).",
+          "Ohm's law: V = IR, or in local form J = σE (current density = conductivity × field).",
+          "Resistance R = ρL/A (resistivity × length / area); unit is the Ohm (Ω).",
+          "Resistivity in metals increases with temperature: ρ(T) = ρ₀[1 + α(T − T₀)]."
+        ],
+        "mustKnow": [
+          "A conductor has free electrons; an insulator has tightly bound electrons.",
+          "The unit of resistance: 1 Ω = 1 V/A.",
+          "Power dissipated: P = IV = I²R = V²/R.",
+          "EMF (ε) is the energy per unit charge provided by a source; measured in Volts.",
+          "A real battery has internal resistance r: terminal voltage V = ε − Ir.",
+          "A short-circuit is a zero (or near-zero) resistance path that bypasses the load."
+        ],
+        "examTraps": [
+          "Drift velocity is very slow (~mm/s), not the speed of light.",
+          "Conventional current direction is opposite to electron flow.",
+          "Do not confuse EMF (the maximum voltage) with terminal voltage (which is less due to internal resistance).",
+          "Internal resistance is always in series with the ideal EMF source.",
+          "Power loss in transmission lines is I²R — this is why high voltage reduces loss."
+        ],
+        "possibleQuestionPoints": [
+          "Calculate drift velocity given current, charge carrier density, and wire dimensions.",
+          "Find the resistance of a wire given its dimensions and resistivity.",
+          "Calculate power dissipated in a resistor and energy consumption over time.",
+          "Determine the terminal voltage of a battery delivering a given current.",
+          "Explain why power transmission uses high voltage."
+        ],
+        "definitions": [
+          "Electric current (I): The net charge flowing through a cross-sectional area per unit time (I = Q/t)",
+          "Conventional current: The direction in which positive charges would flow",
+          "Drift velocity (v_d): The steady net flow velocity of electrons in a conductor",
+          "Ohm's law: V = IR; also J = σE (local form)",
+          "Resistivity (ρ): The ratio of electric field to current density (ρ = E/J)",
+          "Resistance (R): R = ρL/A; unit is the Ohm (Ω)",
+          "Electromotive force (EMF): The energy per unit charge provided by a source",
+          "Internal resistance (r): The inherent resistance within an EMF source",
+          "Terminal voltage: V = ε − Ir",
+          "Electrical power: P = IV = I²R = V²/R",
+          "Short-circuit: An abnormal bypass creating a zero (or near-zero) resistance path"
+        ],
+        "processes": [
+          "Temperature dependence of resistivity: ρ(T) = ρ₀[1 + α(T − T₀)]",
+          "Current-drift velocity relation: I = nqv_dA"
+        ]
+      },
+      {
+        "title": "Resistor Combinations & Circuit Analysis",
+        "keyPoints": [
+          "Resistors in series: R_eq = R₁ + R₂ + ... + R_N (same current through each).",
+          "Resistors in parallel: 1/R_eq = 1/R₁ + 1/R₂ + ... + 1/R_N (same voltage across each).",
+          "Kirchhoff's Junction Rule: ∑ I = 0 at any junction (based on charge conservation).",
+          "Kirchhoff's Loop Rule: ∑ V = 0 around any closed loop (based on energy conservation).",
+          "For two identical resistors R in parallel, R_eq = R/2.",
+          "For two identical resistors R in series, R_eq = 2R."
+        ],
+        "mustKnow": [
+          "In series circuits, current is the same everywhere; voltage divides across resistors.",
+          "In parallel circuits, voltage is the same across all branches; current divides.",
+          "Kirchhoff's laws are used to solve multi-loop circuits with multiple batteries.",
+          "The junction rule is charge conservation; the loop rule is energy conservation."
+        ],
+        "examTraps": [
+          "Adding more resistors in parallel always decreases the total resistance.",
+          "Adding more resistors in series always increases the total resistance.",
+          "Do not forget to account for battery polarity when applying the loop rule.",
+          "The number of independent loop equations equals the number of loops in the circuit.",
+          "When applying Kirchhoff's rules, assign current directions consistently."
+        ],
+        "possibleQuestionPoints": [
+          "Calculate the equivalent resistance of a complex resistor network.",
+          "Solve for all currents in a multi-loop circuit with two batteries using Kirchhoff's rules.",
+          "Find the voltage across and current through each resistor in a given circuit.",
+          "Determine the total power supplied by a battery and power dissipated in each resistor."
+        ],
+        "definitions": [
+          "Series resistance: R_eq = R₁ + R₂ + ... + R_N",
+          "Parallel resistance: 1/R_eq = 1/R₁ + 1/R₂ + ... + 1/R_N",
+          "Kirchhoff's Junction Rule: The sum of currents at any junction is zero (∑ I = 0)",
+          "Kirchhoff's Loop Rule: The algebraic sum of potential differences around any closed loop is zero (∑ V = 0)"
+        ]
+      },
+      {
+        "title": "Measuring Instruments",
+        "keyPoints": [
+          "Wheatstone bridge is used to find unknown resistance: X = MP/N when balanced.",
+          "A potentiometer measures unknown EMF without drawing current (null point method).",
+          "An ammeter is created by connecting a low-resistance shunt in parallel with a galvanometer.",
+          "A voltmeter is created by connecting a high resistance in series with a galvanometer.",
+          "An ideal ammeter has zero resistance; an ideal voltmeter has infinite resistance."
+        ],
+        "mustKnow": [
+          "The Wheatstone bridge is balanced when no current flows through the galvanometer.",
+          "The potentiometer uses a null point to achieve zero current in the test circuit.",
+          "A shunt extends the range of a galvanometer to measure larger currents.",
+          "The formula for internal resistance using a potentiometer: r = R(l₁/l₂ − 1)."
+        ],
+        "examTraps": [
+          "A Wheatstone bridge is used for resistance measurement, not voltage.",
+          "A potentiometer measures EMF — it does not draw current from the source being measured.",
+          "Do not confuse the Wheatstone bridge formula with other bridge configurations.",
+          "An ammeter must be in series; a voltmeter must be in parallel."
+        ],
+        "possibleQuestionPoints": [
+          "Calculate the unknown resistance in a balanced Wheatstone bridge.",
+          "Describe how to use a potentiometer to measure the EMF of a cell.",
+          "Design an ammeter by choosing the appropriate shunt resistance for a galvanometer.",
+          "Determine the internal resistance of a cell using a potentiometer."
+        ],
+        "definitions": [
+          "Wheatstone bridge: Used to find unknown resistance X when balanced: X = MP/N",
+          "Potentiometer: Measures unknown EMF without drawing current from the source",
+          "Ammeter: Created by connecting a low-resistance shunt in parallel with a galvanometer",
+          "Shunt: A low resistance connected in parallel to bypass most of the current around a meter"
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "PHY 102",
+    "topic": "Magnetism",
+    "summary": "This block covers magnetic fields, their sources (moving charges/currents), forces on moving charges and current-carrying wires, the Biot-Savart law, Ampere's law, and magnetic field calculations for wires, solenoids, and toroids.",
+    "subtopics": [
+      {
+        "title": "Magnetic Fields & Forces",
+        "keyPoints": [
+          "Magnetic fields are produced by moving electric charges (currents).",
+          "Magnetic monopoles do not exist — poles always come in N/S pairs.",
+          "Magnetic field lines form closed loops, from North to South outside the magnet.",
+          "Magnetic force on a moving charge: F = qvB sinϕ; direction by Right-Hand Rule.",
+          "Magnetic force is always perpendicular to both velocity and the magnetic field.",
+          "A charged particle moves in a circular path in a uniform magnetic field: r = mv/qB.",
+          "Magnetic force does zero work on a moving charge (force is perpendicular to displacement)."
+        ],
+        "mustKnow": [
+          "SI unit of magnetic field B is the Tesla (T); 1 T = 10⁴ Gauss.",
+          "The right-hand rule: thumb in direction of v, fingers curl toward B, palm gives force direction.",
+          "If velocity is parallel to B, magnetic force is zero (sin 0° = 0).",
+          "Magnetic force on a current-carrying wire: F = ILB sinθ.",
+          "The cyclotron frequency (angular frequency): ω = qB/m."
+        ],
+        "examTraps": [
+          "Magnetic force is perpendicular to velocity — it changes direction, not speed.",
+          "Magnetic force never does work — it is a centripetal force.",
+          "Do not confuse magnetic force direction with electric force direction (E is parallel/antiparallel to field, magnetic is perpendicular).",
+          "For an electron, the right-hand rule gives the opposite direction (negative charge).",
+          "When current and magnetic field are parallel, force is zero."
+        ],
+        "possibleQuestionPoints": [
+          "Calculate the radius of curvature of a charged particle in a uniform magnetic field.",
+          "Determine the magnetic force on a current-carrying wire segment.",
+          "Describe the velocity selector and derive the condition v = E/B.",
+          "Find the direction of deflection of a charged particle entering a magnetic field.",
+          "Calculate the force per unit length between two parallel current-carrying wires."
+        ],
+        "definitions": [
+          "Magnetic field (B): A field produced by moving charges; unit is Tesla (T)",
+          "Magnetic monopole: Does not exist; poles always come in N/S pairs",
+          "Magnetic force on charge: F = qvB sinϕ; direction by Right-Hand Rule",
+          "Magnetic force on wire: F = ILB sinθ",
+          "Cyclotron radius: r = mv / qB",
+          "Cyclotron angular frequency: ω = qB / m",
+          "Velocity selector: Balance of electric and magnetic forces (qE = qvB) → v = E/B"
+        ],
+        "processes": [
+          "Right-Hand Rule for force on positive charge: Point fingers in v direction, curl toward B, thumb shows F",
+          "Force per unit length between parallel wires: F/L = μ₀I₁I₂ / (2πa)",
+          "Wires with currents in same direction attract; opposite directions repel"
+        ]
+      },
+      {
+        "title": "Sources of Magnetic Fields",
+        "keyPoints": [
+          "Biot-Savart law relates current elements (Idl) to the magnetic field contribution (dB) they produce.",
+          "Magnetic field of a long straight wire: B = μ₀I / (2πa).",
+          "Ampere's law: ∮ B · dℓ = μ₀ I_enc (for any closed loop).",
+          "Magnetic field inside a solenoid: B = μ₀nI (n = turns per unit length).",
+          "Magnetic field inside a toroid: B = μ₀NI / (2πr) (proportional to 1/r).",
+          "Magnetic field at center of a circular arc: B = μ₀Iθ / (4πR)."
+        ],
+        "mustKnow": [
+          "Ampere's law is useful for highly symmetric current distributions.",
+          "The permeability of free space μ₀ = 4π × 10⁻⁷ T·m/A.",
+          "The Biot-Savart law is more general and works for any current geometry.",
+          "A current sheet produces a magnetic field of magnitude μ₀K/2 (constant on each side)."
+        ],
+        "examTraps": [
+          "Ampere's law applies to the enclosed current only — ignore currents outside the loop.",
+          "The magnetic field outside a solenoid is approximately zero (for an ideal solenoid).",
+          "The field inside a toroid is not uniform — it varies as 1/r.",
+          "For a finite wire, use the Biot-Savart law, not the infinite wire formula.",
+          "At the center of a semicircular arc, B = μ₀I / (4R) (half of a full loop)."
+        ],
+        "possibleQuestionPoints": [
+          "Derive the magnetic field of an infinite straight wire using Ampere's law.",
+          "Calculate the magnetic field at the center of a circular current loop.",
+          "Find the net magnetic field at a point due to multiple current-carrying wires.",
+          "Design a solenoid to produce a specified magnetic field.",
+          "Use the Biot-Savart law to find the field of a finite wire segment."
+        ],
+        "definitions": [
+          "Biot-Savart Law: Relates current elements (Idl) to the magnetic field contribution (dB) they produce",
+          "Ampere's Law: The line integral of B around a closed loop equals μ₀ times the enclosed current",
+          "Long straight wire: B = μ₀I / (2πa)",
+          "Solenoid field: B = μ₀nI",
+          "Toroid field: B = μ₀NI / (2πr)",
+          "Permeability of free space (μ₀): 4π × 10⁻⁷ T·m/A"
+        ],
+        "processes": [
+          "Ampere's Law calculation for infinite wire: B(2πr) = μ₀I → B = μ₀I/(2πr)",
+          "Current sheet: B = μ₀K/2 above and below the sheet"
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "PHY 102",
+    "topic": "Electromagnetic Induction",
+    "summary": "This block covers Faraday's law of induction, Lenz's law, magnetic flux, motional EMF, self-inductance, RL circuits, transformers, and real-world applications such as electric generators, motors, and credit card readers.",
+    "subtopics": [
+      {
+        "title": "Faraday's Law & Lenz's Law",
+        "keyPoints": [
+          "Magnetic flux through a surface: Φ_B = BA cosθ; unit is the Weber (Wb).",
+          "Faraday's law: induced EMF is proportional to the rate of change of magnetic flux: ε = −N dΦ_B/dt.",
+          "Lenz's law: the direction of induced current produces a magnetic field that opposes the change in flux.",
+          "Motional EMF: ε = BLv (a conductor of length L moving perpendicular to B at speed v).",
+          "Induced EMF is maximum when the magnetic flux is zero (the rate of change is greatest)."
+        ],
+        "mustKnow": [
+          "Lenz's law is a consequence of energy conservation.",
+          "The negative sign in Faraday's law indicates opposition to the change (Lenz's law).",
+          "For N loops, the induced EMF is multiplied by N.",
+          "Magnetic flux can change by changing B, area A, or angle θ.",
+          "A varying magnetic field induces an electric field (even in empty space)."
+        ],
+        "examTraps": [
+          "EMF is maximum when flux is zero (not when flux is maximum) — it depends on rate of change.",
+          "Lenz's law: induced current opposes the CHANGE in flux, not the flux itself.",
+          "Do not confuse magnetic flux (Φ = BA) with magnetic field (B).",
+          "The induced current creates a field that opposes the change, which may be in the same or opposite direction as the original B field."
+        ],
+        "possibleQuestionPoints": [
+          "Calculate the induced EMF in a loop when the magnetic field changes at a constant rate.",
+          "Find the direction of induced current using Lenz's law for a moving magnet near a loop.",
+          "Calculate the motional EMF for a conductor moving through a uniform magnetic field.",
+          "Determine the average induced current given the loop resistance and rate of flux change.",
+          "Explain how a generator produces AC voltage using Faraday's law."
+        ],
+        "definitions": [
+          "Magnetic flux (Φ_B): Φ_B = BA cosθ; unit is the Weber (Wb)",
+          "Faraday's Law: ε = −N dΦ_B/dt",
+          "Lenz's Law: The direction of induced current creates a field opposing the change in flux",
+          "Motional EMF: ε = BLv",
+          "Electromagnetic induction: process where a varying magnetic field induces an EMF in a conductor"
+        ],
+        "processes": [
+          "EMF from changing flux: ε = N A (ΔB/Δt) when field changes uniformly",
+          "Motional EMF derivation: from Lorentz force on charges in a moving conductor",
+          "Transformer voltage ratio: Vs/Vp = Ns/Np"
+        ]
+      },
+      {
+        "title": "Inductance & Applications",
+        "keyPoints": [
+          "Self-induction: a coil induces an EMF in itself when its own current changes.",
+          "Inductance L (unit Henry, H): ε_L = −L dI/dt.",
+          "For a solenoid: L = μ₀N²A/ℓ.",
+          "RL circuit time constant: τ = L/R.",
+          "Energy stored in an inductor: U = ½ LI².",
+          "Transformers use mutual induction to change AC voltage levels."
+        ],
+        "mustKnow": [
+          "A step-up transformer increases voltage (Ns > Np), decreases current.",
+          "A step-down transformer decreases voltage (Ns < Np), increases current.",
+          "Power is conserved in an ideal transformer: VpIp = VsIs.",
+          "High voltage transmission reduces I²R power losses.",
+          "An electric motor converts electrical energy to mechanical energy; a generator does the reverse."
+        ],
+        "examTraps": [
+          "Transformers work only with AC, not DC (need changing flux).",
+          "In a step-up transformer, current decreases (power is conserved).",
+          "Back EMF in a motor limits the current drawn from the supply.",
+          "Inductance opposes changes in current, not current itself.",
+          "The energy in an inductor is stored in the magnetic field, not dissipated."
+        ],
+        "possibleQuestionPoints": [
+          "Calculate the self-induced EMF in a solenoid when the current changes at a given rate.",
+          "Find the time constant and current growth/decay in an RL circuit.",
+          "Calculate the number of turns needed in a transformer secondary for a given voltage ratio.",
+          "Determine the power loss in transmission lines and explain why high voltage is used.",
+          "Explain back EMF in a motor and calculate armature resistance."
+        ],
+        "definitions": [
+          "Self-induction: A coil induces an EMF in itself whenever its own current changes",
+          "Inductance (L): Property of a conductor to oppose changes in current; unit is Henry (H)",
+          "RL time constant: τ = L/R",
+          "Transformer: Changes AC voltage via induction between primary and secondary coils",
+          "Step-up transformer: Increases voltage (Ns > Np)",
+          "Step-down transformer: Decreases voltage (Ns < Np)",
+          "Transformer ratio: Vs/Vp = Ns/Np",
+          "Back EMF: The induced EMF in a motor's armature that opposes the applied voltage"
+        ],
+        "processes": [
+          "RL circuit current growth: I(t) = I₀(1 − e^(−t/τ))",
+          "RL circuit current decay: I(t) = I₀ e^(−t/τ)",
+          "Back EMF in motor: V_applied = E_back + IR → R = (V − E_back)/I"
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "PHY 104",
+    "topic": "AC Circuits",
+    "summary": "This block covers alternating current circuits, phase relationships for resistors, inductors, and capacitors, reactance, impedance, RLC series circuits, resonance, and phasor analysis. Understanding the phase behavior is critical.",
+    "subtopics": [
+      {
+        "title": "AC Components & Phase Relationships",
+        "keyPoints": [
+          "AC voltage varies sinusoidally: V(t) = V_max sin(ωt) or cos(ωt).",
+          "Angular frequency ω = 2πf.",
+          "Resistor: voltage and current are in phase (δ = 0).",
+          "Inductor: voltage leads current by π/2 (90°); current lags voltage.",
+          "Capacitor: voltage lags current by π/2 (90°); current leads voltage.",
+          "Inductive reactance: X_L = ωL (opposition of inductor to AC).",
+          "Capacitive reactance: X_C = 1/(ωC) (opposition of capacitor to AC).",
+          "In a purely capacitive circuit: I = I_max cos(ωt + π/2) when V = V_max cos(ωt)."
+        ],
+        "mustKnow": [
+          "Resistance R does not depend on frequency.",
+          "X_L increases with frequency; X_C decreases with frequency.",
+          "At very high frequency, inductor behaves like an open circuit (large X_L).",
+          "At very high frequency, capacitor behaves like a short circuit (small X_C).",
+          "AC power: P_avg = V_rms I_rms cos δ (cos δ is the power factor)."
+        ],
+        "examTraps": [
+          "In an inductor, voltage leads current — many students get this backwards.",
+          "In a capacitor, current leads voltage — the opposite of an inductor.",
+          "Reactance is not resistance — it depends on frequency.",
+          "Do not confuse X_L = ωL with X_C = 1/(ωC).",
+          "Phase relationships are only for pure components; mixed circuits have intermediate phase angles."
+        ],
+        "possibleQuestionPoints": [
+          "Sketch the voltage and current waveforms for a pure inductor in an AC circuit.",
+          "Calculate the inductive reactance given L and frequency.",
+          "Determine the capacitive reactance given C and frequency.",
+          "Explain why an ideal inductor has zero DC resistance but opposes AC.",
+          "Derive the phase relationship between voltage and current for a capacitor."
+        ],
+        "definitions": [
+          "AC: Alternating Current — current that oscillates periodically with time",
+          "Angular frequency: ω = 2πf",
+          "Resistor phase: Voltage and current are in phase (δ = 0)",
+          "Inductor phase: Voltage leads current by π/2",
+          "Capacitor phase: Voltage lags current by π/2",
+          "Inductive reactance: X_L = ωL",
+          "Capacitive reactance: X_C = 1/(ωC)"
+        ]
+      },
+      {
+        "title": "RLC Circuits & Resonance",
+        "keyPoints": [
+          "Impedance Z = √[R² + (X_L − X_C)²] for series RLC.",
+          "Current amplitude: I_max = V_max / Z.",
+          "Resonance occurs when X_L = X_C, i.e., ω₀ = 1/√(LC).",
+          "At resonance in a series RLC: impedance Z = R (minimum), current is maximum.",
+          "At resonance in a parallel RLC: impedance Z is maximum, current through the source is minimum.",
+          "Phase angle δ: tan δ = (X_L − X_C)/R.",
+          "If X_L > X_C, circuit is inductive (current lags voltage).",
+          "If X_C > X_L, circuit is capacitive (current leads voltage)."
+        ],
+        "mustKnow": [
+          "Impedance is the total opposition to current in an AC circuit (combines R and X).",
+          "The resonance frequency is determined solely by L and C, not R.",
+          "At series resonance, the voltage across L and C can be much larger than the source voltage.",
+          "The power factor cos δ = R/Z at any frequency.",
+          "In a parallel RLC at resonance, the reactive branch currents cancel out."
+        ],
+        "examTraps": [
+          "Series resonance: Z is minimum, current is maximum.",
+          "Parallel resonance: Z is maximum, total current is minimum — do not confuse with series.",
+          "At resonance, X_L = X_C, but they are not zero — they cancel each other.",
+          "The phase angle δ = 0 at resonance (circuit is purely resistive).",
+          "Impedance Z is not simply R + X — use vector (Pythagorean) addition."
+        ],
+        "possibleQuestionPoints": [
+          "Calculate the resonance frequency of an RLC circuit given L and C.",
+          "Find the impedance and current amplitude at a given frequency.",
+          "Determine the phase angle and whether the circuit is inductive or capacitive.",
+          "Calculate the voltage across each component at resonance.",
+          "Explain how changing the frequency affects the impedance and phase angle."
+        ],
+        "definitions": [
+          "Impedance (Z): Total opposition to current in an AC circuit, Z = √[R² + (X_L − X_C)²]",
+          "Series RLC current: I_max = V_max / Z",
+          "Resonance frequency: ω₀ = 1/√(LC)",
+          "Series resonance: Z = R (minimum), current maximum",
+          "Parallel resonance: Impedance maximum, total current minimum",
+          "Phase angle: tan δ = (X_L − X_C)/R",
+          "Power factor: cos δ = R/Z"
+        ],
+        "processes": [
+          "At resonance X_L = X_C → ω₀L = 1/(ω₀C) → ω₀ = 1/√(LC)",
+          "For series RLC, at ω → 0: X_C → ∞ so Z → ∞ (capacitor blocks DC)",
+          "For series RLC, at ω → ∞: X_L → ∞ so Z → ∞ (inductor blocks high frequency)"
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "PHY 104",
+    "topic": "Maxwell's Equations & Electromagnetic Waves",
+    "summary": "This block presents Maxwell's four equations that unify electricity and magnetism, introduces the displacement current, and shows how electromagnetic waves propagate. The speed of light emerges naturally from the constants ε₀ and μ₀.",
+    "subtopics": [
+      {
+        "title": "Maxwell's Equations",
+        "keyPoints": [
+          "Gauss's Law for Electricity: ∮ E·dA = Q/ε₀ (electric flux through a closed surface = enclosed charge / ε₀).",
+          "Gauss's Law for Magnetism: ∮ B·dA = 0 (no magnetic monopoles — net flux is always zero).",
+          "Faraday's Law: ∮ E·dℓ = −dΦ_B/dt (changing magnetic flux induces an electric field).",
+          "Ampere-Maxwell Law: ∮ B·dℓ = μ₀(I + ε₀ dΦ_E/dt) (current OR changing electric field produces a magnetic field).",
+          "Maxwell added the displacement current term ε₀ dΦ_E/dt to Ampere's law."
+        ],
+        "mustKnow": [
+          "Gauss's law for electricity: flux depends on enclosed charge.",
+          "Gauss's law for magnetism: proves no magnetic monopoles exist.",
+          "Displacement current: a time-varying electric field generates a magnetic field.",
+          "The displacement current is not a flow of charge — it is a changing electric flux.",
+          "Magnitude of displacement current: I_d = ε₀ dΦ_E/dt."
+        ],
+        "examTraps": [
+          "Do not confuse Gauss's law for electricity (enclosed charge matters) with Gauss's law for magnetism (always zero).",
+          "The displacement current is not real current — it is a changing electric field.",
+          "The full Ampere-Maxwell law includes both conduction current I and displacement current.",
+          "Without the displacement current term, Ampere's law would be inconsistent for capacitor charging."
+        ],
+        "possibleQuestionPoints": [
+          "State and explain each of Maxwell's equations in words and integral form.",
+          "Explain why Ampere's law needed the displacement current correction.",
+          "Calculate the displacement current between the plates of a charging capacitor.",
+          "Show how Maxwell's equations predict the wave nature of electromagnetic radiation.",
+          "Explain the physical significance of each of Maxwell's equations."
+        ],
+        "definitions": [
+          "Gauss's Law (Electric): ∮ E·dA = Q/ε₀",
+          "Gauss's Law (Magnetic): ∮ B·dA = 0",
+          "Faraday's Law: ∮ E·dℓ = −dΦ_B/dt",
+          "Ampere-Maxwell Law: ∮ B·dℓ = μ₀(I + ε₀ dΦ_E/dt)",
+          "Displacement current: I_d = ε₀ dΦ_E/dt"
+        ],
+        "processes": [
+          "Displacement current between capacitor plates: I_d = ε₀ A (dE/dt) = ε₀ (dV/dt) (C/d)",
+          "Speed of light from Maxwell: c = 1/√(ε₀μ₀)"
+        ]
+      },
+      {
+        "title": "Electromagnetic Waves",
+        "keyPoints": [
+          "Electromagnetic waves consist of varying E and B fields perpendicular to each other and to the direction of propagation.",
+          "EM waves are transverse waves.",
+          "Speed of light c = 1/√(ε₀μ₀) ≈ 3.0 × 10⁸ m/s.",
+          "The Poynting vector S = (1/μ₀)(E × B) gives the direction and magnitude of energy flow.",
+          "Energy density: u_E = ½ ε₀E² (electric), u_B = B²/(2μ₀) (magnetic).",
+          "In an EM wave, E = cB (the magnitudes are related by c)."
+        ],
+        "mustKnow": [
+          "The direction of propagation is given by E × B.",
+          "E and B are in phase (both reach maximum at the same time and place).",
+          "EM waves carry both energy and momentum.",
+          "Light is an electromagnetic wave.",
+          "The Poynting vector magnitude: S = EB/μ₀."
+        ],
+        "examTraps": [
+          "E and B are perpendicular to each other AND to the propagation direction — all three are mutually perpendicular.",
+          "The ratio E/B = c, not the product.",
+          "EM waves require no medium — they can travel through a vacuum.",
+          "In an EM wave, both E and B vary simultaneously and are in phase.",
+          "The Poynting vector points in the direction of propagation, not along E or B individually."
+        ],
+        "possibleQuestionPoints": [
+          "Calculate the speed of light from ε₀ and μ₀.",
+          "Given the electric field amplitude of an EM wave, find the magnetic field amplitude.",
+          "Calculate the Poynting vector magnitude and the intensity of an EM wave.",
+          "Describe the production of EM waves from an oscillating charge.",
+          "Explain the electromagnetic spectrum in terms of frequency and wavelength."
+        ],
+        "definitions": [
+          "EM wave: Varying E and B fields perpendicular to each other and the direction of propagation",
+          "Speed of light: c = 1/√(ε₀μ₀) ≈ 3.0 × 10⁸ m/s",
+          "Poynting vector: S = (1/μ₀)(E × B)",
+          "EM wave relation: E = cB",
+          "Electric energy density: u_E = ½ ε₀E²",
+          "Magnetic energy density: u_B = B²/(2μ₀)"
+        ],
+        "processes": [
+          "Poynting vector magnitude: S = EB/μ₀ = E²/(μ₀c)",
+          "Wave intensity: I = S_avg = ½ E_maxB_max/μ₀"
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "BIO 102",
+    "topic": "Plant Biology & Metabolism",
+    "summary": "Plant biology covers essential nutrients required for growth, photosynthesis (light and dark phases), and cellular respiration (glycolysis, Krebs cycle, and the electron transport chain). Understanding how plants convert light energy into chemical energy and how they break down organic compounds for ATP is fundamental.",
+    "subtopics": [
+      {
+        "title": "Essential Plant Nutrients",
+        "keyPoints": [
+          "Macronutrients (needed in large amounts): N, P, K, Ca, Mg, S, Si.",
+          "Micronutrients (needed in trace amounts): Cl, Fe, B, Mn, Na, Zn, Cu, Ni, Mo.",
+          "Carbon forms the backbone of plant biomolecules and is fixed via photosynthesis.",
+          "Nitrogen is a key component of proteins and nucleic acids.",
+          "Phosphorus is essential for ATP, nucleic acids, and phospholipids."
+        ],
+        "mustKnow": [
+          "Macronutrients are required in larger quantities than micronutrients.",
+          "Carbon is obtained from atmospheric CO₂ through photosynthesis.",
+          "Each nutrient has specific roles in plant metabolism and growth.",
+          "Deficiency of different nutrients causes characteristic symptoms."
+        ],
+        "examTraps": [
+          "Do not confuse macronutrients (needed in large amounts) with micronutrients (needed in trace amounts).",
+          "Si (silicon) is listed as a macronutrient in this course, though some sources consider it beneficial rather than essential.",
+          "Carbon is fixed from CO₂, not absorbed from soil."
+        ],
+        "possibleQuestionPoints": [
+          "Classify essential plant nutrients into macro and micro categories.",
+          "Describe the role of nitrogen and phosphorus in plant growth.",
+          "Explain the consequences of nutrient deficiencies in plants."
+        ],
+        "definitions": [
+          "Macronutrient: Nutrients needed by plants in large amounts (N, P, K, Ca, Mg, S, Si)",
+          "Micronutrient: Nutrients needed by plants in trace amounts (Cl, Fe, B, Mn, Na, Zn, Cu, Ni, Mo)"
+        ]
+      },
+      {
+        "title": "Photosynthesis",
+        "keyPoints": [
+          "Photosynthesis occurs in two phases: the Light Phase and the Dark Phase (Calvin Cycle).",
+          "Light Phase: Chlorophyll absorbs light energy to produce ATP and NADPH.",
+          "Dark Phase (Calvin Cycle): CO₂ is fixed into organic compounds using ATP and NADPH from the light phase.",
+          "Chlorophyll is the primary pigment involved in capturing light energy."
+        ],
+        "mustKnow": [
+          "The light phase requires light; the dark phase does not require light directly but uses products of the light phase.",
+          "The Calvin cycle takes place in the stroma of chloroplasts.",
+          "Oxygen is released as a byproduct of the light phase (photolysis of water).",
+          "The overall equation: 6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂."
+        ],
+        "examTraps": [
+          "The dark phase is called the Calvin cycle, but it does NOT mean it only occurs at night — it can occur during the day as long as ATP and NADPH are available.",
+          "Do not confuse the light phase (produces ATP and NADPH) with the dark phase (fixes CO₂).",
+          "Oxygen comes from water, not CO₂."
+        ],
+        "possibleQuestionPoints": [
+          "Compare the light and dark phases of photosynthesis.",
+          "Explain the role of chlorophyll in capturing light energy.",
+          "Describe the Calvin cycle and its inputs/outputs.",
+          "Write the overall balanced equation for photosynthesis."
+        ],
+        "definitions": [
+          "Light Phase: The phase of photosynthesis where light energy is absorbed by chlorophyll to produce ATP and NADPH",
+          "Dark Phase (Calvin Cycle): The phase where CO₂ is fixed into organic compounds using ATP and NADPH",
+          "Chlorophyll: The primary pigment in plants that absorbs light energy for photosynthesis"
+        ]
+      },
+      {
+        "title": "Plant Respiration",
+        "keyPoints": [
+          "Plant respiration is the stepwise oxidation of glucose to release energy trapped as ATP.",
+          "Glycolysis: Partial oxidation of glucose to pyruvic acid in the cytoplasm.",
+          "Krebs Cycle: Complete oxidation of pyruvate in the mitochondrial matrix.",
+          "ETS (Electron Transport System): Electrons from NADH and FADH₂ are passed through carriers to oxygen (final acceptor) to synthesize ATP via oxidative phosphorylation.",
+          "Respiration occurs in the mitochondria of plant cells."
+        ],
+        "mustKnow": [
+          "Glycolysis occurs in the cytoplasm and does not require oxygen.",
+          "The Krebs cycle occurs in the mitochondrial matrix.",
+          "The ETS is located in the inner mitochondrial membrane.",
+          "Oxygen is the final electron acceptor in the ETS.",
+          "ATP is the main energy currency produced by respiration."
+        ],
+        "examTraps": [
+          "Do not confuse photosynthesis (occurs in chloroplasts) with respiration (occurs in mitochondria).",
+          "Glycolysis is common to both aerobic and anaerobic respiration.",
+          "The Krebs cycle is also called the citric acid cycle or TCA cycle.",
+          "ETS produces the most ATP during respiration (oxidative phosphorylation)."
+        ],
+        "possibleQuestionPoints": [
+          "Outline the stages of cellular respiration and where each occurs in the cell.",
+          "Compare glycolysis, the Krebs cycle, and the electron transport chain.",
+          "Calculate the net ATP yield from one molecule of glucose.",
+          "Explain the role of oxygen in the electron transport chain."
+        ],
+        "definitions": [
+          "Glycolysis: Partial oxidation of glucose to pyruvic acid in the cytoplasm",
+          "Krebs Cycle: Complete oxidation of pyruvate in the mitochondrial matrix",
+          "ETS (Electron Transport System): Electrons from NADH and FADH₂ are passed through carriers to oxygen to synthesize ATP via oxidative phosphorylation",
+          "Cellular respiration: The stepwise oxidation of glucose to release energy trapped as ATP"
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "BIO 102",
+    "topic": "Microbiology",
+    "summary": "Microbiology covers acellular entities (viruses) and cellular microorganisms (bacteria and fungi). Key differences include cellular organization, cell wall composition, reproduction strategies, and classification based on structure and staining properties.",
+    "subtopics": [
+      {
+        "title": "Viruses",
+        "keyPoints": [
+          "Viruses are acellular — they lack cellular structure and organelles.",
+          "They are obligate intracellular parasites — cannot replicate outside a host cell.",
+          "Viruses consist of a DNA or RNA genome enclosed in a protein capsid.",
+          "They are metabolically inactive (inert) outside a host cell.",
+          "Viruses are not considered living organisms because they cannot carry out metabolic processes independently."
+        ],
+        "mustKnow": [
+          "Viruses have either DNA or RNA as their genetic material, never both.",
+          "The capsid is a protein shell that protects the viral genome.",
+          "Some viruses have an additional lipid envelope derived from the host cell membrane.",
+          "Viruses are host-specific — they infect only certain cell types."
+        ],
+        "examTraps": [
+          "Viruses are NOT cells — they are acellular.",
+          "Viruses are NOT alive outside a host — they are inert.",
+          "Do not say viruses have both DNA and RNA — they have one or the other.",
+          "Antibiotics do not work against viruses."
+        ],
+        "possibleQuestionPoints": [
+          "Explain why viruses are considered obligate intracellular parasites.",
+          "Describe the basic structure of a virus.",
+          "Differentiate between DNA and RNA viruses.",
+          "Explain why viruses are not considered living organisms."
+        ],
+        "definitions": [
+          "Virus: An acellular, obligate intracellular parasite consisting of a DNA or RNA genome in a protein capsid",
+          "Capsid: The protein shell that encloses the viral genome",
+          "Obligate intracellular parasite: An organism that can only replicate inside a host cell"
+        ]
+      },
+      {
+        "title": "Bacteria",
+        "keyPoints": [
+          "Bacteria are unicellular prokaryotes — they lack a membrane-bound nucleus and organelles.",
+          "Gram staining classifies bacteria: Gram-positive (thick peptidoglycan, stains purple) vs Gram-negative (thin peptidoglycan, stains pink/red).",
+          "Bacteria can be classified by shape: cocci (spherical), bacilli (rod-shaped), spirilla (spiral).",
+          "Bacteria reproduce primarily by binary fission."
+        ],
+        "mustKnow": [
+          "Gram-positive bacteria have a thick peptidoglycan layer that retains the crystal violet stain.",
+          "Gram-negative bacteria have a thin peptidoglycan layer and an outer membrane; they take up the counterstain (safranin).",
+          "Peptidoglycan is a unique component of bacterial cell walls.",
+          "Bacteria lack a nucleus — their DNA is in a nucleoid region."
+        ],
+        "examTraps": [
+          "Gram-positive stains purple; Gram-negative stains pink/red — do not reverse this.",
+          "The difference is due to peptidoglycan thickness, not the presence of a cell wall.",
+          "Archaea are prokaryotes too, but they are not bacteria.",
+          "Not all bacteria are pathogenic — many are beneficial."
+        ],
+        "possibleQuestionPoints": [
+          "Compare Gram-positive and Gram-negative bacterial cell walls.",
+          "Describe the Gram staining procedure and its principle.",
+          "Explain why Gram-negative bacteria are generally more resistant to antibiotics.",
+          "List the major shapes of bacteria."
+        ],
+        "definitions": [
+          "Bacteria: Unicellular prokaryotes",
+          "Gram-positive: Bacteria with a thick peptidoglycan layer that stains purple",
+          "Gram-negative: Bacteria with a thin peptidoglycan layer that stains pink/red",
+          "Peptidoglycan: A polymer unique to bacterial cell walls consisting of sugars and amino acids",
+          "Binary fission: Asexual reproduction method where a cell divides into two identical daughter cells"
+        ]
+      },
+      {
+        "title": "Fungi",
+        "keyPoints": [
+          "Fungi are eukaryotic heterotrophs — they obtain nutrients by absorbing organic matter.",
+          "Fungal cell walls contain chitin (not cellulose like plants).",
+          "Major groups: Phycomycetes, Zygomycetes, Ascomycetes (sac fungi), Basidiomycetes (club fungi), and Deuteromycetes (imperfect fungi).",
+          "Fungi can be unicellular (yeasts) or multicellular (molds, mushrooms)."
+        ],
+        "mustKnow": [
+          "Fungi are heterotrophs — they cannot photosynthesize.",
+          "Chitin is the key structural component of fungal cell walls.",
+          "Ascomycetes produce spores in sac-like structures called asci.",
+          "Basidiomycetes produce spores on club-shaped structures called basidia.",
+          "Deuteromycetes have no known sexual reproduction stage."
+        ],
+        "examTraps": [
+          "Fungal cell walls contain chitin, NOT cellulose (which is found in plant cell walls).",
+          "Fungi are not plants — they are in their own kingdom.",
+          "Do not confuse Phycomycetes (lower fungi) with other groups.",
+          "Deuteromycetes are called 'imperfect fungi' because their sexual stage is unknown."
+        ],
+        "possibleQuestionPoints": [
+          "List the major groups of fungi and their distinguishing features.",
+          "Compare fungal cell walls with plant cell walls.",
+          "Explain the ecological role of fungi as decomposers.",
+          "Differentiate between Ascomycetes and Basidiomycetes."
+        ],
+        "definitions": [
+          "Fungi: Eukaryotic heterotrophs with cell walls containing chitin",
+          "Chitin: A structural polymer found in fungal cell walls and arthropod exoskeletons",
+          "Ascomycetes: Sac fungi that produce spores in asci",
+          "Basidiomycetes: Club fungi that produce spores on basidia",
+          "Deuteromycetes: Imperfect fungi with no known sexual reproduction stage",
+          "Phycomycetes: Lower fungi (also called Zygomycetes in some classifications)",
+          "Zygomycetes: Fungi that produce zygospores during sexual reproduction"
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "BIO 102",
+    "topic": "Animal Physiology",
+    "summary": "Animal physiology covers nutrition (the five stages of food processing), circulation (open vs closed systems, heart evolution), and excretion (nitrogenous waste forms based on water availability). Understanding how different animal groups handle these processes reveals evolutionary adaptations.",
+    "subtopics": [
+      {
+        "title": "Nutrition and Digestion",
+        "keyPoints": [
+          "The five stages of nutrition: ingestion, digestion, absorption, assimilation, and egestion.",
+          "Digestion evolved from intracellular digestion (e.g., Amoeba) to extracellular digestion (e.g., vertebrates).",
+          "Intracellular digestion occurs within cells (food vacuoles).",
+          "Extracellular digestion occurs in a digestive tract with enzymes secreted into the lumen.",
+          "Vertebrates have a complete digestive system with specialized regions."
+        ],
+        "mustKnow": [
+          "Ingestion is the taking in of food.",
+          "Digestion breaks down food into absorbable molecules.",
+          "Absorption moves nutrients into the bloodstream.",
+          "Assimilation incorporates nutrients into body tissues.",
+          "Egestion removes undigested waste."
+        ],
+        "examTraps": [
+          "Do not confuse egestion (removal of undigested food) with excretion (removal of metabolic waste).",
+          "Intracellular digestion is found in simple organisms like Amoeba.",
+          "Extracellular digestion is more efficient and found in complex animals.",
+          "The stages must be listed in order: ingestion → digestion → absorption → assimilation → egestion."
+        ],
+        "possibleQuestionPoints": [
+          "Outline the five stages of nutrition with brief descriptions.",
+          "Compare intracellular and extracellular digestion.",
+          "Trace the path of food through the human digestive system."
+        ],
+        "definitions": [
+          "Ingestion: The taking in of food",
+          "Digestion: The breakdown of food into absorbable molecules",
+          "Absorption: The movement of nutrients into the bloodstream",
+          "Assimilation: The incorporation of nutrients into body tissues",
+          "Egestion: The removal of undigested waste",
+          "Intracellular digestion: Digestion that occurs within cells (e.g., in Amoeba)",
+          "Extracellular digestion: Digestion that occurs in a digestive tract lumen"
+        ]
+      },
+      {
+        "title": "Circulation",
+        "keyPoints": [
+          "Open circulatory system: Hemolymph bathes tissues directly in sinuses (e.g., insects, arthropods).",
+          "Closed circulatory system: Blood stays within vessels (e.g., vertebrates, annelids).",
+          "Fish have a 2-chambered heart (one atrium, one ventricle) with a single circuit.",
+          "Amphibians have a 3-chambered heart (two atria, one ventricle) with a double circuit.",
+          "Mammals and birds have a 4-chambered heart (two atria, two ventricles) with complete separation of oxygenated and deoxygenated blood."
+        ],
+        "mustKnow": [
+          "Open systems use hemolymph that directly bathes organs.",
+          "Closed systems keep blood in vessels, allowing higher pressure and faster flow.",
+          "The evolution of the heart shows increasing separation of oxygenated and deoxygenated blood.",
+          "Double circulation (systemic and pulmonary) is more efficient than single circulation.",
+          "4-chambered heart prevents mixing of oxygenated and deoxygenated blood."
+        ],
+        "examTraps": [
+          "Amphibians have 3-chambered hearts but still have double circulation — mixing occurs in the single ventricle.",
+          "Fish have single circulation — blood passes through the heart once per circuit.",
+          "Birds and mammals independently evolved 4-chambered hearts (convergent evolution).",
+          "Open does not mean inefficient — it works well for small animals with low metabolic rates."
+        ],
+        "possibleQuestionPoints": [
+          "Compare open and closed circulatory systems.",
+          "Trace the evolution of the vertebrate heart from fish to mammals.",
+          "Explain the advantage of a 4-chambered heart over a 3-chambered one.",
+          "Describe double circulation in mammals."
+        ],
+        "definitions": [
+          "Open circulatory system: Hemolymph bathes tissues directly in sinuses",
+          "Closed circulatory system: Blood stays within vessels",
+          "Single circulation: Blood passes through the heart once per complete circuit (fish)",
+          "Double circulation: Blood passes through the heart twice per complete circuit (amphibians, mammals, birds)"
+        ]
+      },
+      {
+        "title": "Excretion and Nitrogenous Wastes",
+        "keyPoints": [
+          "Animals remove nitrogenous wastes in three forms: ammonia, urea, or uric acid.",
+          "The form depends on water availability and the animal's environment.",
+          "Ammonia: Highly toxic, highly soluble in water — requires large amounts of water for dilution (aquatic animals).",
+          "Urea: Less toxic than ammonia, requires less water — produced by mammals and adult amphibians.",
+          "Uric acid: Insoluble, conserves water — produced by birds, insects, and reptiles (adapted for eggs)."
+        ],
+        "mustKnow": [
+          "Ammonia is the most toxic but requires the least energy to produce.",
+          "Urea is moderately toxic and requires some energy to produce (via the urea cycle).",
+          "Uric acid is the least toxic but most energy-expensive to produce.",
+          "Uric acid is excreted as a paste, conserving water — ideal for animals with limited water access.",
+          "The form of nitrogenous waste is an adaptation to the animal's habitat."
+        ],
+        "examTraps": [
+          "Ammonia is highly toxic, not safe — only aquatic animals can afford to excrete it because they have plenty of water.",
+          "Uric acid is NOT soluble — it is excreted as a semi-solid paste.",
+          "Birds excrete uric acid (white paste), NOT urea.",
+          "Do not say all animals excrete urea — only mammals and adult amphibians do."
+        ],
+        "possibleQuestionPoints": [
+          "Compare the three forms of nitrogenous waste in terms of toxicity, water requirement, and energy cost.",
+          "Explain why aquatic animals excrete ammonia while birds excrete uric acid.",
+          "Describe the relationship between habitat and the form of nitrogenous waste.",
+          "Classify given animals by their type of nitrogenous waste."
+        ],
+        "definitions": [
+          "Ammonia: Highly toxic nitrogenous waste requiring large amounts of water for dilution; excreted by aquatic animals",
+          "Urea: Moderately toxic nitrogenous waste requiring less water; excreted by mammals and adult amphibians",
+          "Uric acid: Insoluble nitrogenous waste that conserves water; excreted by birds, insects, and reptiles"
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "BIO 102",
+    "topic": "Evolution & Adaptation",
+    "summary": "Evolution by natural selection is the central organizing principle of biology. This block covers how heritable variation leads to differential reproductive success, the difference between adaptation (genetic, population-level) and acclimatization (phenotypic, individual-level), and the concept of fitness trade-offs.",
+    "subtopics": [
+      {
+        "title": "Natural Selection",
+        "keyPoints": [
+          "Natural selection occurs when heritable variation leads to differential reproductive success.",
+          "Individuals with traits better suited to the environment are more likely to survive and reproduce (higher fitness).",
+          "Fitness is measured by reproductive success — the number of offspring that survive to reproduce.",
+          "Three conditions for natural selection: variation, heritability, and differential reproductive success."
+        ],
+        "mustKnow": [
+          "Variation must be heritable (genetic) for evolution to occur.",
+          "Natural selection acts on individuals, but populations evolve.",
+          "Fitness is relative, not absolute.",
+          "Natural selection is not random — it favors traits that improve survival and reproduction.",
+          "Mutations provide the raw material for genetic variation."
+        ],
+        "examTraps": [
+          "Individuals do NOT evolve — populations evolve over generations.",
+          "Natural selection does NOT create perfect organisms — it favors what is 'good enough' for the current environment.",
+          "'Survival of the fittest' refers to reproductive fitness, not physical strength.",
+          "Natural selection requires heritable variation — acquired characteristics are not inherited."
+        ],
+        "possibleQuestionPoints": [
+          "Explain the three conditions required for natural selection to occur.",
+          "Distinguish between natural selection and evolution.",
+          "Describe how antibiotic resistance in bacteria illustrates natural selection.",
+          "Explain why natural selection cannot produce perfect organisms."
+        ],
+        "definitions": [
+          "Natural selection: Process where heritable variation leads to differential reproductive success",
+          "Fitness: The reproductive success of an individual relative to others in the population",
+          "Variation: Differences in traits among individuals in a population",
+          "Heritability: The proportion of phenotypic variation that is due to genetic differences"
+        ]
+      },
+      {
+        "title": "Adaptation vs. Acclimatization",
+        "keyPoints": [
+          "Adaptation is a genetic change in a population over generations, driven by natural selection.",
+          "Acclimatization is a reversible phenotypic change in an individual during their lifetime.",
+          "Adaptations are inherited; acclimatization is not.",
+          "Adaptation occurs at the population level; acclimatization occurs at the individual level."
+        ],
+        "mustKnow": [
+          "Acclimatization is reversible — if the environmental stress is removed, the individual returns to its original state.",
+          "Adaptation is permanent in the population's gene pool (unless the environment changes again).",
+          "Examples of acclimatization: tanning (increased melanin), increased red blood cell count at high altitude.",
+          "Examples of adaptation: camouflage, beak shape in Darwin's finches."
+        ],
+        "examTraps": [
+          "Acclimatization is NOT evolution — it is a temporary phenotypic change.",
+          "Do not use adaptation and acclimatization interchangeably.",
+          "Acclimatization does NOT change the gene pool of a population.",
+          "A trait acquired through acclimatization cannot be passed to offspring."
+        ],
+        "possibleQuestionPoints": [
+          "Compare and contrast adaptation and acclimatization.",
+          "Give examples of each and explain why they are different.",
+          "Explain why acclimatization is not considered evolution.",
+          "Describe how high-altitude acclimatization works in humans."
+        ],
+        "definitions": [
+          "Adaptation: A genetic change in a population over generations driven by natural selection",
+          "Acclimatization: A reversible phenotypic change in an individual during their lifetime",
+          "Phenotypic plasticity: The ability of an organism to change its phenotype in response to environmental conditions"
+        ]
+      },
+      {
+        "title": "Fitness Trade-offs",
+        "keyPoints": [
+          "Fitness trade-offs are inescapable compromises between traits.",
+          "Resources allocated to one function (e.g., reproduction) cannot be used for another (e.g., immune function).",
+          "Example: High reproductive effort in crickets reduces immune function.",
+          "Trade-offs explain why organisms cannot be optimal at everything."
+        ],
+        "mustKnow": [
+          "Trade-offs are a consequence of limited resources.",
+          "Life history strategies reflect trade-offs between growth, reproduction, and survival.",
+          "The principle of allocation: energy invested in one trait reduces energy available for other traits.",
+          "Trade-offs constrain evolution — they prevent perfection."
+        ],
+        "examTraps": [
+          "Trade-offs do NOT mean an organism chooses — they are evolutionary constraints.",
+          "A trade-off in one environment may not be a trade-off in another.",
+          "Not all traits trade off — some traits can be improved together if resources are not limiting."
+        ],
+        "possibleQuestionPoints": [
+          "Explain the concept of fitness trade-offs using an example.",
+          "Describe how the principle of allocation applies to life history strategies.",
+          "Discuss why trade-offs prevent the evolution of 'perfect' organisms.",
+          "Use the cricket example to illustrate the trade-off between reproduction and immunity."
+        ],
+        "definitions": [
+          "Fitness trade-off: An inescapable compromise between two traits where improving one reduces the other",
+          "Principle of allocation: Energy invested in one function reduces energy available for other functions",
+          "Life history: The schedule of an organism's growth, reproduction, and survival"
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "ZOO 101",
+    "topic": "Support, Movement, and the Body Interface",
+    "summary": "This block focuses on the physical framework of the mammal and its primary barrier to the environment. The integumentary system (skin), skeletal system, and muscular system work together to provide structure, protection, and movement.",
+    "subtopics": [
+      {
+        "title": "Integumentary System",
+        "keyPoints": [
+          "Three structural layers: epidermis, dermis, and subcutis.",
+          "Epidermis: stratified squamous epithelium; outermost protective layer.",
+          "Dermis: tough, supportive connective tissue containing sweat glands, hair follicles, and blood vessels.",
+          "Subcutis: subcutaneous fat layer for insulation and cushioning.",
+          "Derivatives of skin: hair, nails, sweat glands, sebaceous glands."
+        ],
+        "mustKnow": [
+          "Keratinocytes produce keratin for waterproofing and toughness.",
+          "Melanocytes produce melanin for UV protection.",
+          "Langerhans cells act as antigen-presenting cells in immune reactions.",
+          "The stratum corneum is the outermost layer of dead, cornified cells."
+        ],
+        "examTraps": [
+          "The dermis is mesodermal in origin, not ectodermal.",
+          "Melanin protects against UV radiation but does not determine skin thickness.",
+          "The stratum lucidum is found only in thick skin (soles and palms)."
+        ]
+      },
+      {
+        "title": "Skeletal System",
+        "keyPoints": [
+          "Axial skeleton: skull, vertebral column, sternum, and ribs.",
+          "Appendicular skeleton: pectoral and pelvic girdles, and limbs.",
+          "Functions: support, protection, movement, mineral storage, hematopoiesis.",
+          "Bone cells: osteoblasts (build), osteoclasts (resorb), osteocytes (maintain)."
+        ],
+        "mustKnow": [
+          "The first two cervical vertebrae are the atlas (C1) and axis (C2).",
+          "The primitive teeth formula: I=3/3; C=1/1; PM=4/4; M=3/3 (total 44).",
+          "Endochondral bone replaces embryonic cartilage.",
+          "Osteons (Haversian systems) are the structural units of compact bone."
+        ]
+      },
+      {
+        "title": "Muscular System",
+        "keyPoints": [
+          "Three types: skeletal (voluntary, striated), smooth (involuntary, visceral), cardiac (involuntary, striated).",
+          "Sliding filament model: actin and myosin filaments slide past each other to shorten the sarcomere.",
+          "The sarcomere is the functional unit between Z lines.",
+          "Energy sources: ATP (immediate), creatine phosphate (short-term), glycogen (longer-term)."
+        ],
+        "mustKnow": [
+          "Myosin heads form cross-bridges with actin filaments.",
+          "Troponin acts as a calcium-dependent switch; tropomyosin blocks actin binding sites at rest.",
+          "Slow (red) muscle fibers have abundant myoglobin and extensive blood supply.",
+          "Acetylcholine is the neurotransmitter at the myoneural junction."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "ZOO 101",
+    "topic": "Internal Transport and Gas Exchange",
+    "summary": "This block covers how the body moves vital substances and manages the exchange of oxygen and carbon dioxide through the circulatory and respiratory systems.",
+    "subtopics": [
+      {
+        "title": "Circulatory System",
+        "keyPoints": [
+          "Four-chambered heart: right atrium, right ventricle, left atrium, left ventricle.",
+          "Systemic circulation: oxygenated blood from left ventricle to body; deoxygenated blood returns via venae cavae.",
+          "Pulmonary circulation: deoxygenated blood from right ventricle to lungs; oxygenated blood returns via pulmonary veins.",
+          "Coronary circulation supplies the heart muscle itself.",
+          "Blood components: plasma (55%), RBCs (erythrocytes), WBCs (leukocytes), and platelets."
+        ],
+        "mustKnow": [
+          "The SA node is the heart's natural pacemaker (60-100 bpm).",
+          "Depolarization triggers contraction; the SA node spontaneously leaks Na+ ions.",
+          "Hematocrit: fraction of blood volume occupied by RBCs.",
+          "Serum is plasma minus fibrinogen."
+        ]
+      },
+      {
+        "title": "Respiratory System",
+        "keyPoints": [
+          "Upper tract: nasal cavity, pharynx, larynx.",
+          "Lower tract: trachea, bronchi, bronchioles, alveoli.",
+          "Alveoli are the primary sites of gas exchange (simple squamous epithelium).",
+          "Inhalation: diaphragm contracts, thoracic volume increases, pressure decreases.",
+          "Exhalation: diaphragm relaxes, thoracic volume decreases, pressure increases."
+        ],
+        "mustKnow": [
+          "The trachea bifurcates at the 5th thoracic vertebra into the carina.",
+          "The right lung has three lobes; the left lung has two lobes and a cardiac notch.",
+          "Tidal volume: normal air per breath. Vital capacity: maximum exhalation after deep inhalation.",
+          "CO2 is transported mainly as bicarbonate ions in RBCs."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "ZOO 101",
+    "topic": "Regulation and Coordination",
+    "summary": "This block explains how the body communicates internally to maintain homeostasis and respond to stimuli through the nervous and endocrine systems.",
+    "subtopics": [
+      {
+        "title": "Nervous System",
+        "keyPoints": [
+          "CNS: brain and spinal cord. PNS: cranial and spinal nerves.",
+          "Neuron structure: dendrites (receive), cell body, axon (transmit).",
+          "Synapses: chemical communication between neurons via neurotransmitters.",
+          "12 pairs of cranial nerves; 31 pairs of spinal nerves.",
+          "Meninges: dura mater, arachnoid, pia mater."
+        ],
+        "mustKnow": [
+          "Schwann cells produce myelin in the PNS; oligodendrocytes do so in the CNS.",
+          "The corpus callosum connects the cerebral hemispheres.",
+          "The medulla oblongata regulates breathing and heart rate.",
+          "The somatic nervous system controls conscious movement; the autonomic system controls involuntary functions."
+        ]
+      },
+      {
+        "title": "Endocrine System",
+        "keyPoints": [
+          "Glands: pituitary (master), thyroid (metabolism), parathyroid (calcium), adrenal (stress), pancreas (blood sugar), pineal (circadian rhythms).",
+          "Hormones are chemical messengers secreted directly into the blood (ductless glands).",
+          "Insulin decreases blood glucose; glucagon increases it.",
+          "Epinephrine (adrenaline) triggers the fight-or-flight response.",
+          "ADH conserves water; aldosterone conserves sodium."
+        ],
+        "mustKnow": [
+          "The hypothalamus produces ADH; the posterior pituitary releases it.",
+          "Beta cells secrete insulin; alpha cells secrete glucagon.",
+          "Iodine deficiency causes a simple goiter.",
+          "Melatonin from the pineal gland regulates sleep-wake cycles."
+        ]
+      },
+      {
+        "title": "Homeostasis",
+        "keyPoints": [
+          "Homeostasis: maintenance of constant physiological conditions within set points.",
+          "Negative feedback: counteracts changes to restore the normal state (e.g., blood sugar regulation, thermoregulation).",
+          "Positive feedback: intensifies a response until an endpoint is reached (e.g., childbirth, blood clotting).",
+          "The homeostatic control loop: receptor → control center → effector."
+        ],
+        "mustKnow": [
+          "Homeostasis is NOT the same as equilibrium — it is a dynamic balance.",
+          "Most bodily processes use negative feedback.",
+          "Positive feedback requires a clear endpoint to stop the cycle.",
+          "Thermoregulation involves the hypothalamus, blood vessels, sweat glands, and muscles (shivering)."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "ZOO 101",
+    "topic": "Nutrient Processing and Waste Elimination",
+    "summary": "This final block covers how mammals acquire energy through digestion and nutrition, and remove toxic metabolic byproducts through the excretory system.",
+    "subtopics": [
+      {
+        "title": "Digestive System",
+        "keyPoints": [
+          "Regional specialization: mouth (mastication, salivary amylase) → esophagus (peristalsis) → stomach (HCl, pepsin) → small intestine (pancreatic enzymes, bile) → large intestine (water absorption).",
+          "Parietal cells secrete HCl; chief cells secrete pepsinogen.",
+          "The small intestine is the primary site of nutrient absorption (villi, microvilli).",
+          "Pancreatic juice neutralizes acidic chyme with bicarbonate.",
+          "Bile (produced by liver, stored in gallbladder) emulsifies fats."
+        ],
+        "mustKnow": [
+          "Chyme is the liquefied food mass entering the duodenum.",
+          "CCK stimulates gallbladder contraction; secretin stimulates pancreatic bicarbonate secretion.",
+          "The primitive teeth formula: I=3/3; C=1/1; PM=4/4; M=3/3.",
+          "Rennin clots milk in infants; pepsin also digests milk proteins."
+        ]
+      },
+      {
+        "title": "Nutrition",
+        "keyPoints": [
+          "Essential nutrients: carbohydrates, proteins, fats, vitamins, minerals, water.",
+          "Carbohydrates are the primary energy source and the sole fuel for the brain.",
+          "Proteins are built from amino acids; complementary proteins can provide all essential amino acids.",
+          "Fat-soluble vitamins: A, D, E, K. Water-soluble: B-complex, C."
+        ],
+        "mustKnow": [
+          "Deficiency diseases: Scurvy (Vitamin C), Rickets (Vitamin D), Beriberi (Vitamin B1), Kwashiorkor (Protein), Night blindness (Vitamin A).",
+          "Vitamin D is synthesized in the skin upon sunlight exposure.",
+          "Iron deficiency causes anemia; iodine deficiency causes goiter.",
+          "Vitamin K is synthesized by intestinal bacteria and is essential for blood clotting."
+        ]
+      },
+      {
+        "title": "Excretory System",
+        "keyPoints": [
+          "Kidneys: paired retroperitoneal organs (T12-L3). Right kidney is lower due to the liver.",
+          "Nephron: functional unit of the kidney. 85% cortical, 15% juxtamedullary.",
+          "Urine formation: glomerular filtration → tubular reabsorption → tubular secretion.",
+          "Juxtamedullary nephrons have long loops of Henle that penetrate deep into the medulla.",
+          "ADH increases water reabsorption; aldosterone increases sodium reabsorption."
+        ],
+        "mustKnow": [
+          "The kidneys receive ~25% of cardiac output at rest.",
+          "Tubular reabsorption reclaims up to 99% of water and 100% of glucose.",
+          "Tubular secretion removes substances too large to be filtered (e.g., antibiotics, excess H+/K+).",
+          "The kidneys produce renin (blood pressure), erythropoietin (RBC production), and calcitriol (active Vitamin D)."
+        ]
+      }
+    ]
+  }
+]

@@ -1,5 +1,8 @@
 import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260615c";
 
+const QUIZ_BANK_CACHE_KEY = "physiology2k29.quizBank";
+const QUIZ_BANK_URL = "./quiz-bank.json?v=20260707-1";
+
 const SUPABASE_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
 const RESOURCE_PAGE_SIZE = 1000;
@@ -243,6 +246,31 @@ function offlineNotice(methodName) {
   console.warn(`${methodName} skipped because Supabase is unavailable or not configured yet.`);
 }
 
+/* LOCAL QUIZ BANK: Loads questions from quiz-bank.json as a fallback. */
+let localQuizBankPromise;
+
+async function loadLocalQuizBank() {
+  if (!localQuizBankPromise) {
+    localQuizBankPromise = fetch(QUIZ_BANK_URL, { cache: "force-cache" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!data || !Array.isArray(data.questions)) return null;
+        try {
+          sessionStorage.setItem(QUIZ_BANK_CACHE_KEY, JSON.stringify(data));
+        } catch {}
+        return data;
+      })
+      .catch(() => {
+        try {
+          const cached = sessionStorage.getItem(QUIZ_BANK_CACHE_KEY);
+          if (cached) return JSON.parse(cached);
+        } catch {}
+        return null;
+      });
+  }
+  return localQuizBankPromise;
+}
+
 /* BACKEND FACTORY: Exposes one app-shaped API over Supabase Auth, Storage, and tables. */
 export async function createBackend() {
   const supabase = await loadSupabaseClient();
@@ -343,8 +371,34 @@ export async function createBackend() {
       },
       saveResourceProgress: async () => undefined,
       saveResourceFeedback: async () => ({ helpful: false, helpfulCount: 0 }),
-      getQuizSetup: async () => ({ courses: {}, summary: { streak: 0, weakTopics: [] } }),
-      getQuizQuestions: async () => ({ questions: [], summary: { streak: 0, weakTopics: [] } }),
+      getQuizSetup: async () => {
+        const bank = await loadLocalQuizBank();
+        if (bank?.courses) return { courses: bank.courses, summary: { streak: 0, weakTopics: [] } };
+        return { courses: {}, summary: { streak: 0, weakTopics: [] } };
+      },
+      getQuizQuestions: async (payload) => {
+        const bank = await loadLocalQuizBank();
+        if (!bank?.questions?.length) return { questions: [], summary: { streak: 0, weakTopics: [] } };
+
+        let pool = bank.questions;
+        if (payload.courseCode) {
+          pool = pool.filter((q) => q.courseCode === payload.courseCode);
+        }
+        if (payload.topic) {
+          pool = pool.filter((q) => q.topic === payload.topic);
+        }
+
+        // Shuffle
+        const shuffled = [...pool];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+
+        const limit = Math.max(5, Math.min(120, Number(payload.limit || 10)));
+        const questions = shuffled.slice(0, limit).map(mapQuestion);
+        return { questions, summary: { streak: 0, weakTopics: [] } };
+      },
       submitQuizAttempt: async () => {
         throw new Error("Quiz submission is not connected yet. Try again later.");
       },
@@ -640,24 +694,48 @@ export async function createBackend() {
     },
 
     async getQuizSetup() {
-      return callMemberPortal("quiz-setup", {
-        memberSession: getStoredMemberSession(),
-      });
+      try {
+        const data = await callMemberPortal("quiz-setup", {
+          memberSession: getStoredMemberSession(),
+        });
+        if (data?.courses && Object.keys(data.courses).length > 0) return data;
+      } catch {}
+      const bank = await loadLocalQuizBank();
+      if (bank?.courses) return { courses: bank.courses, summary: { streak: 0, weakTopics: [] } };
+      return { courses: {}, summary: { streak: 0, weakTopics: [] } };
     },
 
     async getQuizQuestions(payload) {
-      const data = await callMemberPortal("quiz-questions", {
-        memberSession: getStoredMemberSession(),
-        mode: payload.mode || "practice",
-        courseCode: cleanStoredText(payload.courseCode || ""),
-        topic: cleanStoredText(payload.topic || ""),
-        limit: Number(payload.limit || 10),
-      });
+      try {
+        const data = await callMemberPortal("quiz-questions", {
+          memberSession: getStoredMemberSession(),
+          mode: payload.mode || "practice",
+          courseCode: cleanStoredText(payload.courseCode || ""),
+          topic: cleanStoredText(payload.topic || ""),
+          limit: Number(payload.limit || 10),
+        });
+        if (data?.questions?.length) {
+          return { ...data, questions: data.questions.map(mapQuestion) };
+        }
+      } catch {}
 
-      return {
-        ...data,
-        questions: (data.questions || []).map(mapQuestion),
-      };
+      // Fall back to local quiz bank
+      const bank = await loadLocalQuizBank();
+      if (!bank?.questions?.length) return { questions: [], summary: { streak: 0, weakTopics: [] } };
+
+      let pool = bank.questions;
+      if (payload.courseCode) pool = pool.filter((q) => q.courseCode === payload.courseCode);
+      if (payload.topic) pool = pool.filter((q) => q.topic === payload.topic);
+
+      const shuffled = [...pool];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+
+      const limit = Math.max(5, Math.min(120, Number(payload.limit || 10)));
+      const questions = shuffled.slice(0, limit).map(mapQuestion);
+      return { questions, summary: { streak: 0, weakTopics: [] } };
     },
 
     async submitQuizAttempt(payload) {
