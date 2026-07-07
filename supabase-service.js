@@ -1,7 +1,7 @@
 import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260615c";
 
 const QUIZ_BANK_CACHE_KEY = "physiology2k29.quizBank";
-const QUIZ_BANK_URL = "./quiz-bank.json?v=20260707-2";
+const QUIZ_BANK_URL = "./quiz-bank.json?v=20260707-7";
 
 const SUPABASE_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
@@ -694,14 +694,14 @@ export async function createBackend() {
     },
 
     async getQuizSetup() {
-      const bank = await loadLocalQuizBank();
+      const data = await callMemberPortal("quiz-setup", {
+        memberSession: getStoredMemberSession(),
+      });
+      if (data?.courses && Object.keys(data.courses).length > 0) return data;
+
+      const bank = await loadLocalQuizBank().catch(() => null);
       if (bank?.courses) return { courses: bank.courses, summary: { streak: 0, weakTopics: [] } };
-      try {
-        const data = await callMemberPortal("quiz-setup", {
-          memberSession: getStoredMemberSession(),
-        });
-        if (data?.courses && Object.keys(data.courses).length > 0) return data;
-      } catch {}
+
       return { courses: {}, summary: { streak: 0, weakTopics: [] } };
     },
 
@@ -717,10 +717,11 @@ export async function createBackend() {
         if (data?.questions?.length) {
           return { ...data, questions: data.questions.map(mapQuestion) };
         }
-      } catch {}
+      } catch (error) {
+        console.warn("Quiz questions from Supabase failed, trying local bank:", error.message);
+      }
 
-      // Fall back to local quiz bank
-      const bank = await loadLocalQuizBank();
+      const bank = await loadLocalQuizBank().catch(() => null);
       if (!bank?.questions?.length) return { questions: [], summary: { streak: 0, weakTopics: [] } };
 
       let pool = bank.questions;
@@ -739,7 +740,7 @@ export async function createBackend() {
     },
 
     async submitQuizAttempt(payload) {
-      return callMemberPortal("submit-quiz-attempt", {
+      const result = await callMemberPortal("submit-quiz-attempt", {
         memberSession: getStoredMemberSession(),
         mode: payload.mode || "practice",
         courseCode: cleanStoredText(payload.courseCode || ""),
@@ -747,6 +748,12 @@ export async function createBackend() {
         durationSeconds: Number(payload.durationSeconds || 0),
         answers: payload.answers || [],
       });
+
+      // If no questions returned (rare), provide fallback
+      if (!result?.results?.length && result?.score !== undefined) {
+        result.results = [];
+      }
+      return result;
     },
 
     watchResources(callback, onError = console.error) {

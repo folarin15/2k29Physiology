@@ -561,7 +561,7 @@
     ]
   },
   {
-    "courseCode": "PHY 104",
+    "courseCode": "PHY 102",
     "topic": "AC Circuits",
     "summary": "This block covers alternating current circuits, phase relationships for resistors, inductors, and capacitors, reactance, impedance, RLC series circuits, resonance, and phasor analysis. Understanding the phase behavior is critical.",
     "subtopics": [
@@ -659,7 +659,7 @@
     ]
   },
   {
-    "courseCode": "PHY 104",
+    "courseCode": "PHY 102",
     "topic": "Maxwell's Equations & Electromagnetic Waves",
     "summary": "This block presents Maxwell's four equations that unify electricity and magnetism, introduces the displacement current, and shows how electromagnetic waves propagate. The speed of light emerges naturally from the constants ε₀ and μ₀.",
     "subtopics": [
@@ -1651,6 +1651,1095 @@
         ],
         "mustKnow": [
           "Challenges include deforestation, poaching, oil pollution, and weak law enforcement."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "CHM 102",
+    "topic": "Block 1: Foundations and Composition Analysis",
+    "summary": "Organic chemistry is the study of carbon compounds. This block covers hybridization (sp³, sp², sp), sigma and pi bonds, empirical/molecular formula determination, and Lassaigne's test for element detection in organic compounds.",
+    "subtopics": [
+      {
+        "title": "Hybridization and Bonding",
+        "keyPoints": [
+          "Carbon can form single, double, and triple bonds through sp³, sp², and sp hybridization.",
+          "sp³ hybridization: 4 sigma bonds, tetrahedral geometry, bond angle 109.5° (e.g., CH₄, alkanes).",
+          "sp² hybridization: 3 sigma bonds + 1 pi bond, trigonal planar, bond angle 120° (e.g., C₂H₄, alkenes).",
+          "sp hybridization: 2 sigma bonds + 2 pi bonds, linear, bond angle 180° (e.g., C₂H₂, alkynes).",
+          "A sigma (σ) bond is formed by end-on overlap of orbitals and is stronger than pi bonds.",
+          "A pi (π) bond is formed by sideways overlap of p-orbitals and is weaker than sigma bonds.",
+          "A double bond = one sigma + one pi bond; a triple bond = one sigma + two pi bonds."
+        ],
+        "mustKnow": [
+          "All single bonds are sigma bonds; double bonds contain one sigma and one pi; triple bonds contain one sigma and two pi.",
+          "sp³ carbons bond to four atoms; sp² carbons bond to three; sp carbons bond to two.",
+          "Pi bonds prevent free rotation around a bond, leading to cis-trans (geometric) isomerism in alkenes."
+        ],
+        "examTraps": [
+          "Do not say a double bond is 'two sigma bonds' — it is one sigma and one pi.",
+          "Do not confuse bond angles: sp³ = 109.5°, sp² = 120°, sp = 180°.",
+          "Pi bonds are NOT stronger than sigma bonds — they are weaker and more reactive."
+        ],
+        "definitions": [
+          "Hybridization: mixing of atomic orbitals to form new hybrid orbitals for bonding",
+          "Sigma bond (σ): end-on orbital overlap, strongest covalent bond",
+          "Pi bond (π): sideways p-orbital overlap, weaker than sigma",
+          "sp³ hybrid: 25% s + 75% p character, tetrahedral",
+          "sp² hybrid: 33% s + 67% p character, trigonal planar",
+          "sp hybrid: 50% s + 50% p character, linear"
+        ]
+      },
+      {
+        "title": "Empirical and Molecular Formulas",
+        "keyPoints": [
+          "Empirical formula: simplest whole-number ratio of atoms in a compound.",
+          "Molecular formula: actual number of atoms in a molecule (a multiple of the empirical formula).",
+          "To determine empirical formula: divide percentage composition by atomic masses, then divide by the smallest result.",
+          "Molecular formula = (Empirical formula)ₙ where n = molar mass / empirical formula mass."
+        ],
+        "mustKnow": [
+          "Example: C₆H₁₂O₆ (glucose) has empirical formula CH₂O.",
+          "Different compounds can share the same empirical formula (e.g., CH₂O could be formaldehyde or glucose)."
+        ],
+        "examTraps": [
+          "Always convert percentages to grams first (assume 100 g sample).",
+          "Round to the nearest whole number only at the final step."
+        ]
+      },
+      {
+        "title": "Homologous Series",
+        "keyPoints": [
+          "A homologous series is a family of compounds with the same functional group and general formula.",
+          "Each member differs from the next by —CH₂—.",
+          "Physical properties (boiling point, melting point) change gradually along the series.",
+          "Chemical properties are similar within the same homologous series."
+        ],
+        "mustKnow": [
+          "Alkanes: CₙH₂ₙ₊₂ | Alkenes: CₙH₂ₙ | Alkynes: CₙH₂ₙ₋₂",
+          "Alkanols: CₙH₂ₙ₊₁OH | Alkanals: CₙH₂ₙO | Alkanoic acids: CₙH₂ₙO₂"
+        ]
+      },
+      {
+        "title": "Lassaigne's Test (Element Detection)",
+        "keyPoints": [
+          "Lassaigne's test detects nitrogen, halogens, and sulfur in organic compounds.",
+          "A sodium fusion extract is prepared by fusing the organic compound with sodium metal.",
+          "Nitrogen: extract + FeSO₄ + FeCl₃ → Prussian blue color (Na₄[Fe(CN)₆]Fe).",
+          "Sulfur: extract + sodium nitroprusside → violet color.",
+          "Halogens: extract + HNO₃ + AgNO₃ → precipitate (AgCl white, AgBr pale yellow, AgI yellow)."
+        ],
+        "mustKnow": [
+          "Nitrogen test: Prussian blue confirms N.",
+          "Sulfur test: violet coloration confirms S.",
+          "Halogen test: silver halide precipitate confirms halogen; color identifies which halogen."
+        ],
+        "examTraps": [
+          "Do not confuse the Prussian blue test — it is specific to nitrogen, not any metal ion.",
+          "If both nitrogen and sulfur are present, the blood-red color from FeSCN²⁺ may appear instead of Prussian blue."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "CHM 102",
+    "topic": "Block 2: Saturated and Unsaturated Hydrocarbons",
+    "summary": "Hydrocarbons contain only carbon and hydrogen. This block covers alkanes (saturated, CₙH₂ₙ₊₂), alkenes (CₙH₂ₙ), alkynes (CₙH₂ₙ₋₂), petroleum chemistry, and structural/geometric isomerism.",
+    "subtopics": [
+      {
+        "title": "Alkanes (Paraffins)",
+        "keyPoints": [
+          "Alkanes are saturated hydrocarbons with general formula CₙH₂ₙ₊₂.",
+          "C₁–C₄: gases; C₅–C₁₇: liquids; C₁₈ₚ: solids at room temperature.",
+          "Boiling point increases with chain length due to increased Van der Waals forces.",
+          "Branched alkanes have lower boiling points than straight-chain isomers.",
+          "Alkanes are relatively unreactive (hence 'paraffins' = little affinity).",
+          "Combustion: CₙH₂ₙ₊₂ + (3n+1)/2 O₂ → n CO₂ + (n+1) H₂O + heat.",
+          "Substitution (halogenation): RH + X₂ → RX + HX (e.g., CH₄ + Cl₂ → CH₃Cl + HCl).",
+          "Cracking: large alkanes break into smaller alkanes and alkenes (e.g., C₁₆H₃₄ → C₈H₁₈ + C₈H₁₆)."
+        ],
+        "mustKnow": [
+          "IUPAC naming: find the longest continuous carbon chain (parent name).",
+          "Number the chain to give substituents the lowest possible numbers.",
+          "Use prefixes (di-, tri-, tetra-) for multiple identical substituents.",
+          "Common substituents: methyl (CH₃—), ethyl (C₂H₅—), propyl (C₃H₇—)."
+        ],
+        "examTraps": [
+          "Do not forget to use commas between numbers and hyphens between numbers and letters (e.g., 2,3-dimethylpentane).",
+          "Do not include the carbon of the functional group when naming the parent chain for alkanes — all carbons are in the chain."
+        ]
+      },
+      {
+        "title": "Petroleum Chemistry",
+        "keyPoints": [
+          "Petroleum (crude oil) is a complex mixture of hydrocarbons formed from ancient marine organisms.",
+          "Fractional distillation separates crude oil into fractions based on boiling point differences.",
+          "Fractions (from lowest to highest boiling point): refinery gases (C₁–C₄), gasoline (C₅–C₁₀), kerosene (C₁₁–C₁₃), diesel (C₁₄–C₁₈), fuel oil (C₁₉–C₂₅), bitumen (C₂₆ₚ).",
+          "Cracking breaks large hydrocarbons into smaller, more useful ones (e.g., gasoline).",
+          "Catalytic cracking uses zeolite catalysts for better efficiency than thermal cracking.",
+          "Reforming converts straight-chain alkanes into branched alkanes or aromatics (improves octane rating).",
+          "Octane rating measures a fuel's resistance to knocking; higher = better."
+        ],
+        "mustKnow": [
+          "LPG (liquefied petroleum gas) = propane + butane.",
+          "Gasoline (petrol) = C₅–C₁₀ hydrocarbons.",
+          "Kerosene (paraffin oil) = C₁₁–C₁₃, used as jet fuel.",
+          "Diesel = C₁₄–C₁₈, used in diesel engines."
+        ],
+        "examTraps": [
+          "Do not confuse cracking (breaking large molecules) with reforming (restructuring molecules).",
+          "Fractional distillation is a PHYSICAL separation, not a chemical reaction."
+        ]
+      },
+      {
+        "title": "Alkenes (Olefins)",
+        "keyPoints": [
+          "Alkenes are unsaturated hydrocarbons with at least one C=C double bond (general formula CₙH₂ₙ).",
+          "Functional group: C=C (one sigma + one pi bond).",
+          "Naming: use -ene suffix; indicate double-bond position with a number (e.g., but-1-ene).",
+          "Geometric (cis-trans) isomerism: different arrangement of groups across the double bond.",
+          "cis isomer: similar groups on the same side of the double bond.",
+          "trans isomer: similar groups on opposite sides of the double bond.",
+          "Addition reactions (electrophilic addition): H₂ (hydrogenation), X₂ (halogenation), HX (hydrohalogenation), H₂O (hydration).",
+          "Hydrogenation: alkene + H₂ → alkane (used to convert unsaturated fats to saturated).",
+          "Markovnikov's rule: in HX addition to an unsymmetrical alkene, the H attaches to the carbon with more H atoms already."
+        ],
+        "mustKnow": [
+          "Ethene (C₂H₄) is the simplest alkene — used to make polyethylene (addition polymerisation).",
+          "Test for unsaturation: bromine water (Br₂) decolorises from red-brown to colourless with alkenes.",
+          "Baeyer's test: cold dilute KMnO₄ changes from purple to colourless with alkenes (dihydroxylation)."
+        ],
+        "examTraps": [
+          "Alkenes do NOT undergo substitution reactions easily — they undergo ADDITION.",
+          "Do NOT say alkene + Br₂ gives a substitution product — it gives a dibromoalkane (addition).",
+          "Alkanes undergo substitution (halogenation); alkenes undergo addition."
+        ]
+      },
+      {
+        "title": "Alkynes",
+        "keyPoints": [
+          "Alkynes are unsaturated hydrocarbons with at least one C≡C triple bond (general formula CₙH₂ₙ₋₂).",
+          "Functional group: C≡C (one sigma + two pi bonds).",
+          "Naming: use -yne suffix (e.g., ethyne, propyne).",
+          "Addition reactions: can add 1 or 2 moles of H₂, X₂, HX.",
+          "Ethyne (acetylene, C₂H₂) is the simplest alkyne — used in welding (oxy-acetylene flame).",
+          "Terminal alkynes (C≡C—H) are acidic (weak) and can form metal acetylides (e.g., with Ag⁺, Cu⁺)."
+        ],
+        "mustKnow": [
+          "Ethyne + H₂ (Lindlar's catalyst) → ethene (cis-alkene).",
+          "Ethyne + 2H₂ → ethane.",
+          "Terminal alkynes give white (Ag₂C₂) or red (Cu₂C₂) precipitates with ammoniacal AgNO₃ or Cu₂Cl₂."
+        ],
+        "examTraps": [
+          "Do not confuse ethyne (C₂H₂) with ethene (C₂H₄) — ethyne has a triple bond, ethene has a double bond.",
+          "Alkynes are MORE unsaturated than alkenes — they add two moles of halogen, not one."
+        ]
+      },
+      {
+        "title": "Isomerism",
+        "keyPoints": [
+          "Structural isomerism: same molecular formula, different connectivity of atoms.",
+          "Types: chain (carbon skeleton varies), position (functional group position varies), functional group (different functional groups).",
+          "Geometric (cis-trans) isomerism: same connectivity but different spatial arrangement due to restricted rotation around a double bond.",
+          "Conditions for geometric isomerism: each carbon of the double bond must have two different groups attached."
+        ],
+        "mustKnow": [
+          "Example of chain isomerism: C₅H₁₂ (n-pentane, isopentane, neopentane).",
+          "Example of position isomerism: C₃H₇OH (propan-1-ol, propan-2-ol).",
+          "Example of functional group isomerism: C₂H₆O (ethanol and methoxymethane/dimethyl ether)."
+        ],
+        "examTraps": [
+          "Do not confuse structural and geometric isomerism — geometric requires a double bond with restricted rotation.",
+          "cis-trans isomers are NOT the same as conformational isomers (which rotate freely)."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "CHM 102",
+    "topic": "Block 3: Alkanols, Phenols, and Alkoxyalkanes",
+    "summary": "This block covers alkanols (alcohols, —OH), phenols (—OH attached to benzene), and alkoxyalkanes (ethers, —O—). Topics include classification, hydrogen bonding, reactivity, and key reactions.",
+    "subtopics": [
+      {
+        "title": "Alkanols (Alcohols)",
+        "keyPoints": [
+          "Alkanols contain the hydroxyl (—OH) functional group attached to an sp³ carbon.",
+          "General formula: R—OH (R = alkyl group).",
+          "Classification: primary (1°), secondary (2°), tertiary (3°) based on how many carbons the —OH carbon is bonded to.",
+          "Hydrogen bonding between —OH groups gives alcohols higher boiling points than alkanes.",
+          "Solubility: lower alcohols (C₁–C₃) are water-miscible; solubility decreases as chain length increases.",
+          "Combustion: alcohols burn to give CO₂ + H₂O.",
+          "Oxidation: primary alcohols → aldehydes → carboxylic acids; secondary → ketones; tertiary do not oxidise easily.",
+          "Dehydration: alcohol + conc. H₂SO₄ → alkene + H₂O (elimination, follows Zaitsev's rule).",
+          "Esterification: alcohol + carboxylic acid → ester + H₂O (with conc. H₂SO₄)."
+        ],
+        "mustKnow": [
+          "Oxidising agent: K₂Cr₂O₇/H⁺ (orange → green colour change confirms oxidation).",
+          "Primary alcohol → aldehyde (distillation) → carboxylic acid (reflux).",
+          "Secondary alcohol → ketone (cannot be oxidised further without breaking C—C bonds).",
+          "Tertiary alcohol → resistant to oxidation.",
+          "Iodoform test: ethanol and secondary alcohols with CH₃CHOH— give yellow precipitate of CHI₃."
+        ],
+        "examTraps": [
+          "Do not say alcohols are acidic — they are very weakly acidic (pKa~16), weaker than water.",
+          "Dehydration of a primary alcohol gives the least substituted alkene (anti-Zaitsev), but secondary/tertiary follow Zaitsev's rule (most substituted alkene).",
+          "Do not confuse hydration (alkene + H₂O → alcohol) with dehydration (alcohol → alkene + H₂O)."
+        ]
+      },
+      {
+        "title": "Phenols",
+        "keyPoints": [
+          "Phenol: —OH group directly attached to a benzene ring (C₆H₅OH).",
+          "Phenol is a stronger acid than alcohols (pKa~10 vs alcohol pKa~16) due to resonance stabilisation of phenoxide ion.",
+          "Reactions: (a) weak acid — dissolves in NaOH but not NaHCO₃. (b) Bromination — with Br₂ water gives white precipitate of 2,4,6-tribromophenol. (c) Nitration — gives a mixture of ortho- and para-nitrophenol. (d) Coupling — with diazonium salts gives azo dyes (orange/red colour).",
+          "Ferric chloride test: phenol + FeCl₃ → violet/purple colouration (characteristic test)."
+        ],
+        "mustKnow": [
+          "Phenol is more acidic than ethanol but weaker than carboxylic acids.",
+          "2,4,6-tribromophenol is a white precipitate — a confirmatory test for phenol."
+        ],
+        "examTraps": [
+          "Do not classify phenol as a typical alcohol — its chemistry is distinct due to the aromatic ring.",
+          "Phenol does NOT undergo esterification as readily as alcohols."
+        ]
+      },
+      {
+        "title": "Alkoxyalkanes (Ethers)",
+        "keyPoints": [
+          "Ethers have the general formula R—O—R' where R and R' are alkyl or aryl groups.",
+          "Naming: alkoxyalkane (e.g., methoxyethane) or common names (e.g., diethyl ether, methyl phenyl ether).",
+          "Ethers are relatively unreactive (used as solvents).",
+          "They can form peroxides on exposure to air (danger of explosion on distillation).",
+          "Cleavage: ethers react with conc. HI or HBr to give alkyl halides and alcohols.",
+          "Ethers do NOT form hydrogen bonds with each other (no O—H) but can accept hydrogen bonds from water (limited solubility).",
+          "Boiling points are lower than alcohols of similar mass (no intermolecular hydrogen bonding)."
+        ],
+        "mustKnow": [
+          "Diethyl ether (C₂H₅OC₂H₅) was used as an anaesthetic.",
+          "Ethers are polar but aprotic — useful as solvents for Grignard reactions."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "CHM 102",
+    "topic": "Block 4: Carbonyl Compounds and Carboxylic Acids",
+    "summary": "This block covers aldehydes (RCHO), ketones (RCOR'), carboxylic acids (RCOOH), and their derivatives (esters, acyl halides, amides). Focus on nucleophilic addition, oxidation/reduction, and acidity trends.",
+    "subtopics": [
+      {
+        "title": "Aldehydes and Ketones",
+        "keyPoints": [
+          "Both contain the carbonyl group (C=O). Aldehydes have at least one H on the carbonyl carbon; ketones have two alkyl/aryl groups.",
+          "Naming: aldehydes use -al suffix (e.g., methanal, ethanal); ketones use -one (e.g., propanone).",
+          "Aldehydes are more reactive than ketones due to less steric hindrance and greater polarisation.",
+          "Nucleophilic addition: carbonyl + HCN → cyanohydrin; + NaHSO₃ → bisulfite adduct; + NH₂OH → oxime.",
+          "Reduction: aldehyde/ketone + NaBH₄ or LiAlH₄ → alcohol.",
+          "Oxidation: aldehydes oxidise easily to carboxylic acids; ketones resist oxidation.",
+          "Tollens' test: aldehyde + ammoniacal AgNO₃ → silver mirror (Ag deposited).",
+          "Fehling's test: aldehyde + Cu²⁺ (blue) → Cu₂O (red precipitate); ketones do NOT react.",
+          "Iodoform test: methyl ketones (CH₃COR) + I₂/NaOH → yellow precipitate of CHI₃."
+        ],
+        "mustKnow": [
+          "Methanal (HCHO) is a gas; ethanal (CH₃CHO) and propanone are liquids.",
+          "Propanone ((CH₃)₂CO) is the simplest ketone — used as a solvent (nail polish remover).",
+          "Tollens' reagent = ammoniacal silver nitrate; Fehling's reagent = Cu²⁺ in alkaline tartrate."
+        ],
+        "examTraps": [
+          "Do not say ketones reduce Tollens' reagent — only aldehydes do.",
+          "Aldehydes are more reactive than ketones in nucleophilic addition — explain why (steric + electronic)."
+        ]
+      },
+      {
+        "title": "Carboxylic Acids",
+        "keyPoints": [
+          "Carboxylic acids contain the carboxyl group (—COOH) and have general formula RCOOH or CₙH₂ₙO₂.",
+          "Naming: alkanoic acids (e.g., methanoic acid HCOOH, ethanoic acid CH₃COOH).",
+          "Acidity: carboxylic acids are stronger than phenols and alcohols due to resonance stabilisation of the carboxylate anion.",
+          "Acidity decreases as alkyl chain length increases (electron-donating effect).",
+          "Electron-withdrawing groups (—Cl, —F, —NO₂) increase acidity by stabilising the conjugate base.",
+          "Reactions: neutralisation (acid + base → salt + water), esterification (alcohol + acid → ester), reduction (LiAlH₄ → alcohol), decarboxylation (heat → CO₂)."
+        ],
+        "mustKnow": [
+          "Ethanoic acid (CH₃COOH) is the main component of vinegar.",
+          "Methanoic acid (HCOOH) is present in ant venom and nettle stings.",
+          "Ka measures acid strength; larger Ka = stronger acid.",
+          "pKa = −log Ka; smaller pKa = stronger acid."
+        ],
+        "examTraps": [
+          "Do not confuse the reactivity of —COOH in carboxylic acids with —OH in alcohols — the —OH in —COOH is more acidic due to the adjacent C=O.",
+          "Carboxylic acids do NOT undergo nucleophilic addition like aldehydes/ketones — the carbonyl in RCOOH is less electrophilic due to resonance with the —OH group."
+        ]
+      },
+      {
+        "title": "Esters",
+        "keyPoints": [
+          "Esters have the general formula RCOOR' and are formed by condensation of a carboxylic acid and an alcohol.",
+          "Naming: alkyl alkanoate (e.g., ethyl ethanoate CH₃COOC₂H₅).",
+          "Fruity smell: esters are responsible for many fruit flavours and fragrances.",
+          "Hydrolysis: ester + H₂O (acid or base) → acid + alcohol. Base hydrolysis (saponification) is irreversible.",
+          "Transesterification: ester + alcohol → new ester + new alcohol."
+        ],
+        "mustKnow": [
+          "Saponification: ester + NaOH → sodium salt of carboxylic acid + alcohol (soap-making).",
+          "Biodiesel is produced by transesterification of vegetable oils."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "CHM 102",
+    "topic": "Block 5: Alkanamines and Advanced Carbon Structures",
+    "summary": "This block covers alkanamines (amines, —NH₂), their basicity and reactions, as well as advanced carbon allotropes such as fullerenes and the pharmaceutical relevance of organic compounds.",
+    "subtopics": [
+      {
+        "title": "Alkanamines (Amines)",
+        "keyPoints": [
+          "Amines are organic derivatives of ammonia (NH₃) where alkyl or aryl groups replace one or more hydrogens.",
+          "Classification: primary (1°, RNH₂), secondary (2°, R₂NH), tertiary (3°, R₃N).",
+          "Naming: alkanamines (e.g., methanamine CH₃NH₂, ethanamine C₂H₅NH₂).",
+          "Amines are basic due to the lone pair on nitrogen — they accept protons (H⁺).",
+          "Basicity: aliphatic amines are stronger bases than ammonia; aromatic amines (e.g., aniline) are weaker due to resonance delocalisation of the lone pair.",
+          "Alkylation: amine + alkyl halide → more highly substituted amine (can go to quaternary ammonium salt R₄N⁺X⁻).",
+          "Acylation: amine + acyl chloride → amide (e.g., CH₃COCl + CH₃NH₂ → CH₃CONHCH₃ + HCl).",
+          "Carbylamine reaction: primary amine + CHCl₃ + KOH → isocyanide (foul-smelling).",
+          "Carbylamine test distinguishes 1° amines from 2° and 3° amines."
+        ],
+        "mustKnow": [
+          "Quaternary ammonium salts (R₄N⁺X⁻) are used as phase-transfer catalysts and surfactants.",
+          "Aniline (C₆H₅NH₂) is the simplest aromatic amine — weaker base than aliphatic amines.",
+          "Amine salts (formed with HCl) are water-soluble and crystalline."
+        ],
+        "examTraps": [
+          "Do not say all amines are stronger bases than ammonia — aromatic amines are WEAKER.",
+          "Carbylamine test is ONLY positive for 1° amines — 2° and 3° do NOT give isocyanides.",
+          "Acylation of 1° or 2° amines gives amides, but tertiary amines cannot form amides (no H on N)."
+        ]
+      },
+      {
+        "title": "Fullerenes and Advanced Carbon",
+        "keyPoints": [
+          "Fullerenes are allotropes of carbon with cage-like structures (C₆₀, C₇₀).",
+          "C₆₀ (buckminsterfullerene) is a spherical molecule with 60 carbon atoms arranged in pentagons and hexagons (like a football).",
+          "Fullerenes are used in materials science, electronics, and medicine (drug delivery).",
+          "Carbon nanotubes (CNTs) are cylindrical fullerenes with exceptional strength and conductivity."
+        ],
+        "mustKnow": [
+          "Fullerenes are different from diamond and graphite — they are the third crystalline form of carbon.",
+          "C₆₀ is also called 'buckyball' after Buckminster Fuller."
+        ],
+        "examTraps": [
+          "Do not confuse allotropes of carbon: diamond (sp³), graphite (sp² layers), fullerenes (sp² cages)."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "CHM 102",
+    "topic": "Block 6: Atomic Foundations and Quantum Mechanics",
+    "summary": "This block covers the fundamental structure of the atom and the mathematical rules governing electron placement: subatomic particles, orbital shapes and capacities, quantum numbers, and electronic configuration rules.",
+    "subtopics": [
+      {
+        "title": "Subatomic Particles and Orbitals",
+        "keyPoints": [
+          "Protons: positively charged, located in the nucleus.",
+          "Neutrons: neutrally charged, located in the nucleus.",
+          "Electrons: negatively charged, occupying orbitals around the nucleus.",
+          "s-orbital: spherical, holds 2 electrons, 1 orbital per subshell.",
+          "p-orbital: dumbbell-shaped, holds 6 electrons, 3 orbitals per subshell.",
+          "d-orbital: holds 10 electrons, 5 orbitals per subshell.",
+          "f-orbital: holds 14 electrons, 7 orbitals per subshell."
+        ],
+        "mustKnow": [
+          "Maximum electrons per shell = 2n².",
+          "Each orbital holds a maximum of 2 electrons (Pauli's principle).",
+          "The d-sublevel has 5 orbitals; the f-sublevel has 7 orbitals."
+        ]
+      },
+      {
+        "title": "Quantum Numbers",
+        "keyPoints": [
+          "Principal quantum number (n): energy level/shell size (n = 1, 2, 3, ...).",
+          "Azimuthal quantum number (l): subshell shape (l = 0 → s, 1 → p, 2 → d, 3 → f).",
+          "Magnetic quantum number (mₗ): orbital orientation (-l to +l, including 0).",
+          "Spin quantum number (mₛ): electron spin (+½ or -½).",
+          "Aufbau Principle: electrons fill orbitals from lowest to highest energy.",
+          "Hund's Rule: degenerate orbitals are filled singly before pairing electrons.",
+          "Pauli Exclusion Principle: no two electrons in an atom can have the same set of four quantum numbers."
+        ],
+        "mustKnow": [
+          "For n=1, only l=0 (1s) is possible — there is no 1p orbital.",
+          "For n=3: possible l values are 0 (3s), 1 (3p), 2 (3d).",
+          "In many-electron atoms, orbitals on the same energy level are NOT degenerate due to electron-electron repulsion."
+        ]
+      },
+      {
+        "title": "Electronic Configuration",
+        "keyPoints": [
+          "Filling order: 1s, 2s, 2p, 3s, 3p, 4s, 3d, 4p, 5s, 4d, 5p, 6s, 4f, 5d, 6p, 7s, 5f, 6d, 7p.",
+          "Notation: 1s² means 2 electrons in the 1s subshell (n=1, l=0).",
+          "Valence electrons: electrons in the outermost shell (determines chemical properties).",
+          "A full valence shell contains 8 electrons (s²p⁶) except for H and He (duplet rule, 2 electrons).",
+          "Anomalous configurations: Cr ([Ar] 4s¹ 3d⁵) and Cu ([Ar] 4s¹ 3d¹⁰)."
+        ],
+        "mustKnow": [
+          "Sodium (Z=11): 1s² 2s² 2p⁶ 3s¹ or [Ne]3s¹.",
+          "Iron (Z=26): 1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁶ or [Ar] 4s² 3d⁶.",
+          "Potassium (Z=19): 1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹ — 4s fills before 3d.",
+          "Co²⁺: [Ar] 3d⁷ (electrons removed from 4s first).",
+          "For ions, electrons are removed from the 4s orbital BEFORE the 3d orbital."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "CHM 102",
+    "topic": "Block 7: The Periodic Table and Periodicity",
+    "summary": "This block focuses on the organization of elements and predictable trends in their physical and chemical properties: historical development, classification of elements, and periodic trends.",
+    "subtopics": [
+      {
+        "title": "Historical Development",
+        "keyPoints": [
+          "Johann Dobereiner (1829): grouped elements into triads (e.g., Li, Na, K) based on similar properties.",
+          "John Newlands (1864): Law of Octaves — compared elements to musical notes.",
+          "Dmitri Mendeleev: arranged elements by increasing atomic mass, left gaps for undiscovered elements, predicted their properties.",
+          "Henry Moseley (1913): arranged modern table by increasing atomic number using X-ray frequencies."
+        ],
+        "mustKnow": [
+          "Mendeleev's table was organized by chemical behavior, not just atomic mass.",
+          "Moseley's work corrected inconsistencies in Mendeleev's table.",
+          "Modern table: arranged by increasing atomic number."
+        ]
+      },
+      {
+        "title": "Classification of Elements",
+        "keyPoints": [
+          "Main group (representative) elements: Groups 1A–7A (old) or 1, 2, 13–18 (IUPAC).",
+          "Transition elements: Groups 1B–8B (d-block), e.g., Titanium, Iron, Copper.",
+          "Inner transition elements: Lanthanides and Actinides (f-block).",
+          "Metals on left/centre; non-metals on right; metalloids along staircase (Boron, Silicon).",
+          "Periods: horizontal rows. Groups/families: vertical columns."
+        ],
+        "mustKnow": [
+          "Group 1A (Alkali Metals): Li, Na, K, Rb, Cs, Fr — 1 valence electron.",
+          "Group 2A (Alkaline Earth Metals): Be, Mg, Ca, Sr, Ba, Ra — 2 valence electrons.",
+          "Group 7A (Halogens): F, Cl, Br, I, At — diatomic, form salts.",
+          "Group 8A (Noble Gases): He, Ne, Ar, Kr, Xe, Rn — monatomic, filled valence shells."
+        ],
+        "examTraps": [
+          "Hydrogen and Helium follow the duplet rule (2 electrons), not the octet rule.",
+          "Bromine is the only liquid halogen at room temperature.",
+          "Bismuth (Group 5A) is a metal — not all Group 5A elements are non-metals."
+        ]
+      },
+      {
+        "title": "Periodic Trends",
+        "keyPoints": [
+          "Atomic radius: decreases across a period (higher Z_eff); increases down a group (more shells).",
+          "Ionization energy: increases across a period; decreases down a group.",
+          "Electron affinity: Chlorine has the highest EA (not Fluorine, due to size/repulsion).",
+          "Ionic radius: cations < parent atoms; anions > parent atoms.",
+          "For isoelectronic species: N³⁻ > O²⁻ > F⁻ > Na⁺ (radius decreases as nuclear charge increases)."
+        ],
+        "mustKnow": [
+          "In period 3: Argon has highest ionization energy (full octet); Sodium has lowest.",
+          "Sulfur has LOWER ionization energy than Phosphorus (electron from doubly occupied p-orbital).",
+          "Oxygen has LOWER ionization energy than Nitrogen (same reason)."
+        ],
+        "examTraps": [
+          "Fluorine has a LOWER electron affinity than Chlorine.",
+          "Ionization energy exceptions occur at Group 2 (filled s) and Group 5 (half-filled p)."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "CHM 102",
+    "topic": "Block 8: Comparative Main Group Chemistry",
+    "summary": "A detailed look at specific families of elements and their unique behaviors: alkali metals, alkaline earth metals, halogens, noble gases, and groups 3A-6A.",
+    "subtopics": [
+      {
+        "title": "Group 1A — Alkali Metals",
+        "keyPoints": [
+          "Highly reactive, low melting points, +1 oxidation state.",
+          "Never found pure in nature due to low ionization energy and high reactivity.",
+          "Reactivity INCREASES down the group (larger atomic radius, easier to lose valence electron).",
+          "React with oxygen to form metal oxides (Li₂O), peroxides (Na₂O₂), or superoxides (KO₂).",
+          "React vigorously with water to form alkaline solutions and H₂ gas: 2Na + 2H₂O → 2NaOH + H₂.",
+          "Lithium is unique: forms stable nitride (Li₃N)."
+        ],
+        "mustKnow": [
+          "All form +1 ions.",
+          "Group 1A metals displace all metals below them in the reactivity series."
+        ]
+      },
+      {
+        "title": "Group 2A — Alkaline Earth Metals",
+        "keyPoints": [
+          "Less reactive than Group 1A; +2 oxidation state.",
+          "Beryllium and Magnesium belong here; Magnesium is found in chlorophyll.",
+          "Reactivity increases down the group as valence electrons are held more loosely.",
+          "Calcium used to remove nitrogen from argon and as a reducing agent.",
+          "Mg is used in car engines; Ca is used in production of cement and bleaching powder."
+        ],
+        "mustKnow": [
+          "They are less reactive than Group 1A because it requires more energy to remove two electrons.",
+          "MgO + H₂SO₄ → MgSO₄ + H₂O (neutralization of basic oxide)."
+        ]
+      },
+      {
+        "title": "Groups 3A-8A",
+        "keyPoints": [
+          "Group 3A: Boron is a metalloid; Aluminum forms Al³⁺ in acid.",
+          "Group 4A (C, Si, Ge, Sn, Pb): Carbon shows considerable variation from non-metallic to metallic. Sn and Pb react with acids to produce H₂. Oxidation states +2 and +4.",
+          "Group 5A: Nitrogen and Phosphorus form HNO₃ and H₃PO₄. Bismuth is a metal.",
+          "Group 6A (Oxygen family): Oxygen is gas; Tellurium and Polonium are crystalline.",
+          "Group 7A (Halogens): All diatomic, form ionic salts; F₂ is most reactive, I₂ least. Reactivity with hydrogen decreases down the group.",
+          "Halogen displacement: Cl₂ displaces Br₂ and I₂; Br₂ displaces I₂ (halogen acts as oxidizing agent).",
+          "Group 8A (Noble Gases): Monatomic, filled valence shells. Xenon compounds first formed in 1963."
+        ],
+        "mustKnow": [
+          "Noble gases are chemically stable due to filled valence shells.",
+          "Halogens form ionic salts with metals (metal is reducing agent).",
+          "Bromine is the only liquid halogen."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "CHM 102",
+    "topic": "Block 9: Transition Metal Chemistry",
+    "summary": "Focuses on the d-block elements and their complex chemical properties: variable oxidation states, colored compounds, catalytic activity, crystal field theory, and complex ions.",
+    "subtopics": [
+      {
+        "title": "General Characteristics",
+        "keyPoints": [
+          "Transition elements are d-block elements (Groups 1B, 3B-8B).",
+          "They serve as a bridge between Groups II and III in the periodic table.",
+          "General characteristics: variable oxidation states, formation of colored complexes, paramagnetism.",
+          "Examples: Titanium, Iron, Copper, Scandium.",
+          "Scandium configuration: [Ar] 4s² 3d¹."
+        ],
+        "mustKnow": [
+          "Iron has BCC crystal structure at room temperature.",
+          "Transition metals often act as catalysts in industrial processes.",
+          "Colored compounds arise from d-d electron transitions."
+        ]
+      },
+      {
+        "title": "Crystal Field Theory and Magnetism",
+        "keyPoints": [
+          "In octahedral fields, d-orbitals split into t₂g and e_g sets.",
+          "Unpaired electrons lead to paramagnetic behavior.",
+          "Magnetic moment calculated using spin-only formula: μ_s = √(n(n+2)) BM, where n = number of unpaired electrons.",
+          "The number of unpaired electrons determines the magnetic properties."
+        ],
+        "mustKnow": [
+          "Paramagnetic: attracted to magnetic fields (has unpaired electrons).",
+          "Diamagnetic: not attracted (all electrons paired).",
+          "Higher number of unpaired electrons = stronger magnetic moment."
+        ]
+      },
+      {
+        "title": "Complex Ions",
+        "keyPoints": [
+          "Complex ions: central metal ion surrounded by ligands.",
+          "Ligands: Lewis bases that donate electron pairs to the metal.",
+          "Coordination number: number of ligand donor atoms bonded to the metal.",
+          "Common geometries: octahedral (coordination number 6), tetrahedral (coordination number 4)."
+        ],
+        "mustKnow": [
+          "Ligands bond to metals via coordinate covalent bonds.",
+          "The charge of a complex ion = sum of metal ion charge + ligand charges."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "CHM 102",
+    "topic": "Block 10: Chemical Bonding and Molecular Geometry",
+    "summary": "This block explores how atoms combine and the resulting shapes of molecules: Lewis structures, VSEPR theory, hybridization, and the octet rule.",
+    "subtopics": [
+      {
+        "title": "Lewis Structures and the Octet Rule",
+        "keyPoints": [
+          "Lewis structures use dot notation to represent valence electrons.",
+          "Atoms bond to achieve a full valence shell (octet rule: 8 electrons).",
+          "Exceptions: H and He follow duplet rule (2 electrons).",
+          "Covalent bonds: sharing of electron pairs between atoms.",
+          "Ionic bonds: transfer of electrons from metal to non-metal."
+        ],
+        "mustKnow": [
+          "Carbon has 4 valence electrons — can form 4 covalent bonds.",
+          "Nitrogen has 5 valence electrons — forms 3 bonds + 1 lone pair.",
+          "Oxygen has 6 valence electrons — forms 2 bonds + 2 lone pairs.",
+          "Halogens have 7 valence electrons — form 1 bond + 3 lone pairs."
+        ]
+      },
+      {
+        "title": "VSEPR Theory and Molecular Geometry",
+        "keyPoints": [
+          "VSEPR: Valence Shell Electron Pair Repulsion theory.",
+          "Electron groups (bonds + lone pairs) around a central atom stay as far apart as possible.",
+          "sp³ hybridization: tetrahedral geometry, bond angle 109.5° (e.g., CH₄, NH₃, H₂O).",
+          "sp² hybridization: trigonal planar geometry, bond angle 120° (e.g., C₂H₄).",
+          "sp hybridization: linear geometry, bond angle 180° (e.g., C₂H₂).",
+          "Other hybridizations: dsp³ (trigonal bipyramidal), d²sp³ (octahedral)."
+        ],
+        "mustKnow": [
+          "Lone pairs repel more strongly than bonding pairs — reduces bond angles.",
+          "NH₃: trigonal pyramidal (107°), H₂O: bent (104.5°) due to lone pair repulsion.",
+          "Sigma (σ) bonds: end-on overlap, stronger. Pi (π) bonds: sideways p-orbital overlap, weaker."
+        ],
+        "examTraps": [
+          "Do not confuse molecular geometry (shape) with electron group geometry.",
+          "A double bond = 1 sigma + 1 pi bond; triple bond = 1 sigma + 2 pi bonds."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "CHM 102",
+    "topic": "Block 11: Applied Chemistry and Metallurgy",
+    "summary": "Industrial processes for obtaining and refining pure metals from nature: mining, ore concentration, roasting/calcination, reduction, electrolysis, and refining.",
+    "subtopics": [
+      {
+        "title": "Reactivity Series and Extraction Methods",
+        "keyPoints": [
+          "Highly reactive metals (K, Na, Ca, Mg, Al): extracted by electrolysis of molten ore/chloride.",
+          "Moderately reactive metals (Zn to Pb): extracted by carbon reduction (below carbon in series).",
+          "Low reactivity metals (Cu, Ag, Au, Pt): found as pure elements or extracted by roasting.",
+          "Carbon is included in the reactivity series as a reference for extraction methods.",
+          "The tendency to be oxidized is linked to a metal's position — lower metals resist oxidation."
+        ],
+        "mustKnow": [
+          "Potassium → Aluminum: electrolysis of molten ore.",
+          "Zinc → Lead: reduction with carbon in a blast furnace.",
+          "Copper, Silver, Gold, Platinum: found pure or extracted by simple heating.",
+          "Thermite reaction: Al reduces Fe₂O₃ or CuO (Al + metal oxide → Al₂O₃ + metal + heat)."
+        ],
+        "examTraps": [
+          "Aluminum is high in the series — CANNOT be extracted by heating with carbon.",
+          "Calcium is extracted by electrolysis, NOT by carbon reduction.",
+          "Copper CAN be extracted using carbon (it is below carbon in the series)."
+        ]
+      },
+      {
+        "title": "Ore Processing: Concentration to Refining",
+        "keyPoints": [
+          "Stage 1 — Concentration: Gravity separation (heavy ore settles), Froth floatation (sulfide ores, ore wetted by pine oil), Magnetic separation (magnetic rollers), Leaching (solvent dissolves ore — for Al, Ag, Au).",
+          "Stage 1b — Thermal treatment: Roasting (sulfide ore + O₂ → metal oxide + SO₂), Calcination (carbonate ore heated → metal oxide + CO₂).",
+          "Stage 2 — Reduction: Metal oxide + reducing agent → crude metal.",
+          "Stage 3 — Refining: Electrolytic refining produces pure metal."
+        ],
+        "mustKnow": [
+          "Zinc blende (ZnS) → ZnO by ROASTING.",
+          "Smithsonite (ZnCO₃) → ZnO by CALCINATION.",
+          "Coke provides both the reducing agent (C → CO) and heat.",
+          "Limestone (CaCO₃) removes acidic impurities (SiO₂) as slag (CaSiO₃).",
+          "Electrolytic refining of copper: IMPURE copper = anode, PURE copper = cathode, CuSO₄ = electrolyte.",
+          "Anode mud: insoluble impurities (Ag, Au, Pt) settle below anode."
+        ],
+        "examTraps": [
+          "Electrolysis is expensive due to large electricity requirements.",
+          "Leaching is specifically used for Al, Ag, and Au.",
+          "Highly reactive metals are found as chloride ores, not as pure elements."
+        ]
+      },
+      {
+        "title": "Iron Extraction — Blast Furnace",
+        "keyPoints": [
+          "Iron found as Hematite (Fe₂O₃), not pure element.",
+          "Zone 1 (bottom): C + O₂ → CO₂ (exothermic, provides heat).",
+          "Zone 2 (middle): CO₂ + C → 2CO (reducing agent produced).",
+          "Zone 3 (top): Fe₂O₃ + 3CO → 2Fe + 3CO₂ (reduction of iron ore).",
+          "Limestone decomposition: CaCO₃ → CaO + CO₂.",
+          "Slag formation: CaO + SiO₂ → CaSiO₃ (neutralizes acidic impurities).",
+          "Iron is tapped from bottom; slag floats on top and is removed separately."
+        ],
+        "mustKnow": [
+          "Hematite = Fe₂O₃. Slag = CaSiO₃ (calcium silicate). Coke = source of C and heat.",
+          "Iron extraction is a continuous process to save reheating costs.",
+          "Hot air blown into bottom reacts with coke to produce CO₂ and heat."
+        ]
+      },
+      {
+        "title": "Aluminum Extraction — Hall-Héroult Process",
+        "keyPoints": [
+          "Bauxite is purified to Al₂O₃ (alumina).",
+          "Al₂O₃ is dissolved in molten cryolite (Na₃AlF₆) to lower melting point.",
+          "Cathode: graphite lining of the steel case. Anode: graphite blocks.",
+          "At cathode: Al³⁺ + 3e⁻ → Al (reduction, aluminum ions gain electrons).",
+          "At anode: 2O²⁻ → O₂ + 4e⁻ (oxidation, oxygen ions lose electrons).",
+          "Anode carbon reacts with O₂ to form CO₂, causing the anode to wear away."
+        ],
+        "mustKnow": [
+          "Cryolite (Na₃AlF₆) lowers the melting point of Al₂O₃ without interfering with the reaction.",
+          "Graphite anodes must be replaced regularly because they react with oxygen to form CO₂.",
+          "The steel case is lined with graphite which acts as the cathode."
+        ]
+      },
+      {
+        "title": "Sodium Extraction — Down's Process",
+        "keyPoints": [
+          "Sodium is extracted by electrolysis of molten NaCl.",
+          "Pure sodium metal forms at the cathode.",
+          "Chlorine gas is produced at the anode.",
+          "The process requires large amounts of electricity."
+        ],
+        "mustKnow": [
+          "Electrolysis of molten salt (not aqueous solution) is required because Na would react with water.",
+          "This is the standard method for extracting highly reactive metals."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "CHM 102",
+    "topic": "Block 9: Aromatic Chemistry and Reaction Mechanisms",
+    "summary": "This block covers aromatic electrophilic substitution reactions, the reagents and conditions for common transformations, nucleophilic substitution (SN1/SN2), and key organic reactions such as oxidation, ozonolysis, esterification, and condensation.",
+    "subtopics": [
+      {
+        "title": "Aromatic Electrophilic Substitution",
+        "keyPoints": [
+          "Nitration: C₆H₆ + HNO₃/H₂SO₄ → C₆H₅NO₂ (nitrobenzene). The active species is the nitronium ion (NO₂⁺).",
+          "Halogenation: C₆H₆ + Br₂/FeBr₃ → C₆H₅Br (bromobenzene). FeBr₃ is a catalyst.",
+          "Sulfonation: C₆H₆ + SO₃/H₂SO₄ → C₆H₅SO₃H (benzenesulfonic acid).",
+          "Friedel-Crafts Alkylation: C₆H₆ + RCl/AlCl₃ → C₆H₅R (e.g., ethylbenzene from C₂H₅Cl/AlCl₃).",
+          "Friedel-Crafts Acylation: C₆H₆ + RCOCl/AlCl₃ → C₆H₅COR (e.g., acetophenone from CH₃COCl/AlCl₃).",
+          "Gattermann-Koch: C₆H₆ + CO/HCl/AlCl₃ → C₆H₅CHO (benzaldehyde)."
+        ],
+        "mustKnow": [
+          "Benzene to nitrobenzene: HNO₃/Conc. H₂SO₄.",
+          "Benzene to bromobenzene: Br₂/FeBr₃ (catalyst required — unlike alkenes which add Br₂ directly).",
+          "Phenol to 2,4,6-tribromophenol: Br₂ water (no catalyst needed due to -OH activation).",
+          "Toluene to 2-nitrotoluene: HNO₃/H₂SO₄ (toluene is more reactive than benzene due to CH₃ group).",
+          "Phenol to salicylic acid: CO₂/NaOH (Kolbe-Schmitt reaction).",
+          "Toluene to benzoic acid: KMnO₄ (side-chain oxidation).",
+          "Benzene to cyclohexane: H₂/Ni (hydrogenation).",
+          "Ethyne to benzene: red-hot iron tube, 873K (cyclotrimerization)."
+        ],
+        "examTraps": [
+          "Br₂ water reacts with phenol (no catalyst), but Br₂/FeBr₃ is needed for benzene.",
+          "Order matters for disubstitution: Cl₂/FeCl₃ THEN HNO₃/H₂SO₄ gives m-chloronitrobenzene (Cl is ortho/para directing but nitro is meta-directing).",
+          "For CH₃Cl then Cl₂/FeCl₃ on benzene: first alkylation (CH₃Cl/AlCl₃), then chlorination → p-chlorotoluene (methyl is ortho/para directing)."
+        ]
+      },
+      {
+        "title": "Nucleophilic Substitution: SN1 and SN2",
+        "keyPoints": [
+          "SN2: one-step concerted mechanism, backside attack, inversion of configuration, second-order kinetics.",
+          "SN2 rate: CH₃⁺ → CH₃CH₂⁺ → (CH₃)₂CH⁺ → (CH₃)₃C⁺ (faster for less hindered substrates).",
+          "SN1: two-step mechanism, carbocation intermediate, first-order kinetics, racemization.",
+          "SN1 rate: (CH₃)₃C⁺ → (CH₃)₂CH⁺ → CH₃CH₂⁺ → CH₃⁺ (faster for more stable carbocations).",
+          "Carbocation stability: tertiary > secondary > primary > methyl.",
+          "Strong nucleophiles favor SN2; weak nucleophiles and protic solvents favor SN1."
+        ],
+        "mustKnow": [
+          "CH₃Br undergoes SN2 fastest (least steric hindrance).",
+          "(CH₃)₃CBr undergoes SN1 fastest (forms stable tertiary carbocation).",
+          "Lucas test distinguishes 1°, 2°, and 3° alcohols based on carbocation stability."
+        ],
+        "examTraps": [
+          "SN2 has first-order kinetics? No — it is second order (rate depends on both substrate and nucleophile).",
+          "SN1 has first-order kinetics (rate depends only on substrate concentration)."
+        ]
+      },
+      {
+        "title": "Oxidation, Reduction, and Key Reactions",
+        "keyPoints": [
+          "Primary alcohol + K₂Cr₂O₇/H₂SO₄ (distillation) → aldehyde.",
+          "Primary alcohol + K₂Cr₂O₇/H₂SO₄ (reflux) → carboxylic acid.",
+          "Secondary alcohol + K₂Cr₂O₇/H₂SO₄ → ketone (no further oxidation).",
+          "Ketones are resistant to oxidation — they do NOT react with KMnO₄ (unlike aldehydes).",
+          "Tollens test: aldehyde + Tollens reagent → silver mirror (ketones give no reaction).",
+          "Fehling test: aldehyde → red Cu₂O precipitate (ketones give no reaction).",
+          "Iodoform test: CH₃CH(OH)R or CH₃COR + I₂/NaOH → yellow CHI₃ precipitate (e.g., ethanol, propanone).",
+          "2,4-DNP: aldehydes/ketones + 2,4-DNP → colored hydrazone precipitate.",
+          "HCN adds to carbonyls → cyanohydrin.",
+          "Ozonolysis: cyclohexene + O₃ then (CH₃)₂S → hexane-1,6-dial.",
+          "Cold alkaline KMnO₄: cyclohexene → cyclohexane-1,2-diol (syn dihydroxylation).",
+          "Esterification: RCOOH + R'OH (conc. H₂SO₄) → RCOOR' + H₂O.",
+          "Claisen condensation: two ester molecules react in base.",
+          "Aldol condensation: two aldehyde/ketone molecules react in base."
+        ],
+        "mustKnow": [
+          "Propanoic acid → propanoyl chloride: SOCl₂ or PCl₅.",
+          "CH₃CH₂COCl = propanoyl chloride.",
+          "CH₃CH₂CONHCH₃ = N-methylpropanamide.",
+          "4-methylpentanal = an aldehyde with 5-carbon chain and methyl on carbon 4.",
+          "FeCl₃ test: gives violet color with phenols (not with alcohols or acids).",
+          "Positive Iodoform test: ethanol, propanone, and any methyl ketone or secondary alcohol with CH₃CH(OH)-."
+        ],
+        "examTraps": [
+          "Propanone (ketone) does NOT react with KMnO₄ — this distinguishes it from aldehydes.",
+          "Tollens test distinguishes aldehydes (silver mirror) from ketones (no reaction).",
+          "The Iodoform test is positive for ethanol AND propanone — both give yellow CHI₃.",
+          "Markovnikov's rule: H adds to the carbon with more H atoms (major product of 2-methyl-2-butene + HBr is 2-bromo-2-methylbutane).",
+          "Acid strength increases with electron-withdrawing groups: CCl₃COOH > CHCl₂COOH > CH₂ClCOOH > CH₃COOH.",
+          "Methyl propanoate = CH₃CH₂COOCH₃ (not ethyl ethanoate)."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "PHY 104",
+    "topic": "Block 1: Simple Harmonic Motion (SHM) and Energy",
+    "summary": "SHM is periodic motion where acceleration is proportional to negative displacement (a = -ω²x). This block covers mass-spring systems, pendulums, and energy transformations in oscillatory motion.",
+    "subtopics": [
+      {
+        "title": "Fundamentals of SHM",
+        "keyPoints": [
+          "SHM: acceleration is directly proportional to displacement and directed toward equilibrium (a = -ω²x).",
+          "Angular frequency: ω = √(k/m).",
+          "Period (T): T = 2π/ω = 2π√(m/k) for mass-spring; T = 2π√(L/g) for simple pendulum.",
+          "Frequency (f): f = 1/T = ω/2π.",
+          "Speed is maximum at equilibrium position (x = 0).",
+          "Acceleration and potential energy are maximum at maximum displacement (amplitude, x = A)."
+        ],
+        "mustKnow": [
+          "Total energy E = ½kA² remains constant in the absence of friction.",
+          "KE = ½k(A² - x²), PE = ½kx².",
+          "At equilibrium: KE is max, PE = 0. At amplitude: PE is max, KE = 0."
+        ],
+        "examTraps": [
+          "Do not confuse angular frequency (ω) with frequency (f) — ω = 2πf.",
+          "The period of a pendulum depends only on length and gravity, NOT on mass."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "PHY 104",
+    "topic": "Block 2: Damped, Resonant, and Coupled Oscillations",
+    "summary": "Real oscillators experience damping. This block covers underdamped, critically damped, and overdamped systems, resonance, quality factor, and coupled oscillators with normal modes.",
+    "subtopics": [
+      {
+        "title": "Damping and Resonance",
+        "keyPoints": [
+          "Damping: a force (friction/viscosity) opposing motion, usually proportional to velocity.",
+          "Underdamped (b² < 4mk): system oscillates with decreasing amplitude.",
+          "Critically damped (b² = 4mk): returns to equilibrium fastest without oscillating.",
+          "Overdamped (b² > 4mk): returns to equilibrium slowly without oscillating.",
+          "Resonance: occurs when driving frequency equals natural frequency → large amplitude.",
+          "Quality factor (Q = f₀/Δf): measures how underdamped a system is; high-Q = sharp resonance."
+        ],
+        "mustKnow": [
+          "Critical damping is the optimal condition for shock absorbers and door closers.",
+          "Q-factor relates to energy stored vs energy lost per cycle."
+        ]
+      },
+      {
+        "title": "Coupled Oscillators",
+        "keyPoints": [
+          "Coupled oscillators: independent oscillators that influence each other's motion.",
+          "Normal modes: specific patterns where all parts vibrate at the same frequency.",
+          "Symmetric mode: masses move in-phase; coupling spring is not stretched.",
+          "Antisymmetric mode: masses move out-of-phase; coupling spring is stretched (higher frequency)."
+        ],
+        "mustKnow": [
+          "Any complex motion of a coupled system can be expressed as a combination of normal modes.",
+          "The antisymmetric mode always has a higher frequency than the symmetric mode."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "PHY 104",
+    "topic": "Block 3: Waves and Sound Propagation",
+    "summary": "Waves transfer energy without bulk matter transport. This block covers wave types, the wave equation, sound speed, the Doppler effect, beats, and standing waves in pipes.",
+    "subtopics": [
+      {
+        "title": "Wave Properties",
+        "keyPoints": [
+          "Wave: disturbance that propagates energy and momentum without bulk transport of matter.",
+          "Mechanical waves require a medium (sound); non-mechanical waves do not (light).",
+          "Longitudinal: particle motion parallel to propagation (sound).",
+          "Transverse: particle motion perpendicular to propagation (light, ripples).",
+          "Speed: v = fλ.",
+          "Wave equation: ∂²y/∂t² = v² ∂²y/∂x²."
+        ],
+        "mustKnow": [
+          "Sound speed in air ≈ 340 m/s, depends on temperature (v ∝ √T).",
+          "Superposition principle: resultant displacement is the sum of individual wave displacements."
+        ]
+      },
+      {
+        "title": "Doppler Effect and Standing Waves",
+        "keyPoints": [
+          "Doppler effect: change in frequency due to relative motion. f' = f(v ± v₀)/(v ∓ vₛ).",
+          "Beats: periodic intensity variations from two waves of slightly different frequencies (f_beat = |f₁ - f₂|).",
+          "Standing waves: superposition of two identical waves traveling in opposite directions.",
+          "Nodes: points of zero displacement.",
+          "Open-open pipe: all harmonics (n = 1, 2, 3...).",
+          "Open-closed pipe: only odd harmonics (n = 1, 3, 5...)."
+        ],
+        "mustKnow": [
+          "Use the correct sign convention for Doppler: +v₀ if observer moves toward source; -vₛ if source moves toward observer.",
+          "Fundamental frequency (first harmonic) is the lowest resonant frequency."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "PHY 104",
+    "topic": "Block 4: Geometrical Optics — Reflection",
+    "summary": "Reflection obeys θᵢ = θᵣ. This block covers plane mirrors, image formation, mirror rotation, and curved mirrors (concave and convex) with the mirror formula and sign convention.",
+    "subtopics": [
+      {
+        "title": "Plane Mirrors",
+        "keyPoints": [
+          "Law of reflection: angle of incidence equals angle of reflection (θᵢ = θᵣ).",
+          "Incident ray, reflected ray, and normal lie in the same plane.",
+          "Plane mirrors form virtual, erect, same-size, and laterally inverted images.",
+          "Image distance behind mirror equals object distance in front.",
+          "Rotating a mirror by θ rotates the reflected ray by 2θ.",
+          "Minimum mirror height to view full image = half the person's height."
+        ],
+        "mustKnow": [
+          "For a point object 10 cm from a plane mirror, the image is 10 cm behind the mirror → distance between object and image = 20 cm.",
+          "Lateral inversion: left-right reversal of the image."
+        ]
+      },
+      {
+        "title": "Curved Mirrors",
+        "keyPoints": [
+          "Concave mirror: converging mirror; can form real or virtual images depending on object position.",
+          "Convex mirror: diverging mirror; always forms virtual, upright, and diminished images.",
+          "Mirror formula: 1/f = 1/u + 1/v.",
+          "Magnification: M = v/u.",
+          "Sign convention (Real is Positive): f is positive for concave mirrors, negative for convex.",
+          "Applications: concave in telescopes, solar cookers, headlights; convex in rear-view mirrors."
+        ],
+        "mustKnow": [
+          "Object at C (center of curvature): image is real, inverted, same size at C.",
+          "Object between F and mirror: image is virtual, upright, and magnified.",
+          "Object at F: no image is formed (rays are parallel after reflection).",
+          "R = 2f (radius of curvature = twice focal length)."
+        ],
+        "examTraps": [
+          "Convex mirrors have negative focal length — always use negative f in calculations.",
+          "Do not confuse concave (converging) with convex (diverging)."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "PHY 104",
+    "topic": "Block 5: Geometrical Optics — Refraction and Lenses",
+    "summary": "Refraction changes the direction of light when it enters a new medium. This block covers Snell's law, refractive index, apparent depth, lenses, the lensmakers formula, optical instruments, and vision correction.",
+    "subtopics": [
+      {
+        "title": "Refraction",
+        "keyPoints": [
+          "Refraction: change in direction due to change in speed when entering a new medium obliquely.",
+          "Snell's law: n₁ sinθ₁ = n₂ sinθ₂.",
+          "Absolute refractive index (n): n = c/v.",
+          "Light bends toward the normal when entering a denser medium (slowing down).",
+          "Apparent depth (d_app): d_app = d_real / n.",
+          "Relative refractive index < 1: light speeds up and bends away from the normal."
+        ],
+        "mustKnow": [
+          "n_air ≈ 1.00, n_water ≈ 1.33, n_glass ≈ 1.50, n_diamond ≈ 2.42.",
+          "Refraction always involves a change in speed (yes) and direction (if incident obliquely).",
+          "If light enters perpendicularly, it is NOT refracted (passes straight through)."
+        ]
+      },
+      {
+        "title": "Lenses and Optical Instruments",
+        "keyPoints": [
+          "Convex (converging) lens: brings parallel rays to a focus; positive focal length.",
+          "Concave (diverging) lens: spreads parallel rays; negative focal length.",
+          "Lens formula: 1/v + 1/u = 1/f.",
+          "Lensmakers formula: 1/f = (n - 1)(1/R₁ + 1/R₂).",
+          "Refractive power: P = 1/f (unit: dioptre, D).",
+          "Simple microscope: one lens. Compound microscope: objective + eyepiece (multiple lenses).",
+          "Camera with a lens collects more light than a pinhole camera."
+        ],
+        "mustKnow": [
+          "For a converging lens: object beyond 2F → real, inverted, diminished image at 2F. Object at 2F → real, inverted, same size. Object between F and 2F → real, inverted, magnified. Object within F → virtual, upright, magnified.",
+          "Diverging lens always forms virtual, upright, and diminished images.",
+          "Spherical aberration: caused by imperfect shape. Chromatic aberration: caused by different refractive indices for different wavelengths."
+        ],
+        "examTraps": [
+          "Power of a diverging lens is NEGATIVE (P = -1/|f|).",
+          "Do not confuse myopia correction (concave lens) with hyperopia correction (convex lens)."
+        ]
+      },
+      {
+        "title": "The Human Eye",
+        "keyPoints": [
+          "Myopia (near-sightedness): eyeball too long, image forms in front of retina → corrected with concave (diverging) lenses.",
+          "Hyperopia (far-sightedness): eyeball too short, image forms behind retina → corrected with convex (converging) lenses."
+        ],
+        "mustKnow": [
+          "Concave lens diverges light before it enters the eye, moving the image back onto the retina.",
+          "Convex lens converges light more strongly, moving the image forward onto the retina."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "PHY 104",
+    "topic": "Block 6: Modern Physics",
+    "summary": "Modern physics covers atomic models from Thomson to Bohr, nuclear physics (isotopes, isobars, isotones), radioactivity, X-rays, and wave-particle duality.",
+    "subtopics": [
+      {
+        "title": "Atomic Models",
+        "keyPoints": [
+          "Mechanical Atomic Model: atom as smallest indivisible particle (explains chemical combinations like constant proportion, multiple proportion, Gay-Lussac's law).",
+          "Thomson's Plum Pudding Model: positive sphere with embedded electrons — explains electrovalent bonding but lacks detail about atomic structure.",
+          "Rutherford Model: small, dense, positive nucleus from gold foil experiment (Geiger-Marsden); atom is mostly empty space.",
+          "Rutherford's limitations: cannot explain atomic stability or line spectra (electrons should radiate and spiral in).",
+          "Bohr Model: electrons orbit in discrete energy levels; angular momentum is quantized (L = mvr = nh/2π).",
+          "Bohr's quantum condition: electron wavelength fits the circumference of orbit a whole number of times."
+        ],
+        "mustKnow": [
+          "Gold foil experiment: alpha particles scattered by electrostatic repulsion from the nucleus.",
+          "Impact parameter (b) relates to kinetic energy, target atomic number (Z), and scattering angle.",
+          "Nuclear radius: R = R₀A^(1/3) where R₀ ≈ 1.2 fm.",
+          "The nucleus is much smaller than the atom."
+        ],
+        "examTraps": [
+          "Rutherford expected small-angle scattering but observed large-angle deflections — this led to the nuclear model.",
+          "Bohr's model has no theoretical basis for selecting allowed orbits — it was empirically derived."
+        ]
+      },
+      {
+        "title": "Nuclear Physics",
+        "keyPoints": [
+          "Nuclide: a particular type of nucleus (characterized by Z and A).",
+          "Isotopes: same Z, different N (different neutrons).",
+          "Isobars: same A (mass number), different Z. Isotones: same N, different A.",
+          "Nucleon: generic name for protons and neutrons. N = A - Z.",
+          "Alpha particle: helium nucleus (⁴₂He). Beta: fast electron. Gamma: high-energy EM wave.",
+          "Half-life (T₁/₂): time for half a radioactive sample to decay.",
+          "X-rays: produced when high-speed electrons decelerate on a metal target in a vacuum."
+        ],
+        "mustKnow": [
+          "Alpha decay reduces A by 4 and Z by 2. Beta decay increases Z by 1 (A unchanged).",
+          "Neutron has slightly larger mass than proton; electron is much lighter; photon has zero rest mass.",
+          "Elementary particles: fermions (half-integer spin, obey Pauli) and bosons (integer spin, Bose-Einstein statistics)."
+        ],
+        "examTraps": [
+          "Hydrogen is NOT an elementary particle — it is an atom.",
+          "Protons and neutrons are NOT elementary — they are made of quarks.",
+          "Bosons do NOT obey the Pauli exclusion principle (multiple bosons can occupy the same state)."
+        ]
+      },
+      {
+        "title": "Hydrogen Spectrum",
+        "keyPoints": [
+          "Line spectrum: produced by gases at low pressure — each element has a unique fingerprint spectrum.",
+          "Five series: Lyman (UV), Balmer (visible), Paschen, Brackett, Pfund (IR).",
+          "Balmer series: visible region, n_f = 2. Lyman series: UV, n_f = 1.",
+          "Rydberg constant (R_H): used in empirical formula for hydrogen spectral lines.",
+          "Energy levels: E_n = -13.6/n² eV. Ground state: n = 1, E = -13.6 eV.",
+          "ΔE = hf = hc/λ when electron jumps between levels."
+        ],
+        "mustKnow": [
+          "Excitation energy from n=1 to n=2: 10.2 eV. From n=1 to n=3: 12.1 eV.",
+          "Electron stays in excited state for about 10⁻⁸ s before decaying.",
+          "All spectral series converge at the short-wavelength end (series limit)."
         ]
       }
     ]
