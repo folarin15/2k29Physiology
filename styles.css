@@ -5145,42 +5145,59 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
 
 /* my feedback section */
 
-.my-feedback-section {
+#studentSuggestionsList {
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 24px;
-  padding: 28px;
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: var(--soft-shadow);
+  min-height: 80px;
 }
 
-.my-feedback-section .section-head {
+.contact-reps-card {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-}
-
-.my-feedback-section .section-head h3 {
-  margin: 0;
-  font-size: 22px;
+  gap: 14px;
+  padding: 16px 20px;
+  border-radius: 18px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: var(--soft-shadow);
+  text-decoration: none;
   color: var(--ink);
-  font-family: var(--display-font);
-  font-weight: 500;
+  transition: 0.2s ease;
 }
 
-.my-feedback-section .view-all-btn {
-  border: none;
-  background: rgba(23, 27, 31, 0.06);
-  padding: 10px 18px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: 500;
+.contact-reps-card:hover {
+  border-color: var(--mint);
+  background: rgba(42, 157, 127, 0.04);
+}
+
+.contact-reps-card .contact-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.contact-reps-card div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.contact-reps-card strong {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.contact-reps-card span {
   font-size: 13px;
-  color: var(--ink);
-  transition: 0.15s ease;
+  color: var(--muted);
 }
 
-.my-feedback-section .view-all-btn:hover {
-  background: rgba(23, 27, 31, 0.1);
+.contact-reps-card .material-symbols-rounded {
+  font-size: 20px;
+  color: var(--muted);
 }
 
 .feedback-item {

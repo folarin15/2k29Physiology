@@ -1385,5 +1385,274 @@
         ]
       }
     ]
+  },
+  {
+    "courseCode": "ZOO 102",
+    "topic": "Block 1: Animal Systematics and Taxonomy",
+    "summary": "Systematics is the science of classifying organisms and determining evolutionary relationships using fossils, anatomy, and genetics. Its three goals are to identify all species, evaluate their relationships, and construct a hierarchical taxonomic system.",
+    "subtopics": [
+      {
+        "title": "Definition & Goals",
+        "keyPoints": [
+          "Systematics: science of classifying organisms and determining evolutionary relationships using fossils, anatomy, and genetics.",
+          "Three goals: identify all species, evaluate relationships, produce a hierarchical taxonomy."
+        ],
+        "mustKnow": [
+          "Hierarchical ranks: Domain, Kingdom, Phylum, Class, Order, Family, Genus, Species.",
+          "ICZN governs animal naming; Binomial System = Generic name + Specific name.",
+          "Names broader than genus are capitalized but NOT italicized."
+        ],
+        "examTraps": [
+          "Do not confuse systematics (includes evolution) with taxonomy (naming/classification only).",
+          "A taxon at family level (e.g., Felidae) is capitalized but not italicized."
+        ]
+      },
+      {
+        "title": "Systematic Trends",
+        "keyPoints": [
+          "Phenetics (Numerical Taxonomy): groups by overall similarity using unit character data matrices.",
+          "Cladistics (Phylogenetic Systematics): groups into clades based on shared derived characters (synapomorphies).",
+          "Molecular Systematics: uses DNA and protein differences to establish relationships.",
+          "Artificial Intelligence: uses machine learning to identify species from photographs."
+        ],
+        "mustKnow": [
+          "A clade is a group defined by direct descent from a common ancestor.",
+          "Synapomorphies are shared derived characters unique to a clade."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "ZOO 102",
+    "topic": "Block 2: The History of Animal Diversity",
+    "summary": "Animal life began in the Precambrian with soft-bodied Ediacara fauna. Major diversifications occurred during the Cambrian Explosion (Paleozoic), the rise of dinosaurs (Mesozoic), and the radiation of mammals and insects (Cenozoic).",
+    "subtopics": [
+      {
+        "title": "Origins and Key Eras",
+        "keyPoints": [
+          "Oldest accepted fossils: Ediacara fauna (~575 mya) — soft-bodied cnidarians and mollusks.",
+          "Paleozoic: Cambrian Explosion — about half of extant animal phyla appeared; first animals with hard skeletons.",
+          "Mesozoic: first coral reefs, rise of dinosaurs, birds, and tiny mammals.",
+          "Cenozoic: diversification of insects, flowering plants, and mammals after mass extinctions."
+        ],
+        "mustKnow": [
+          "Vertebrates moved onto land ~360 million years ago (Paleozoic).",
+          "The Cambrian Explosion occurred in the Paleozoic Era."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "ZOO 102",
+    "topic": "Block 3: Animal Body Plans and Organization",
+    "summary": "Animals are organized at progressively complex levels: protoplasmic, cellular, tissue-organ, and organ-system. Body symmetry, germ layers, and body cavities are key criteria for categorizing animal phyla.",
+    "subtopics": [
+      {
+        "title": "Levels of Organization",
+        "keyPoints": [
+          "Protoplasmic: unicellular (e.g., Protozoa).",
+          "Cellular: cell aggregations with specialized functions but no true tissues (e.g., Sponges).",
+          "Tissue-Organ: tissues organized into functional units (e.g., Flatworms).",
+          "Organ-System: multiple organs working together (e.g., Arthropods, Chordates)."
+        ],
+        "mustKnow": [
+          "Sponges operate at the cellular level — they lack true tissues (Parazoa)."
+        ]
+      },
+      {
+        "title": "Symmetry and Germ Layers",
+        "keyPoints": [
+          "Asymmetry: no plane of symmetry (e.g., Sponges).",
+          "Radial Symmetry: parts around a central axis (e.g., Cnidaria).",
+          "Bilateral Symmetry: one sagittal plane creates mirror halves; correlated with cephalization.",
+          "Diploblastic: two layers (Ectoderm + Endoderm); Triploblastic: three layers (adds Mesoderm)."
+        ],
+        "mustKnow": [
+          "Cephalization = concentration of sensory/nervous tissue at anterior end.",
+          "The mesoderm allows for complex muscles, skeleton, and circulatory organs."
+        ]
+      },
+      {
+        "title": "Body Cavities and Development",
+        "keyPoints": [
+          "Acoelomate: no body cavity (e.g., Flatworms).",
+          "Pseudocoelomate: cavity not fully lined by mesoderm (e.g., Roundworms).",
+          "Eucoelomate: cavity fully lined by mesodermal peritoneum.",
+          "Protostomes: blastopore → mouth; spiral/determinate cleavage.",
+          "Deuterostomes: blastopore → anus; radial/indeterminate cleavage."
+        ],
+        "mustKnow": [
+          "Eucoelomates have a true coelom lined by peritoneum.",
+          "Deuterostomes include echinoderms and chordates."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "ZOO 102",
+    "topic": "Block 4: Development and Embryology",
+    "summary": "Animal development proceeds through gamete formation, fertilization, cleavage, blastulation, gastrulation, organogenesis, and growth. Cleavage patterns and gastrulation movements vary based on yolk content and species.",
+    "subtopics": [
+      {
+        "title": "Key Stages",
+        "keyPoints": [
+          "Fertilization: fusion of haploid gametes → diploid zygote.",
+          "Parthenogenesis: development from an unfertilized egg.",
+          "Cleavage: rapid cell division into blastomeres — holoblastic (complete) or meroblastic (partial) depending on yolk.",
+          "Blastulation: formation of a hollow ball of cells (blastula)."
+        ],
+        "mustKnow": [
+          "Holoblastic cleavage occurs in eggs with little yolk (isolecithal).",
+          "Meroblastic cleavage occurs in yolky eggs (telolecithal, centrolecithal)."
+        ]
+      },
+      {
+        "title": "Gastrulation and Organogenesis",
+        "keyPoints": [
+          "Gastrulation: blastula converts into a complex shape with germ layers.",
+          "Movements: invagination (bending inward), involution (rolling inward), epiboly (spreading), ingression (cell migration).",
+          "Ectoderm → skin, nervous system; Mesoderm → muscles, skeleton, circulation, reproduction; Endoderm → digestive tract, lungs, pancreas."
+        ],
+        "mustKnow": [
+          "The archenteron is the primitive gut formed during gastrulation.",
+          "Totipotent cells can form an entire organism + placenta; pluripotent cells can form most cell types but not a whole individual."
+        ]
+      },
+      {
+        "title": "Growth Patterns",
+        "keyPoints": [
+          "Most animals show an S-shaped (sigmoid) growth curve.",
+          "Arthropods show a staircase curve due to molting (ecdysis) of the exoskeleton."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "ZOO 102",
+    "topic": "Block 5: Phylum Porifera (Sponges)",
+    "summary": "Sponges are Parazoa (lack true tissues), mostly marine, asymmetrical, and filter-feed using choanocytes. Their unique ability to dedifferentiate and redifferentiate cells allows dissociated cells to reform the animal.",
+    "subtopics": [
+      {
+        "title": "Cell Types",
+        "keyPoints": [
+          "Choanocytes: flagellated collar cells that circulate water and capture food.",
+          "Pinacocytes: form the outer pinacoderm; can contract to vary ostia diameter.",
+          "Archaeocytes: amoeboid cells in mesohyl for digestion, waste removal, and gamete formation."
+        ],
+        "mustKnow": [
+          "The mesohyl is the acellular, gelatinous matrix between cell layers.",
+          "Sponges can dedifferentiate and redifferentiate — dissociated cells can re-aggregate into a functional sponge."
+        ]
+      },
+      {
+        "title": "Canal Systems and Classification",
+        "keyPoints": [
+          "Asconoid: simplest; spongocoel lined by choanocytes.",
+          "Syconoid: folded body wall creates radial canals.",
+          "Leuconoid: most complex; network of flagellated chambers; allows largest body size.",
+          "Classes: Calcarea (calcareous spicules), Hexactinellida (6-pointed siliceous spicules), Demospongiae (90% of species), Sclerospongia."
+        ],
+        "mustKnow": [
+          "Water enters through ostia and exits through the osculum.",
+          "Gemmules are resistant clusters of cells for asexual survival during harsh conditions."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "ZOO 102",
+    "topic": "Block 6: Phylum Cnidaria",
+    "summary": "Cnidarians possess cnidocytes containing stinging nematocysts. They are diploblastic, radially symmetric, and exhibit dimorphism (polyp and medusa forms). Classes include Hydrozoa, Scyphozoa, Cubozoa, and Anthozoa.",
+    "subtopics": [
+      {
+        "title": "Key Features",
+        "keyPoints": [
+          "Cnidocytes: specialized cells containing nematocysts for prey capture and defense.",
+          "Diploblastic: epidermis and gastrodermis separated by acellular mesoglea.",
+          "Gastrovascular cavity: single opening (mouth/anus) for digestion and circulation.",
+          "Dimorphism: sessile polyp (mouth up) and free-swimming medusa (mouth down)."
+        ],
+        "mustKnow": [
+          "Nerve net: diffuse nervous system without a brain.",
+          "Statocysts (balance) and ocelli (light detection) are sensory structures."
+        ]
+      },
+      {
+        "title": "Classes",
+        "keyPoints": [
+          "Hydrozoa: often colonial (e.g., Obelia, Physalia); medusa usually has a velum (craspedote).",
+          "Scyphozoa: true jellyfish; medusa dominant; no velum; strobilation produces ephyrae.",
+          "Cubozoa: box jellies; square medusa; complex eyes; potentially lethal stings.",
+          "Anthozoa: sea anemones and corals; only polyp form; gastrovascular cavity divided by mesenteries."
+        ],
+        "mustKnow": [
+          "Reef-building corals (Scleractinia) secrete CaCO₃ exoskeletons.",
+          "Corals have a mutualistic relationship with photosynthetic zooxanthellae (algae) — limits them to shallow, clear, tropical waters.",
+          "Coral reefs are economically important for tourism and fisheries."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "ZOO 102",
+    "topic": "Block 7: Zoogeography and Environment",
+    "summary": "Zoogeography studies the distribution of animal species. Distribution patterns include cosmopolitan, endemic, and disjunct. Wallace divided the Earth into six zoogeographical regions.",
+    "subtopics": [
+      {
+        "title": "Distribution Patterns",
+        "keyPoints": [
+          "Cosmopolitan: worldwide (e.g., house mouse, pigeon).",
+          "Endemic: unique to one location (e.g., Mambilla reed frog).",
+          "Disjunct: geographically separated populations due to geological events."
+        ],
+        "mustKnow": [
+          "Wallace's Regions: Nearctic, Neotropical, Palearctic, Ethiopian, Oriental, Australian."
+        ]
+      },
+      {
+        "title": "Physiological Adaptation",
+        "keyPoints": [
+          "Euryhaline: withstand wide salinity changes (e.g., estuaries).",
+          "Stenohaline: restricted to narrow salinity ranges.",
+          "Ammonotelic: excrete ammonia (fish).",
+          "Ureotelic: excrete urea (mammals).",
+          "Uricotelic: excrete uric acid (birds, reptiles) — conserves water."
+        ],
+        "mustKnow": [
+          "Uricotely is an adaptation for water conservation in terrestrial environments."
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "ZOO 102",
+    "topic": "Block 8: Conservation and Nigerian Biodiversity",
+    "summary": "Conservation includes in-situ (natural habitats) and ex-situ (zoos, gene banks) approaches. Nigeria has 7 national parks managed by NPS, with key agencies including the Federal Ministry of Environment and NCF.",
+    "subtopics": [
+      {
+        "title": "Conservation Types and Agencies",
+        "keyPoints": [
+          "In-situ: protection in natural habitats (e.g., National Parks).",
+          "Ex-situ: protection outside natural habitats (e.g., Zoos, gene banks).",
+          "Federal Ministry of Environment: formulates environmental policy.",
+          "National Parks Service (NPS): manages 7 national parks.",
+          "Nigerian Conservation Foundation (NCF): leading biodiversity NGO."
+        ],
+        "mustKnow": [
+          "Key parks: Gashaka-Gumti (largest), Yankari (elephants), Cross River (gorillas), Okomu (rainforest).",
+          "Endangered Species Act (1985): aligns with CITES to control trade in endangered species."
+        ]
+      },
+      {
+        "title": "Key Projects",
+        "keyPoints": [
+          "Great Green Wall: combats desertification in northern Nigeria.",
+          "REDD Programme: reduces emissions from deforestation and forest degradation."
+        ],
+        "mustKnow": [
+          "Challenges include deforestation, poaching, oil pollution, and weak law enforcement."
+        ]
+      }
+    ]
   }
 ]
