@@ -184,12 +184,17 @@ function mapFeedback(row) {
 }
 
 function mapQuestion(row) {
+  let options = row.options || [];
+  if (typeof options === "string") {
+    try { options = JSON.parse(options); } catch { options = []; }
+  }
+  if (!Array.isArray(options)) options = [];
   return {
     id: row.id,
     courseCode: row.course_code || row.courseCode,
     topic: row.topic || "General",
     question: row.question_text || row.question,
-    options: row.options || [],
+    options,
     difficulty: row.difficulty || "Medium",
     sourceHint: row.source_hint || row.sourceHint || "",
     createdAtMs: toMillis(row.created_at),

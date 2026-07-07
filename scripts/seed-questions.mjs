@@ -104,7 +104,7 @@ async function main() {
       course_code: q.courseCode,
       topic: q.topic || "General",
       question_text: q.question,
-      options: JSON.stringify(shuffledOptions),
+      options: shuffledOptions,
       correct_answer: q.correctAnswer,
       explanation: q.explanation || "",
       difficulty: ["Easy", "Medium", "Hard"].includes(q.difficulty) ? q.difficulty : "Medium",
