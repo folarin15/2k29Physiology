@@ -98,91 +98,83 @@
           </p>
         </section>
 
-        <!-- SUGGESTIONS WORKSPACE: Two-column premium layout with form and recent suggestions. -->
-        <div class="suggestions-workspace">
-          <!-- LEFT COLUMN: Submit feedback form -->
+        <!-- SUGGESTIONS WORKSPACE -->
+        <div class="suggestions-workspace" style="display: grid; grid-template-columns: 1fr 380px; gap: 32px; align-items: start;">
+          <!-- LEFT COLUMN -->
           <div>
-            <div class="feedback-form-card">
-              <div class="form-header">
-                <div class="form-icon">💡</div>
+            <div class="feedback-form-card" style="padding: 24px; border: 1px solid var(--line); border-radius: 20px; background: #fffdf8; box-shadow: var(--soft-shadow);">
+              <div class="form-header" style="display: flex; gap: 16px; align-items: center; margin-bottom: 24px;">
+                <div class="form-icon" style="font-size: 32px; background: rgba(42, 157, 127, 0.1); padding: 12px; border-radius: 12px;">💡</div>
                 <div>
-                  <h2>Submit Feedback</h2>
-                  <p>Help improve the PHYSIOK29 portal.</p>
+                  <h2 style="margin: 0; font-family: var(--display-font);">Submit Feedback</h2>
+                  <p style="margin: 4px 0 0; color: var(--muted);">Help improve the PHYSIOK29 portal.</p>
                 </div>
               </div>
-              <hr>
-              <form id="suggestionForm">
-                <label class="field-label">Category</label>
-                <div class="category-grid">
-                  <button class="category-btn selected" type="button" data-category="resource">📚<br><br>Resource</button>
-                  <button class="category-btn" type="button" data-category="bug">🐞<br><br>Bug</button>
-                  <button class="category-btn" type="button" data-category="suggestion">💡<br><br>Suggestion</button>
-                  <button class="category-btn" type="button" data-category="complaint">📢<br><br>Complaint</button>
+              <form id="suggestionForm" style="display: grid; gap: 16px;">
+                <label class="field-label" style="font-weight: 600; font-size: 0.9rem;">Category</label>
+                <div class="category-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+                  <button class="category-btn" type="button" data-category="resource" style="padding: 12px 4px; border: 1px solid var(--line); border-radius: 12px; background: #fcfbf8; cursor: pointer; text-align: center;">📚<br><small>Resource</small></button>
+                  <button class="category-btn" type="button" data-category="bug" style="padding: 12px 4px; border: 1px solid var(--line); border-radius: 12px; background: #fcfbf8; cursor: pointer; text-align: center;">🐞<br><small>Bug</small></button>
+                  <button class="category-btn" type="button" data-category="suggestion" style="padding: 12px 4px; border: 1px solid var(--line); border-radius: 12px; background: #fcfbf8; cursor: pointer; text-align: center;">💡<br><small>Suggest</small></button>
+                  <button class="category-btn" type="button" data-category="complaint" style="padding: 12px 4px; border: 1px solid var(--line); border-radius: 12px; background: #fcfbf8; cursor: pointer; text-align: center;">📢<br><small>Complain</small></button>
                 </div>
                 <input name="category" type="hidden" value="resource">
-                <label class="field-label">Feedback Title</label>
-                <input class="feedback-input" name="title" type="text" placeholder="Example: Upload PHY103 Practical Manual">
-                <label class="field-label">Description</label>
-                <textarea class="feedback-textarea" name="message" rows="8" placeholder="Tell us more about your feedback..."></textarea>
-                <div class="char-count">
-                  <span>Be as detailed as possible.</span>
+                
+                <label class="field-label" style="font-weight: 600; font-size: 0.9rem;">Feedback Title</label>
+                <input class="feedback-input" name="title" type="text" placeholder="e.g. Upload PHY103 Practical Manual" style="width: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: #fdfcf9;">
+                
+                <label class="field-label" style="font-weight: 600; font-size: 0.9rem;">Description</label>
+                <textarea class="feedback-textarea" name="message" rows="6" placeholder="Tell us more about your feedback..." style="width: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: #fdfcf9; resize: vertical;"></textarea>
+                
+                <div class="char-count" style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted);">
+                  <span>Detailed feedback helps us fix issues faster.</span>
                   <span id="charCount">0 / 500</span>
                 </div>
-                <div class="anonymous-toggle">
+                
+                <div class="anonymous-toggle" style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: #fcfbf8;">
+                  <input name="anonymous" type="checkbox" style="width: 18px; height: 18px;">
                   <div>
-                    <strong>Submit Anonymously</strong>
-                    <span>Your identity will remain hidden.</span>
+                    <strong style="display: block; font-size: 0.9rem;">Submit Anonymously</strong>
+                    <span style="font-size: 0.8rem; color: var(--muted);">Your identity remains hidden to everyone.</span>
                   </div>
-                  <input name="anonymous" type="checkbox">
                 </div>
-                <button class="submit-feedback-btn" type="submit">🚀 Submit Feedback</button>
+                
+                <button class="submit-feedback-btn" type="submit" style="width: 100%; padding: 14px; border: none; border-radius: 12px; background: var(--ink); color: #fffaf0; font-weight: 600; cursor: pointer;">Send Feedback</button>
               </form>
-              <p class="form-status" id="suggestionStatus"></p>
             </div>
           </div>
 
-          <!-- RIGHT COLUMN: Stats + Search + Recent Suggestions -->
-          <div class="suggestions-sidebar">
-
+          <!-- RIGHT COLUMN -->
+          <div class="suggestions-sidebar" style="display: grid; gap: 24px;">
             <!-- STATS -->
-            <div class="suggestions-stats">
-              <div class="stat-card">
-                <div class="stat-value mint" id="studentSuggestionCount">0</div>
-                <div class="stat-label">Suggestions</div>
+            <div class="suggestions-stats" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="stat-card" style="padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: #fffdf8; text-align: center;">
+                <div class="stat-value mint" style="font-size: 1.8rem; font-weight: 700; color: var(--mint);" id="studentSuggestionCount">0</div>
+                <div class="stat-label" style="font-size: 0.8rem; color: var(--muted);">Suggestions</div>
               </div>
-              <div class="stat-card">
-                <div class="stat-value blue" id="studentResolvedCount">0</div>
-                <div class="stat-label">Resolved</div>
-              </div>
-            </div>
-
-            <!-- SEARCH + FILTERS -->
-            <div class="search-filter-card">
-              <input class="search-input" type="text" placeholder="Search...">
-              <div class="filter-pills">
-                <button class="filter-pill active" data-filter="all">All</button>
-                <button class="filter-pill" data-filter="resource">Resource</button>
-                <button class="filter-pill" data-filter="bug">Bug</button>
-                <button class="filter-pill" data-filter="suggestion">Suggestion</button>
-                <button class="filter-pill" data-filter="complaint">Complaint</button>
+              <div class="stat-card" style="padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: #fffdf8; text-align: center;">
+                <div class="stat-value blue" style="font-size: 1.8rem; font-weight: 700; color: var(--sky);" id="studentResolvedCount">0</div>
+                <div class="stat-label" style="font-size: 0.8rem; color: var(--muted);">Resolved</div>
               </div>
             </div>
 
             <!-- RECENT SUGGESTIONS -->
-            <div id="studentSuggestionsList">
-              <p style="color:var(--muted);font-size:14px;text-align:center;padding:24px 0;">No suggestions yet. Be the first to share feedback.</p>
+            <div class="recent-list-card" style="padding: 24px; border: 1px solid var(--line); border-radius: 20px; background: #fffdf8; box-shadow: var(--soft-shadow);">
+              <h3 style="margin: 0 0 16px 0;">Recent Activity</h3>
+              <div id="studentSuggestionsList" style="display: grid; gap: 16px;">
+                <p style="color:var(--muted);font-size:14px;text-align:center;padding:24px 0;">No suggestions yet.</p>
+              </div>
             </div>
 
             <!-- CONTACT CARD -->
-            <a href="./reps.html" class="contact-reps-card">
-              <span class="contact-icon">🎓</span>
-              <div>
-                <strong>Need help now?</strong>
-                <span>Contact your class rep directly</span>
+            <a href="./reps.html" class="contact-reps-card" style="display: flex; align-items: center; gap: 16px; padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: #f0f7f5; text-decoration: none;">
+              <div class="contact-icon" style="font-size: 24px; background: rgba(42, 157, 127, 0.2); padding: 12px; border-radius: 12px;">🎓</div>
+              <div style="flex: 1;">
+                <strong style="display: block; color: var(--ink);">Need urgent help?</strong>
+                <span style="font-size: 0.85rem; color: var(--mint-dark);">Contact your reps directly</span>
               </div>
-              <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span>
+              <span class="material-symbols-rounded" style="color: var(--mint-dark);">arrow_forward</span>
             </a>
-
           </div>
         </div>
       </main>
