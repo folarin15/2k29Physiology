@@ -1,4 +1,0 @@
-[build]
-framework = "static-site"
-buildCommand = "node scripts/build-static.mjs"
-outputDirectory = "dist"
