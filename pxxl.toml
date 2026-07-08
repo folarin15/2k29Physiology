@@ -1,4 +1,5 @@
 [build]
 framework = "static-site"
-buildCommand = "node scripts/build-static.mjs"
-outputDirectory = "dist"
+# Removed buildCommand because 'node' is not available in Pxxl static environment.
+# Relying on Pxxl to serve the files directly from the repository root.
+outputDirectory = "."
