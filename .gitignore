@@ -4,6 +4,8 @@ node_modules/
 .supabase/
 supabase/.temp/
 .codex-tmp/
+dist/
+build/
 outputs/
 K29.temp/
 *.log
