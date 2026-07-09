@@ -1642,7 +1642,7 @@ function getLastMinuteResources(limit = 10) {
 async function loadStudyGuideData() {
   if (document.body.dataset.page !== "exam" || state.studyGuide.length) return;
   try {
-    const response = await fetch("./bio-study-guide.json?v=20260615c", { cache: "no-store" });
+    const response = await fetch("./bio-study-guide.json?v=20260709-1", { cache: "no-store" });
     if (!response.ok) throw new Error("Study guide data is not available yet.");
     const guide = await response.json();
     state.studyGuide = Array.isArray(guide) ? guide : [];
