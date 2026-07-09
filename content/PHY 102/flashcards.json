@@ -1,102 +1,504 @@
-[
-  {"id":1,"front":"What is the definition of electricity in the context of charge state?","back":"A phenomenon due to stationary or moving charges, categorized as electrostatics or electrodynamics respectively."},
-  {"id":2,"front":"What is an ion?","back":"An atom that has been ionized by adding or removing electrons."},
-  {"id":3,"front":"Describe a positively charged object at the atomic level.","back":"An object that has an electron deficiency or has lost electrons."},
-  {"id":4,"front":"List the four fundamental forces in order of decreasing strength.","back":"Strong force, Electromagnetic force, Weak force, and Gravitational force."},
-  {"id":5,"front":"What are the ranges of the Gravitational and Electromagnetic forces?","back":"Both have infinite range."},
-  {"id":6,"front":"What are the ranges of the Strong and Weak forces?","back":"Strong force: < 10^-15m; Weak force: < 10^-18m."},
-  {"id":7,"front":"How many distinct elementary particles are identified?","back":"17 distinct particles: 6 quarks, 6 leptons, 4 gauge-bosons, and the Higgs boson."},
-  {"id":8,"front":"What is the quark composition and total charge of a proton?","back":"Two up-quarks (+2/3e each) and one down-quark (-1/3e), totaling +e."},
-  {"id":9,"front":"What is the quark composition and total charge of a neutron?","back":"Two down-quarks and one up-quark, totaling 0."},
-  {"id":10,"front":"What is the total charge of a pentaquark with composition uudcc?","back":"+e (calculated as 2/3 + 2/3 - 1/3 + 2/3 - 2/3)."},
-  {"id":11,"front":"What defines an electrical conductor?","back":"A material that allows charges to move easily from one region to another through physical contact or wire."},
-  {"id":12,"front":"What defines an electrical insulator?","back":"A material that does not allow the transfer of electric charges, such as nylon or rubber."},
-  {"id":13,"front":"What happens when a neutral plastic rod is rubbed with fur?","back":"The plastic rod acquires negative charges and the fur acquires positive charges."},
-  {"id":14,"front":"What is the mnemonic for the charging of plastic vs. glass rods?","back":"Plastic (lighter) acquires negative (lighter) charge; glass acquires positive."},
-  {"id":15,"front":"State the Principle of Charge Conservation.","back":"Charge is neither created nor destroyed; the algebraic sum of charges in a closed system is constant."},
-  {"id":16,"front":"What is 'earthing' (grounding)?","back":"Connecting a conductor to the earth, which serves as an infinite reservoir (source or sink) of electrons."},
-  {"id":17,"front":"How are electrons behaved in crystalline solids?","back":"Outer electrons can leave atoms and roam freely like a uniform electron gas."},
-  {"id":18,"front":"State Coulomb's Law mathematically.","back":"F = k |q1q2| / r^2, where F is the electric force between two point charges."},
-  {"id":19,"front":"How does electric force relate to the distance (r) between charges?","back":"It is inversely proportional to the square of the distance (1/r^2)."},
-  {"id":20,"front":"What is the magnitude of the charge of an electron (e)?","back":"Approximately 1.602 x 10^-19 C."},
-  {"id":21,"front":"What is the definition of an electric field (E) at a point?","back":"The force (F) per unit charge (q0) experienced by a test charge at that point: E = F/|q0|."},
-  {"id":22,"front":"In which direction do electric field lines point for a positive charge?","back":"Radially outward from the charge."},
-  {"id":23,"front":"In which direction do electric field lines point for a negative charge?","back":"Radially inward toward the charge."},
-  {"id":24,"front":"What is the formula for the electric field of an infinite charged plate?","back":"E = sigma / 2epsilon0, where sigma is surface charge density."},
-  {"id":25,"front":"What does the spacing of electric field lines indicate?","back":"Closer lines indicate a stronger field; wider spacing indicates a weaker field."},
-  {"id":26,"front":"Can electric field lines ever intersect?","back":"No, because the field direction at any point is unique."},
-  {"id":27,"front":"What is the net force on an electric dipole in a uniform electric field?","back":"Zero, because the forces on the equal and opposite charges cancel out."},
-  {"id":28,"front":"Define Surface Charge Density (sigma).","back":"The magnitude of charge (Q) divided by the surface area (A): sigma = Q/A."},
-  {"id":29,"front":"What is the relationship between work (W) and potential energy (U) in a field?","back":"W = -ΔU; positive work by the field results in a decrease in potential energy."},
-  {"id":30,"front":"What is Electric Potential (V)?","back":"Electric potential energy per unit charge."},
-  {"id":31,"front":"What happens to the potential energy of a positive charge moving in the direction of an electric field?","back":"The potential energy decreases."},
-  {"id":32,"front":"What is the primary function of a capacitor?","back":"To store electric potential energy."},
-  {"id":33,"front":"Define Capacitance (C).","back":"The ratio of charge magnitude (Q) to the potential difference (V): C = Q/V."},
-  {"id":34,"front":"What is the SI unit of capacitance?","back":"The Farad (F), which is 1 Coulomb per Volt."},
-  {"id":35,"front":"What is the formula for a parallel-plate capacitor in a vacuum?","back":"C = epsilon0 A / d."},
-  {"id":36,"front":"How does capacitance change if the plate area (A) is doubled and separation (d) is halved?","back":"The capacitance increases by a factor of 4."},
-  {"id":37,"front":"What is the effect of inserting a dielectric with constant K into a capacitor?","back":"It increases the capacitance by factor K (C = KC0) and prevents dielectric breakdown."},
-  {"id":38,"front":"What is dielectric breakdown?","back":"Partial ionization of an insulator under large electric fields, causing it to conduct."},
-  {"id":39,"front":"What is the formula for energy stored in a capacitor (U)?","back":"U = 1/2 CV^2 = 1/2 QV = 1/2 Q^2/C."},
-  {"id":40,"front":"How is equivalent capacitance calculated for capacitors in series?","back":"1/Ceq = 1/C1 + 1/C2 + ..."},
-  {"id":41,"front":"How is equivalent capacitance calculated for capacitors in parallel?","back":"Ceq = C1 + C2 + ..."},
-  {"id":42,"front":"What is electric current (I)?","back":"The net flow of charge from one region to another over time."},
-  {"id":43,"front":"What is drift velocity?","back":"The steady net flow velocity of electrons in a conductor under an electric field."},
-  {"id":44,"front":"State Ohm's Law in its 'local' vector form.","back":"J = sigma E, where J is current density, sigma is conductivity, and E is electric field."},
-  {"id":45,"front":"What is the formula for resistance (R) based on object geometry?","back":"R = rho L / A, where rho is resistivity, L is length, and A is area."},
-  {"id":46,"front":"What is the unit of resistance?","back":"The Ohm (Omega), which is 1 Volt per Ampere."},
-  {"id":47,"front":"How does resistivity in metallic conductors change with temperature?","back":"It increases with increasing temperature due to increased lattice vibrations."},
-  {"id":48,"front":"What property defines an ideal EMF source?","back":"It has no internal resistance (r=0), and its terminal voltage equals its EMF."},
-  {"id":49,"front":"What is the terminal voltage (V) of a real battery with internal resistance r?","back":"V = E - Ir."},
-  {"id":50,"front":"State the formula for electrical power (P) in a resistor.","back":"P = IV = I^2R = V^2/R."},
-  {"id":51,"front":"How do you calculate the net power output of a battery?","back":"Net Power = (Rate of chemical-to-electrical conversion) - (Rate of internal dissipation)."},
-  {"id":52,"front":"Kirchhoff's Junction Rule is based on which conservation law?","back":"Conservation of electric charge (sum I = 0)."},
-  {"id":53,"front":"Kirchhoff's Loop Rule is based on which conservation law?","back":"Conservation of energy (sum V = 0)."},
-  {"id":54,"front":"What is the junction rule sign convention?","back":"Current into a junction is positive; current out is negative."},
-  {"id":55,"front":"How is equivalent resistance calculated for resistors in series?","back":"Req = R1 + R2 + ..."},
-  {"id":56,"front":"How is equivalent resistance calculated for resistors in parallel?","back":"1/Req = 1/R1 + 1/R2 + ..."},
-  {"id":57,"front":"What is the formula for a balanced Wheatstone Bridge?","back":"X = MP / N, where X is the unknown resistance."},
-  {"id":58,"front":"What is the primary advantage of using a Potentiometer?","back":"It can measure EMF or internal resistance without drawing current from the source at the null point."},
-  {"id":59,"front":"How is internal resistance (r) calculated using a potentiometer?","back":"r = R(l1/l2 - 1), where l1 and l2 are balance lengths."},
-  {"id":60,"front":"How is a galvanometer converted into an ammeter?","back":"By connecting a low-resistance shunt in parallel with the galvanometer."},
-  {"id":61,"front":"How is a galvanometer converted into a voltmeter?","back":"By connecting a high resistance in series with it."},
-  {"id":62,"front":"Can magnetic monopoles exist?","back":"No; magnetic poles always come in North/South pairs."},
-  {"id":63,"front":"What is the fundamental source of all magnetic fields?","back":"Moving electric charges (currents)."},
-  {"id":64,"front":"State the formula for magnetic force on a moving point charge.","back":"F = q(v x B) or F = qvB sin(phi)."},
-  {"id":65,"front":"Under what condition is the magnetic force on a moving charge zero?","back":"When the charge moves parallel or anti-parallel to the magnetic field (phi = 0 or 180)."},
-  {"id":66,"front":"What path does a charge take when moving perpendicular to a uniform B-field?","back":"A circular path, as the magnetic force acts as a centripetal force."},
-  {"id":67,"front":"Which rule is used to find the direction of magnetic force on a positive charge?","back":"The Right-Hand Rule (v thumb, B fingers, F palm)."},
-  {"id":68,"front":"What is the work done by a magnetic field on a moving charge?","back":"Zero, because the force is always perpendicular to the velocity."},
-  {"id":69,"front":"What is the formula for magnetic force on a wire segment?","back":"F = ILB sin(theta)."},
-  {"id":70,"front":"What is the SI unit for magnetic field (B)?","back":"The Tesla (T)."},
-  {"id":71,"front":"What is the SI unit for magnetic flux (Phi)?","back":"The Weber (Wb)."},
-  {"id":72,"front":"What is the purpose of the Biot-Savart Law?","back":"To calculate the magnetic field produced at a point by a small current element."},
-  {"id":73,"front":"State the formula for the magnetic field (B) of a long straight wire.","back":"B = mu0 I / (2 pi a)."},
-  {"id":74,"front":"What is the magnetic field inside an ideal solenoid?","back":"B = mu0 nI, where n is turns per unit length."},
-  {"id":75,"front":"What is the magnetic field inside a toroidal coil?","back":"B = mu0 N I / (2 pi r)."},
-  {"id":76,"front":"Define Motional EMF (epsilon).","back":"EMF induced in a conductor moving through a magnetic field: epsilon = BLv."},
-  {"id":77,"front":"Define Magnetic Flux (Phi).","back":"The number of field lines passing through an area A: Phi = BA cos(theta)."},
-  {"id":78,"front":"State Faraday's Law of Induction.","back":"The magnitude of induced EMF is equal to the rate of change of magnetic flux through the circuit."},
-  {"id":79,"front":"State Faraday's Law mathematically for a coil of N turns.","back":"epsilon = -N (dPhi / dt)."},
-  {"id":80,"front":"State Lenz's Law.","back":"An induced current flows in a direction such that its magnetic field opposes the change in flux that caused it."},
-  {"id":81,"front":"Lenz's Law is a consequence of which principle?","back":"The Law of Conservation of Energy."},
-  {"id":82,"front":"List three ways to increase induced EMF in a coil.","back":"Increase the number of turns (N), increase the rate of flux change, or increase the coil area."},
-  {"id":83,"front":"What is Inductance (L)?","back":"The property of a conductor to oppose changes in current by inducing an opposing voltage."},
-  {"id":84,"front":"What is Self-Induction?","back":"A process where a coil induces a voltage in itself when its own current changes."},
-  {"id":85,"front":"What is a Transformer?","back":"A device that changes AC voltage levels through induction between primary and secondary coils."},
-  {"id":86,"front":"What is the turns ratio for a transformer?","back":"Vs / Vp = Ns / Np."},
-  {"id":87,"front":"What is the formula for the maximum EMF (epsilon_max) of an AC generator?","back":"epsilon_max = NB A omega."},
-  {"id":88,"front":"What is a Phasor?","back":"A rotating vector whose vertical projection represents a time-dependent quantity like voltage or current."},
-  {"id":89,"front":"What is the phase relationship between V and I in a purely resistive AC circuit?","back":"They are in phase (phase angle delta = 0)."},
-  {"id":90,"front":"What is the phase relationship between V and I in a purely inductive AC circuit?","back":"Voltage leads current by 90 (pi/2)."},
-  {"id":91,"front":"What is the phase relationship between V and I in a purely capacitive AC circuit?","back":"Current leads voltage by 90 (pi/2)."},
-  {"id":92,"front":"Define Inductive Reactance (XL).","back":"XL = omega L."},
-  {"id":93,"front":"Define Capacitive Reactance (XC).","back":"XC = 1 / (omega C)."},
-  {"id":94,"front":"What is the Impedance (Z) of a series RLC circuit?","back":"Z = sqrt[R^2 + (XL - XC)^2]."},
-  {"id":95,"front":"When does Resonance occur in a series RLC circuit?","back":"When XL = XC, meaning omega0 = 1 / sqrt(LC)."},
-  {"id":96,"front":"What was Maxwell's primary contribution to Ampere's Law?","back":"He added the Displacement Current term (proportional to dPhi_E/dt) to account for changing electric flux."},
-  {"id":97,"front":"What is the magnitude of displacement current (Id)?","back":"Id = epsilon0 (dPhi_E / dt)."},
-  {"id":98,"front":"How is the speed of light (c) calculated from fundamental constants?","back":"c = 1 / sqrt(mu0 epsilon0)."},
-  {"id":99,"front":"What does the Poynting Vector (S) represent?","back":"The rate of energy flow per unit area in an EM wave; S = (1/mu0)(E x B)."},
-  {"id":100,"front":"Describe the orientation of E and B fields in an EM wave.","back":"They are perpendicular to each other and to the direction of wave propagation."}
-]
+{
+  "flashcards": [
+    {
+      "id": 1,
+      "front": "What is the definition of electricity in the context of charge state?",
+      "back": "A phenomenon due to stationary or moving charges, categorized as electrostatics or electrodynamics respectively."
+    },
+    {
+      "id": 2,
+      "front": "What is an ion?",
+      "back": "An atom that has been ionized by adding or removing electrons."
+    },
+    {
+      "id": 3,
+      "front": "Describe a positively charged object at the atomic level.",
+      "back": "An object that has an electron deficiency or has lost electrons."
+    },
+    {
+      "id": 4,
+      "front": "List the four fundamental forces in order of decreasing strength.",
+      "back": "Strong force, Electromagnetic force, Weak force, and Gravitational force."
+    },
+    {
+      "id": 5,
+      "front": "What are the ranges of the Gravitational and Electromagnetic forces?",
+      "back": "Both have infinite range."
+    },
+    {
+      "id": 6,
+      "front": "What are the ranges of the Strong and Weak forces?",
+      "back": "Strong force: < 10^-15m; Weak force: < 10^-18m."
+    },
+    {
+      "id": 7,
+      "front": "How many distinct elementary particles are identified?",
+      "back": "17 distinct particles: 6 quarks, 6 leptons, 4 gauge-bosons, and the Higgs boson."
+    },
+    {
+      "id": 8,
+      "front": "What is the quark composition and total charge of a proton?",
+      "back": "Two up-quarks (+2/3e each) and one down-quark (-1/3e), totaling +e."
+    },
+    {
+      "id": 9,
+      "front": "What is the quark composition and total charge of a neutron?",
+      "back": "Two down-quarks and one up-quark, totaling 0."
+    },
+    {
+      "id": 10,
+      "front": "What is the total charge of a pentaquark with composition uudcc?",
+      "back": "+e (calculated as 2/3 + 2/3 - 1/3 + 2/3 - 2/3)."
+    },
+    {
+      "id": 11,
+      "front": "What defines an electrical conductor?",
+      "back": "A material that allows charges to move easily from one region to another through physical contact or wire."
+    },
+    {
+      "id": 12,
+      "front": "What defines an electrical insulator?",
+      "back": "A material that does not allow the transfer of electric charges, such as nylon or rubber."
+    },
+    {
+      "id": 13,
+      "front": "What happens when a neutral plastic rod is rubbed with fur?",
+      "back": "The plastic rod acquires negative charges and the fur acquires positive charges."
+    },
+    {
+      "id": 14,
+      "front": "What is the mnemonic for the charging of plastic vs. glass rods?",
+      "back": "Plastic (lighter) acquires negative (lighter) charge; glass acquires positive."
+    },
+    {
+      "id": 15,
+      "front": "State the Principle of Charge Conservation.",
+      "back": "Charge is neither created nor destroyed; the algebraic sum of charges in a closed system is constant."
+    },
+    {
+      "id": 16,
+      "front": "What is 'earthing' (grounding)?",
+      "back": "Connecting a conductor to the earth, which serves as an infinite reservoir (source or sink) of electrons."
+    },
+    {
+      "id": 17,
+      "front": "How are electrons behaved in crystalline solids?",
+      "back": "Outer electrons can leave atoms and roam freely like a uniform electron gas."
+    },
+    {
+      "id": 18,
+      "front": "State Coulomb's Law mathematically.",
+      "back": "F = k |q1q2| / r^2, where F is the electric force between two point charges."
+    },
+    {
+      "id": 19,
+      "front": "How does electric force relate to the distance (r) between charges?",
+      "back": "It is inversely proportional to the square of the distance (1/r^2)."
+    },
+    {
+      "id": 20,
+      "front": "What is the magnitude of the charge of an electron (e)?",
+      "back": "Approximately 1.602 x 10^-19 C."
+    },
+    {
+      "id": 21,
+      "front": "What is the definition of an electric field (E) at a point?",
+      "back": "The force (F) per unit charge (q0) experienced by a test charge at that point: E = F/|q0|."
+    },
+    {
+      "id": 22,
+      "front": "In which direction do electric field lines point for a positive charge?",
+      "back": "Radially outward from the charge."
+    },
+    {
+      "id": 23,
+      "front": "In which direction do electric field lines point for a negative charge?",
+      "back": "Radially inward toward the charge."
+    },
+    {
+      "id": 24,
+      "front": "What is the formula for the electric field of an infinite charged plate?",
+      "back": "E = sigma / 2epsilon0, where sigma is surface charge density."
+    },
+    {
+      "id": 25,
+      "front": "What does the spacing of electric field lines indicate?",
+      "back": "Closer lines indicate a stronger field; wider spacing indicates a weaker field."
+    },
+    {
+      "id": 26,
+      "front": "Can electric field lines ever intersect?",
+      "back": "No, because the field direction at any point is unique."
+    },
+    {
+      "id": 27,
+      "front": "What is the net force on an electric dipole in a uniform electric field?",
+      "back": "Zero, because the forces on the equal and opposite charges cancel out."
+    },
+    {
+      "id": 28,
+      "front": "Define Surface Charge Density (sigma).",
+      "back": "The magnitude of charge (Q) divided by the surface area (A): sigma = Q/A."
+    },
+    {
+      "id": 29,
+      "front": "What is the relationship between work (W) and potential energy (U) in a field?",
+      "back": "W = -ΔU; positive work by the field results in a decrease in potential energy."
+    },
+    {
+      "id": 30,
+      "front": "What is Electric Potential (V)?",
+      "back": "Electric potential energy per unit charge."
+    },
+    {
+      "id": 31,
+      "front": "What happens to the potential energy of a positive charge moving in the direction of an electric field?",
+      "back": "The potential energy decreases."
+    },
+    {
+      "id": 32,
+      "front": "What is the primary function of a capacitor?",
+      "back": "To store electric potential energy."
+    },
+    {
+      "id": 33,
+      "front": "Define Capacitance (C).",
+      "back": "The ratio of charge magnitude (Q) to the potential difference (V): C = Q/V."
+    },
+    {
+      "id": 34,
+      "front": "What is the SI unit of capacitance?",
+      "back": "The Farad (F), which is 1 Coulomb per Volt."
+    },
+    {
+      "id": 35,
+      "front": "What is the formula for a parallel-plate capacitor in a vacuum?",
+      "back": "C = epsilon0 A / d."
+    },
+    {
+      "id": 36,
+      "front": "How does capacitance change if the plate area (A) is doubled and separation (d) is halved?",
+      "back": "The capacitance increases by a factor of 4."
+    },
+    {
+      "id": 37,
+      "front": "What is the effect of inserting a dielectric with constant K into a capacitor?",
+      "back": "It increases the capacitance by factor K (C = KC0) and prevents dielectric breakdown."
+    },
+    {
+      "id": 38,
+      "front": "What is dielectric breakdown?",
+      "back": "Partial ionization of an insulator under large electric fields, causing it to conduct."
+    },
+    {
+      "id": 39,
+      "front": "What is the formula for energy stored in a capacitor (U)?",
+      "back": "U = 1/2 CV^2 = 1/2 QV = 1/2 Q^2/C."
+    },
+    {
+      "id": 40,
+      "front": "How is equivalent capacitance calculated for capacitors in series?",
+      "back": "1/Ceq = 1/C1 + 1/C2 + ..."
+    },
+    {
+      "id": 41,
+      "front": "How is equivalent capacitance calculated for capacitors in parallel?",
+      "back": "Ceq = C1 + C2 + ..."
+    },
+    {
+      "id": 42,
+      "front": "What is electric current (I)?",
+      "back": "The net flow of charge from one region to another over time."
+    },
+    {
+      "id": 43,
+      "front": "What is drift velocity?",
+      "back": "The steady net flow velocity of electrons in a conductor under an electric field."
+    },
+    {
+      "id": 44,
+      "front": "State Ohm's Law in its 'local' vector form.",
+      "back": "J = sigma E, where J is current density, sigma is conductivity, and E is electric field."
+    },
+    {
+      "id": 45,
+      "front": "What is the formula for resistance (R) based on object geometry?",
+      "back": "R = rho L / A, where rho is resistivity, L is length, and A is area."
+    },
+    {
+      "id": 46,
+      "front": "What is the unit of resistance?",
+      "back": "The Ohm (Omega), which is 1 Volt per Ampere."
+    },
+    {
+      "id": 47,
+      "front": "How does resistivity in metallic conductors change with temperature?",
+      "back": "It increases with increasing temperature due to increased lattice vibrations."
+    },
+    {
+      "id": 48,
+      "front": "What property defines an ideal EMF source?",
+      "back": "It has no internal resistance (r=0), and its terminal voltage equals its EMF."
+    },
+    {
+      "id": 49,
+      "front": "What is the terminal voltage (V) of a real battery with internal resistance r?",
+      "back": "V = E - Ir."
+    },
+    {
+      "id": 50,
+      "front": "State the formula for electrical power (P) in a resistor.",
+      "back": "P = IV = I^2R = V^2/R."
+    },
+    {
+      "id": 51,
+      "front": "How do you calculate the net power output of a battery?",
+      "back": "Net Power = (Rate of chemical-to-electrical conversion) - (Rate of internal dissipation)."
+    },
+    {
+      "id": 52,
+      "front": "Kirchhoff's Junction Rule is based on which conservation law?",
+      "back": "Conservation of electric charge (sum I = 0)."
+    },
+    {
+      "id": 53,
+      "front": "Kirchhoff's Loop Rule is based on which conservation law?",
+      "back": "Conservation of energy (sum V = 0)."
+    },
+    {
+      "id": 54,
+      "front": "What is the junction rule sign convention?",
+      "back": "Current into a junction is positive; current out is negative."
+    },
+    {
+      "id": 55,
+      "front": "How is equivalent resistance calculated for resistors in series?",
+      "back": "Req = R1 + R2 + ..."
+    },
+    {
+      "id": 56,
+      "front": "How is equivalent resistance calculated for resistors in parallel?",
+      "back": "1/Req = 1/R1 + 1/R2 + ..."
+    },
+    {
+      "id": 57,
+      "front": "What is the formula for a balanced Wheatstone Bridge?",
+      "back": "X = MP / N, where X is the unknown resistance."
+    },
+    {
+      "id": 58,
+      "front": "What is the primary advantage of using a Potentiometer?",
+      "back": "It can measure EMF or internal resistance without drawing current from the source at the null point."
+    },
+    {
+      "id": 59,
+      "front": "How is internal resistance (r) calculated using a potentiometer?",
+      "back": "r = R(l1/l2 - 1), where l1 and l2 are balance lengths."
+    },
+    {
+      "id": 60,
+      "front": "How is a galvanometer converted into an ammeter?",
+      "back": "By connecting a low-resistance shunt in parallel with the galvanometer."
+    },
+    {
+      "id": 61,
+      "front": "How is a galvanometer converted into a voltmeter?",
+      "back": "By connecting a high resistance in series with it."
+    },
+    {
+      "id": 62,
+      "front": "Can magnetic monopoles exist?",
+      "back": "No; magnetic poles always come in North/South pairs."
+    },
+    {
+      "id": 63,
+      "front": "What is the fundamental source of all magnetic fields?",
+      "back": "Moving electric charges (currents)."
+    },
+    {
+      "id": 64,
+      "front": "State the formula for magnetic force on a moving point charge.",
+      "back": "F = q(v x B) or F = qvB sin(phi)."
+    },
+    {
+      "id": 65,
+      "front": "Under what condition is the magnetic force on a moving charge zero?",
+      "back": "When the charge moves parallel or anti-parallel to the magnetic field (phi = 0 or 180)."
+    },
+    {
+      "id": 66,
+      "front": "What path does a charge take when moving perpendicular to a uniform B-field?",
+      "back": "A circular path, as the magnetic force acts as a centripetal force."
+    },
+    {
+      "id": 67,
+      "front": "Which rule is used to find the direction of magnetic force on a positive charge?",
+      "back": "The Right-Hand Rule (v thumb, B fingers, F palm)."
+    },
+    {
+      "id": 68,
+      "front": "What is the work done by a magnetic field on a moving charge?",
+      "back": "Zero, because the force is always perpendicular to the velocity."
+    },
+    {
+      "id": 69,
+      "front": "What is the formula for magnetic force on a wire segment?",
+      "back": "F = ILB sin(theta)."
+    },
+    {
+      "id": 70,
+      "front": "What is the SI unit for magnetic field (B)?",
+      "back": "The Tesla (T)."
+    },
+    {
+      "id": 71,
+      "front": "What is the SI unit for magnetic flux (Phi)?",
+      "back": "The Weber (Wb)."
+    },
+    {
+      "id": 72,
+      "front": "What is the purpose of the Biot-Savart Law?",
+      "back": "To calculate the magnetic field produced at a point by a small current element."
+    },
+    {
+      "id": 73,
+      "front": "State the formula for the magnetic field (B) of a long straight wire.",
+      "back": "B = mu0 I / (2 pi a)."
+    },
+    {
+      "id": 74,
+      "front": "What is the magnetic field inside an ideal solenoid?",
+      "back": "B = mu0 nI, where n is turns per unit length."
+    },
+    {
+      "id": 75,
+      "front": "What is the magnetic field inside a toroidal coil?",
+      "back": "B = mu0 N I / (2 pi r)."
+    },
+    {
+      "id": 76,
+      "front": "Define Motional EMF (epsilon).",
+      "back": "EMF induced in a conductor moving through a magnetic field: epsilon = BLv."
+    },
+    {
+      "id": 77,
+      "front": "Define Magnetic Flux (Phi).",
+      "back": "The number of field lines passing through an area A: Phi = BA cos(theta)."
+    },
+    {
+      "id": 78,
+      "front": "State Faraday's Law of Induction.",
+      "back": "The magnitude of induced EMF is equal to the rate of change of magnetic flux through the circuit."
+    },
+    {
+      "id": 79,
+      "front": "State Faraday's Law mathematically for a coil of N turns.",
+      "back": "epsilon = -N (dPhi / dt)."
+    },
+    {
+      "id": 80,
+      "front": "State Lenz's Law.",
+      "back": "An induced current flows in a direction such that its magnetic field opposes the change in flux that caused it."
+    },
+    {
+      "id": 81,
+      "front": "Lenz's Law is a consequence of which principle?",
+      "back": "The Law of Conservation of Energy."
+    },
+    {
+      "id": 82,
+      "front": "List three ways to increase induced EMF in a coil.",
+      "back": "Increase the number of turns (N), increase the rate of flux change, or increase the coil area."
+    },
+    {
+      "id": 83,
+      "front": "What is Inductance (L)?",
+      "back": "The property of a conductor to oppose changes in current by inducing an opposing voltage."
+    },
+    {
+      "id": 84,
+      "front": "What is Self-Induction?",
+      "back": "A process where a coil induces a voltage in itself when its own current changes."
+    },
+    {
+      "id": 85,
+      "front": "What is a Transformer?",
+      "back": "A device that changes AC voltage levels through induction between primary and secondary coils."
+    },
+    {
+      "id": 86,
+      "front": "What is the turns ratio for a transformer?",
+      "back": "Vs / Vp = Ns / Np."
+    },
+    {
+      "id": 87,
+      "front": "What is the formula for the maximum EMF (epsilon_max) of an AC generator?",
+      "back": "epsilon_max = NB A omega."
+    },
+    {
+      "id": 88,
+      "front": "What is a Phasor?",
+      "back": "A rotating vector whose vertical projection represents a time-dependent quantity like voltage or current."
+    },
+    {
+      "id": 89,
+      "front": "What is the phase relationship between V and I in a purely resistive AC circuit?",
+      "back": "They are in phase (phase angle delta = 0)."
+    },
+    {
+      "id": 90,
+      "front": "What is the phase relationship between V and I in a purely inductive AC circuit?",
+      "back": "Voltage leads current by 90 (pi/2)."
+    },
+    {
+      "id": 91,
+      "front": "What is the phase relationship between V and I in a purely capacitive AC circuit?",
+      "back": "Current leads voltage by 90 (pi/2)."
+    },
+    {
+      "id": 92,
+      "front": "Define Inductive Reactance (XL).",
+      "back": "XL = omega L."
+    },
+    {
+      "id": 93,
+      "front": "Define Capacitive Reactance (XC).",
+      "back": "XC = 1 / (omega C)."
+    },
+    {
+      "id": 94,
+      "front": "What is the Impedance (Z) of a series RLC circuit?",
+      "back": "Z = sqrt[R^2 + (XL - XC)^2]."
+    },
+    {
+      "id": 95,
+      "front": "When does Resonance occur in a series RLC circuit?",
+      "back": "When XL = XC, meaning omega0 = 1 / sqrt(LC)."
+    },
+    {
+      "id": 96,
+      "front": "What was Maxwell's primary contribution to Ampere's Law?",
+      "back": "He added the Displacement Current term (proportional to dPhi_E/dt) to account for changing electric flux."
+    },
+    {
+      "id": 97,
+      "front": "What is the magnitude of displacement current (Id)?",
+      "back": "Id = epsilon0 (dPhi_E / dt)."
+    },
+    {
+      "id": 98,
+      "front": "How is the speed of light (c) calculated from fundamental constants?",
+      "back": "c = 1 / sqrt(mu0 epsilon0)."
+    },
+    {
+      "id": 99,
+      "front": "What does the Poynting Vector (S) represent?",
+      "back": "The rate of energy flow per unit area in an EM wave; S = (1/mu0)(E x B)."
+    },
+    {
+      "id": 100,
+      "front": "Describe the orientation of E and B fields in an EM wave.",
+      "back": "They are perpendicular to each other and to the direction of wave propagation."
+    }
+  ]
+}

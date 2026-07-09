@@ -1,102 +1,504 @@
-[
-  {"id":1,"front":"What is the dense, positively charged center of an atom called?","back":"The Nucleus."},
-  {"id":2,"front":"Which subatomic particles are found within the nucleus?","back":"Protons and Neutrons."},
-  {"id":3,"front":"What is the relative charge of an electron?","back":"-1."},
-  {"id":4,"front":"What is the mass in amu of a proton?","back":"Approximately 1 amu."},
-  {"id":5,"front":"What does the atomic number (Z) represent?","back":"The number of protons in the nucleus."},
-  {"id":6,"front":"What does the atomic mass number (A) represent?","back":"The total number of nucleons (protons + neutrons)."},
-  {"id":7,"front":"Which scientist proposed that electrons move in fixed circular orbits around the nucleus?","back":"Niels Bohr."},
-  {"id":8,"front":"What is an 'orbital' according to the wave mechanical model?","back":"A region in space where there is a high probability of finding an electron."},
-  {"id":9,"front":"What information does the primary quantum number (n) provide?","back":"The size and energy level of the orbital."},
-  {"id":10,"front":"What does the angular momentum quantum number (l) determine?","back":"The shape of the orbital (s, p, d, or f)."},
-  {"id":11,"front":"What are the possible values for the magnetic quantum number (ml)?","back":"Integers from -l to +l."},
-  {"id":12,"front":"What are the two possible values for the spin quantum number (ms)?","back":"+1/2 and -1/2."},
-  {"id":13,"front":"Which principle states that no two electrons in an atom can have the same four quantum numbers?","back":"The Pauli Exclusion Principle."},
-  {"id":14,"front":"What is the shape of an s orbital?","back":"Spherical."},
-  {"id":15,"front":"What is the shape of a p orbital?","back":"Dumbbell-shaped."},
-  {"id":16,"front":"How many orbitals are in a p subshell?","back":"3."},
-  {"id":17,"front":"What is the maximum electron capacity of a d subshell?","back":"10 electrons."},
-  {"id":18,"front":"Which rule states that electrons must fill degenerate orbitals singly before pairing?","back":"Hund's Rule of Maximum Multiplicity."},
-  {"id":19,"front":"Which principle states that electrons fill orbitals starting from the lowest energy to the highest?","back":"The Aufbau Principle."},
-  {"id":20,"front":"What is the term for an atom that contains unpaired electrons and is attracted to magnets?","back":"Paramagnetic."},
-  {"id":21,"front":"What is the term for an atom with all electrons paired that is repelled by magnetic fields?","back":"Diamagnetic."},
-  {"id":22,"front":"What are 'valence electrons'?","back":"Electrons in the outermost shell involved in chemical bonding."},
-  {"id":23,"front":"What happens to the atomic radius moving from left to right across a period?","back":"It decreases."},
-  {"id":24,"front":"What happens to the atomic radius moving from top to bottom down a group?","back":"It increases."},
-  {"id":25,"front":"Why does atomic radius decrease across a period?","back":"Increased effective nuclear charge (Zeff) pulls electrons closer."},
-  {"id":26,"front":"What is the definition of ionization energy?","back":"The energy required to remove the most loosely bound electron from a gaseous atom."},
-  {"id":27,"front":"What is the general trend for ionization energy across a period?","back":"It increases."},
-  {"id":28,"front":"What is the general trend for ionization energy down a group?","back":"It decreases."},
-  {"id":29,"front":"What is electronegativity?","back":"The ability of an atom to attract shared electrons towards itself in a bond."},
-  {"id":30,"front":"Which element is the most electronegative?","back":"Fluorine (4.0)."},
-  {"id":31,"front":"What is electron affinity?","back":"The energy change occurring when an electron is added to a gaseous atom."},
-  {"id":32,"front":"How is a cation size compared to its parent neutral atom?","back":"The cation is always smaller."},
-  {"id":33,"front":"How is an anion size compared to its parent neutral atom?","back":"The anion is always larger."},
-  {"id":34,"front":"What are isoelectronic species?","back":"Atoms or ions that have the same electronic configuration."},
-  {"id":35,"front":"What was Johann Dobereiner's contribution to the periodic table?","back":"He grouped elements into sets of three called 'triads'."},
-  {"id":36,"front":"How did Mendeleev arrange his periodic table?","back":"In order of increasing atomic mass."},
-  {"id":37,"front":"How is the modern periodic table arranged according to Moseley?","back":"By increasing atomic number."},
-  {"id":38,"front":"What is the common name for Group 1A elements?","back":"Alkali metals."},
-  {"id":39,"front":"What is the general valence shell configuration for Group 1A?","back":"ns1."},
-  {"id":40,"front":"Which Group 1 metal is the only one that reacts directly with nitrogen?","back":"Lithium (forms Li3N)."},
-  {"id":41,"front":"Why are alkali metals stored under liquid paraffin or inert gas?","back":"To prevent rapid tarnishing/reaction with the atmosphere."},
-  {"id":42,"front":"What is the most abundant alkali metal in the Earth's crust?","back":"Sodium (or Potassium)."},
-  {"id":43,"front":"What is the Down's process used for?","back":"The extraction of sodium metal via electrolysis of molten NaCl."},
-  {"id":44,"front":"What is the common name for Group 2A elements?","back":"Alkaline earth metals."},
-  {"id":45,"front":"What is the general valence shell configuration for Group 2A?","back":"ns2."},
-  {"id":46,"front":"Why is Beryllium (Be) sometimes excluded from the 'alkaline earth metal' title?","back":"Its oxide and hydroxide are amphoteric rather than strictly basic."},
-  {"id":47,"front":"What property of Group 2 metals makes them less reactive than Group 1?","back":"Higher ionization energies and the need to lose two electrons."},
-  {"id":48,"front":"Which Group 2 element is vital for body health and car engines?","back":"Magnesium."},
-  {"id":49,"front":"What is the diagonal relationship?","back":"Similarities in properties between elements diagonally adjacent in the table (e.g., Li/Mg, Be/Al)."},
-  {"id":50,"front":"Which Group 2 element is used to remove nitrogen from argon?","back":"Calcium."},
-  {"id":51,"front":"What defines the d-block elements?","back":"Elements in which the d orbitals are being filled."},
-  {"id":52,"front":"What are two distinct properties of transition metals?","back":"Variable oxidation states and formation of colored compounds."},
-  {"id":53,"front":"What causes the color in transition metal complexes?","back":"Electronic transitions between split d-orbitals (d-d transitions)."},
-  {"id":54,"front":"In an octahedral field, into which two sets do d-orbitals split?","back":"t2g (lower energy) and eg (higher energy)."},
-  {"id":55,"front":"What is the spin-only formula for magnetic moment?","back":"mus = sqrt[n(n+2)] Bohr Magnetons (BM), where n is the number of unpaired electrons."},
-  {"id":56,"front":"Which transition metal is liquid at room temperature?","back":"Mercury (Hg)."},
-  {"id":57,"front":"What is the coordination number of each atom in a hexagonal close-packed structure?","back":"12."},
-  {"id":58,"front":"What are 'representative elements'?","back":"Elements belonging to the s and p blocks."},
-  {"id":59,"front":"What is metallurgy?","back":"The science and technology of extracting metals from their ores."},
-  {"id":60,"front":"What is pulverization in metallurgy?","back":"Crushing and grinding ore into a fine powder, often in a stamp mill."},
-  {"id":61,"front":"What is the purpose of 'ore dressing' or concentration?","back":"To remove unwanted earthy impurities called 'gangue' or 'matrix'."},
-  {"id":62,"front":"Which concentration method is most suitable for sulphide ores?","back":"Froth Flotation."},
-  {"id":63,"front":"What happens during calcination?","back":"Heating ore in a limited air supply to remove volatile matter or decompose carbonates."},
-  {"id":64,"front":"What happens during roasting?","back":"Heating ore in excess air to convert sulphides to oxides and remove impurities like arsenic."},
-  {"id":65,"front":"What is 'smelting'?","back":"Reduction of concentrated oxide ore to the metallic state using a reducing agent."},
-  {"id":66,"front":"What is the principle ore of Aluminium?","back":"Bauxite."},
-  {"id":67,"front":"What causes the 'blistering' of copper during refining?","back":"The expulsion of Sulphur IV oxide (SO2) gas."},
-  {"id":68,"front":"What is the definition of hybridization?","back":"The mixing of atomic orbitals of similar energies to form new equivalent hybrid orbitals."},
-  {"id":69,"front":"What is the geometry of an sp3 hybridized molecule?","back":"Tetrahedral."},
-  {"id":70,"front":"What is the geometry of an sp2 hybridized molecule?","back":"Trigonal planar."},
-  {"id":71,"front":"What is the geometry of an sp hybridized molecule like CO2?","back":"Linear."},
-  {"id":72,"front":"What shape results from dsp3 hybridization?","back":"Trigonal bipyramidal."},
-  {"id":73,"front":"What shape results from d2sp3 hybridization?","back":"Octahedral."},
-  {"id":74,"front":"What is the molecular shape of water (H2O)?","back":"V-shape or bent."},
-  {"id":75,"front":"What is the molecular shape of ammonia (NH3) / phosphine (PH3)?","back":"Trigonal pyramidal."},
-  {"id":76,"front":"Which block does Group IVA (Carbon Group) belong to?","back":"p-block."},
-  {"id":77,"front":"How does metallic character change down Group IVA?","back":"It increases from non-metal (C) to metals (Sn, Pb)."},
-  {"id":78,"front":"What is 'Band Theory' used to explain?","back":"Metallic bonding and electrical conductivity in metals."},
-  {"id":79,"front":"What is a 'unit cell'?","back":"The smallest identical building unit of a crystal lattice."},
-  {"id":80,"front":"Which Group 1 metal forms a peroxide (Na2O2) in excess oxygen?","back":"Sodium."},
-  {"id":81,"front":"Which Group 1 metals form superoxides (MO2)?","back":"Potassium, Rubidium, and Cesium."},
-  {"id":82,"front":"What are 'core electrons'?","back":"Inner shell electrons that shield the valence electrons from the nucleus."},
-  {"id":83,"front":"What happens to effective nuclear charge (Zeff) across a period?","back":"It increases."},
-  {"id":84,"front":"How does electron shielding change down a group?","back":"It increases."},
-  {"id":85,"front":"What is the 35th most abundant element by weight?","back":"Lithium."},
-  {"id":86,"front":"What is the half-life of Francium?","back":"21 or 22 seconds."},
-  {"id":87,"front":"Which elements are called lanthanoids?","back":"The 14 elements following Lanthanum where 4f orbitals are filled."},
-  {"id":88,"front":"Which elements are called actinoids?","back":"The 14 elements following Actinium where 5f orbitals are filled."},
-  {"id":89,"front":"Why is it harder to remove an electron from a cation than a neutral atom?","back":"Greater electrostatic attraction to the positive ion."},
-  {"id":90,"front":"Which property of transition metals is used in catalytic activities?","back":"Variable oxidation states and ability to provide a surface for reactions."},
-  {"id":91,"front":"What is the 'electron sea' model?","back":"A model where metal cations are surrounded by freely moving valence electrons."},
-  {"id":92,"front":"What is the trend of reactivity for Group II elements down the group?","back":"Reactivity increases."},
-  {"id":93,"front":"What is 'Froth Flotation' pine oil's role?","back":"To wet the sulphide particles so they rise with the froth."},
-  {"id":94,"front":"What happens to Zeff as you move down a group?","back":"It decreases due to increased screening."},
-  {"id":95,"front":"Which subshell has the lowest energy for a given n level?","back":"The s subshell."},
-  {"id":96,"front":"How many suborbitals does the f subshell have?","back":"7."},
-  {"id":97,"front":"Which rule explains the configuration 1s2 2s2 2px1 2py1 for Carbon?","back":"Hund's Rule."},
-  {"id":98,"front":"What are the common oxidation states for Group IVA elements?","back":"+2 and +4."},
-  {"id":99,"front":"What is 'pulverization' equipment called?","back":"A stamp mill."},
-  {"id":100,"front":"What is the primary factor determining the chemical properties of an element?","back":"The electronic configuration (especially valence electrons)."}
-]
+{
+  "flashcards": [
+    {
+      "id": 1,
+      "front": "What is the dense, positively charged center of an atom called?",
+      "back": "The Nucleus."
+    },
+    {
+      "id": 2,
+      "front": "Which subatomic particles are found within the nucleus?",
+      "back": "Protons and Neutrons."
+    },
+    {
+      "id": 3,
+      "front": "What is the relative charge of an electron?",
+      "back": "-1."
+    },
+    {
+      "id": 4,
+      "front": "What is the mass in amu of a proton?",
+      "back": "Approximately 1 amu."
+    },
+    {
+      "id": 5,
+      "front": "What does the atomic number (Z) represent?",
+      "back": "The number of protons in the nucleus."
+    },
+    {
+      "id": 6,
+      "front": "What does the atomic mass number (A) represent?",
+      "back": "The total number of nucleons (protons + neutrons)."
+    },
+    {
+      "id": 7,
+      "front": "Which scientist proposed that electrons move in fixed circular orbits around the nucleus?",
+      "back": "Niels Bohr."
+    },
+    {
+      "id": 8,
+      "front": "What is an 'orbital' according to the wave mechanical model?",
+      "back": "A region in space where there is a high probability of finding an electron."
+    },
+    {
+      "id": 9,
+      "front": "What information does the primary quantum number (n) provide?",
+      "back": "The size and energy level of the orbital."
+    },
+    {
+      "id": 10,
+      "front": "What does the angular momentum quantum number (l) determine?",
+      "back": "The shape of the orbital (s, p, d, or f)."
+    },
+    {
+      "id": 11,
+      "front": "What are the possible values for the magnetic quantum number (ml)?",
+      "back": "Integers from -l to +l."
+    },
+    {
+      "id": 12,
+      "front": "What are the two possible values for the spin quantum number (ms)?",
+      "back": "+1/2 and -1/2."
+    },
+    {
+      "id": 13,
+      "front": "Which principle states that no two electrons in an atom can have the same four quantum numbers?",
+      "back": "The Pauli Exclusion Principle."
+    },
+    {
+      "id": 14,
+      "front": "What is the shape of an s orbital?",
+      "back": "Spherical."
+    },
+    {
+      "id": 15,
+      "front": "What is the shape of a p orbital?",
+      "back": "Dumbbell-shaped."
+    },
+    {
+      "id": 16,
+      "front": "How many orbitals are in a p subshell?",
+      "back": "3."
+    },
+    {
+      "id": 17,
+      "front": "What is the maximum electron capacity of a d subshell?",
+      "back": "10 electrons."
+    },
+    {
+      "id": 18,
+      "front": "Which rule states that electrons must fill degenerate orbitals singly before pairing?",
+      "back": "Hund's Rule of Maximum Multiplicity."
+    },
+    {
+      "id": 19,
+      "front": "Which principle states that electrons fill orbitals starting from the lowest energy to the highest?",
+      "back": "The Aufbau Principle."
+    },
+    {
+      "id": 20,
+      "front": "What is the term for an atom that contains unpaired electrons and is attracted to magnets?",
+      "back": "Paramagnetic."
+    },
+    {
+      "id": 21,
+      "front": "What is the term for an atom with all electrons paired that is repelled by magnetic fields?",
+      "back": "Diamagnetic."
+    },
+    {
+      "id": 22,
+      "front": "What are 'valence electrons'?",
+      "back": "Electrons in the outermost shell involved in chemical bonding."
+    },
+    {
+      "id": 23,
+      "front": "What happens to the atomic radius moving from left to right across a period?",
+      "back": "It decreases."
+    },
+    {
+      "id": 24,
+      "front": "What happens to the atomic radius moving from top to bottom down a group?",
+      "back": "It increases."
+    },
+    {
+      "id": 25,
+      "front": "Why does atomic radius decrease across a period?",
+      "back": "Increased effective nuclear charge (Zeff) pulls electrons closer."
+    },
+    {
+      "id": 26,
+      "front": "What is the definition of ionization energy?",
+      "back": "The energy required to remove the most loosely bound electron from a gaseous atom."
+    },
+    {
+      "id": 27,
+      "front": "What is the general trend for ionization energy across a period?",
+      "back": "It increases."
+    },
+    {
+      "id": 28,
+      "front": "What is the general trend for ionization energy down a group?",
+      "back": "It decreases."
+    },
+    {
+      "id": 29,
+      "front": "What is electronegativity?",
+      "back": "The ability of an atom to attract shared electrons towards itself in a bond."
+    },
+    {
+      "id": 30,
+      "front": "Which element is the most electronegative?",
+      "back": "Fluorine (4.0)."
+    },
+    {
+      "id": 31,
+      "front": "What is electron affinity?",
+      "back": "The energy change occurring when an electron is added to a gaseous atom."
+    },
+    {
+      "id": 32,
+      "front": "How is a cation size compared to its parent neutral atom?",
+      "back": "The cation is always smaller."
+    },
+    {
+      "id": 33,
+      "front": "How is an anion size compared to its parent neutral atom?",
+      "back": "The anion is always larger."
+    },
+    {
+      "id": 34,
+      "front": "What are isoelectronic species?",
+      "back": "Atoms or ions that have the same electronic configuration."
+    },
+    {
+      "id": 35,
+      "front": "What was Johann Dobereiner's contribution to the periodic table?",
+      "back": "He grouped elements into sets of three called 'triads'."
+    },
+    {
+      "id": 36,
+      "front": "How did Mendeleev arrange his periodic table?",
+      "back": "In order of increasing atomic mass."
+    },
+    {
+      "id": 37,
+      "front": "How is the modern periodic table arranged according to Moseley?",
+      "back": "By increasing atomic number."
+    },
+    {
+      "id": 38,
+      "front": "What is the common name for Group 1A elements?",
+      "back": "Alkali metals."
+    },
+    {
+      "id": 39,
+      "front": "What is the general valence shell configuration for Group 1A?",
+      "back": "ns1."
+    },
+    {
+      "id": 40,
+      "front": "Which Group 1 metal is the only one that reacts directly with nitrogen?",
+      "back": "Lithium (forms Li3N)."
+    },
+    {
+      "id": 41,
+      "front": "Why are alkali metals stored under liquid paraffin or inert gas?",
+      "back": "To prevent rapid tarnishing/reaction with the atmosphere."
+    },
+    {
+      "id": 42,
+      "front": "What is the most abundant alkali metal in the Earth's crust?",
+      "back": "Sodium (or Potassium)."
+    },
+    {
+      "id": 43,
+      "front": "What is the Down's process used for?",
+      "back": "The extraction of sodium metal via electrolysis of molten NaCl."
+    },
+    {
+      "id": 44,
+      "front": "What is the common name for Group 2A elements?",
+      "back": "Alkaline earth metals."
+    },
+    {
+      "id": 45,
+      "front": "What is the general valence shell configuration for Group 2A?",
+      "back": "ns2."
+    },
+    {
+      "id": 46,
+      "front": "Why is Beryllium (Be) sometimes excluded from the 'alkaline earth metal' title?",
+      "back": "Its oxide and hydroxide are amphoteric rather than strictly basic."
+    },
+    {
+      "id": 47,
+      "front": "What property of Group 2 metals makes them less reactive than Group 1?",
+      "back": "Higher ionization energies and the need to lose two electrons."
+    },
+    {
+      "id": 48,
+      "front": "Which Group 2 element is vital for body health and car engines?",
+      "back": "Magnesium."
+    },
+    {
+      "id": 49,
+      "front": "What is the diagonal relationship?",
+      "back": "Similarities in properties between elements diagonally adjacent in the table (e.g., Li/Mg, Be/Al)."
+    },
+    {
+      "id": 50,
+      "front": "Which Group 2 element is used to remove nitrogen from argon?",
+      "back": "Calcium."
+    },
+    {
+      "id": 51,
+      "front": "What defines the d-block elements?",
+      "back": "Elements in which the d orbitals are being filled."
+    },
+    {
+      "id": 52,
+      "front": "What are two distinct properties of transition metals?",
+      "back": "Variable oxidation states and formation of colored compounds."
+    },
+    {
+      "id": 53,
+      "front": "What causes the color in transition metal complexes?",
+      "back": "Electronic transitions between split d-orbitals (d-d transitions)."
+    },
+    {
+      "id": 54,
+      "front": "In an octahedral field, into which two sets do d-orbitals split?",
+      "back": "t2g (lower energy) and eg (higher energy)."
+    },
+    {
+      "id": 55,
+      "front": "What is the spin-only formula for magnetic moment?",
+      "back": "mus = sqrt[n(n+2)] Bohr Magnetons (BM), where n is the number of unpaired electrons."
+    },
+    {
+      "id": 56,
+      "front": "Which transition metal is liquid at room temperature?",
+      "back": "Mercury (Hg)."
+    },
+    {
+      "id": 57,
+      "front": "What is the coordination number of each atom in a hexagonal close-packed structure?",
+      "back": "12."
+    },
+    {
+      "id": 58,
+      "front": "What are 'representative elements'?",
+      "back": "Elements belonging to the s and p blocks."
+    },
+    {
+      "id": 59,
+      "front": "What is metallurgy?",
+      "back": "The science and technology of extracting metals from their ores."
+    },
+    {
+      "id": 60,
+      "front": "What is pulverization in metallurgy?",
+      "back": "Crushing and grinding ore into a fine powder, often in a stamp mill."
+    },
+    {
+      "id": 61,
+      "front": "What is the purpose of 'ore dressing' or concentration?",
+      "back": "To remove unwanted earthy impurities called 'gangue' or 'matrix'."
+    },
+    {
+      "id": 62,
+      "front": "Which concentration method is most suitable for sulphide ores?",
+      "back": "Froth Flotation."
+    },
+    {
+      "id": 63,
+      "front": "What happens during calcination?",
+      "back": "Heating ore in a limited air supply to remove volatile matter or decompose carbonates."
+    },
+    {
+      "id": 64,
+      "front": "What happens during roasting?",
+      "back": "Heating ore in excess air to convert sulphides to oxides and remove impurities like arsenic."
+    },
+    {
+      "id": 65,
+      "front": "What is 'smelting'?",
+      "back": "Reduction of concentrated oxide ore to the metallic state using a reducing agent."
+    },
+    {
+      "id": 66,
+      "front": "What is the principle ore of Aluminium?",
+      "back": "Bauxite."
+    },
+    {
+      "id": 67,
+      "front": "What causes the 'blistering' of copper during refining?",
+      "back": "The expulsion of Sulphur IV oxide (SO2) gas."
+    },
+    {
+      "id": 68,
+      "front": "What is the definition of hybridization?",
+      "back": "The mixing of atomic orbitals of similar energies to form new equivalent hybrid orbitals."
+    },
+    {
+      "id": 69,
+      "front": "What is the geometry of an sp3 hybridized molecule?",
+      "back": "Tetrahedral."
+    },
+    {
+      "id": 70,
+      "front": "What is the geometry of an sp2 hybridized molecule?",
+      "back": "Trigonal planar."
+    },
+    {
+      "id": 71,
+      "front": "What is the geometry of an sp hybridized molecule like CO2?",
+      "back": "Linear."
+    },
+    {
+      "id": 72,
+      "front": "What shape results from dsp3 hybridization?",
+      "back": "Trigonal bipyramidal."
+    },
+    {
+      "id": 73,
+      "front": "What shape results from d2sp3 hybridization?",
+      "back": "Octahedral."
+    },
+    {
+      "id": 74,
+      "front": "What is the molecular shape of water (H2O)?",
+      "back": "V-shape or bent."
+    },
+    {
+      "id": 75,
+      "front": "What is the molecular shape of ammonia (NH3) / phosphine (PH3)?",
+      "back": "Trigonal pyramidal."
+    },
+    {
+      "id": 76,
+      "front": "Which block does Group IVA (Carbon Group) belong to?",
+      "back": "p-block."
+    },
+    {
+      "id": 77,
+      "front": "How does metallic character change down Group IVA?",
+      "back": "It increases from non-metal (C) to metals (Sn, Pb)."
+    },
+    {
+      "id": 78,
+      "front": "What is 'Band Theory' used to explain?",
+      "back": "Metallic bonding and electrical conductivity in metals."
+    },
+    {
+      "id": 79,
+      "front": "What is a 'unit cell'?",
+      "back": "The smallest identical building unit of a crystal lattice."
+    },
+    {
+      "id": 80,
+      "front": "Which Group 1 metal forms a peroxide (Na2O2) in excess oxygen?",
+      "back": "Sodium."
+    },
+    {
+      "id": 81,
+      "front": "Which Group 1 metals form superoxides (MO2)?",
+      "back": "Potassium, Rubidium, and Cesium."
+    },
+    {
+      "id": 82,
+      "front": "What are 'core electrons'?",
+      "back": "Inner shell electrons that shield the valence electrons from the nucleus."
+    },
+    {
+      "id": 83,
+      "front": "What happens to effective nuclear charge (Zeff) across a period?",
+      "back": "It increases."
+    },
+    {
+      "id": 84,
+      "front": "How does electron shielding change down a group?",
+      "back": "It increases."
+    },
+    {
+      "id": 85,
+      "front": "What is the 35th most abundant element by weight?",
+      "back": "Lithium."
+    },
+    {
+      "id": 86,
+      "front": "What is the half-life of Francium?",
+      "back": "21 or 22 seconds."
+    },
+    {
+      "id": 87,
+      "front": "Which elements are called lanthanoids?",
+      "back": "The 14 elements following Lanthanum where 4f orbitals are filled."
+    },
+    {
+      "id": 88,
+      "front": "Which elements are called actinoids?",
+      "back": "The 14 elements following Actinium where 5f orbitals are filled."
+    },
+    {
+      "id": 89,
+      "front": "Why is it harder to remove an electron from a cation than a neutral atom?",
+      "back": "Greater electrostatic attraction to the positive ion."
+    },
+    {
+      "id": 90,
+      "front": "Which property of transition metals is used in catalytic activities?",
+      "back": "Variable oxidation states and ability to provide a surface for reactions."
+    },
+    {
+      "id": 91,
+      "front": "What is the 'electron sea' model?",
+      "back": "A model where metal cations are surrounded by freely moving valence electrons."
+    },
+    {
+      "id": 92,
+      "front": "What is the trend of reactivity for Group II elements down the group?",
+      "back": "Reactivity increases."
+    },
+    {
+      "id": 93,
+      "front": "What is 'Froth Flotation' pine oil's role?",
+      "back": "To wet the sulphide particles so they rise with the froth."
+    },
+    {
+      "id": 94,
+      "front": "What happens to Zeff as you move down a group?",
+      "back": "It decreases due to increased screening."
+    },
+    {
+      "id": 95,
+      "front": "Which subshell has the lowest energy for a given n level?",
+      "back": "The s subshell."
+    },
+    {
+      "id": 96,
+      "front": "How many suborbitals does the f subshell have?",
+      "back": "7."
+    },
+    {
+      "id": 97,
+      "front": "Which rule explains the configuration 1s2 2s2 2px1 2py1 for Carbon?",
+      "back": "Hund's Rule."
+    },
+    {
+      "id": 98,
+      "front": "What are the common oxidation states for Group IVA elements?",
+      "back": "+2 and +4."
+    },
+    {
+      "id": 99,
+      "front": "What is 'pulverization' equipment called?",
+      "back": "A stamp mill."
+    },
+    {
+      "id": 100,
+      "front": "What is the primary factor determining the chemical properties of an element?",
+      "back": "The electronic configuration (especially valence electrons)."
+    }
+  ]
+}

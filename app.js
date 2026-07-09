@@ -23,9 +23,10 @@ const state = {
   studyEvents: [],
   quizAttempts: [],
   topicPerformance: [],
-  studyGuide: [],
-  selectedStudyGuideCourse: "",
-  selectedStudyGuideTopic: "",
+   studyGuide: [],
+   studyGuideFlashcardCache: {},
+   selectedStudyGuideCourse: "",
+   selectedStudyGuideTopic: "",
   studyGuideFlashcardIndex: 0,
   staffUser: null,
   staffRole: null,
@@ -1551,16 +1552,20 @@ function getLastMinuteResources(limit = 10) {
 
 async function loadStudyGuideData() {
   if (document.body.dataset.page !== "exam" || state.studyGuide.length) return;
+  const summary = getElement("#studyGuideSummary");
+  if (summary) summary.innerHTML = `<p class="eyebrow">Study guide</p><h2>Guide is still loading...</h2>`;
+
   try {
     const response = await fetch("./bio-study-guide.json?v=20260709-1", { cache: "no-store" });
     if (!response.ok) throw new Error("Study guide data is not available yet.");
     const guide = await response.json();
     state.studyGuide = Array.isArray(guide) ? guide : [];
-    state.selectedStudyGuideTopic = state.studyGuide[0]?.topic || "";
   } catch (error) {
     console.warn(error);
+    if (summary) summary.innerHTML = `<p class="eyebrow">Study guide</p><h2>Error loading guide</h2><p>Please refresh the page.</p>`;
     state.studyGuide = [];
   }
+}
 }
 
 function splitDefinitionLine(line = "") {
@@ -1593,28 +1598,32 @@ function studyList(items = [], tone = "default") {
   `;
 }
 
-function buildFlashcards(topic) {
-  return (topic?.subtopics || [])
-    .flatMap((subtopic) => [
-      ...(subtopic.definitions || []).map((definition) => {
-        const parsed = splitDefinitionLine(definition);
-        return {
-          label: subtopic.title,
-          front: parsed.term,
-          back: parsed.meaning,
-        };
-      }),
-      ...(subtopic.processes || []).map((process) => {
-        const parsed = splitDefinitionLine(process);
-        return {
-          label: subtopic.title,
-          front: parsed.term,
-          back: parsed.meaning,
-        };
-      }),
-    ])
-    .filter((card) => card.front && card.back)
-    .slice(0, 12);
+async function buildFlashcards(topic) {
+  const courseCode = topic?.courseCode || state.selectedStudyGuideCourse;
+  if (!courseCode) return [];
+
+  // 1. Check for flashcards in the study guide data itself first (high priority)
+  const guideFlashcards = topic?.flashcards || [];
+  if (guideFlashcards.length > 0) return guideFlashcards;
+
+  // 2. Check the cache
+  if (state.studyGuideFlashcardCache[courseCode]) {
+    return state.studyGuideFlashcardCache[courseCode];
+  }
+
+  // 3. Fetch from content/<courseCode>/flashcards.json
+  try {
+    const response = await fetch(`./content/${courseCode}/flashcards.json`, { cache: "force-cache" });
+    if (!response.ok) throw new Error("No flashcards file");
+    const data = await response.json();
+    const cards = Array.isArray(data) ? data : (data.flashcards || []);
+    
+    state.studyGuideFlashcardCache[courseCode] = cards;
+    return cards;
+  } catch (e) {
+    console.warn(`Failed to load flashcards for ${courseCode}:`, e);
+    return [];
+  }
 }
 
 function guideResourceMatches(topic) {
@@ -1636,7 +1645,7 @@ function guideResourceMatches(topic) {
     .slice(0, 6);
 }
 
-function renderExamMode() {
+async function renderExamMode() {
   const courseSelect = getElement("#studyGuideCourseSelect");
   const topicList = getElement("#studyGuideTopicList");
   const summary = getElement("#studyGuideSummary");
@@ -1726,10 +1735,10 @@ function renderExamMode() {
         <button class="smart-topic-button" type="button" data-study-topic="${escapeHtml(item.topic)}" data-active="${
         item.topic === topic.topic
       }">
-          <span>${String(index + 1).padStart(2, "0")}</span>
-          <strong>${escapeHtml(item.topic)}</strong>
-        </button>
-      `
+        <span>${String(index + 1).padStart(2, "0")}</span>
+        <strong>${escapeHtml(item.topic)}</strong>
+      </button>
+    `
     )
     .join("");
 
@@ -1750,33 +1759,7 @@ function renderExamMode() {
     </div>
   `;
 
-  const cards = buildFlashcards(topic);
-  if (state.studyGuideFlashcardIndex >= cards.length) state.studyGuideFlashcardIndex = 0;
-  const activeCard = cards[state.studyGuideFlashcardIndex];
-  flashcards.innerHTML = activeCard
-    ? `
-      <div class="flashcard-stage">
-        <button class="study-flashcard" type="button" data-flashcard>
-          <span>${escapeHtml(activeCard.label)}</span>
-          <strong data-front>${escapeHtml(activeCard.front)}</strong>
-          <small data-back>${escapeHtml(activeCard.back)}</small>
-          <em>Tap to reveal</em>
-        </button>
-        <div class="flashcard-controls" aria-label="Flashcard controls">
-          <button class="mini-action" type="button" data-flashcard-nav="prev">
-            <span class="material-symbols-rounded" aria-hidden="true">chevron_left</span>
-            Previous
-          </button>
-          <span>${state.studyGuideFlashcardIndex + 1} of ${cards.length}</span>
-          <button class="mini-action" type="button" data-flashcard-nav="next">
-            Next
-            <span class="material-symbols-rounded" aria-hidden="true">chevron_right</span>
-          </button>
-        </div>
-      </div>
-    `
-    : `<p class="empty-state">No flashcards have been added for this topic yet.</p>`;
-
+  flashcards.innerHTML = `<div class="loading-state"><span class="material-symbols-rounded">hourglass_empty</span><p>Loading flashcards...</p></div>`;
   subtopics.innerHTML = (topic.subtopics || [])
     .map(
       (subtopic, index) => `
@@ -1828,6 +1811,33 @@ function renderExamMode() {
       `
     ),
   ].join("");
+
+  const cards = await buildFlashcards(topic);
+  if (state.studyGuideFlashcardIndex >= cards.length) state.studyGuideFlashcardIndex = 0;
+  const activeCard = cards[state.studyGuideFlashcardIndex];
+  flashcards.innerHTML = activeCard
+    ? `
+      <div class="flashcard-stage">
+        <button class="study-flashcard" type="button" data-flashcard>
+          <span>${escapeHtml(activeCard.label)}</span>
+          <strong data-front>${escapeHtml(activeCard.front)}</strong>
+          <small data-back>${escapeHtml(activeCard.back)}</small>
+          <em>Tap to reveal</em>
+        </button>
+        <div class="flashcard-controls" aria-label="Flashcard controls">
+          <button class="mini-action" type="button" data-flashcard-nav="prev">
+            <span class="material-symbols-rounded" aria-hidden="true">chevron_left</span>
+            Previous
+          </button>
+          <span>${state.studyGuideFlashcardIndex + 1} of ${cards.length}</span>
+          <button class="mini-action" type="button" data-flashcard-nav="next">
+            Next
+            <span class="material-symbols-rounded" aria-hidden="true">chevron_right</span>
+          </button>
+        </div>
+      </div>
+    `
+    : `<p class="empty-state">No flashcards have been added for this topic yet.</p>`;
 }
 
 function getNotificationItems() {
@@ -4246,19 +4256,19 @@ function connectNotificationSetup() {
   });
 }
 
-function connectStudyGuide() {
+async function connectStudyGuide() {
   if (document.body.dataset.page !== "exam") return;
 
-  document.addEventListener("change", (event) => {
+  document.addEventListener("change", async (event) => {
     const courseSelect = event.target.closest("#studyGuideCourseSelect");
     if (!courseSelect) return;
     state.selectedStudyGuideCourse = courseSelect.value;
     state.selectedStudyGuideTopic = studyGuideTopicsForCourse(courseSelect.value)[0]?.topic || "";
     state.studyGuideFlashcardIndex = 0;
-    renderExamMode();
+    await renderExamMode();
   });
 
-  document.addEventListener("click", (event) => {
+  document.addEventListener("click", async (event) => {
     const topicButton = event.target.closest("[data-study-topic]");
     const flashcard = event.target.closest("[data-flashcard]");
     const flashcardNav = event.target.closest("[data-flashcard-nav]");
@@ -4266,17 +4276,17 @@ function connectStudyGuide() {
     if (topicButton) {
       state.selectedStudyGuideTopic = topicButton.dataset.studyTopic;
       state.studyGuideFlashcardIndex = 0;
-      renderExamMode();
+      await renderExamMode();
       getElement("#studyGuideSummary")?.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
 
     if (flashcardNav) {
-      const cards = buildFlashcards(studyGuideTopic());
+      const cards = await buildFlashcards(studyGuideTopic());
       if (!cards.length) return;
       const direction = flashcardNav.dataset.flashcardNav === "prev" ? -1 : 1;
       state.studyGuideFlashcardIndex = (state.studyGuideFlashcardIndex + direction + cards.length) % cards.length;
-      renderExamMode();
+      await renderExamMode();
       return;
     }
 
@@ -4303,7 +4313,7 @@ function connectResourceEngagement() {
         setResourceProgress(resourceId, progress);
         renderResourceCards();
         renderCourseGrid();
-        renderExamMode();
+        await renderExamMode();
         showToast(`${progressLabel(progress?.status || status)} tag saved.`);
         return;
       }
@@ -4320,7 +4330,7 @@ function connectResourceEngagement() {
         setResourceFeedback(resourceId, feedback);
         renderResourceCards();
         renderCourseGrid();
-        renderExamMode();
+        await renderExamMode();
         showToast(feedback.helpful ? "Marked as helpful." : "Helpful vote removed.");
         return;
       }

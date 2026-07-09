@@ -1,102 +1,504 @@
-[
-  {"id":1,"front":"Define Hydrocarbons.","back":"Organic compounds that contain only carbon (C) and hydrogen (H)."},
-  {"id":2,"front":"Into which two main classes are hydrocarbons divided based on structure?","back":"Aliphatic and Aromatic."},
-  {"id":3,"front":"What are the four sub-divisions of aliphatic hydrocarbons?","back":"Alkanes, Alkenes, Alkynes, and Cyclic Aliphatic (Alicyclic)."},
-  {"id":4,"front":"What is the general formula for Alkanes?","back":"CnH2n+2."},
-  {"id":5,"front":"What is the general formula for Alkenes?","back":"CnH2n."},
-  {"id":6,"front":"Define Alkanes based on their bonding and structure.","back":"Compounds of C and H that do not possess double bonds, triple bonds, or rings."},
-  {"id":7,"front":"What is the meaning and origin of the term paraffin?","back":"It means 'enough affinity' (from Latin parum and affins), arising because alkanes are chemically saturated and unreactive with common reagents."},
-  {"id":8,"front":"What does the acronym IUPAC stand for?","back":"International Union of Pure and Applied Chemistry."},
-  {"id":9,"front":"What are saturated hydrocarbons?","back":"Hydrocarbons like alkanes where chemical affinity for reagents is satisfied, containing only single C-C and C-H bonds."},
-  {"id":10,"front":"Define Alkenes.","back":"Unsaturated hydrocarbons which possess carbon-carbon double bonds in their structures."},
-  {"id":11,"front":"What is the synonym for Alkenes?","back":"Olefins."},
-  {"id":12,"front":"Distinguish between saturated and unsaturated hydrocarbons based on bonding.","back":"Saturated hydrocarbons (alkanes) have only single bonds; unsaturated hydrocarbons (alkenes/alkynes) possess double or triple carbon-carbon bonds."},
-  {"id":13,"front":"True or False: Alkanes are generally reactive at ordinary temperatures with strong acids like H2SO4.","back":"False. Alkanes are generally unreactive at ordinary temperatures."},
-  {"id":14,"front":"What is the suffix change when converting an alkane name to an alkene?","back":"The -ane ending is replaced with -ene."},
-  {"id":15,"front":"What is the IUPAC name for a straight-chain alkane with 100 carbon atoms?","back":"Hectane."},
-  {"id":16,"front":"In IUPAC nomenclature for branched alkanes, how is the parent structure selected?","back":"The longest continuous chain of carbon atoms is taken as the parent hydrocarbon."},
-  {"id":17,"front":"What rule determines the direction of numbering for the parent carbon chain?","back":"The chain is numbered to give the lowest possible numbers to the side-chain substituents."},
-  {"id":18,"front":"Name the structure labeled 'A' in [SOURCE_IMAGE_10].","back":"2,3-dimethyl pentane."},
-  {"id":19,"front":"What is the IUPAC prefix for four identical substituents?","back":"Tetra-."},
-  {"id":20,"front":"What is the IUPAC prefix for five identical substituents?","back":"Penta-."},
-  {"id":21,"front":"According to definitive IUPAC rules, how are different alkyl groups ordered when attached to the same parent chain?","back":"In alphabetical order (e.g., ethyl before methyl)."},
-  {"id":22,"front":"According to the IUPAC note, what punctuation is used to separate the numbering of substituents and the main hydrocarbon chain?","back":"Parentheses."},
-  {"id":23,"front":"Name the alkane with the formula CH3(CH2)18CH3.","back":"Eicosane (n=20)."},
-  {"id":24,"front":"Name the alkane with the formula CH3(CH2)28CH3.","back":"Triacontane (n=30)."},
-  {"id":25,"front":"Define a Homologous Series.","back":"A group of compounds with similar chemical structures and graded physical properties that differ by the number of atoms in the structural backbone."},
-  {"id":26,"front":"How does an additional CH2 group affect the boiling point of straight-chain alkanes?","back":"It contributes a fairly constant increment to the boiling point."},
-  {"id":27,"front":"The boiling points of hexane and heptane are 69C and 98C. Predict the boiling point of octane.","back":"127C (The actual boiling point is 126C)."},
-  {"id":28,"front":"What is the structural difference between hexane and heptane?","back":"One CH2 group."},
-  {"id":29,"front":"Why does the concept of homology work most satisfactorily for higher molecular weight members?","back":"Because the addition of a CH2 group makes a smaller relative change in the overall composition of larger molecules."},
-  {"id":30,"front":"What are the names of the alkanes for n=1, 2, 3, 4?","back":"Methane, Ethane, Propane, and Butane."},
-  {"id":31,"front":"What are the names of the alkanes for n=11, 12, 13?","back":"Undecane, Dodecane, and Tridecane."},
-  {"id":32,"front":"Name the structure shown in [SOURCE_IMAGE_13].","back":"2,2,3-trimethyl butane."},
-  {"id":33,"front":"If an alkane has two identical substituents at the same position, how is this indicated in the name?","back":"Numbers are supplied for each (e.g., 2,2-) and a prefix like di- or tri- is included."},
-  {"id":34,"front":"In the name 4-ethyl-3-methyl heptane, why is ethyl cited before methyl?","back":"Substituents are cited in alphabetical order."},
-  {"id":35,"front":"What is the IUPAC name for CH3CH2CH2CH3?","back":"Butane."},
-  {"id":36,"front":"What is the considered origin of petroleum?","back":"Dead marine organisms buried under rock sediments millions of years ago, decomposed by temperature and pressure."},
-  {"id":37,"front":"What is the boiling point range and carbon count for the Gas fraction of petroleum?","back":"Up to 40C; contains C1 to C5 alkanes."},
-  {"id":38,"front":"What percentage of daily petroleum use does the Gas fraction represent?","back":"11%."},
-  {"id":39,"front":"Distinguish between Natural Gas and Bottled Gas (LPG) components.","back":"Natural gas is mainly methane and ethane; Bottled gas is mainly propane and butane."},
-  {"id":40,"front":"Describe the Gasoline fraction (boiling point, composition, and use percentage).","back":"BP 40 to 180C; contains mostly C6 to C10 hydrocarbons; constitutes 39% of daily consumption."},
-  {"id":41,"front":"Why do branched alkanes make better gasoline than continuous chain isomers?","back":"They give less 'knock' in high compression engines."},
-  {"id":42,"front":"Define Knocking in an internal combustion engine.","back":"It occurs when fuel burns with difficulty, causing the engine to emit a metallic sound and cut off."},
-  {"id":43,"front":"What is the characteristic of Nigerian crude petroleum regarding its sulfur content?","back":"It has low sulfur content."},
-  {"id":44,"front":"Why is Sulphur undesirable in crude petroleum?","back":"It deactivates tetraethyl lead and affects smooth combustion."},
-  {"id":45,"front":"What are the standard compounds for the Octane Rating scale?","back":"2,2,4-trimethyl pentane (isooctane) is 100; Heptane is 0."},
-  {"id":46,"front":"What does the Octane Number in petrol specifically refer to?","back":"The percentage of isooctane in the fuel."},
-  {"id":47,"front":"What is the daily use percentage and carbon range for Kerosene?","back":"6% of daily use; contains C11 to C12 hydrocarbons."},
-  {"id":48,"front":"List the total daily use percentage and carbon count for Light gas oil (diesel/furnace fuel).","back":"26% total daily use; contains C13 to C17 hydrocarbons."},
-  {"id":49,"front":"What are the common names for C26 to C35 Lubricants and their daily consumption rate?","back":"Paraffin wax and petroleum jelly (Vaseline); 8% daily consumption."},
-  {"id":50,"front":"How many liters are in one barrel of oil?","back":"160 L."},
-  {"id":51,"front":"Which process converts straight-chain alkanes into branched-chain ones?","back":"Catalytic isomerisation."},
-  {"id":52,"front":"Which process converts higher alkanes into smaller alkanes and alkenes to increase gasoline yield?","back":"Cracking."},
-  {"id":53,"front":"Why is fractional distillation no longer feasible for isolating pure alkanes above the pentanes?","back":"The number of isomers becomes too large and boiling point differences become too small."},
-  {"id":54,"front":"What are the catalysts used for the Hydrogenation of Alkenes?","back":"Platinum (Pt), Palladium (Pd), or Nickel (Ni)."},
-  {"id":55,"front":"Why is hydrogenation frequently used as an analytical tool?","back":"The volume of hydrogen consumed can be easily measured to determine the number of double bonds in a compound."},
-  {"id":56,"front":"What is the function of the catalyst in the hydrogenation of alkenes?","back":"To lower the energy of activation so the reaction can proceed rapidly at room temperature."},
-  {"id":57,"front":"Define Grignard Reagent and how it is formed.","back":"An organo-metallic compound (RMgX) formed from the reaction of magnesium with an alkyl halide in dry ether."},
-  {"id":58,"front":"What is produced when a Grignard Reagent reacts with water (HOH)?","back":"An alkane (R-H) and Mg(OH)X."},
-  {"id":59,"front":"Show the general equation for the Reduction of alkyl halides by metal and acid.","back":"RX + Zn + H+ -> RH + Zn++ + X-."},
-  {"id":60,"front":"What are the products of complete combustion of hydrocarbons in excess oxygen?","back":"Carbon dioxide (CO2) and water (H2O)."},
-  {"id":61,"front":"What is the standard heat of combustion (delta H) for 1 mole of methane at 25C?","back":"-212.8 Kcal."},
-  {"id":62,"front":"In the chlorination of propane at 25C, what are the two isomeric products and their percentages?","back":"1-Chloropropane (45%) and 2-Chloropropane (55%)."},
-  {"id":63,"front":"What are the specific industrial uses for Chloroform and Carbon tetrachloride?","back":"Chloroform is an anesthetic; Carbon tetrachloride is a non-flammable cleaning agent and fire extinguisher fluid."},
-  {"id":64,"front":"Name the three steps of the radical mechanism for halogenation.","back":"1. Chain initiation, 2. Chain propagation, 3. Chain termination."},
-  {"id":65,"front":"Define Homolytic bond fission in step 1 of halogenation initiation.","back":"The cleavage of a bond where each atom retains one electron, generating a reactive radical."},
-  {"id":66,"front":"Represent the two sub-steps of Chain Propagation (Step 2) using X for halogen.","back":"(a) X* + RH -> HX + R*; (b) R* + X2 -> RX + X*."},
-  {"id":67,"front":"List the three possible Chain Termination (Step 3) combinations.","back":"(c) X* + X* -> X2; (d) R* + R* -> R-R; (e) R* + X* -> R-X."},
-  {"id":68,"front":"What conditions are required for the Halogenation of Alkanes?","back":"Ultraviolet (UV) light or temperatures of 250-400C."},
-  {"id":69,"front":"What reagents and temperature are used for the vapour phase Nitration of Alkanes?","back":"HNO3 or N2O4 at 400C."},
-  {"id":70,"front":"Rank the ease of hydrogen replacement in the Sulphonation of Alkanes.","back":"Tertiary (3) >> Secondary (2) >> Primary (1)."},
-  {"id":71,"front":"Name the functional group and general formula for Alkenes.","back":"Carbon-carbon double bond (C=C); CnH2n."},
-  {"id":72,"front":"What is the IUPAC rule for selecting the parent structure in an alkene?","back":"Select the longest continuous carbon chain that contains the carbon-carbon double bond."},
-  {"id":73,"front":"Name the first three members of the alkene homologous series.","back":"Ethene, Propene, and Butene."},
-  {"id":74,"front":"How are alkenes distinguished from alkanes in terms of saturation?","back":"Alkenes are unsaturated; alkanes are saturated."},
-  {"id":75,"front":"What is the suffix change when converting an alkane to an alkene?","back":"The -ane ending is replaced with -ene."},
-  {"id":76,"front":"Define Alkanamines and their elemental composition.","back":"Organic molecules belonging to the amines group containing only carbon (C), hydrogen (H), and nitrogen (N)."},
-  {"id":77,"front":"Define Primary, Secondary, and Tertiary amines based on hydrogen replacement.","back":"Primary (R-NH2): 1 H replaced; Secondary (R2NH): 2 H replaced; Tertiary (R3N): 3 H replaced."},
-  {"id":78,"front":"What is the general formula for a Quaternary ammonium salt?","back":"R4N+X-."},
-  {"id":79,"front":"What is the general formula for the alkanamine homologous series?","back":"CnH2n+3N."},
-  {"id":80,"front":"Rank the basicity of Alkanamines, Ammonia, and Aniline from strongest to weakest.","back":"Alkanamine > Ammonia > Aniline."},
-  {"id":81,"front":"Explain the +I effect in alkanamines vs. ammonia.","back":"The electron-releasing tendency of the alkyl group increases electron density at the nitrogen atom, making it more basic than ammonia."},
-  {"id":82,"front":"Why is Aniline less basic than ammonia?","back":"The phenyl group exerts an inductive effect that withdraws electrons, reducing their availability on nitrogen for protonation."},
-  {"id":83,"front":"What are the three parts of a systematic IUPAC name for an alkanamine?","back":"1. Alkan (parent stem), 2. -n- (location of NH2 group), 3. Amine (suffix)."},
-  {"id":84,"front":"What is the common name and systematic name for C6H5NH2?","back":"Common: Aniline; Systematic: Benzenamine."},
-  {"id":85,"front":"Amines can act as both bases and nucleophiles because of what feature?","back":"The unshared electron pair on the nitrogen atom."},
-  {"id":86,"front":"Which catalysts are used to reduce nitro compounds to amines using hydrogen gas?","back":"Finely divided nickel (Ni), palladium (Pd), or platinum (Pt)."},
-  {"id":87,"front":"Why is reduction of nitro compounds using iron scrap and hydrochloric acid preferable?","back":"The FeCl2 produced is hydrolyzed, releasing hydrochloric acid back into the reaction."},
-  {"id":88,"front":"What reagent is used to reduce Amides or Nitriles to amines?","back":"Lithium aluminium hydride (LiAlH4)."},
-  {"id":89,"front":"Describe the Gabriel phthalimide synthesis.","back":"Phthalimide is treated with ethanolic KOH, heated with alkyl halide, and alkaline hydrolyzed to form an aliphatic primary amine."},
-  {"id":90,"front":"What is the outcome of the Hoffmann degradation of amides?","back":"A primary amine containing one less carbon atom than the starting amide."},
-  {"id":91,"front":"Why can tertiary (3) amines not undergo acylation?","back":"Because there is no hydrogen bonded to the nitrogen atom."},
-  {"id":92,"front":"What is the Carbylamine reaction and its characteristic result?","back":"Primary amines react with CHCl3/KOH to produce carbylamines which have an unpleasant smell."},
-  {"id":93,"front":"Primary amines react with aldehydes and ketones to form what?","back":"Schiff's bases (imines)."},
-  {"id":94,"front":"Identify the directing nature of Aniline in electrophilic substitution.","back":"It is ortho and para directing due to high electron density at those positions."},
-  {"id":95,"front":"How is p-nitroaniline synthesized to ensure the para derivative is the major product?","back":"Aniline is first acylated with acetic anhydride, then nitrated, and finally hydrolyzed."},
-  {"id":96,"front":"Identify the important amine neurotransmitter that regulates hunger and brain speed.","back":"Serotonin."},
-  {"id":97,"front":"What are the amine-based analgesics mentioned?","back":"Morphine and Demerol."},
-  {"id":98,"front":"List the industrial uses for Morpholine and Diarylamines.","back":"Morpholine: corrosion inhibitor in boilers; Diarylamines: antioxidants for rubber and roofing asphalt."},
-  {"id":99,"front":"What amine is used as a stabilizer for cellulose nitrate explosives?","back":"Diphenylamine."},
-  {"id":100,"front":"What is the biological name for epinephrine?","back":"Adrenaline."}
-]
+{
+  "flashcards": [
+    {
+      "id": 1,
+      "front": "Define Hydrocarbons.",
+      "back": "Organic compounds that contain only carbon (C) and hydrogen (H)."
+    },
+    {
+      "id": 2,
+      "front": "Into which two main classes are hydrocarbons divided based on structure?",
+      "back": "Aliphatic and Aromatic."
+    },
+    {
+      "id": 3,
+      "front": "What are the four sub-divisions of aliphatic hydrocarbons?",
+      "back": "Alkanes, Alkenes, Alkynes, and Cyclic Aliphatic (Alicyclic)."
+    },
+    {
+      "id": 4,
+      "front": "What is the general formula for Alkanes?",
+      "back": "CnH2n+2."
+    },
+    {
+      "id": 5,
+      "front": "What is the general formula for Alkenes?",
+      "back": "CnH2n."
+    },
+    {
+      "id": 6,
+      "front": "Define Alkanes based on their bonding and structure.",
+      "back": "Compounds of C and H that do not possess double bonds, triple bonds, or rings."
+    },
+    {
+      "id": 7,
+      "front": "What is the meaning and origin of the term paraffin?",
+      "back": "It means 'enough affinity' (from Latin parum and affins), arising because alkanes are chemically saturated and unreactive with common reagents."
+    },
+    {
+      "id": 8,
+      "front": "What does the acronym IUPAC stand for?",
+      "back": "International Union of Pure and Applied Chemistry."
+    },
+    {
+      "id": 9,
+      "front": "What are saturated hydrocarbons?",
+      "back": "Hydrocarbons like alkanes where chemical affinity for reagents is satisfied, containing only single C-C and C-H bonds."
+    },
+    {
+      "id": 10,
+      "front": "Define Alkenes.",
+      "back": "Unsaturated hydrocarbons which possess carbon-carbon double bonds in their structures."
+    },
+    {
+      "id": 11,
+      "front": "What is the synonym for Alkenes?",
+      "back": "Olefins."
+    },
+    {
+      "id": 12,
+      "front": "Distinguish between saturated and unsaturated hydrocarbons based on bonding.",
+      "back": "Saturated hydrocarbons (alkanes) have only single bonds; unsaturated hydrocarbons (alkenes/alkynes) possess double or triple carbon-carbon bonds."
+    },
+    {
+      "id": 13,
+      "front": "True or False: Alkanes are generally reactive at ordinary temperatures with strong acids like H2SO4.",
+      "back": "False. Alkanes are generally unreactive at ordinary temperatures."
+    },
+    {
+      "id": 14,
+      "front": "What is the suffix change when converting an alkane name to an alkene?",
+      "back": "The -ane ending is replaced with -ene."
+    },
+    {
+      "id": 15,
+      "front": "What is the IUPAC name for a straight-chain alkane with 100 carbon atoms?",
+      "back": "Hectane."
+    },
+    {
+      "id": 16,
+      "front": "In IUPAC nomenclature for branched alkanes, how is the parent structure selected?",
+      "back": "The longest continuous chain of carbon atoms is taken as the parent hydrocarbon."
+    },
+    {
+      "id": 17,
+      "front": "What rule determines the direction of numbering for the parent carbon chain?",
+      "back": "The chain is numbered to give the lowest possible numbers to the side-chain substituents."
+    },
+    {
+      "id": 18,
+      "front": "Name the structure labeled 'A' in [SOURCE_IMAGE_10].",
+      "back": "2,3-dimethyl pentane."
+    },
+    {
+      "id": 19,
+      "front": "What is the IUPAC prefix for four identical substituents?",
+      "back": "Tetra-."
+    },
+    {
+      "id": 20,
+      "front": "What is the IUPAC prefix for five identical substituents?",
+      "back": "Penta-."
+    },
+    {
+      "id": 21,
+      "front": "According to definitive IUPAC rules, how are different alkyl groups ordered when attached to the same parent chain?",
+      "back": "In alphabetical order (e.g., ethyl before methyl)."
+    },
+    {
+      "id": 22,
+      "front": "According to the IUPAC note, what punctuation is used to separate the numbering of substituents and the main hydrocarbon chain?",
+      "back": "Parentheses."
+    },
+    {
+      "id": 23,
+      "front": "Name the alkane with the formula CH3(CH2)18CH3.",
+      "back": "Eicosane (n=20)."
+    },
+    {
+      "id": 24,
+      "front": "Name the alkane with the formula CH3(CH2)28CH3.",
+      "back": "Triacontane (n=30)."
+    },
+    {
+      "id": 25,
+      "front": "Define a Homologous Series.",
+      "back": "A group of compounds with similar chemical structures and graded physical properties that differ by the number of atoms in the structural backbone."
+    },
+    {
+      "id": 26,
+      "front": "How does an additional CH2 group affect the boiling point of straight-chain alkanes?",
+      "back": "It contributes a fairly constant increment to the boiling point."
+    },
+    {
+      "id": 27,
+      "front": "The boiling points of hexane and heptane are 69C and 98C. Predict the boiling point of octane.",
+      "back": "127C (The actual boiling point is 126C)."
+    },
+    {
+      "id": 28,
+      "front": "What is the structural difference between hexane and heptane?",
+      "back": "One CH2 group."
+    },
+    {
+      "id": 29,
+      "front": "Why does the concept of homology work most satisfactorily for higher molecular weight members?",
+      "back": "Because the addition of a CH2 group makes a smaller relative change in the overall composition of larger molecules."
+    },
+    {
+      "id": 30,
+      "front": "What are the names of the alkanes for n=1, 2, 3, 4?",
+      "back": "Methane, Ethane, Propane, and Butane."
+    },
+    {
+      "id": 31,
+      "front": "What are the names of the alkanes for n=11, 12, 13?",
+      "back": "Undecane, Dodecane, and Tridecane."
+    },
+    {
+      "id": 32,
+      "front": "Name the structure shown in [SOURCE_IMAGE_13].",
+      "back": "2,2,3-trimethyl butane."
+    },
+    {
+      "id": 33,
+      "front": "If an alkane has two identical substituents at the same position, how is this indicated in the name?",
+      "back": "Numbers are supplied for each (e.g., 2,2-) and a prefix like di- or tri- is included."
+    },
+    {
+      "id": 34,
+      "front": "In the name 4-ethyl-3-methyl heptane, why is ethyl cited before methyl?",
+      "back": "Substituents are cited in alphabetical order."
+    },
+    {
+      "id": 35,
+      "front": "What is the IUPAC name for CH3CH2CH2CH3?",
+      "back": "Butane."
+    },
+    {
+      "id": 36,
+      "front": "What is the considered origin of petroleum?",
+      "back": "Dead marine organisms buried under rock sediments millions of years ago, decomposed by temperature and pressure."
+    },
+    {
+      "id": 37,
+      "front": "What is the boiling point range and carbon count for the Gas fraction of petroleum?",
+      "back": "Up to 40C; contains C1 to C5 alkanes."
+    },
+    {
+      "id": 38,
+      "front": "What percentage of daily petroleum use does the Gas fraction represent?",
+      "back": "11%."
+    },
+    {
+      "id": 39,
+      "front": "Distinguish between Natural Gas and Bottled Gas (LPG) components.",
+      "back": "Natural gas is mainly methane and ethane; Bottled gas is mainly propane and butane."
+    },
+    {
+      "id": 40,
+      "front": "Describe the Gasoline fraction (boiling point, composition, and use percentage).",
+      "back": "BP 40 to 180C; contains mostly C6 to C10 hydrocarbons; constitutes 39% of daily consumption."
+    },
+    {
+      "id": 41,
+      "front": "Why do branched alkanes make better gasoline than continuous chain isomers?",
+      "back": "They give less 'knock' in high compression engines."
+    },
+    {
+      "id": 42,
+      "front": "Define Knocking in an internal combustion engine.",
+      "back": "It occurs when fuel burns with difficulty, causing the engine to emit a metallic sound and cut off."
+    },
+    {
+      "id": 43,
+      "front": "What is the characteristic of Nigerian crude petroleum regarding its sulfur content?",
+      "back": "It has low sulfur content."
+    },
+    {
+      "id": 44,
+      "front": "Why is Sulphur undesirable in crude petroleum?",
+      "back": "It deactivates tetraethyl lead and affects smooth combustion."
+    },
+    {
+      "id": 45,
+      "front": "What are the standard compounds for the Octane Rating scale?",
+      "back": "2,2,4-trimethyl pentane (isooctane) is 100; Heptane is 0."
+    },
+    {
+      "id": 46,
+      "front": "What does the Octane Number in petrol specifically refer to?",
+      "back": "The percentage of isooctane in the fuel."
+    },
+    {
+      "id": 47,
+      "front": "What is the daily use percentage and carbon range for Kerosene?",
+      "back": "6% of daily use; contains C11 to C12 hydrocarbons."
+    },
+    {
+      "id": 48,
+      "front": "List the total daily use percentage and carbon count for Light gas oil (diesel/furnace fuel).",
+      "back": "26% total daily use; contains C13 to C17 hydrocarbons."
+    },
+    {
+      "id": 49,
+      "front": "What are the common names for C26 to C35 Lubricants and their daily consumption rate?",
+      "back": "Paraffin wax and petroleum jelly (Vaseline); 8% daily consumption."
+    },
+    {
+      "id": 50,
+      "front": "How many liters are in one barrel of oil?",
+      "back": "160 L."
+    },
+    {
+      "id": 51,
+      "front": "Which process converts straight-chain alkanes into branched-chain ones?",
+      "back": "Catalytic isomerisation."
+    },
+    {
+      "id": 52,
+      "front": "Which process converts higher alkanes into smaller alkanes and alkenes to increase gasoline yield?",
+      "back": "Cracking."
+    },
+    {
+      "id": 53,
+      "front": "Why is fractional distillation no longer feasible for isolating pure alkanes above the pentanes?",
+      "back": "The number of isomers becomes too large and boiling point differences become too small."
+    },
+    {
+      "id": 54,
+      "front": "What are the catalysts used for the Hydrogenation of Alkenes?",
+      "back": "Platinum (Pt), Palladium (Pd), or Nickel (Ni)."
+    },
+    {
+      "id": 55,
+      "front": "Why is hydrogenation frequently used as an analytical tool?",
+      "back": "The volume of hydrogen consumed can be easily measured to determine the number of double bonds in a compound."
+    },
+    {
+      "id": 56,
+      "front": "What is the function of the catalyst in the hydrogenation of alkenes?",
+      "back": "To lower the energy of activation so the reaction can proceed rapidly at room temperature."
+    },
+    {
+      "id": 57,
+      "front": "Define Grignard Reagent and how it is formed.",
+      "back": "An organo-metallic compound (RMgX) formed from the reaction of magnesium with an alkyl halide in dry ether."
+    },
+    {
+      "id": 58,
+      "front": "What is produced when a Grignard Reagent reacts with water (HOH)?",
+      "back": "An alkane (R-H) and Mg(OH)X."
+    },
+    {
+      "id": 59,
+      "front": "Show the general equation for the Reduction of alkyl halides by metal and acid.",
+      "back": "RX + Zn + H+ -> RH + Zn++ + X-."
+    },
+    {
+      "id": 60,
+      "front": "What are the products of complete combustion of hydrocarbons in excess oxygen?",
+      "back": "Carbon dioxide (CO2) and water (H2O)."
+    },
+    {
+      "id": 61,
+      "front": "What is the standard heat of combustion (delta H) for 1 mole of methane at 25C?",
+      "back": "-212.8 Kcal."
+    },
+    {
+      "id": 62,
+      "front": "In the chlorination of propane at 25C, what are the two isomeric products and their percentages?",
+      "back": "1-Chloropropane (45%) and 2-Chloropropane (55%)."
+    },
+    {
+      "id": 63,
+      "front": "What are the specific industrial uses for Chloroform and Carbon tetrachloride?",
+      "back": "Chloroform is an anesthetic; Carbon tetrachloride is a non-flammable cleaning agent and fire extinguisher fluid."
+    },
+    {
+      "id": 64,
+      "front": "Name the three steps of the radical mechanism for halogenation.",
+      "back": "1. Chain initiation, 2. Chain propagation, 3. Chain termination."
+    },
+    {
+      "id": 65,
+      "front": "Define Homolytic bond fission in step 1 of halogenation initiation.",
+      "back": "The cleavage of a bond where each atom retains one electron, generating a reactive radical."
+    },
+    {
+      "id": 66,
+      "front": "Represent the two sub-steps of Chain Propagation (Step 2) using X for halogen.",
+      "back": "(a) X* + RH -> HX + R*; (b) R* + X2 -> RX + X*."
+    },
+    {
+      "id": 67,
+      "front": "List the three possible Chain Termination (Step 3) combinations.",
+      "back": "(c) X* + X* -> X2; (d) R* + R* -> R-R; (e) R* + X* -> R-X."
+    },
+    {
+      "id": 68,
+      "front": "What conditions are required for the Halogenation of Alkanes?",
+      "back": "Ultraviolet (UV) light or temperatures of 250-400C."
+    },
+    {
+      "id": 69,
+      "front": "What reagents and temperature are used for the vapour phase Nitration of Alkanes?",
+      "back": "HNO3 or N2O4 at 400C."
+    },
+    {
+      "id": 70,
+      "front": "Rank the ease of hydrogen replacement in the Sulphonation of Alkanes.",
+      "back": "Tertiary (3) >> Secondary (2) >> Primary (1)."
+    },
+    {
+      "id": 71,
+      "front": "Name the functional group and general formula for Alkenes.",
+      "back": "Carbon-carbon double bond (C=C); CnH2n."
+    },
+    {
+      "id": 72,
+      "front": "What is the IUPAC rule for selecting the parent structure in an alkene?",
+      "back": "Select the longest continuous carbon chain that contains the carbon-carbon double bond."
+    },
+    {
+      "id": 73,
+      "front": "Name the first three members of the alkene homologous series.",
+      "back": "Ethene, Propene, and Butene."
+    },
+    {
+      "id": 74,
+      "front": "How are alkenes distinguished from alkanes in terms of saturation?",
+      "back": "Alkenes are unsaturated; alkanes are saturated."
+    },
+    {
+      "id": 75,
+      "front": "What is the suffix change when converting an alkane to an alkene?",
+      "back": "The -ane ending is replaced with -ene."
+    },
+    {
+      "id": 76,
+      "front": "Define Alkanamines and their elemental composition.",
+      "back": "Organic molecules belonging to the amines group containing only carbon (C), hydrogen (H), and nitrogen (N)."
+    },
+    {
+      "id": 77,
+      "front": "Define Primary, Secondary, and Tertiary amines based on hydrogen replacement.",
+      "back": "Primary (R-NH2): 1 H replaced; Secondary (R2NH): 2 H replaced; Tertiary (R3N): 3 H replaced."
+    },
+    {
+      "id": 78,
+      "front": "What is the general formula for a Quaternary ammonium salt?",
+      "back": "R4N+X-."
+    },
+    {
+      "id": 79,
+      "front": "What is the general formula for the alkanamine homologous series?",
+      "back": "CnH2n+3N."
+    },
+    {
+      "id": 80,
+      "front": "Rank the basicity of Alkanamines, Ammonia, and Aniline from strongest to weakest.",
+      "back": "Alkanamine > Ammonia > Aniline."
+    },
+    {
+      "id": 81,
+      "front": "Explain the +I effect in alkanamines vs. ammonia.",
+      "back": "The electron-releasing tendency of the alkyl group increases electron density at the nitrogen atom, making it more basic than ammonia."
+    },
+    {
+      "id": 82,
+      "front": "Why is Aniline less basic than ammonia?",
+      "back": "The phenyl group exerts an inductive effect that withdraws electrons, reducing their availability on nitrogen for protonation."
+    },
+    {
+      "id": 83,
+      "front": "What are the three parts of a systematic IUPAC name for an alkanamine?",
+      "back": "1. Alkan (parent stem), 2. -n- (location of NH2 group), 3. Amine (suffix)."
+    },
+    {
+      "id": 84,
+      "front": "What is the common name and systematic name for C6H5NH2?",
+      "back": "Common: Aniline; Systematic: Benzenamine."
+    },
+    {
+      "id": 85,
+      "front": "Amines can act as both bases and nucleophiles because of what feature?",
+      "back": "The unshared electron pair on the nitrogen atom."
+    },
+    {
+      "id": 86,
+      "front": "Which catalysts are used to reduce nitro compounds to amines using hydrogen gas?",
+      "back": "Finely divided nickel (Ni), palladium (Pd), or platinum (Pt)."
+    },
+    {
+      "id": 87,
+      "front": "Why is reduction of nitro compounds using iron scrap and hydrochloric acid preferable?",
+      "back": "The FeCl2 produced is hydrolyzed, releasing hydrochloric acid back into the reaction."
+    },
+    {
+      "id": 88,
+      "front": "What reagent is used to reduce Amides or Nitriles to amines?",
+      "back": "Lithium aluminium hydride (LiAlH4)."
+    },
+    {
+      "id": 89,
+      "front": "Describe the Gabriel phthalimide synthesis.",
+      "back": "Phthalimide is treated with ethanolic KOH, heated with alkyl halide, and alkaline hydrolyzed to form an aliphatic primary amine."
+    },
+    {
+      "id": 90,
+      "front": "What is the outcome of the Hoffmann degradation of amides?",
+      "back": "A primary amine containing one less carbon atom than the starting amide."
+    },
+    {
+      "id": 91,
+      "front": "Why can tertiary (3) amines not undergo acylation?",
+      "back": "Because there is no hydrogen bonded to the nitrogen atom."
+    },
+    {
+      "id": 92,
+      "front": "What is the Carbylamine reaction and its characteristic result?",
+      "back": "Primary amines react with CHCl3/KOH to produce carbylamines which have an unpleasant smell."
+    },
+    {
+      "id": 93,
+      "front": "Primary amines react with aldehydes and ketones to form what?",
+      "back": "Schiff's bases (imines)."
+    },
+    {
+      "id": 94,
+      "front": "Identify the directing nature of Aniline in electrophilic substitution.",
+      "back": "It is ortho and para directing due to high electron density at those positions."
+    },
+    {
+      "id": 95,
+      "front": "How is p-nitroaniline synthesized to ensure the para derivative is the major product?",
+      "back": "Aniline is first acylated with acetic anhydride, then nitrated, and finally hydrolyzed."
+    },
+    {
+      "id": 96,
+      "front": "Identify the important amine neurotransmitter that regulates hunger and brain speed.",
+      "back": "Serotonin."
+    },
+    {
+      "id": 97,
+      "front": "What are the amine-based analgesics mentioned?",
+      "back": "Morphine and Demerol."
+    },
+    {
+      "id": 98,
+      "front": "List the industrial uses for Morpholine and Diarylamines.",
+      "back": "Morpholine: corrosion inhibitor in boilers; Diarylamines: antioxidants for rubber and roofing asphalt."
+    },
+    {
+      "id": 99,
+      "front": "What amine is used as a stabilizer for cellulose nitrate explosives?",
+      "back": "Diphenylamine."
+    },
+    {
+      "id": 100,
+      "front": "What is the biological name for epinephrine?",
+      "back": "Adrenaline."
+    }
+  ]
+}
