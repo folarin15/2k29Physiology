@@ -1,0 +1,498 @@
+{
+  "easy_questions": [
+    {
+      "id": 1,
+      "question": "What is the meaning of the Latin word 'Liber'?",
+      "answer": "Book [1, 2]"
+    },
+    {
+      "id": 2,
+      "question": "True or False: A library is an organized information system.",
+      "answer": "True [3, 4]"
+    },
+    {
+      "id": 3,
+      "question": "Which word class includes naming words like 'Ibadan' and 'Nigeria'?",
+      "answer": "Proper Nouns [5, 6]"
+    },
+    {
+      "id": 4,
+      "question": "What is the smallest meaningful unit of grammar?",
+      "answer": "A morpheme [7, 8]"
+    },
+    {
+      "id": 5,
+      "question": "In the SQ3R method, what does the first 'S' stand for?",
+      "answer": "Survey [9]"
+    },
+    {
+      "id": 6,
+      "question": "What type of library is often called the 'people's university'?",
+      "answer": "Public library [10]"
+    },
+    {
+      "id": 7,
+      "question": "Identify the correct spelling: (A) renumeration (B) remuneration.",
+      "answer": "B. Remuneration [11]"
+    },
+    {
+      "id": 8,
+      "question": "What classification letter is used for 'Science' in the Library of Congress scheme?",
+      "answer": "Q [12, 13]"
+    },
+    {
+      "id": 9,
+      "question": "Which part of a sentence is the performer of the action?",
+      "answer": "The Subject [14, 15]"
+    },
+    {
+      "id": 10,
+      "question": "What does OPAC stand for?",
+      "answer": "Online Public Access Catalogue [16, 17]"
+    },
+    {
+      "id": 11,
+      "question": "Is the word 'cat' a free or bound morpheme?",
+      "answer": "Free morpheme [7]"
+    },
+    {
+      "id": 12,
+      "question": "What type of sentence makes a statement?",
+      "answer": "Declarative [18, 19]"
+    },
+    {
+      "id": 13,
+      "question": "Name one type of reference material used for word meanings.",
+      "answer": "Dictionary [20, 21]"
+    },
+    {
+      "id": 14,
+      "question": "Which section of the library handles borrowing and returning books?",
+      "answer": "Circulation section [22]"
+    },
+    {
+      "id": 15,
+      "question": "True or False: Nouns are part of an 'open' word class.",
+      "answer": "True [23]"
+    },
+    {
+      "id": 16,
+      "question": "What is the term for words with the same meaning?",
+      "answer": "Synonyms [24]"
+    },
+    {
+      "id": 17,
+      "question": "What classification letter is used for 'Law' in the LC scheme?",
+      "answer": "K [12, 25]"
+    },
+    {
+      "id": 18,
+      "question": "Identify the correct spelling: (A) definetion (B) definition.",
+      "answer": "B. Definition [26]"
+    },
+    {
+      "id": 19,
+      "question": "Which study method uses 'Know, Want, Learn'?",
+      "answer": "KWL Method [27]"
+    },
+    {
+      "id": 20,
+      "question": "What type of sentence ends with an exclamation mark?",
+      "answer": "Exclamatory [18, 19]"
+    },
+    {
+      "id": 21,
+      "question": "What are the two main processes for organizing information materials?",
+      "answer": "Cataloguing and Classification [1, 28]"
+    },
+    {
+      "id": 22,
+      "question": "What is the head of a 'Noun Phrase'?",
+      "answer": "A noun [29, 30]"
+    },
+    {
+      "id": 23,
+      "question": "Is a prefix a bound or free morpheme?",
+      "answer": "Bound morpheme [7, 31]"
+    },
+    {
+      "id": 24,
+      "question": "What is a 'gazetteer'?",
+      "answer": "A geographical dictionary [32]"
+    },
+    {
+      "id": 25,
+      "question": "Identify the correct spelling: (A) abstinence (B) abstinance.",
+      "answer": "A. Abstinence [33]"
+    },
+    {
+      "id": 26,
+      "question": "Which word class refers to actions or states of being?",
+      "answer": "Verbs [34, 35]"
+    },
+    {
+      "id": 27,
+      "question": "In the LC scheme, what does 'L' represent?",
+      "answer": "Education [12, 36]"
+    },
+    {
+      "id": 28,
+      "question": "True or False: Reference books are generally not for loan.",
+      "answer": "True [37]"
+    },
+    {
+      "id": 29,
+      "question": "What type of reading is done for pleasure?",
+      "answer": "Extensive reading [38]"
+    },
+    {
+      "id": 30,
+      "question": "What is the term for the rights protecting intellectual works?",
+      "answer": "Copyright [10, 39]"
+    },
+    {
+      "id": 31,
+      "question": "What punctuation usually follows an interjection?",
+      "answer": "Exclamation mark [4, 40]"
+    },
+    {
+      "id": 32,
+      "question": "Which section of the library contains journals and newspapers?",
+      "answer": "Serials section [22, 41]"
+    },
+    {
+      "id": 33,
+      "question": "True or False: A simple sentence has one independent clause.",
+      "answer": "True [42, 43]"
+    },
+    {
+      "id": 34,
+      "question": "What part of a book contains copyright information?",
+      "answer": "The Verso [44]"
+    },
+    {
+      "id": 35,
+      "question": "Is 'un-' in 'unhappy' a prefix or suffix?",
+      "answer": "Prefix [7, 45]"
+    },
+    {
+      "id": 36,
+      "question": "What is the Latin root for 'study'?",
+      "answer": "Studium [46]"
+    },
+    {
+      "id": 37,
+      "question": "Which classification scheme uses purely numeric notation?",
+      "answer": "Dewey Decimal Classification [41, 47]"
+    },
+    {
+      "id": 38,
+      "question": "Identify the correct spelling: (A) committee (B) commitee.",
+      "answer": "A. Committee [48]"
+    },
+    {
+      "id": 39,
+      "question": "What is 'skimming'?",
+      "answer": "Reading quickly for a general overview [38]"
+    },
+    {
+      "id": 40,
+      "question": "True or False: Pronouns are a closed word class.",
+      "answer": "True [23, 49]"
+    },
+    {
+      "id": 41,
+      "question": "What is the head of a 'Verb Phrase'?",
+      "answer": "A lexical verb [50, 51]"
+    },
+    {
+      "id": 42,
+      "question": "What is an 'atlas'?",
+      "answer": "A volume of maps [32]"
+    },
+    {
+      "id": 43,
+      "question": "Identify the correct spelling: (A) occassion (B) occasion.",
+      "answer": "B. Occasion [48]"
+    },
+    {
+      "id": 44,
+      "question": "What type of library is the Kenneth Dike Library?",
+      "answer": "Academic Library [10, 52]"
+    },
+    {
+      "id": 45,
+      "question": "What does a 'conjunction' do?",
+      "answer": "Joins words, phrases, or clauses [53, 54]"
+    },
+    {
+      "id": 46,
+      "question": "In the LC scheme, what does 'H' represent?",
+      "answer": "Social Sciences [12, 55]"
+    },
+    {
+      "id": 47,
+      "question": "True or False: Note-taking is done during a lecture.",
+      "answer": "True [56]"
+    },
+    {
+      "id": 48,
+      "question": "What type of sentence gives a command?",
+      "answer": "Imperative [18, 19]"
+    },
+    {
+      "id": 49,
+      "question": "What is a 'morpheme'?",
+      "answer": "Smallest meaningful unit of language [7, 8]"
+    },
+    {
+      "id": 50,
+      "question": "Is 'quickly' an adjective or an adverb?",
+      "answer": "Adverb [57, 58]"
+    },
+    {
+      "id": 51,
+      "question": "What is the primary function of an adjective?",
+      "answer": "To qualify or describe a noun or pronoun [51, 59]"
+    }
+  ],
+  "medium_questions": [
+    {
+      "id": 101,
+      "question": "Indicate the tense: 'We shall have been finishing the food'.",
+      "answer": "Future perfect continuous [60]"
+    },
+    {
+      "id": 102,
+      "question": "How many morphemes are in 'Presidential'?",
+      "answer": "3 [61]"
+    },
+    {
+      "id": 103,
+      "question": "Change to passive voice: 'I have not seen this before'.",
+      "answer": "That has not been seen by me before [62]"
+    },
+    {
+      "id": 104,
+      "question": "What is the grammatical name of: 'Where you are going' in 'Where you are going is a cause for concern'?",
+      "answer": "Noun clause [60]"
+    },
+    {
+      "id": 105,
+      "question": "Distinguish between 'note-taking' and 'note-making'.",
+      "answer": "Note-taking is during a lecture; note-making is personal revision and gap-filling later [56, 63]"
+    },
+    {
+      "id": 106,
+      "question": "What is the base in 'References'?",
+      "answer": "Refer [64]"
+    },
+    {
+      "id": 107,
+      "question": "Indicate the grammatical name: 'Confused by the scarcity of fuel' in 'Confused by the scarcity of fuel, institutes were shut'.",
+      "answer": "Participial phrase [65]"
+    },
+    {
+      "id": 108,
+      "question": "What is the notation type of the Library of Congress scheme?",
+      "answer": "Alphanumeric (Mixed) [12, 47]"
+    },
+    {
+      "id": 109,
+      "question": "How many morphemes are in 'universal'?",
+      "answer": "2 [66]"
+    },
+    {
+      "id": 110,
+      "question": "Change to reported speech: 'I am a lecturer,' said the man.",
+      "answer": "The man said that he was a lecturer [67]"
+    },
+    {
+      "id": 111,
+      "question": "What is the grammatical name: 'The teacher who raped that student'?",
+      "answer": "Relative/Adjectival clause [68, 69]"
+    },
+    {
+      "id": 112,
+      "question": "Explain the difference between 'denotative' and 'connotative' meaning.",
+      "answer": "Denotative is the dictionary meaning; connotative is the deeper, implied meaning [70, 71]"
+    },
+    {
+      "id": 113,
+      "question": "What are 'inflectional morphemes'?",
+      "answer": "Bound morphemes performing grammatical functions without changing word class [72, 73]"
+    },
+    {
+      "id": 114,
+      "question": "Identify the clause type: 'If you are tired, see me.'",
+      "answer": "Complex sentence [74]"
+    },
+    {
+      "id": 115,
+      "question": "What is the Moys classification scheme specifically used for?",
+      "answer": "Legal information/Law libraries [72, 75]"
+    },
+    {
+      "id": 116,
+      "question": "Change to passive voice: 'That tailor sews suits.'",
+      "answer": "Suits are sewn by that tailor [68]"
+    },
+    {
+      "id": 117,
+      "question": "How many morphemes are in 'Achievements'?",
+      "answer": "3 [68]"
+    },
+    {
+      "id": 118,
+      "question": "What is an 'it-cleft' sentence used for?",
+      "answer": "To project and emphasize a particular item in a sentence [76]"
+    },
+    {
+      "id": 119,
+      "question": "Identify the grammatical name: 'I will eat because you prepared the food'.",
+      "answer": "Adverbial clause [26]"
+    },
+    {
+      "id": 120,
+      "question": "What is the purpose of 'delimiting' a subject in writing?",
+      "answer": "To narrow a broad topic to a manageable and clearly focused area [77]"
+    },
+    {
+      "id": 121,
+      "question": "What are 'auxiliary verbs'?",
+      "answer": "Helping verbs that precede main verbs to show tense or mood [51, 78]"
+    },
+    {
+      "id": 122,
+      "question": "Indicate the tense: 'If I was invited, I would accept'.",
+      "answer": "Simple past [65]"
+    },
+    {
+      "id": 123,
+      "question": "How many morphemes are in 'Indiscriminately'?",
+      "answer": "4 [68]"
+    },
+    {
+      "id": 124,
+      "question": "What is a 'Call Mark'?",
+      "answer": "A combination of class and cutter numbers identifying a book's shelf location [79, 80]"
+    },
+    {
+      "id": 125,
+      "question": "What are the components of the SQ3R method?",
+      "answer": "Survey, Question, Read, Recall, Review [9]"
+    },
+    {
+      "id": 126,
+      "question": "Define 'Information Literacy'.",
+      "answer": "Ability to identify, locate, evaluate, and effectively use information [81, 82]"
+    }
+  ],
+  "hard_questions": [
+    {
+      "id": 201,
+      "question": "Select the clause structure: 'Sing repeatedly that verse'.",
+      "answer": "PAC (Predicator-Adjunct-Complement) [64]"
+    },
+    {
+      "id": 202,
+      "question": "Identify the function of the underlined part: 'Adeyemi, **the cobbler**, was arrested'.",
+      "answer": "Appositive element to 'Adeyemi' [83, 84]"
+    },
+    {
+      "id": 203,
+      "question": "What is the difference between a 'root' and a 'stem'?",
+      "answer": "Root is the core meaningful part; stem is the part remaining after removing inflectional affixes [31, 85]"
+    },
+    {
+      "id": 204,
+      "question": "Identify the function of 'that Nigeria is rich' in: 'The notion that Nigeria is rich may not be correct'.",
+      "answer": "Noun clause, appositive element to 'The notion' [66, 86]"
+    },
+    {
+      "id": 205,
+      "question": "Select the clause structure: 'Ola loves the man deeply'.",
+      "answer": "SPCA (Subject-Predicator-Complement-Adjunct) [87, 88]"
+    },
+    {
+      "id": 206,
+      "question": "State the function: 'To succeed in life is **our goal**'.",
+      "answer": "Noun phrase, subject complement [87, 89]"
+    },
+    {
+      "id": 207,
+      "question": "Indicate the structure type: 'During a public lecture..., Apeke displayed her wealth of knowledge...'.",
+      "answer": "Complex sentence [90]"
+    },
+    {
+      "id": 208,
+      "question": "Identify the grammatical name and function: '**Embittered by the years of neglect**, Roseline wept'.",
+      "answer": "Participial phrase, qualifying the subject 'Roseline' [91, 92]"
+    },
+    {
+      "id": 209,
+      "question": "What are the rules for transforming an active sentence to passive?",
+      "answer": "Subject/Object reversal, adding 'BE' verb of same tense, adding 'by' before new object [93]"
+    },
+    {
+      "id": 210,
+      "question": "Identify the function: 'I know **that you are serious**'.",
+      "answer": "Noun clause, object of the verb [48, 69]"
+    },
+    {
+      "id": 211,
+      "question": "What is the APA 7th edition rule for citing three or more authors in subsequent text?",
+      "answer": "First author followed by 'et al.' and year (e.g., Oshiluyi et al., 2024) [94]"
+    },
+    {
+      "id": 212,
+      "question": "Identify the name and function: 'He has been learning **swimming in the icy sea**'.",
+      "answer": "Gerundive phrase, object of the verb phrase 'has been learning' [83, 95]"
+    },
+    {
+      "id": 213,
+      "question": "State the function: 'Going **by your comments**, we are sure of victory'.",
+      "answer": "Adjectival function modifying 'we' [48, 96]"
+    },
+    {
+      "id": 214,
+      "question": "Identify the structure: 'Love covers **all sins**'.",
+      "answer": "Noun phrase, object complement (per specific test marking) [61, 97]"
+    },
+    {
+      "id": 215,
+      "question": "Explain the difference between 'Anaphoric' and 'Cataphoric' references.",
+      "answer": "Anaphoric refers backward to an antecedent; Cataphoric refers forward to a following referent [98]"
+    },
+    {
+      "id": 216,
+      "question": "Analyze the morphemes in 'individualistic'.",
+      "answer": "individual (root) + ist (derivational) + ic (derivational) [68, 99]"
+    },
+    {
+      "id": 217,
+      "question": "Identify the function: '**If the matter is resolved on time**, there will not be unrest'.",
+      "answer": "Adverbial clause of condition, qualifying the verb phrase 'will not be' [88, 100]"
+    },
+    {
+      "id": 218,
+      "question": "What is a 'Pseudo Cleft' sentence?",
+      "answer": "A reversal of a wh-cleft (e.g., 'A bar of chocolate is what I would like') [101]"
+    },
+    {
+      "id": 219,
+      "question": "Identify the name and function: '**The man that stole your car** was caught'.",
+      "answer": "Noun phrase, subject of the verb phrase 'was caught' [102, 103]"
+    },
+    {
+      "id": 220,
+      "question": "State the rules for summary writing.",
+      "answer": "No fragments (complete sentences), avoid mindless lifting, and maintain brevity [104, 105]"
+    },
+    {
+      "id": 221,
+      "question": "Contrast the 'Frustration', 'Instructional', and 'Independent' levels of comprehension.",
+      "answer": "Frustration: cannot comprehend; Instructional: needs help; Independent: succeeds alone [106, 107]"
+    }
+  ]
+}

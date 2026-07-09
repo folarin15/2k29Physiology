@@ -1,0 +1,400 @@
+{
+  "flashcards": [
+    {
+      "front": "What is the Latin origin and primal meaning of the word 'study'?",
+      "back": "The Latin root is 'studium', which primally means 'zeal', 'painstaking application', 'to press forward', or 'to strive after'."
+    },
+    {
+      "front": "Define the SQ3R study method.",
+      "back": "It is a technique for retaining information consisting of five steps: Survey (previewing), Question (asking preliminary questions), Read (thorough reading), Recall (mental rehearsal), and Review (cross-checking goals)."
+    },
+    {
+      "front": "What does the mnemonic 'KWL' stand for in reading comprehension?",
+      "back": "Know (what we already know), Want (what we want to know), and Learn (what we have learned)."
+    },
+    {
+      "front": "Distinguish between 'Skimming' and 'Scanning'.",
+      "back": "Skimming involves glancing through material for a general overview; Scanning is selective reading to locate specific keywords or technical terms."
+    },
+    {
+      "front": "What is 'Intensive Reading' primarily used for?",
+      "back": "It is thorough, time-consuming reading used to prepare for examinations and achieve complete comprehension and reproduction of details."
+    },
+    {
+      "front": "Explain the difference between 'Note-taking' and 'Note-making'.",
+      "back": "Note-taking happens during a lecture at the lecturer's pace; Note-making is a personal activity done later to revise, fill gaps, and correct errors in notes."
+    },
+    {
+      "front": "What are 'SMART' goals in the context of study sessions?",
+      "back": "Goals that are Specific, Measurable, Attainable, Realistic, and Time-bound."
+    },
+    {
+      "front": "Define a 'Library' according to Encyclopaedia Americana.",
+      "back": "An organized information system concerned with the collection, processing, storage, and dissemination of recorded information for reading, study, and consultation."
+    },
+    {
+      "front": "What type of library is referred to as the 'people's university'?",
+      "back": "The Public Library."
+    },
+    {
+      "front": "What is a 'National Library'?",
+      "back": "The apex library of a nation and major archive of its printed and non-printed materials, usually receiving copies of all copyright publications in the country."
+    },
+    {
+      "front": "Distinguish between 'Printed' and 'Non-printed' library resources.",
+      "back": "Printed resources are paper-based (books, journals, maps); Non-printed/Electronic resources are machine-readable (CD-ROMs, E-databases, microforms)."
+    },
+    {
+      "front": "What are 'Reference Materials'?",
+      "back": "Information materials designed by arrangement to be consulted for specific items of information rather than read consecutively (e.g., Dictionaries, Encyclopaedias)."
+    },
+    {
+      "front": "What is an 'Encyclopaedia'?",
+      "back": "A compendium of information in all branches of knowledge, starting with definitions and general background descriptions."
+    },
+    {
+      "front": "Define a 'Gazetteer'.",
+      "back": "A geographical dictionary providing information and data about places like villages, mountains, and rivers."
+    },
+    {
+      "front": "What is a 'Biographical Dictionary'?",
+      "back": "A reference source providing written accounts and sketches of individual lives, usually arranged alphabetically."
+    },
+    {
+      "front": "What is a 'Bibliography'?",
+      "back": "A descriptive list of books or works, often arranged alphabetically by authors' surnames or by subject."
+    },
+    {
+      "front": "Define 'Serials' in a library context.",
+      "back": "Periodical publications issued at regular intervals in successive parts, intended to be continued indefinitely (e.g., journals, newspapers)."
+    },
+    {
+      "front": "What is 'Cataloguing'?",
+      "back": "The process of providing a bibliographic description of a book (author, title, edition, etc.) to highlight its important details."
+    },
+    {
+      "front": "What is a 'Call Mark'?",
+      "back": "A combination of classification number, cutter number, and date of publication that identifies a book's location on the shelf."
+    },
+    {
+      "front": "What is 'Library Classification'?",
+      "back": "The process of grouping things or abstract concepts based on common characteristics, typically by subject coverage."
+    },
+    {
+      "front": "What are the four major classification schemes mentioned in the sources?",
+      "back": "Library of Congress (LC), Dewey Decimal Classification (DDC), Universal Decimal Classification (UDC), and Moys Classification Scheme."
+    },
+    {
+      "front": "What notation does the Library of Congress (LC) scheme use?",
+      "back": "Alphanumeric (mixed notation) using letters and numbers."
+    },
+    {
+      "front": "Identify the LC classification letter for 'Science'.",
+      "back": "Q"
+    },
+    {
+      "front": "Identify the LC classification letter for 'Law'.",
+      "back": "K"
+    },
+    {
+      "front": "Identify the LC classification letter for 'Education'.",
+      "back": "L"
+    },
+    {
+      "front": "What is the specific purpose of the Moys Classification Scheme?",
+      "back": "It was designed specifically to organize legal information resources (law libraries)."
+    },
+    {
+      "front": "What does 'OPAC' stand for and what is its function?",
+      "back": "Online Public Access Catalogue; it is a computerised version of the library catalogue allowing users to search holdings electronically."
+    },
+    {
+      "front": "Define 'Information Literacy'.",
+      "back": "The ability to identify an information need, locate relevant sources, evaluate them for authority and accuracy, and use the information effectively."
+    },
+    {
+      "front": "What is 'Copyright'?",
+      "back": "The right that protects the existence and use of intellectual property works of individuals or organizations."
+    },
+    {
+      "front": "What is 'Morphology'?",
+      "back": "The branch of linguistics that deals with words, their internal structure, and how they are formed through morphemes."
+    },
+    {
+      "front": "What is a 'Morpheme'?",
+      "back": "The smallest meaningful unit of grammar that cannot be further divided into smaller meaningful parts."
+    },
+    {
+      "front": "Define 'Free Morphemes'.",
+      "back": "Simple words consisting of one morpheme that can stand alone and make sense (e.g., 'play', 'test')."
+    },
+    {
+      "front": "Define 'Bound Morphemes'.",
+      "back": "Morphemes that must be attached to another morpheme to receive meaning; they are also known as affixes."
+    },
+    {
+      "front": "Distinguish between 'Derivational' and 'Inflectional' morphemes.",
+      "back": "Derivational morphemes create new words or change word classes (e.g., 'teach' to 'teacher'); Inflectional morphemes perform grammatical functions like plurality or tense without changing word class."
+    },
+    {
+      "front": "What is 'Affixation'?",
+      "back": "The word formation process of adding a prefix (before the root) or a suffix (after the root) to change meaning or word class."
+    },
+    {
+      "front": "Define 'Blending' with an example.",
+      "back": "The process of creating a new word by combining parts of two existing words (e.g., breakfast + lunch = brunch)."
+    },
+    {
+      "front": "Define 'Borrowing' in word formation.",
+      "back": "Taking words from one language into another (e.g., 'alcohol' from Arabic, 'zebra' from Bantu)."
+    },
+    {
+      "front": "What is 'Back-formation'?",
+      "back": "Creating a shorter word by removing a supposed affix from an existing word (e.g., 'edit' from 'editor')."
+    },
+    {
+      "front": "Explain the process of 'Conversion'.",
+      "back": "Making a word function in a different word class without changing its form (e.g., 'man' as a noun vs. 'to man' as a verb)."
+    },
+    {
+      "front": "What are the four 'Open' word classes?",
+      "back": "Nouns, Verbs, Adjectives, and Adverbs (they frequently accept new additions)."
+    },
+    {
+      "front": "What are the four 'Closed' word classes?",
+      "back": "Pronouns, Prepositions, Conjunctions, and Determiners (they are fixed sets that rarely change)."
+    },
+    {
+      "front": "Define a 'Common Noun'.",
+      "back": "A general name for people, places, or things of the same class (e.g., boy, city, university)."
+    },
+    {
+      "front": "Define a 'Proper Noun'.",
+      "back": "The specific name of a person, place, or institution, which must always begin with a capital letter (e.g., Ibadan, Nigeria, University of Ibadan)."
+    },
+    {
+      "front": "What is a 'Collective Noun'?",
+      "back": "A singular noun that refers to a group of people, animals, or things (e.g., a flock of sheep, a committee)."
+    },
+    {
+      "front": "Explain the difference between 'Abstract' and 'Concrete' nouns.",
+      "back": "Concrete nouns have outward physical appearance (bag, girl); Abstract nouns refer to immaterial qualities, concepts, or ideas (loyalty, beauty)."
+    },
+    {
+      "front": "What is an 'Anaphoric' reference?",
+      "back": "When a pronoun refers back to an antecedent mentioned earlier in the discourse."
+    },
+    {
+      "front": "What is a 'Cataphoric' reference?",
+      "back": "When a pronoun is used before its referent appears later in the discourse."
+    },
+    {
+      "front": "Define 'Transitive' and 'Intransitive' verbs.",
+      "back": "Transitive verbs select objects; Intransitive verbs do not."
+    },
+    {
+      "front": "What are 'Auxiliary Verbs'?",
+      "back": "Helping verbs that come before main verbs to indicate tense, mood, or voice (e.g., be, do, have, may, will)."
+    },
+    {
+      "front": "Distinguish between 'Dynamic' and 'Stative' verbs.",
+      "back": "Dynamic verbs express actions (go, play); Stative verbs express a state of being (see, know, understand)."
+    },
+    {
+      "front": "What is the primary function of an 'Adverb'?",
+      "back": "To modify a verb, an adjective, another adverb, a prepositional phrase, or a whole sentence."
+    },
+    {
+      "front": "Define an 'Adjective'.",
+      "back": "A word that qualifies a noun or a pronoun by giving specific details about them (number, quality, quantity)."
+    },
+    {
+      "front": "What is the difference between 'Attributive' and 'Predicative' adjectives?",
+      "back": "Attributive adjectives precede the noun they qualify; Predicative adjectives come after a verbal element (usually a linking verb)."
+    },
+    {
+      "front": "What is a 'Preposition'?",
+      "back": "A word placed before a noun or pronoun to show its relation to another word in terms of place, time, manner, or direction."
+    },
+    {
+      "front": "Define a 'Conjunction'.",
+      "back": "A word used to join words, phrases, clauses, or sentences."
+    },
+    {
+      "front": "What is an 'Interjection'?",
+      "back": "A part of speech used to express attitudinal or emotional states, often ending with an exclamation mark (e.g., Alas!, Ouch!)."
+    },
+    {
+      "front": "Define a 'Phrase'.",
+      "back": "A group of words functioning as a single unit without both a subject and a finite verb."
+    },
+    {
+      "front": "What is a 'Noun Phrase'?",
+      "back": "A phrase that has a noun as its head and can function as a subject, object, or complement."
+    },
+    {
+      "front": "What is a 'Gerundive Phrase'?",
+      "back": "A phrase headed by a gerund (verb ending in -ing acting as a noun) that functions as a nominal entity."
+    },
+    {
+      "front": "What is a 'Participial Phrase'?",
+      "back": "A phrase that has a present or past participle as its head and functions as an adjective modifying a noun."
+    },
+    {
+      "front": "Define a 'Clause'.",
+      "back": "The next higher grammatical unit after a phrase, consisting of a subject and a finite verb, capable of expressing a complete idea."
+    },
+    {
+      "front": "Distinguish between 'Independent' and 'Dependent' clauses.",
+      "back": "Independent (Main) clauses can stand alone as sentences; Dependent (Subordinate) clauses cannot stand alone and rely on a main clause."
+    },
+    {
+      "front": "What is a 'Noun Clause'?",
+      "back": "A subordinate clause that functions as a nominal entity (subject, object, or complement)."
+    },
+    {
+      "front": "Define an 'Adjectival/Relative Clause'.",
+      "back": "A subordinate clause that modifies a nominal entity, usually immediately following the word it modifies."
+    },
+    {
+      "front": "What is an 'Adverbial Clause'?",
+      "back": "A subordinate clause that modifies a main verb, answering questions of reason, place, condition, etc."
+    },
+    {
+      "front": "What is a 'Simple Sentence'?",
+      "back": "A sentence containing only one independent clause."
+    },
+    {
+      "front": "Define a 'Compound Sentence'.",
+      "back": "A sentence containing at least two independent clauses joined by coordinating conjunctions (and, but, or)."
+    },
+    {
+      "front": "Define a 'Complex Sentence'.",
+      "back": "A sentence containing one independent clause and at least one subordinate clause."
+    },
+    {
+      "front": "Define a 'Compound-Complex Sentence'.",
+      "back": "A sentence containing at least two independent clauses and at least one subordinate clause."
+    },
+    {
+      "front": "What are the four types of sentences based on function?",
+      "back": "Declarative (statements), Imperative (commands), Exclamatory (emotions), and Interrogative (questions)."
+    },
+    {
+      "front": "Explain the 'It-cleft' sentence structure.",
+      "back": "A strategy for emphasizing a specific item using 'It + is/was' (e.g., 'It was yesterday that I bought a house')."
+    },
+    {
+      "front": "What is 'Active Voice'?",
+      "back": "A construction where the actual subject is the performer of the action and occupies the position before the verb."
+    },
+    {
+      "front": "What is 'Passive Voice'?",
+      "back": "A construction where the logical object of the verb occupies the subject position and the logical subject is moved or omitted."
+    },
+    {
+      "front": "What are the three main rules for changing an active sentence to passive?",
+      "back": "1. Subject/Object Reversal; 2. Addition of a 'BE' verb matching the original tense; 3. Addition of the preposition 'by' before the new object."
+    },
+    {
+      "front": "Define 'Direct Speech'.",
+      "back": "Speech that is repeated verbatim and enclosed in quotation marks."
+    },
+    {
+      "front": "Define 'Indirect/Reported Speech'.",
+      "back": "A paraphrasing of what was said, involving changes in tense, pronouns, and proximity words."
+    },
+    {
+      "front": "List three common changes in proximity words when moving from direct to indirect speech.",
+      "back": "Here -> There; Today -> That day; Tomorrow -> The following day."
+    },
+    {
+      "front": "What is 'Summary Writing'?",
+      "back": "The process of reading and reducing a passage to its main ideas in one's own words while maintaining brevity."
+    },
+    {
+      "front": "List the three basic rules of summary writing.",
+      "back": "1. Use complete sentences (no fragments); 2. Avoid mindless lifting (use original words); 3. Maintain brevity (focus on main ideas only)."
+    },
+    {
+      "front": "What is the general format for APA 7th edition in-text citations?",
+      "back": "Author's surname and year of publication in parentheses (e.g., Ilesanmi, 2024)."
+    },
+    {
+      "front": "In APA 7th edition, how do you cite a work with three or more authors in subsequent citations?",
+      "back": "Use the first author's surname followed by 'et al.' and the year (e.g., Oshiluyi et al., 2024)."
+    },
+    {
+      "front": "What is the purpose of the 'Verso' of a title page?",
+      "back": "It contains the copyright statement, year of publication, ISBN, and publisher details."
+    },
+    {
+      "front": "Define 'Critical Comprehension'.",
+      "back": "The ability to evaluate reading material in terms of its strengths and weaknesses, requiring neutral and critical thinking."
+    },
+    {
+      "front": "What are 'Context Clues'?",
+      "back": "Using surrounding words or phrases (comparison, contrast, definition, illustration) to suggest and understand the meaning of a difficult word."
+    },
+    {
+      "front": "What is 'Structural Analysis' in vocabulary development?",
+      "back": "Dividing a word into its morphemes (root and affixes) to determine its meaning."
+    },
+    {
+      "front": "What is a 'Gerund'?",
+      "back": "A verb ending in -ing that functions as a noun (e.g., 'Reading is my hobby')."
+    },
+    {
+      "front": "Explain 'Infinitival Phrases'.",
+      "back": "Phrases headed by a 'to-infinitive' verb that can function as a noun, an adjective, or an adverb."
+    },
+    {
+      "front": "What are 'Correlative Conjunctions'?",
+      "back": "Conjunctions that exist in pairs, such as 'either...or', 'neither...nor', or 'not only...but also'."
+    },
+    {
+      "front": "What are 'Subordinating Conjunctions'?",
+      "back": "Conjunctions used to connect a subordinate clause to a main clause (e.g., because, although, if, when)."
+    },
+    {
+      "front": "What are the four levels of reading comprehension?",
+      "back": "Frustration level, Instructional level, Independent level, and Critical level."
+    },
+    {
+      "front": "Define 'Denotative' meaning.",
+      "back": "The direct, primary, or elementary dictionary meaning of a word."
+    },
+    {
+      "front": "Define 'Connotative' meaning.",
+      "back": "The deeper, implied, or suggestive understanding of a text beyond what is overtly presented."
+    },
+    {
+      "front": "What are the common impediments to effective study?",
+      "back": "Physical (location, noise, distractions) and Psychological (mental readiness, exhaustion)."
+    },
+    {
+      "front": "How many morphemes are in the word 'unhappiness'?",
+      "back": "Three: un- (prefix), happy (root), -ness (suffix)."
+    },
+    {
+      "front": "What classification letter is used for 'History of Africa' in the LC scheme?",
+      "back": "D"
+    },
+    {
+      "front": "What classification letter is used for 'Social Science' in the LC scheme?",
+      "back": "H"
+    },
+    {
+      "front": "Identify the head of the phrase: 'the handsome man in the room'.",
+      "back": "man"
+    },
+    {
+      "front": "What is the grammatical name and function of: 'Adeyemi, **the cobbler**, was arrested'?",
+      "back": "Noun phrase, functioning as an appositive element to 'Adeyemi'."
+    },
+    {
+      "front": "What is the clause structure of: 'Sing repeatedly that verse'?",
+      "back": "PAC (Predicator-Adjunct-Complement)."
+    }
+  ]
+}

@@ -1,0 +1,604 @@
+{
+  "past_questions": [
+    {
+      "id": 1,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Indicate the grammatical name of the underlined structure: 'Where you are going is a cause for concern.'",
+      "answer": "Noun clause"
+    },
+    {
+      "id": 2,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Indicate the tense in the sentence: 'We shall have been finishing the food by this time next week'.",
+      "answer": "Future perfect continuous"
+    },
+    {
+      "id": 3,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Change the following to reported speech: 'These politicians are corrupt,' commented Adeola.",
+      "answer": "Adeola commented that those politicians were corrupt."
+    },
+    {
+      "id": 4,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Identify the correct spelling: remuneration / renumeration",
+      "answer": "Remuneration"
+    },
+    {
+      "id": 5,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Complete the sentence: 'Forty litres of fuel _______ no longer easy to get.'",
+      "answer": "Is"
+    },
+    {
+      "id": 6,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Indicate the tense in the sentence: 'If I was invited, I would accept the offer.'",
+      "answer": "Simple past"
+    },
+    {
+      "id": 7,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Indicate the grammatical name of the underlined structure: 'Confused by the scarcity of fuel, different institutes were shut.'",
+      "answer": "Participial phrase"
+    },
+    {
+      "id": 8,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Complete the sentence: 'The number of politicians _______ increasing in Nigeria.'",
+      "answer": "Is"
+    },
+    {
+      "id": 9,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Change 'I have not seen this before' to the passive voice.",
+      "answer": "That has not been seen by me before."
+    },
+    {
+      "id": 10,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Complete the sentence: 'The total number of hours spent in the class _______ too much.'",
+      "answer": "Is"
+    },
+    {
+      "id": 11,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Identify the correct spelling: definition / definetion",
+      "answer": "Definition"
+    },
+    {
+      "id": 12,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "State the function of the underlined structure: 'I will eat because you prepared the food.'",
+      "answer": "Modifier of 'will eat'"
+    },
+    {
+      "id": 13,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "What type of sentence is 'Speak up if you are certain.'?",
+      "answer": "Simple"
+    },
+    {
+      "id": 14,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Identify the correct spelling: abstinence / abstinance",
+      "answer": "Abstinence"
+    },
+    {
+      "id": 15,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "State the function of the underlined structure: 'The man whose child you invited is here to see you.'",
+      "answer": "Modifies 'the man'"
+    },
+    {
+      "id": 16,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Indicate the grammatical name of the underlined structure: 'When Nigeria will be free from corruption remains unknown.'",
+      "answer": "Noun clause"
+    },
+    {
+      "id": 17,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Complete the sentence: 'Each _______ has a name to protect.'",
+      "answer": "Student"
+    },
+    {
+      "id": 18,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Complete the sentence: 'The total number of hours spent on that _______ too much.'",
+      "answer": "Is"
+    },
+    {
+      "id": 19,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Complete the sentence: 'One of the pupils who _______ writing the examination _______ my friend.'",
+      "answer": "Are/is"
+    },
+    {
+      "id": 20,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Change 'Segun's wife has been helping him' to the passive voice.",
+      "answer": "Segun has been being helped by his wife."
+    },
+    {
+      "id": 21,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Change to reported speech: 'I am a lecturer,' said the man.",
+      "answer": "The man said that he was a lecturer."
+    },
+    {
+      "id": 22,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Change 'They should have finished the work' to the passive voice.",
+      "answer": "The work should have been finished by them."
+    },
+    {
+      "id": 23,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Change 'The GES 101 supervisor is compiling the list' to the passive voice.",
+      "answer": "The list is being compiled by the GES 101 supervisor."
+    },
+    {
+      "id": 24,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Change to reported speech: 'We have been here,' said Paul.",
+      "answer": "Paul said they had been there."
+    },
+    {
+      "id": 25,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "What type of sentence is 'If you are tired, see me.'?",
+      "answer": "Complex"
+    },
+    {
+      "id": 26,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "What type of sentence is 'Go and preach it.'?",
+      "answer": "Compound"
+    },
+    {
+      "id": 27,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Indicate the tense in the sentence: 'We have left before.'",
+      "answer": "Past perfect"
+    },
+    {
+      "id": 28,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "State the function of the underlined structure: 'Travelling by road is risky.'",
+      "answer": "Subject of the verb"
+    },
+    {
+      "id": 29,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Indicate the tense in the sentence: 'How old are you?'",
+      "answer": "Simple present"
+    },
+    {
+      "id": 30,
+      "source": "GES(GST) 101(111)PQ 7",
+      "question": "Complete the sentence: 'A pair of trousers now _______ exorbitantly in the market.'",
+      "answer": "Sells"
+    },
+    {
+      "id": 31,
+      "source": "GES 101 Central Test",
+      "question": "How many morphemes are in 'Presidential'?",
+      "answer": "3"
+    },
+    {
+      "id": 32,
+      "source": "GES 101 Central Test",
+      "question": "Which of the following is a complex word? residential / resistance",
+      "answer": "Residential"
+    },
+    {
+      "id": 33,
+      "source": "GES 101 Central Test",
+      "question": "Select the clause structure for: 'Sing repeatedly that verse'",
+      "answer": "PAC (Predicator-Adjunct-Complement)"
+    },
+    {
+      "id": 34,
+      "source": "GES 101 Central Test",
+      "question": "The base in 'References' is:",
+      "answer": "Refer"
+    },
+    {
+      "id": 35,
+      "source": "GES 101 Central Test",
+      "question": "How many morphemes are in 'universal'?",
+      "answer": "2"
+    },
+    {
+      "id": 36,
+      "source": "GES 101 Central Test",
+      "question": "Select the clause structure for: 'Ola loves the man deeply'",
+      "answer": "SPCA (Subject-Predicator-Complement-Adjunct)"
+    },
+    {
+      "id": 37,
+      "source": "GES 101 Central Test",
+      "question": "Identify the grammatical name and function of the underlined part: 'Adeyemi, **the cobbler**, was arrested yesterday.'",
+      "answer": "Noun phrase, appositive element to 'Adeyemi'"
+    },
+    {
+      "id": 38,
+      "source": "GES 101 Central Test",
+      "question": "Identify the grammatical name and function: '**Embittered by the years of neglect**, Roseline wept endlessly.'",
+      "answer": "Participial phrase, qualifying the subject 'Roseline'"
+    },
+    {
+      "id": 39,
+      "source": "GES 101 Central Test",
+      "question": "Identify the grammatical name and function: 'I **have been fascinated** by your elocution.'",
+      "answer": "Verb phrase, predicator"
+    },
+    {
+      "id": 40,
+      "source": "GES 101 Central Test",
+      "question": "Identify the grammatical name and function: 'The lady **in the white dress** winked at Evelyn.'",
+      "answer": "Prepositional phrase, qualifies the subject 'The lady'"
+    },
+    {
+      "id": 41,
+      "source": "GES 101 Central Test",
+      "question": "Identify the grammatical name and function: 'The notion **that Nigeria is rich** may not be correct.'",
+      "answer": "Noun clause, appositive element to the noun phrase 'The notion'"
+    },
+    {
+      "id": 42,
+      "source": "GES 101 Central Test",
+      "question": "Identify the grammatical name and function: 'To succeed in life is **our goal**.'",
+      "answer": "Noun phrase, subject complement"
+    },
+    {
+      "id": 43,
+      "source": "GES 101 Central Test",
+      "question": "Which of the following is an example of a compound word? girlfriend / friendly",
+      "answer": "Girlfriend"
+    },
+    {
+      "id": 44,
+      "source": "GES 101 Central Test",
+      "question": "Identify the grammatical name and function: 'It is unfortunate that Moses does not know **where he was born**.'",
+      "answer": "Noun clause, object of the verb 'know'"
+    },
+    {
+      "id": 45,
+      "source": "GES 101 Central Test",
+      "question": "Identify the grammatical name and function: '**To be bitter** is to be unhappy.'",
+      "answer": "Infinitival phrase, subject of the verb 'is'"
+    },
+    {
+      "id": 46,
+      "source": "GES 101 Central Test",
+      "question": "Identify the grammatical name and function: 'He has been learning **swimming in the icy sea** for years.'",
+      "answer": "Gerundive phrase, object of the verb phrase 'has been learning'"
+    },
+    {
+      "id": 47,
+      "source": "GES 101 Central Test",
+      "question": "Identify the grammatical name and function: 'Love covers **all sins**.'",
+      "answer": "Noun phrase, object complement"
+    },
+    {
+      "id": 48,
+      "source": "GES 101 Central Test",
+      "question": "Identify the grammatical name and function: '**If the matter is resolved on time**, there will not be any further unrest.'",
+      "answer": "Adverbial clause of condition, qualifying the verb phrase 'will not be'"
+    },
+    {
+      "id": 49,
+      "source": "GES 101 Central Test",
+      "question": "Identify the grammatical name and function: '**The man that stole your car** was caught in Lokoja.'",
+      "answer": "Noun phrase, subject of the verb phrase 'was caught'"
+    },
+    {
+      "id": 50,
+      "source": "GES 101 PQ 3",
+      "question": "What is the meaning of the Latin word 'Liber'?",
+      "answer": "Book"
+    },
+    {
+      "id": 51,
+      "source": "GES 101 PQ 3",
+      "question": "What are the two processes for organizing information materials?",
+      "answer": "Cataloguing and classification"
+    },
+    {
+      "id": 52,
+      "source": "GES 101 PQ 3",
+      "question": "Which classification scheme is used at Kenneth Dike Library?",
+      "answer": "Library of Congress (LC)"
+    },
+    {
+      "id": 53,
+      "source": "GES 101 PQ 3",
+      "question": "What libraries primarily use the Moys classification scheme?",
+      "answer": "Law libraries"
+    },
+    {
+      "id": 54,
+      "source": "GES 101 PQ 3",
+      "question": "Identify the grammatical name: 'The teacher **who raped that student** has been apprehended.'",
+      "answer": "Relative clause"
+    },
+    {
+      "id": 55,
+      "source": "GES 101 PQ 3",
+      "question": "Identify the grammatical name: '**Discouraged by global economic meltdown**, he abandoned the project.'",
+      "answer": "Participial phrase"
+    },
+    {
+      "id": 56,
+      "source": "GES 101 PQ 3",
+      "question": "Identify the grammatical name: 'Susan **has been honoured by them**.'",
+      "answer": "Verb phrase"
+    },
+    {
+      "id": 57,
+      "source": "GES 101 PQ 3",
+      "question": "Identify the grammatical name: 'I hate **giving money to beggars**.'",
+      "answer": "Gerundive phrase"
+    },
+    {
+      "id": 58,
+      "source": "GES 101 PQ 3",
+      "question": "Identify the grammatical name: 'The man **whose daughter you jilted** is crying.'",
+      "answer": "Relative clause"
+    },
+    {
+      "id": 59,
+      "source": "GES 101 PQ 3",
+      "question": "Identify the grammatical name: '**When he will come** is the cause of the argument.'",
+      "answer": "Noun clause"
+    },
+    {
+      "id": 60,
+      "source": "GES 101 PQ 3",
+      "question": "Identify the grammatical name: '**Although you are right**, you will be penalised.'",
+      "answer": "Adverbial clause"
+    },
+    {
+      "id": 61,
+      "source": "GES 101 PQ 3",
+      "question": "Identify the grammatical name: 'Keep it **in your bag**.'",
+      "answer": "Prepositional phrase"
+    },
+    {
+      "id": 62,
+      "source": "GES 101 PQ 3",
+      "question": "Identify the grammatical name: 'We can see **the repentant prisoners**.'",
+      "answer": "Noun phrase"
+    },
+    {
+      "id": 63,
+      "source": "GES 101 PQ 3",
+      "question": "Identify the grammatical name: 'It was **very interesting**.'",
+      "answer": "Adjectival phrase"
+    },
+    {
+      "id": 64,
+      "source": "GES 101 PQ 3",
+      "question": "How many morphemes are in 'Melodious'?",
+      "answer": "2"
+    },
+    {
+      "id": 65,
+      "source": "GES 101 PQ 3",
+      "question": "How many morphemes are in 'Acquiescence'?",
+      "answer": "2"
+    },
+    {
+      "id": 66,
+      "source": "GES 101 PQ 3",
+      "question": "How many morphemes are in 'Apologize'?",
+      "answer": "2"
+    },
+    {
+      "id": 67,
+      "source": "GES 101 PQ 3",
+      "question": "How many morphemes are in 'Achievements'?",
+      "answer": "3"
+    },
+    {
+      "id": 68,
+      "source": "GES 101 PQ 3",
+      "question": "How many morphemes are in 'Close-mouthed'?",
+      "answer": "3"
+    },
+    {
+      "id": 69,
+      "source": "GES 101 PQ 3",
+      "question": "How many morphemes are in 'Motorized'?",
+      "answer": "3"
+    },
+    {
+      "id": 70,
+      "source": "GES 101 PQ 3",
+      "question": "How many morphemes are in 'Preparations'?",
+      "answer": "3"
+    },
+    {
+      "id": 71,
+      "source": "GES 101 PQ 3",
+      "question": "How many morphemes are in 'Indiscriminately'?",
+      "answer": "4"
+    },
+    {
+      "id": 72,
+      "source": "GES 101 PQ 3",
+      "question": "How many morphemes are in 'Individualistic'?",
+      "answer": "3"
+    },
+    {
+      "id": 73,
+      "source": "GES 101 PQ 3",
+      "question": "How many morphemes are in 'Pageantry'?",
+      "answer": "3"
+    },
+    {
+      "id": 74,
+      "source": "GES 101 PQ 3",
+      "question": "Change to passive: 'I have seen her.'",
+      "answer": "She has been seen by me."
+    },
+    {
+      "id": 75,
+      "source": "GES 101 PQ 3",
+      "question": "Change to passive: 'That tailor sews suits.'",
+      "answer": "Suits are sewn by that tailor."
+    },
+    {
+      "id": 76,
+      "source": "GES 101 PQ 3",
+      "question": "Change to passive: 'Thomas can make beads.'",
+      "answer": "Beads can be made by Thomas."
+    },
+    {
+      "id": 77,
+      "source": "GES 101 PQ 3",
+      "question": "Change to passive: 'I saw many people there.'",
+      "answer": "Many people were seen there by me."
+    },
+    {
+      "id": 78,
+      "source": "GES 101 PQ 3",
+      "question": "Complete with the correct tense: 'A number of the boys _______ angry.'",
+      "answer": "Are"
+    },
+    {
+      "id": 79,
+      "source": "GES 101 PQ 3",
+      "question": "Convert this reported speech to direct: 'The governor said that their farmers had a good harvest that year.'",
+      "answer": "'Our farmers have good harvest this year,' said the governor."
+    },
+    {
+      "id": 80,
+      "source": "GES 101 PQ 3",
+      "question": "Convert to direct speech: 'Adeseke said she can help those children the following day.'",
+      "answer": "'I can help these children tomorrow,' said Adeseke."
+    },
+    {
+      "id": 81,
+      "source": "GES 101 PQ 3",
+      "question": "Convert to direct speech: 'Seun told James to leave that place at that moment.'",
+      "answer": "'Leave this place now,' James told Seun."
+    },
+    {
+      "id": 82,
+      "source": "GES 101 PQ 3",
+      "question": "Identify the correct spelling: accommodation / accomodation",
+      "answer": "Accommodation"
+    },
+    {
+      "id": 83,
+      "source": "GES 101 PQ 3",
+      "question": "Identify the correct spelling: estrange / estrang",
+      "answer": "Estrange"
+    },
+    {
+      "id": 84,
+      "source": "GES 101 PQ 3",
+      "question": "Identify the correct spelling: erstwhile / erstwhile",
+      "answer": "Erstwhile"
+    },
+    {
+      "id": 85,
+      "source": "GES 101 PQ 3",
+      "question": "Identify the correct spelling: occasion / occassion",
+      "answer": "Occasion"
+    },
+    {
+      "id": 86,
+      "source": "GES 101 PQ 3",
+      "question": "Identify the correct spelling: fluctuate / flucuate",
+      "answer": "Fluctuate"
+    },
+    {
+      "id": 87,
+      "source": "GES 101 PQ 3",
+      "question": "Identify the correct spelling: assessment / assesment",
+      "answer": "Assessment"
+    },
+    {
+      "id": 88,
+      "source": "GES 101 PQ 3",
+      "question": "Identify the correct spelling: committee / commitee",
+      "answer": "Committee"
+    },
+    {
+      "id": 89,
+      "source": "GES 101 PQ 3",
+      "question": "Identify the correct spelling: maintenance / maintanance",
+      "answer": "Maintenance"
+    },
+    {
+      "id": 90,
+      "source": "GES 101 PQ 3",
+      "question": "Identify the correct spelling: embarrassment / embarassment",
+      "answer": "Embarrassment"
+    },
+    {
+      "id": 91,
+      "source": "GES 101 PQ 3",
+      "question": "State the function: 'Going **by your comments**, we are sure of victory.'",
+      "answer": "Modifies 'we'"
+    },
+    {
+      "id": 92,
+      "source": "GES 101 PQ 3",
+      "question": "State the function: 'She is a woman **to fear**.'",
+      "answer": "Modifies 'a woman'"
+    },
+    {
+      "id": 93,
+      "source": "GES 101 PQ 3",
+      "question": "State the function: 'To be healthy is **to be wealthy**.'",
+      "answer": "Complement of 'is'"
+    },
+    {
+      "id": 94,
+      "source": "GES 101 PQ 3",
+      "question": "State the function: '**Like playing the guitar**, Adeola enjoys himself.'",
+      "answer": "Object of the verb"
+    },
+    {
+      "id": 95,
+      "source": "GES 101 PQ 3",
+      "question": "State the function: 'She respects **the people in our group**.'",
+      "answer": "Object of the verb"
+    },
+    {
+      "id": 96,
+      "source": "GES 101 PQ 3",
+      "question": "State the function: 'I know **that you are serious**.'",
+      "answer": "Object of the verb"
+    },
+    {
+      "id": 97,
+      "source": "GES 101 PQ 3",
+      "question": "State the function: 'The two boys **whose ball you took** are here.'",
+      "answer": "Modifies 'the two boys'"
+    },
+    {
+      "id": 98,
+      "source": "GES 101 PQ 3",
+      "question": "State the function: 'We gave **money** to the man.'",
+      "answer": "Direct object"
+    },
+    {
+      "id": 99,
+      "source": "GES 101 PQ 3",
+      "question": "State the function: 'Keep it **in your bag**.'",
+      "answer": "Modifier of 'keep'"
+    },
+    {
+      "id": 100,
+      "source": "GES 101 PQ 3",
+      "question": "State the function: 'The young **musician** is fighting outside.'",
+      "answer": "Subject of the verb"
+    }
+  ]
+}
