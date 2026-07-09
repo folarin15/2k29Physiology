@@ -1,0 +1,604 @@
+{
+  "flashcards": [
+    {
+      "id": 1,
+      "category": "Optics - Definitions",
+      "front": "What is optics?",
+      "back": "Optics is the study of light, specifically the visible part of the electromagnetic spectrum."
+    },
+    {
+      "id": 2,
+      "category": "Optics - Definitions",
+      "front": "What is a Real Image?",
+      "back": "A real image is made from real light rays that converge at a point, is always inverted, and can be projected onto a screen."
+    },
+    {
+      "id": 3,
+      "category": "Optics - Definitions",
+      "front": "What is a Virtual Image?",
+      "back": "A virtual image is formed from virtual rays and cannot be projected on a screen."
+    },
+    {
+      "id": 4,
+      "category": "Optics - Reflection",
+      "front": "State the Laws of Reflection.",
+      "back": "The incident ray, reflected ray, and normal lie in the same plane, and the angle of incidence equals the angle of reflection (θi = θr)."
+    },
+    {
+      "id": 5,
+      "category": "Optics - Reflection",
+      "front": "What are the properties of an image in a plane mirror?",
+      "back": "The image is virtual, erect, the same size as the object, the same distance behind the mirror, and laterally inverted."
+    },
+    {
+      "id": 6,
+      "category": "Optics - Reflection",
+      "front": "What is Specular Reflection?",
+      "back": "Mirror-like reflection from a smooth plane surface where all normals are parallel."
+    },
+    {
+      "id": 7,
+      "category": "Optics - Reflection",
+      "front": "What is Diffuse Reflection?",
+      "back": "Reflection from a rough surface where the laws of reflection still hold but the normals are not parallel."
+    },
+    {
+      "id": 8,
+      "category": "Optics - Reflection",
+      "front": "How much does the reflected ray rotate if the mirror rotates by angle θ?",
+      "back": "The reflected ray rotates through an angle of 2θ."
+    },
+    {
+      "id": 9,
+      "category": "Optics - Reflection",
+      "front": "What is the minimum mirror height for a person to see their full image?",
+      "back": "The mirror must be at least half the height of the person."
+    },
+    {
+      "id": 10,
+      "category": "Optics - Reflection",
+      "front": "What is the Mirror Formula?",
+      "back": "The relationship is 1/f = 1/u + 1/v, where f is focal length, u is object distance, and v is image distance."
+    },
+    {
+      "id": 11,
+      "category": "Optics - Refraction",
+      "front": "What is Refraction?",
+      "back": "The change in direction of a wave as it passes from one medium to another due to a change in speed."
+    },
+    {
+      "id": 12,
+      "category": "Optics - Refraction",
+      "front": "State Snell's Law.",
+      "back": "The ratio of the sine of the angle of incidence to the sine of the angle of refraction is constant (n1 sin θ1 = n2 sin θ2)."
+    },
+    {
+      "id": 13,
+      "category": "Optics - Refraction",
+      "front": "What is the Absolute Refractive Index (n)?",
+      "back": "The ratio of the speed of light in air (or vacuum) to the speed of light in the medium (n = c/v)."
+    },
+    {
+      "id": 14,
+      "category": "Optics - Refraction",
+      "front": "How does light bend when entering a denser medium?",
+      "back": "Light slows down and bends closer to the normal."
+    },
+    {
+      "id": 15,
+      "category": "Optics - Refraction",
+      "front": "What is the formula for Apparent Depth?",
+      "back": "Refractive index n = Real Depth (R) / Apparent Depth (A)."
+    },
+    {
+      "id": 16,
+      "category": "Optics - Curved Surfaces",
+      "front": "Which mirror is called a converging mirror?",
+      "back": "A concave mirror is a converging mirror because it reflects parallel rays to meet at its focal point."
+    },
+    {
+      "id": 17,
+      "category": "Optics - Curved Surfaces",
+      "front": "What are the image properties for a convex mirror?",
+      "back": "The image is always virtual, upright, and smaller (diminished) than the object."
+    },
+    {
+      "id": 18,
+      "category": "Optics - Curved Surfaces",
+      "front": "What is the focal length of a concave mirror with radius R?",
+      "back": "Focal length f = R / 2."
+    },
+    {
+      "id": 19,
+      "category": "Optics - Curved Surfaces",
+      "front": "What is the 'Real is Positive' sign convention?",
+      "back": "In the 'real is positive' convention, f is positive for concave mirrors and convex lenses, while v is positive for real images."
+    },
+    {
+      "id": 20,
+      "category": "Optics - Curved Surfaces",
+      "front": "Where is the image formed if an object is at the center of curvature (C) of a concave mirror?",
+      "back": "The image is formed at C and is real, inverted, and the same size as the object."
+    },
+    {
+      "id": 21,
+      "category": "Optics - Lenses",
+      "front": "What is a convex lens?",
+      "back": "A convex lens is a converging lens that brings parallel light rays together at a focal point."
+    },
+    {
+      "id": 22,
+      "category": "Optics - Lenses",
+      "front": "What is the unit of Refractive Power?",
+      "back": "The S.I. unit of refractive power is the Dioptre (D)."
+    },
+    {
+      "id": 23,
+      "category": "Optics - Lenses",
+      "front": "What is the formula for Lens Power?",
+      "back": "Power P = 1 / f, where f is the focal length in meters."
+    },
+    {
+      "id": 24,
+      "category": "Optics - Lenses",
+      "front": "What causes Chromatic Aberration?",
+      "back": "It is caused by different refractive indices for different wavelengths of light (dispersion)."
+    },
+    {
+      "id": 25,
+      "category": "Optics - Lenses",
+      "front": "What is Spherical Aberration?",
+      "back": "A lens defect caused by the imperfect shape of the lens or mirror."
+    },
+    {
+      "id": 26,
+      "category": "Optics - Lenses",
+      "front": "What is the Lensmakers Formula?",
+      "back": "The relationship is 1/f = (n - 1)(1/R1 + 1/R2)."
+    },
+    {
+      "id": 27,
+      "category": "Optics - Vision",
+      "front": "What lens is used to correct Myopia (Near-sightedness)?",
+      "back": "Myopia is corrected using a concave (diverging) lens."
+    },
+    {
+      "id": 28,
+      "category": "Optics - Vision",
+      "front": "What lens is used to correct Hyperopia (Far-sightedness)?",
+      "back": "Hyperopia is corrected using a convex (converging) lens."
+    },
+    {
+      "id": 29,
+      "category": "Optics - Instruments",
+      "front": "What are the components of a Compound Microscope?",
+      "back": "It consists of an objective lens and an eyepiece."
+    },
+    {
+      "id": 30,
+      "category": "Optics - Instruments",
+      "front": "Where must an object be for a convex lens to act as a simple magnifier?",
+      "back": "The object must be placed within the focal length (u < f)."
+    },
+    {
+      "id": 31,
+      "category": "Vibrations - SHM",
+      "front": "Define Simple Harmonic Motion (SHM).",
+      "back": "Periodic motion where acceleration is proportional to negative displacement (a = -ω^2x)."
+    },
+    {
+      "id": 32,
+      "category": "Vibrations - SHM",
+      "front": "What is Angular Frequency (ω)?",
+      "back": "Calculated as ω = sqrt(k/m) for a mass-spring system."
+    },
+    {
+      "id": 33,
+      "category": "Vibrations - SHM",
+      "front": "What is the Period (T) of a mass-spring system?",
+      "back": "The time for one full oscillation, T = 2π / ω = 2π sqrt(m / k)."
+    },
+    {
+      "id": 34,
+      "category": "Vibrations - SHM",
+      "front": "What is the Period of a simple pendulum?",
+      "back": "Period T = 2π sqrt(L / g), where L is length and g is acceleration due to gravity."
+    },
+    {
+      "id": 35,
+      "category": "Vibrations - SHM",
+      "front": "What is the formula for Total Energy in SHM?",
+      "back": "Total Energy E = 1/2 k A^2, where A is the amplitude."
+    },
+    {
+      "id": 36,
+      "category": "Vibrations - SHM",
+      "front": "At what point in SHM is speed maximum?",
+      "back": "Speed is maximum as the object passes through the equilibrium position (x = 0)."
+    },
+    {
+      "id": 37,
+      "category": "Vibrations - SHM",
+      "front": "Where is Potential Energy maximum in SHM?",
+      "back": "Potential energy is maximum at the points of maximum displacement (x = A or x = -A)."
+    },
+    {
+      "id": 38,
+      "category": "Vibrations - SHM",
+      "front": "Where is Kinetic Energy zero in SHM?",
+      "back": "Kinetic energy is zero at the amplitude positions where the object momentarily stops."
+    },
+    {
+      "id": 39,
+      "category": "Vibrations - SHM",
+      "front": "What is Maximum Speed in SHM?",
+      "back": "Maximum speed vmax = ωA."
+    },
+    {
+      "id": 40,
+      "category": "Vibrations - SHM",
+      "front": "What is Maximum Acceleration in SHM?",
+      "back": "Maximum acceleration amax = ω^2A."
+    },
+    {
+      "id": 41,
+      "category": "Vibrations - Damping",
+      "front": "What is Damping?",
+      "back": "A force, such as friction or viscosity, that opposes motion and decreases amplitude over time."
+    },
+    {
+      "id": 42,
+      "category": "Vibrations - Damping",
+      "front": "Define Underdamped oscillation.",
+      "back": "A system that oscillates with a gradually decreasing amplitude."
+    },
+    {
+      "id": 43,
+      "category": "Vibrations - Damping",
+      "front": "Define Critically Damped motion.",
+      "back": "The system returns to equilibrium as quickly as possible without oscillating (b^2 = 4mk)."
+    },
+    {
+      "id": 44,
+      "category": "Vibrations - Damping",
+      "front": "Define Overdamped motion.",
+      "back": "The system returns slowly to equilibrium without oscillation (b^2 > 4mk)."
+    },
+    {
+      "id": 45,
+      "category": "Vibrations - Resonance",
+      "front": "What is Resonance?",
+      "back": "Occurs when the driving frequency matches the natural frequency, leading to large amplitude vibrations."
+    },
+    {
+      "id": 46,
+      "category": "Vibrations - Resonance",
+      "front": "What is the Quality Factor (Q)?",
+      "back": "Describes how 'good' an oscillator is at storing energy versus losing it; Q = f0 / Δf."
+    },
+    {
+      "id": 47,
+      "category": "Vibrations - Coupled",
+      "front": "What are Coupled Oscillators?",
+      "back": "Systems where oscillators influence each other's motion and transfer energy."
+    },
+    {
+      "id": 48,
+      "category": "Vibrations - Coupled",
+      "front": "What are Normal Modes?",
+      "back": "Special patterns where all parts of a coupled system oscillate with the same frequency."
+    },
+    {
+      "id": 49,
+      "category": "Vibrations - Coupled",
+      "front": "Describe the Symmetric Mode of coupled masses.",
+      "back": "Masses move in-phase; the middle (coupling) spring is never stretched."
+    },
+    {
+      "id": 50,
+      "category": "Vibrations - Coupled",
+      "front": "Describe the Antisymmetric Mode.",
+      "back": "Masses move out-of-phase; the middle spring is actively stretched and compressed."
+    },
+    {
+      "id": 51,
+      "category": "Waves - General",
+      "front": "What is a Mechanical Wave?",
+      "back": "A wave that requires a material medium to propagate, such as sound or water waves."
+    },
+    {
+      "id": 52,
+      "category": "Waves - General",
+      "front": "What is a Non-Mechanical Wave?",
+      "back": "A wave that can travel through a vacuum, such as electromagnetic waves."
+    },
+    {
+      "id": 53,
+      "category": "Waves - General",
+      "front": "Define Longitudinal Wave.",
+      "back": "Particle vibration is parallel to the direction of wave propagation (e.g., sound)."
+    },
+    {
+      "id": 54,
+      "category": "Waves - General",
+      "front": "Define Transverse Wave.",
+      "back": "Particle vibration is perpendicular to wave propagation (e.g., light)."
+    },
+    {
+      "id": 55,
+      "category": "Waves - General",
+      "front": "What is Wavelength (λ)?",
+      "back": "The spatial period of a wave; distance between consecutive identical points."
+    },
+    {
+      "id": 56,
+      "category": "Waves - General",
+      "front": "What is Frequency (f)?",
+      "back": "The number of waves passing a point per second (f = 1/T)."
+    },
+    {
+      "id": 57,
+      "category": "Waves - General",
+      "front": "What is Wave Speed (v)?",
+      "back": "The product of frequency and wavelength (v = fλ)."
+    },
+    {
+      "id": 58,
+      "category": "Waves - General",
+      "front": "Define Constructive Interference.",
+      "back": "Occurs when path difference is an integer multiple of λ, leading to maximum amplitude."
+    },
+    {
+      "id": 59,
+      "category": "Waves - General",
+      "front": "Define Destructive Interference.",
+      "back": "Occurs when path difference is an odd multiple of λ/2, leading to zero or minimum amplitude."
+    },
+    {
+      "id": 60,
+      "category": "Waves - General",
+      "front": "What is Polarization?",
+      "back": "A phenomenon unique to transverse waves regarding the direction of vibration."
+    },
+    {
+      "id": 61,
+      "category": "Waves - Sound",
+      "front": "What determines the Pitch of a sound?",
+      "back": "Pitch is primarily determined by the frequency of the wave."
+    },
+    {
+      "id": 62,
+      "category": "Waves - Sound",
+      "front": "How does Sound Intensity Level (SIL) change if intensity doubles?",
+      "back": "Doubling the intensity increases the SIL by approximately 3 dB."
+    },
+    {
+      "id": 63,
+      "category": "Waves - Sound",
+      "front": "What are Beats?",
+      "back": "Periodic variations in intensity when two waves of slightly different frequencies superpose (f_beat = |f1 - f2|)."
+    },
+    {
+      "id": 64,
+      "category": "Waves - Sound",
+      "front": "Define Doppler Effect.",
+      "back": "The change in observed frequency due to the relative motion between source and observer."
+    },
+    {
+      "id": 65,
+      "category": "Waves - Sound",
+      "front": "What harmonics exist in a pipe open at one end and closed at the other?",
+      "back": "Only odd harmonics (n = 1, 3, 5...) are present."
+    },
+    {
+      "id": 66,
+      "category": "Waves - Sound",
+      "front": "How does sound speed vary with temperature?",
+      "back": "Speed v is proportional to the square root of absolute temperature (T in Kelvin)."
+    },
+    {
+      "id": 67,
+      "category": "Waves - Sound",
+      "front": "What is a Sonic Boom?",
+      "back": "Observed when the speed of the source exceeds the speed of sound (vs > v)."
+    },
+    {
+      "id": 68,
+      "category": "Waves - Sound",
+      "front": "What is the speed of sound in air at 0°C?",
+      "back": "Approximately 331 m/s."
+    },
+    {
+      "id": 69,
+      "category": "Modern Physics - Atoms",
+      "front": "What was a major limitation of Thomson's Model?",
+      "back": "It lacked detail about internal atomic structure and failed to explain spectra or radioactivity."
+    },
+    {
+      "id": 70,
+      "category": "Modern Physics - Atoms",
+      "front": "Describe the Rutherford Model.",
+      "back": "An atom consists of a small, dense, positively charged nucleus surrounded by orbiting electrons."
+    },
+    {
+      "id": 71,
+      "category": "Modern Physics - Atoms",
+      "front": "What did Rutherford conclude from the gold foil experiment?",
+      "back": "Atoms are mostly empty space, with mass concentrated in the central nucleus."
+    },
+    {
+      "id": 72,
+      "category": "Modern Physics - Atoms",
+      "front": "What was the limitation of the Rutherford Model?",
+      "back": "It could not explain atomic stability or the existence of line spectra."
+    },
+    {
+      "id": 73,
+      "category": "Modern Physics - Atoms",
+      "front": "Define Bohr's Model of the atom.",
+      "back": "Electrons orbit the nucleus only in discrete energy levels and do not radiate while in these allowed states."
+    },
+    {
+      "id": 74,
+      "category": "Modern Physics - Atoms",
+      "front": "What happens when an electron jumps energy levels in the Bohr model?",
+      "back": "It emits (higher to lower) or absorbs (lower to higher) radiation in definite amounts (ΔE = hf)."
+    },
+    {
+      "id": 75,
+      "category": "Modern Physics - Atoms",
+      "front": "What is the Principal Quantum Number (n)?",
+      "back": "Identifies the allowed orbit; n = 1 is the ground state."
+    },
+    {
+      "id": 76,
+      "category": "Modern Physics - Atoms",
+      "front": "What is the Bohr Radius?",
+      "back": "The radius of the first orbit (n=1) for hydrogen, approximately 0.529 Å."
+    },
+    {
+      "id": 77,
+      "category": "Modern Physics - Atoms",
+      "front": "What is the Ground State energy of hydrogen?",
+      "back": "The lowest energy level, equal to -13.6 eV."
+    },
+    {
+      "id": 78,
+      "category": "Modern Physics - Atoms",
+      "front": "What is Wave-Particle Duality?",
+      "back": "The theory that entities like light and electrons exhibit both wave and particle properties."
+    },
+    {
+      "id": 79,
+      "category": "Modern Physics - Nuclear",
+      "front": "What is a Nuclide?",
+      "back": "A particular type of nucleus characterized by its atomic number (Z) and mass number (A)."
+    },
+    {
+      "id": 80,
+      "category": "Modern Physics - Nuclear",
+      "front": "Define Isotopes.",
+      "back": "Nuclei of the same element (same Z) with a different number of neutrons."
+    },
+    {
+      "id": 81,
+      "category": "Modern Physics - Nuclear",
+      "front": "Define Isobars.",
+      "back": "Nuclides with the same mass number (same A) but different atomic numbers."
+    },
+    {
+      "id": 82,
+      "category": "Modern Physics - Nuclear",
+      "front": "Define Isotones.",
+      "back": "Nuclides with the same neutron number (N = A - Z) but different mass numbers."
+    },
+    {
+      "id": 83,
+      "category": "Modern Physics - Nuclear",
+      "front": "What is an Alpha Particle?",
+      "back": "A helium nucleus (He-4) ejected during radioactive decay."
+    },
+    {
+      "id": 84,
+      "category": "Modern Physics - Nuclear",
+      "front": "What is a Beta Particle?",
+      "back": "A fast electron emitted from the nucleus when a neutron changes into a proton."
+    },
+    {
+      "id": 85,
+      "category": "Modern Physics - Nuclear",
+      "front": "What are Gamma Rays?",
+      "back": "High-frequency electromagnetic waves emitted during beta or alpha decay."
+    },
+    {
+      "id": 86,
+      "category": "Modern Physics - Nuclear",
+      "front": "What is Half-life?",
+      "back": "The time it takes for half of the atoms in a radioactive sample to decay."
+    },
+    {
+      "id": 87,
+      "category": "Modern Physics - Nuclear",
+      "front": "Which radiation has the highest ionizing power?",
+      "back": "Alpha particles are the most strongly ionizing."
+    },
+    {
+      "id": 88,
+      "category": "Modern Physics - Nuclear",
+      "front": "Which radiation is the most penetrating?",
+      "back": "Gamma radiation is the least strongly ionizing but most penetrating."
+    },
+    {
+      "id": 89,
+      "category": "Modern Physics - X-rays",
+      "front": "How are X-rays produced?",
+      "back": "Produced when high-speed electrons in a cathode ray tube are decelerated by hitting a metal target."
+    },
+    {
+      "id": 90,
+      "category": "Modern Physics - X-rays",
+      "front": "What is Bremsstrahlung?",
+      "back": "The continuous spectrum of X-rays resulting from the 'braking radiation' of decelerated electrons."
+    },
+    {
+      "id": 91,
+      "category": "Modern Physics - Atoms",
+      "front": "What is a Black Body?",
+      "back": "An ideal radiator that is a perfect absorber and emitter of all radiation."
+    },
+    {
+      "id": 92,
+      "category": "Modern Physics - Hydrogen",
+      "front": "Name the hydrogen series in the UV region.",
+      "back": "The Lyman series."
+    },
+    {
+      "id": 93,
+      "category": "Modern Physics - Hydrogen",
+      "front": "Name the hydrogen series in the visible region.",
+      "back": "The Balmer series."
+    },
+    {
+      "id": 94,
+      "category": "Modern Physics - Hydrogen",
+      "front": "Name the series in the infrared region.",
+      "back": "Paschen, Brackett, and Pfund series."
+    },
+    {
+      "id": 95,
+      "category": "Vibrations - SHM",
+      "front": "What is the restoring force in a mass-spring system?",
+      "back": "Force F = -kx, according to Hooke's Law."
+    },
+    {
+      "id": 96,
+      "category": "Modern Physics - Nuclear",
+      "front": "What force binds nucleons in the nucleus?",
+      "back": "The strong nuclear force."
+    },
+    {
+      "id": 97,
+      "category": "Modern Physics - Nuclear",
+      "front": "What is the S.I. unit of radioactivity?",
+      "back": "The Becquerel (Bq), where 1 Bq = 1 disintegration per second."
+    },
+    {
+      "id": 98,
+      "category": "Optics - Refraction",
+      "front": "What is Critical Angle?",
+      "back": "The angle of incidence for which the angle of refraction is 90°; sin θc = n2/n1."
+    },
+    {
+      "id": 99,
+      "category": "Modern Physics - Hydrogen",
+      "front": "What is Excitation Energy?",
+      "back": "The energy required to move an electron from the ground state to a higher allowed state."
+    },
+    {
+      "id": 100,
+      "category": "Waves - Sound",
+      "front": "Define Pitch vs Loudness.",
+      "back": "Pitch depends on frequency; Loudness depends on the intensity or amplitude of the sound wave."
+    }
+  ]
+}

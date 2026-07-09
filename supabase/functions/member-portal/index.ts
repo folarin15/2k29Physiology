@@ -609,16 +609,24 @@ Deno.serve(async (req) => {
     }
 
     if (action === "quiz-setup") {
-      const { data: rows, error } = await supabase
-        .from("question_bank")
-        .select("course_code, topic, difficulty")
-        .eq("status", "published")
-        .limit(5000);
-
-      if (error) throw error;
+      const PAGE = 1000;
+      let allRows: Array<{ course_code: string; topic: string; difficulty: string }> = [];
+      let rangeFrom = 0;
+      for (;;) {
+        const { data: rows, error } = await supabase
+          .from("question_bank")
+          .select("course_code, topic, difficulty")
+          .eq("status", "published")
+          .range(rangeFrom, rangeFrom + PAGE - 1);
+        if (error) throw error;
+        if (!rows || rows.length === 0) break;
+        allRows = allRows.concat(rows);
+        if (rows.length < PAGE) break;
+        rangeFrom += PAGE;
+      }
 
       const courses: Record<string, { count: number; topics: Record<string, number> }> = {};
-      for (const row of rows || []) {
+      for (const row of allRows) {
         const courseCode = String(row.course_code || "");
         const topic = quizTopicGroup(row.topic);
         courses[courseCode] = courses[courseCode] || { count: 0, topics: {} };
