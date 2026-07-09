@@ -4,30 +4,45 @@
       "count": 461,
       "topics": {
         "Electrostatics": 117,
-        "Electric Potential & Capacitance": 63,
+        "Physics": 63,
         "Current Electricity": 115,
         "Magnetism": 62,
         "Electromagnetic Induction": 38,
-        "AC Circuits": 43,
-        "Maxwell & EM Waves": 23
+        "Ac Circuits": 43,
+        "Maxwell & Em Waves": 23
       }
     },
     "BIO 102": {
       "count": 225,
       "topics": {
-        "General Biology II": 225
+        "General Biology Ii": 225
       }
     },
     "ZOO 101": {
       "count": 300,
       "topics": {
-        "General Zoology": 300
+        "Circulatory System": 40,
+        "Excretory System": 33,
+        "Respiratory System": 28,
+        "Nervous System": 29,
+        "Endocrine System": 29,
+        "Integumentary System": 23,
+        "Skeletal System": 28,
+        "Muscular System": 29,
+        "Digestive System": 35,
+        "Homeostasis": 4,
+        "Nutrition": 22
       }
     },
     "ZOO 102": {
       "count": 300,
       "topics": {
-        "General Zoology II": 300
+        "Animal Systematics & Classification": 50,
+        "Basis Of Categorization": 50,
+        "Animal Development": 50,
+        "Phylum Porifera": 50,
+        "Phylum Cnidaria": 50,
+        "Zoogeography": 50
       }
     },
     "CHM 102": {
@@ -47,7 +62,7 @@
     "PHY 104": {
       "count": 296,
       "topics": {
-        "General Physics IV": 296
+        "Physics": 296
       }
     }
   },
