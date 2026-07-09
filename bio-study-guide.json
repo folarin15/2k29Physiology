@@ -2743,5 +2743,477 @@
         ]
       }
     ]
+  },
+  {
+    "courseCode": "GST 111",
+    "topic": "Study Skills & Methods",
+    "summary": "Study skills are the techniques and strategies that help students acquire, retain, and recall information effectively. This block covers the SQ3R and KWL methods, effective reading techniques, note-taking versus note-making, and time management using SMART goals.",
+    "subtopics": [
+      {
+        "title": "Effective Reading Techniques",
+        "keyPoints": [
+          "Skimming: Glancing through material to get a general overview without close attention to details.",
+          "Scanning: Selectively reading to locate specific information such as keywords or technical terms.",
+          "Intensive Reading: Thorough and time-consuming reading used for examinations to comprehend and reproduce details.",
+          "Extensive Reading: Reading for pleasure to gain general knowledge."
+        ],
+        "mustKnow": [
+          "Skimming is for general overview; scanning is for specific information.",
+          "Intensive reading is required for exam preparation.",
+          "Different reading purposes require different techniques."
+        ],
+        "examTraps": [
+          "Do not confuse skimming with scanning — skimming is for overview, scanning targets specific details.",
+          "Intensive reading is not the same as extensive reading."
+        ],
+        "possibleQuestionPoints": [
+          "Distinguish between skimming and scanning with examples.",
+          "When would you use intensive reading over extensive reading?"
+        ],
+        "definitions": [
+          "Skimming: Glancing through material for a general overview",
+          "Scanning: Reading selectively to locate specific information",
+          "Intensive reading: Thorough reading for deep comprehension",
+          "Extensive reading: Reading for pleasure and general knowledge"
+        ],
+        "processes": []
+      },
+      {
+        "title": "Study Methods",
+        "keyPoints": [
+          "SQ3R Method: Survey (previewing), Question (asking preliminary questions), Read (thorough reading), Recall (mental rehearsal), Review (cross-checking goals).",
+          "KWL Method: Know (what you already know), Want (what you want to know), Learn (what you have learned).",
+          "SMART Goals: Specific, Measurable, Attainable, Realistic, Time-bound."
+        ],
+        "mustKnow": [
+          "SQ3R is a five-step technique for retaining information from texts.",
+          "KWL is an active reading comprehension strategy.",
+          "All study goals should be SMART."
+        ],
+        "examTraps": [
+          "SQ3R has five steps, not three. Remember: Survey, Question, Read, Recall, Review.",
+          "KWL has three components, all equally important."
+        ],
+        "possibleQuestionPoints": [
+          "Explain each step of the SQ3R method.",
+          "What does the KWL mnemonic stand for?",
+          "Why should goals be SMART?"
+        ],
+        "definitions": [
+          "SQ3R: Survey, Question, Read, Recall, Review",
+          "KWL: Know, Want, Learn",
+          "SMART: Specific, Measurable, Attainable, Realistic, Time-bound"
+        ],
+        "processes": []
+      },
+      {
+        "title": "Note-Taking vs Note-Making",
+        "keyPoints": [
+          "Note-taking happens during lectures at the lecturer's pace.",
+          "Note-making is a personal activity involving revisiting and revising notes to fill gaps and correct errors.",
+          "Effective notes use abbreviations, headings, and bullet points."
+        ],
+        "mustKnow": [
+          "Note-taking is passive recording; note-making is active engagement.",
+          "Note-making improves retention and understanding."
+        ],
+        "examTraps": [
+          "Note-taking and note-making are not interchangeable terms.",
+          "Note-making happens after the lecture, not during."
+        ],
+        "possibleQuestionPoints": [
+          "Differentiate between note-taking and note-making.",
+          "Why is note-making considered more effective for learning?"
+        ],
+        "definitions": [
+          "Note-taking: Recording information during a lecture at the speaker's pace",
+          "Note-making: Personal activity of revising and organising notes after a lecture"
+        ],
+        "processes": []
+      }
+    ]
+  },
+  {
+    "courseCode": "GST 111",
+    "topic": "Library Resources & Organisation",
+    "summary": "Libraries are organised information systems that collect, process, store, and disseminate recorded information. This block covers library types, classification schemes (LC, DDC, Moys), reference materials, OPAC, and the organisation of library resources.",
+    "subtopics": [
+      {
+        "title": "Types of Libraries",
+        "keyPoints": [
+          "Academic Library: Serves tertiary institutions (e.g., Kenneth Dike Library, University of Ibadan).",
+          "Special Library: Caters to specific classes of people (e.g., IITA library).",
+          "Public Library: General access for all, often called 'the people's university'.",
+          "National Library: The apex library and major archive of a nation."
+        ],
+        "mustKnow": [
+          "Kenneth Dike Library is an academic library.",
+          "Public libraries are called the 'people's university'.",
+          "National libraries receive copies of all copyright publications."
+        ],
+        "examTraps": [
+          "Do not confuse academic libraries with public libraries.",
+          "National libraries are not the same as public libraries."
+        ],
+        "possibleQuestionPoints": [
+          "What type of library is the Kenneth Dike Library?",
+          "Why are public libraries called 'the people's university'?"
+        ],
+        "definitions": [
+          "Academic library: Library serving tertiary educational institutions",
+          "Special library: Library serving a specific group or organisation",
+          "Public library: Library accessible to all members of the community",
+          "National library: The official archive and apex library of a nation"
+        ],
+        "processes": []
+      },
+      {
+        "title": "Classification Schemes",
+        "keyPoints": [
+          "Library of Congress (LC): Uses alphanumeric notation (letters + numbers).",
+          "Dewey Decimal Classification (DDC): Uses purely numeric notation.",
+          "Moys Classification Scheme: Designed specifically for legal information resources.",
+          "Universal Decimal Classification (UDC): An international classification system."
+        ],
+        "mustKnow": [
+          "LC uses letters (A-Z) for main classes.",
+          "DDC uses numbers (000-999).",
+          "Moys is for law libraries only.",
+          "LC class Q = Science, K = Law, L = Education, H = Social Sciences."
+        ],
+        "examTraps": [
+          "DDC is numeric, LC is alphanumeric — do not mix them up.",
+          "Moys is NOT a general scheme; it is specifically for law."
+        ],
+        "possibleQuestionPoints": [
+          "What notation does the LC scheme use?",
+          "Which scheme is used at Kenneth Dike Library?",
+          "Identify the LC class for Science/Law/Education."
+        ],
+        "definitions": [
+          "LC: Library of Congress classification scheme (alphanumeric)",
+          "DDC: Dewey Decimal Classification (numeric)",
+          "Moys: Classification scheme for legal resources",
+          "Call mark: Combination of class number and author identifier"
+        ],
+        "processes": []
+      },
+      {
+        "title": "Reference Materials & OPAC",
+        "keyPoints": [
+          "Reference materials are for consultation of specific items, not consecutive reading.",
+          "Examples: Encyclopaedias, Dictionaries, Atlases, Gazetteers, Biographical Dictionaries.",
+          "OPAC (Online Public Access Catalogue) allows users to search for library holdings electronically.",
+          "Library sections include Circulation, Serials, Cataloguing, and Institutional Repository."
+        ],
+        "mustKnow": [
+          "Reference books are generally not for loan.",
+          "OPAC is a computerised catalogue system.",
+          "The Verso of a title page contains copyright information."
+        ],
+        "examTraps": [
+          "Reference materials are not meant to be read cover to cover.",
+          "A gazetteer is a geographical dictionary, not a general dictionary."
+        ],
+        "possibleQuestionPoints": [
+          "What is the function of OPAC?",
+          "Name three types of reference materials.",
+          "Where do you find copyright information in a book?"
+        ],
+        "definitions": [
+          "OPAC: Online Public Access Catalogue",
+          "Gazetteer: A geographical dictionary",
+          "Verso: The back of the title page containing copyright details",
+          "Call Mark: The label on a book indicating its shelf location"
+        ],
+        "processes": []
+      }
+    ]
+  },
+  {
+    "courseCode": "GST 111",
+    "topic": "Morphology & Word Formation",
+    "summary": "Morphology is the branch of linguistics that studies the internal structure of words and how they are formed. This block covers morphemes (free vs bound, derivational vs inflectional), and word formation processes including affixation, blending, compounding, back-formation, borrowing, and conversion.",
+    "subtopics": [
+      {
+        "title": "Morphemes",
+        "keyPoints": [
+          "A morpheme is the smallest meaningful unit of grammar.",
+          "Free morphemes can stand alone as words (e.g., play, test, cat).",
+          "Bound morphemes must attach to another morpheme (e.g., -ful, -ed, un-).",
+          "Inflectional morphemes perform grammatical functions without changing word class (e.g., -s for plural, -ed for past tense).",
+          "Derivational morphemes create new words or change word class (e.g., teach → teacher)."
+        ],
+        "mustKnow": [
+          "'Unhappiness' has 3 morphemes: un- + happy + -ness.",
+          "Bound morphemes are also called affixes.",
+          "Inflectional morphemes do NOT change word class."
+        ],
+        "examTraps": [
+          "Do not confuse morphemes with syllables.",
+          "Derivational morphemes change meaning or word class; inflectional ones only add grammatical information."
+        ],
+        "possibleQuestionPoints": [
+          "How many morphemes are in 'presidential'? (Answer: 3)",
+          "Distinguish between derivational and inflectional morphemes."
+        ],
+        "definitions": [
+          "Morpheme: The smallest meaningful unit of grammar",
+          "Free morpheme: A morpheme that can stand alone as a word",
+          "Bound morpheme: A morpheme that must attach to another morpheme",
+          "Inflectional morpheme: A bound morpheme that marks grammatical function",
+          "Derivational morpheme: A bound morpheme that creates new words"
+        ],
+        "processes": [
+          "Counting morphemes: 'unhappiness' = un- (bound) + happy (free) + -ness (bound) = 3 morphemes",
+          "Counting morphemes: 'presidential' = preside (root) + -ent + -ial = 3 morphemes",
+          "Counting morphemes: 'achievements' = achieve (root) + -ment + -s = 3 morphemes"
+        ]
+      },
+      {
+        "title": "Word Formation Processes",
+        "keyPoints": [
+          "Affixation: Adding a prefix or suffix to a root (e.g., re + write = rewrite).",
+          "Blending: Combining parts of two words (e.g., breakfast + lunch = brunch).",
+          "Compounding: Joining two complete words (e.g., girlfriend, notebook).",
+          "Back-formation: Creating a shorter word by removing an affix (e.g., edit from editor).",
+          "Borrowing: Taking words from other languages (e.g., 'alcohol' from Arabic).",
+          "Conversion: Using a word in a different word class without changing form (e.g., 'to man' from 'man')."
+        ],
+        "mustKnow": [
+          "Blending creates words like 'brunch' and 'motel'.",
+          "Borrowing accounts for many English words from Latin, Greek, French, and Arabic.",
+          "Conversion allows the same word to function as both noun and verb."
+        ],
+        "examTraps": [
+          "Blending is NOT the same as compounding.",
+          "Back-formation removes a supposed affix; affixation adds one."
+        ],
+        "possibleQuestionPoints": [
+          "Identify the word formation process: 'brunch' (blending), 'email' (conversion), 'alcohol' (borrowing).",
+          "Explain back-formation with an example."
+        ],
+        "definitions": [
+          "Affixation: Adding affixes to a root word",
+          "Blending: Combining parts of two words to form a new word",
+          "Compounding: Joining two complete words",
+          "Back-formation: Creating a new word by removing an affix",
+          "Borrowing: Adopting words from another language",
+          "Conversion: Changing a word's grammatical function without changing form"
+        ],
+        "processes": []
+      }
+    ]
+  },
+  {
+    "courseCode": "GST 111",
+    "topic": "English Grammar & Usage",
+    "summary": "Grammar is the set of structural rules governing the composition of clauses, phrases, and words. This block covers word classes (open and closed), phrase types, clause types, sentence structures, voice transformation (active/passive), direct and indirect speech, and concord rules.",
+    "subtopics": [
+      {
+        "title": "Word Classes",
+        "keyPoints": [
+          "Open classes (frequently accept new words): Nouns, Verbs, Adjectives, Adverbs.",
+          "Closed classes (fixed, rarely change): Pronouns, Prepositions, Conjunctions, Determiners.",
+          "Nouns name people, places, things, or ideas (common, proper, collective, abstract, concrete).",
+          "Verbs express actions or states (transitive/intransitive, dynamic/stative, auxiliary).",
+          "Adjectives qualify nouns; Adverbs modify verbs, adjectives, or other adverbs."
+        ],
+        "mustKnow": [
+          "Open classes regularly accept new members; closed classes do not.",
+          "Transitive verbs take objects; intransitive verbs do not.",
+          "Auxiliary verbs help main verbs express tense or mood."
+        ],
+        "examTraps": [
+          "A word can belong to multiple classes depending on context.",
+          "Interjections are a separate class, not part of open or closed categories."
+        ],
+        "possibleQuestionPoints": [
+          "Distinguish between open and closed word classes.",
+          "Give examples of transitive and intransitive verbs.",
+          "Identify the word class of a given word in context."
+        ],
+        "definitions": [
+          "Open class: Word class that accepts new members (nouns, verbs, adjectives, adverbs)",
+          "Closed class: Word class with fixed membership (pronouns, prepositions, conjunctions, determiners)",
+          "Transitive verb: A verb that selects an object",
+          "Intransitive verb: A verb that does not take an object"
+        ],
+        "processes": []
+      },
+      {
+        "title": "Phrases and Clauses",
+        "keyPoints": [
+          "A phrase is a group of words functioning as a unit without both a subject and a finite verb.",
+          "Noun phrase: Headed by a noun (e.g., 'the handsome man').",
+          "Verb phrase: Headed by a lexical verb.",
+          "Gerundive phrase: Headed by a gerund (-ing form functioning as noun).",
+          "Participial phrase: Headed by a participle (functions as adjective).",
+          "A clause has a subject and a finite verb.",
+          "Independent clause can stand alone; dependent clause cannot."
+        ],
+        "mustKnow": [
+          "Noun clauses function as nouns (subject, object, complement).",
+          "Adjectival/relative clauses modify nouns.",
+          "Adverbial clauses modify verbs (reason, time, condition)."
+        ],
+        "examTraps": [
+          "Gerundive phrases function as nouns; participial phrases function as adjectives.",
+          "A clause must have both a subject and a finite verb — a phrase does not."
+        ],
+        "possibleQuestionPoints": [
+          "Identify the grammatical name and function of an underlined structure.",
+          "Distinguish between a gerundive phrase and a participial phrase."
+        ],
+        "definitions": [
+          "Phrase: A group of words without both a subject and finite verb",
+          "Clause: A group of words with a subject and finite verb",
+          "Noun phrase: A phrase headed by a noun",
+          "Gerundive phrase: A phrase headed by a gerund",
+          "Participial phrase: A phrase headed by a participle",
+          "Independent clause: A clause that can stand alone as a sentence"
+        ],
+        "processes": [
+          "Clause structure analysis: SPCA = Subject-Predicator-Complement-Adjunct",
+          "Clause structure analysis: PAC = Predicator-Adjunct-Complement"
+        ]
+      },
+      {
+        "title": "Sentences and Voice",
+        "keyPoints": [
+          "Simple sentence: One independent clause.",
+          "Compound sentence: Two or more independent clauses joined by coordinating conjunctions.",
+          "Complex sentence: One independent clause + at least one dependent clause.",
+          "Active voice: Subject performs the action.",
+          "Passive voice: Object becomes the subject; 'BE' verb + past participle + 'by'.",
+          "Direct speech: Words repeated verbatim in quotation marks.",
+          "Indirect speech: Paraphrased with changes in tense, pronouns, and proximity words."
+        ],
+        "mustKnow": [
+          "Passive transformation: Subject↔Object reversal, add 'BE' verb, add 'by'.",
+          "Here → there, today → that day, tomorrow → the following day in indirect speech.",
+          "It-cleft: 'It + is/was' to emphasise an element."
+        ],
+        "examTraps": [
+          "Only transitive verbs can be made passive.",
+          "In indirect speech, present tense often shifts to past tense."
+        ],
+        "possibleQuestionPoints": [
+          "Change this active sentence to passive voice.",
+          "Convert direct speech to reported speech.",
+          "Identify the sentence type (simple, compound, complex)."
+        ],
+        "definitions": [
+          "Simple sentence: A sentence with one independent clause",
+          "Compound sentence: A sentence with two or more independent clauses",
+          "Complex sentence: A sentence with one independent and one dependent clause",
+          "Active voice: The subject performs the action",
+          "Passive voice: The subject receives the action",
+          "Direct speech: Exact words of the speaker quoted",
+          "Indirect speech: A report of what was said"
+        ],
+        "processes": [
+          "Active to passive: 'The girl bought a bag' → 'A bag was bought by the girl'",
+          "Direct to indirect: 'I am a lecturer' → 'He said that he was a lecturer'",
+          "Proximity changes: here→there, today→that day, tomorrow→the following day"
+        ]
+      }
+    ]
+  },
+  {
+    "courseCode": "GST 111",
+    "topic": "Research, Writing & Information Literacy",
+    "summary": "Information literacy is the ability to identify an information need, locate sources, evaluate them for authority and accuracy, and use them effectively. This block covers the writing process, summary writing, referencing styles (APA, MLA), and copyright/intellectual property principles.",
+    "subtopics": [
+      {
+        "title": "The Writing Process",
+        "keyPoints": [
+          "Steps: Choose a subject → Delimit the subject → Decide audience/purpose → Generate outline → Write → Proofread.",
+          "Delimiting narrows a broad topic to a manageable focus.",
+          "An outline organises main points and supporting details.",
+          "Forms of writing: Correspondence (official/unofficial), Essays (narrative, descriptive, expository, argumentative)."
+        ],
+        "mustKnow": [
+          "Delimiting is essential to avoid writing on overly broad topics.",
+          "Different essay types serve different purposes.",
+          "Proofreading is the final step to catch errors."
+        ],
+        "examTraps": [
+          "Outlining comes before writing, not after.",
+          "Argumentative essays require persuasion, not just exposition."
+        ],
+        "possibleQuestionPoints": [
+          "List the steps in the writing process.",
+          "What is delimiting and why is it important?"
+        ],
+        "definitions": [
+          "Delimiting: Narrowing a broad topic to a focused area",
+          "Outline: A structured plan of main points for writing",
+          "Narrative essay: Tells a story",
+          "Descriptive essay: Paints a picture with words",
+          "Expository essay: Explains or informs",
+          "Argumentative essay: Persuades the reader"
+        ],
+        "processes": []
+      },
+      {
+        "title": "Summary Writing",
+        "keyPoints": [
+          "Summary writing reduces a passage to its main ideas in one's own words.",
+          "Rules: Use complete sentences (no fragments), avoid mindless lifting, maintain brevity.",
+          "Focus only on main ideas; omit examples, illustrations, and repetitions.",
+          "Citation of the original source is required."
+        ],
+        "mustKnow": [
+          "A summary must be in your own words — paraphrasing, not copying.",
+          "Fragments are not acceptable in formal summaries.",
+          "Brevity is essential; a summary is always shorter than the original."
+        ],
+        "examTraps": [
+          "Lifting (copying word-for-word) is prohibited.",
+          "Including personal opinions or evaluations is not allowed."
+        ],
+        "possibleQuestionPoints": [
+          "State three rules of summary writing.",
+          "Why should you avoid lifting in a summary?"
+        ],
+        "definitions": [
+          "Summary: A shortened version of a text containing the main ideas",
+          "Lifting: Copying directly from the source without paraphrasing"
+        ],
+        "processes": []
+      },
+      {
+        "title": "Referencing Styles & Copyright",
+        "keyPoints": [
+          "APA 7th edition: Author-date in-text citations (e.g., Ilesanmi, 2024).",
+          "MLA 9th edition: Author-page in-text citations (e.g., Ilesanmi 12).",
+          "Three+ authors in APA: First author et al. (e.g., Oshiluyi et al., 2024).",
+          "Copyright protects intellectual property works.",
+          "Creative Commons licenses (CC-BY, CC-BY-NC) allow sharing with attribution."
+        ],
+        "mustKnow": [
+          "APA is common in social sciences; MLA is common in humanities.",
+          "Copyright infringement is a legal offence.",
+          "CC-BY requires attribution; CC-BY-NC adds non-commercial restriction."
+        ],
+        "examTraps": [
+          "APA and MLA have different in-text citation formats.",
+          "'Et al.' is only used for works with three or more authors."
+        ],
+        "possibleQuestionPoints": [
+          "How do you cite a source with three authors in APA 7th edition?",
+          "What is the difference between CC-BY and CC-BY-NC?"
+        ],
+        "definitions": [
+          "APA: American Psychological Association referencing style",
+          "MLA: Modern Language Association referencing style",
+          "Copyright: Legal protection for intellectual property",
+          "CC-BY: Creative Commons Attribution license",
+          "CC-BY-NC: Creative Commons Attribution-NonCommercial license"
+        ],
+        "processes": []
+      }
+    ]
   }
 ]

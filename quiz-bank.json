@@ -3,66 +3,79 @@
     "PHY 102": {
       "count": 461,
       "topics": {
-        "Electrostatics": 117,
-        "Physics": 63,
+        "AC Circuits": 43,
         "Current Electricity": 115,
-        "Magnetism": 62,
+        "Electric Potential & Capacitance": 63,
         "Electromagnetic Induction": 38,
-        "Ac Circuits": 43,
-        "Maxwell & Em Waves": 23
+        "Electrostatics": 117,
+        "Magnetism": 62,
+        "Maxwell & EM Waves": 23
       }
     },
     "BIO 102": {
       "count": 225,
       "topics": {
-        "General Biology Ii": 225
+        "General Biology II": 225
       }
     },
     "ZOO 101": {
       "count": 300,
       "topics": {
         "Circulatory System": 40,
-        "Excretory System": 33,
-        "Respiratory System": 28,
-        "Nervous System": 29,
-        "Endocrine System": 29,
-        "Integumentary System": 23,
-        "Skeletal System": 28,
-        "Muscular System": 29,
         "Digestive System": 35,
+        "Endocrine System": 29,
+        "Excretory System": 33,
         "Homeostasis": 4,
-        "Nutrition": 22
+        "Integumentary System": 23,
+        "Muscular System": 29,
+        "Nervous System": 29,
+        "Nutrition": 22,
+        "Respiratory System": 28,
+        "Skeletal System": 28
       }
     },
     "ZOO 102": {
       "count": 300,
       "topics": {
-        "Animal Systematics & Classification": 50,
-        "Basis Of Categorization": 50,
         "Animal Development": 50,
-        "Phylum Porifera": 50,
+        "Animal Systematics & Classification": 50,
+        "Basis of Categorization": 50,
         "Phylum Cnidaria": 50,
+        "Phylum Porifera": 50,
         "Zoogeography": 50
       }
     },
     "CHM 102": {
       "count": 600,
       "topics": {
-        "Organic Chemistry": 26,
-        "Hydrocarbons": 109,
-        "Petroleum": 11,
         "Alcohols & Phenols": 43,
+        "Amines": 38,
         "Carbonyl Compounds": 49,
         "Carboxylic Acids": 16,
         "Esters": 8,
-        "Amines": 38,
-        "Inorganic Chemistry": 300
+        "Hydrocarbons": 109,
+        "Inorganic Chemistry": 300,
+        "Organic Chemistry": 26,
+        "Petroleum": 11
       }
     },
     "PHY 104": {
       "count": 296,
       "topics": {
-        "Physics": 296
+        "General Physics IV": 296
+      }
+    },
+    "GST 111": {
+      "count": 198,
+      "topics": {
+        "General": 14,
+        "Grammar": 84,
+        "Information Literacy": 2,
+        "Library Resources": 18,
+        "Morphology": 28,
+        "Study Skills": 7,
+        "Word Classes": 44,
+        "Word Formation": 1
       }
     }
   },
@@ -32000,6 +32013,1986 @@
       "correctAnswer": "-1.51 eV",
       "difficulty": "Hard",
       "explanation": "[34], [6]"
+    },
+    {
+      "id": 2185,
+      "courseCode": "GST 111",
+      "topic": "General",
+      "question": "What is the meaning of the Latin word 'Liber'?",
+      "options": [],
+      "correctAnswer": "Book",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2186,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "True or False: A library is an organized information system.",
+      "options": [],
+      "correctAnswer": "True",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2187,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Which word class includes naming words like 'Ibadan' and 'Nigeria'?",
+      "options": [],
+      "correctAnswer": "Proper Nouns",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2188,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "What is the smallest meaningful unit of grammar?",
+      "options": [],
+      "correctAnswer": "A morpheme",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2189,
+      "courseCode": "GST 111",
+      "topic": "Study Skills",
+      "question": "In the SQ3R method, what does the first 'S' stand for?",
+      "options": [],
+      "correctAnswer": "Survey",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2190,
+      "courseCode": "GST 111",
+      "topic": "Library Resources",
+      "question": "What type of library is often called the 'people's university'?",
+      "options": [],
+      "correctAnswer": "Public library",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2191,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the correct spelling: (A) renumeration (B) remuneration.",
+      "options": [],
+      "correctAnswer": "Remuneration",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2192,
+      "courseCode": "GST 111",
+      "topic": "Library Resources",
+      "question": "What classification letter is used for 'Science' in the Library of Congress scheme?",
+      "options": [],
+      "correctAnswer": "Q",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2193,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Which part of a sentence is the performer of the action?",
+      "options": [],
+      "correctAnswer": "The Subject",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2194,
+      "courseCode": "GST 111",
+      "topic": "Library Resources",
+      "question": "What does OPAC stand for?",
+      "options": [],
+      "correctAnswer": "Online Public Access Catalogue",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2195,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "Is the word 'cat' a free or bound morpheme?",
+      "options": [],
+      "correctAnswer": "Free morpheme",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2196,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "What type of sentence makes a statement?",
+      "options": [],
+      "correctAnswer": "Declarative",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2197,
+      "courseCode": "GST 111",
+      "topic": "Library Resources",
+      "question": "Name one type of reference material used for word meanings.",
+      "options": [],
+      "correctAnswer": "Dictionary",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2198,
+      "courseCode": "GST 111",
+      "topic": "Word Formation",
+      "question": "Which section of the library handles borrowing and returning books?",
+      "options": [],
+      "correctAnswer": "Circulation section",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2199,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "True or False: Nouns are part of an 'open' word class.",
+      "options": [],
+      "correctAnswer": "True",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2200,
+      "courseCode": "GST 111",
+      "topic": "General",
+      "question": "What is the term for words with the same meaning?",
+      "options": [],
+      "correctAnswer": "Synonyms",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2201,
+      "courseCode": "GST 111",
+      "topic": "Library Resources",
+      "question": "What classification letter is used for 'Law' in the LC scheme?",
+      "options": [],
+      "correctAnswer": "K",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2202,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the correct spelling: (A) definetion (B) definition.",
+      "options": [],
+      "correctAnswer": "Definition",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2203,
+      "courseCode": "GST 111",
+      "topic": "Study Skills",
+      "question": "Which study method uses 'Know, Want, Learn'?",
+      "options": [],
+      "correctAnswer": "KWL Method",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2204,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "What type of sentence ends with an exclamation mark?",
+      "options": [],
+      "correctAnswer": "Exclamatory",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2205,
+      "courseCode": "GST 111",
+      "topic": "Library Resources",
+      "question": "What are the two main processes for organizing information materials?",
+      "options": [],
+      "correctAnswer": "Cataloguing and Classification",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2206,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "What is the head of a 'Noun Phrase'?",
+      "options": [],
+      "correctAnswer": "A noun",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2207,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "Is a prefix a bound or free morpheme?",
+      "options": [],
+      "correctAnswer": "Bound morpheme",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2208,
+      "courseCode": "GST 111",
+      "topic": "General",
+      "question": "What is a 'gazetteer'?",
+      "options": [],
+      "correctAnswer": "A geographical dictionary",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2209,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the correct spelling: (A) abstinence (B) abstinance.",
+      "options": [],
+      "correctAnswer": "Abstinence",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2210,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Which word class refers to actions or states of being?",
+      "options": [],
+      "correctAnswer": "Verbs",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2211,
+      "courseCode": "GST 111",
+      "topic": "Library Resources",
+      "question": "In the LC scheme, what does 'L' represent?",
+      "options": [],
+      "correctAnswer": "Education",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2212,
+      "courseCode": "GST 111",
+      "topic": "Library Resources",
+      "question": "True or False: Reference books are generally not for loan.",
+      "options": [],
+      "correctAnswer": "True",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2213,
+      "courseCode": "GST 111",
+      "topic": "Study Skills",
+      "question": "What type of reading is done for pleasure?",
+      "options": [],
+      "correctAnswer": "Extensive reading",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2214,
+      "courseCode": "GST 111",
+      "topic": "Information Literacy",
+      "question": "What is the term for the rights protecting intellectual works?",
+      "options": [],
+      "correctAnswer": "Copyright",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2215,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "What punctuation usually follows an interjection?",
+      "options": [],
+      "correctAnswer": "Exclamation mark",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2216,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Which section of the library contains journals and newspapers?",
+      "options": [],
+      "correctAnswer": "Serials section",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2217,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "True or False: A simple sentence has one independent clause.",
+      "options": [],
+      "correctAnswer": "True",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2218,
+      "courseCode": "GST 111",
+      "topic": "Library Resources",
+      "question": "What part of a book contains copyright information?",
+      "options": [],
+      "correctAnswer": "The Verso",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2219,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "Is 'un-' in 'unhappy' a prefix or suffix?",
+      "options": [],
+      "correctAnswer": "Prefix",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2220,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "What is the Latin root for 'study'?",
+      "options": [],
+      "correctAnswer": "Studium",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2221,
+      "courseCode": "GST 111",
+      "topic": "Library Resources",
+      "question": "Which classification scheme uses purely numeric notation?",
+      "options": [],
+      "correctAnswer": "Dewey Decimal Classification",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2222,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the correct spelling: (A) committee (B) commitee.",
+      "options": [],
+      "correctAnswer": "Committee",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2223,
+      "courseCode": "GST 111",
+      "topic": "Study Skills",
+      "question": "What is 'skimming'?",
+      "options": [],
+      "correctAnswer": "Reading quickly for a general overview",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2224,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "True or False: Pronouns are a closed word class.",
+      "options": [],
+      "correctAnswer": "True",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2225,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "What is the head of a 'Verb Phrase'?",
+      "options": [],
+      "correctAnswer": "A lexical verb",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2226,
+      "courseCode": "GST 111",
+      "topic": "General",
+      "question": "What is an 'atlas'?",
+      "options": [],
+      "correctAnswer": "A volume of maps",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2227,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the correct spelling: (A) occassion (B) occasion.",
+      "options": [],
+      "correctAnswer": "Occasion",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2228,
+      "courseCode": "GST 111",
+      "topic": "Library Resources",
+      "question": "What type of library is the Kenneth Dike Library?",
+      "options": [],
+      "correctAnswer": "Academic Library",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2229,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "What does a 'conjunction' do?",
+      "options": [],
+      "correctAnswer": "Joins words, phrases, or clauses",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2230,
+      "courseCode": "GST 111",
+      "topic": "Library Resources",
+      "question": "In the LC scheme, what does 'H' represent?",
+      "options": [],
+      "correctAnswer": "Social Sciences",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2231,
+      "courseCode": "GST 111",
+      "topic": "Study Skills",
+      "question": "True or False: Note-taking is done during a lecture.",
+      "options": [],
+      "correctAnswer": "True",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2232,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "What type of sentence gives a command?",
+      "options": [],
+      "correctAnswer": "Imperative",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2233,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "What is a 'morpheme'?",
+      "options": [],
+      "correctAnswer": "Smallest meaningful unit of language",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2234,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Is 'quickly' an adjective or an adverb?",
+      "options": [],
+      "correctAnswer": "Adverb",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2235,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "What is the primary function of an adjective?",
+      "options": [],
+      "correctAnswer": "To qualify or describe a noun or pronoun",
+      "difficulty": "Easy",
+      "explanation": ""
+    },
+    {
+      "id": 2236,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Indicate the tense: 'We shall have been finishing the food'.",
+      "options": [],
+      "correctAnswer": "Future perfect continuous",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2237,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "How many morphemes are in 'Presidential'?",
+      "options": [],
+      "correctAnswer": "3",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2238,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Change to passive voice: 'I have not seen this before'.",
+      "options": [],
+      "correctAnswer": "That has not been seen by me before",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2239,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "What is the grammatical name of: 'Where you are going' in 'Where you are going is a cause for concern'?",
+      "options": [],
+      "correctAnswer": "Noun clause",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2240,
+      "courseCode": "GST 111",
+      "topic": "Study Skills",
+      "question": "Distinguish between 'note-taking' and 'note-making'.",
+      "options": [],
+      "correctAnswer": "Note-taking is during a lecture; note-making is personal revision and gap-filling later",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2241,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "What is the base in 'References'?",
+      "options": [],
+      "correctAnswer": "Refer",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2242,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Indicate the grammatical name: 'Confused by the scarcity of fuel' in 'Confused by the scarcity of fuel, institutes were shut'.",
+      "options": [],
+      "correctAnswer": "Participial phrase",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2243,
+      "courseCode": "GST 111",
+      "topic": "Library Resources",
+      "question": "What is the notation type of the Library of Congress scheme?",
+      "options": [],
+      "correctAnswer": "Alphanumeric (Mixed)",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2244,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "How many morphemes are in 'universal'?",
+      "options": [],
+      "correctAnswer": "2",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2245,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Change to reported speech: 'I am a lecturer,' said the man.",
+      "options": [],
+      "correctAnswer": "The man said that he was a lecturer",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2246,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "What is the grammatical name: 'The teacher who raped that student'?",
+      "options": [],
+      "correctAnswer": "Relative/Adjectival clause",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2247,
+      "courseCode": "GST 111",
+      "topic": "General",
+      "question": "Explain the difference between 'denotative' and 'connotative' meaning.",
+      "options": [],
+      "correctAnswer": "Denotative is the dictionary meaning; connotative is the deeper, implied meaning",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2248,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "What are 'inflectional morphemes'?",
+      "options": [],
+      "correctAnswer": "Bound morphemes performing grammatical functions without changing word class",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2249,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the clause type: 'If you are tired, see me.'",
+      "options": [],
+      "correctAnswer": "Complex sentence",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2250,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "What is the Moys classification scheme specifically used for?",
+      "options": [],
+      "correctAnswer": "Legal information/Law libraries",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2251,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Change to passive voice: 'That tailor sews suits.'",
+      "options": [],
+      "correctAnswer": "Suits are sewn by that tailor",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2252,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "How many morphemes are in 'Achievements'?",
+      "options": [],
+      "correctAnswer": "3",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2253,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "What is an 'it-cleft' sentence used for?",
+      "options": [],
+      "correctAnswer": "To project and emphasize a particular item in a sentence",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2254,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the grammatical name: 'I will eat because you prepared the food'.",
+      "options": [],
+      "correctAnswer": "Adverbial clause",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2255,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "What is the purpose of 'delimiting' a subject in writing?",
+      "options": [],
+      "correctAnswer": "To narrow a broad topic to a manageable and clearly focused area",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2256,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "What are 'auxiliary verbs'?",
+      "options": [],
+      "correctAnswer": "Helping verbs that precede main verbs to show tense or mood",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2257,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Indicate the tense: 'If I was invited, I would accept'.",
+      "options": [],
+      "correctAnswer": "Simple past",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2258,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "How many morphemes are in 'Indiscriminately'?",
+      "options": [],
+      "correctAnswer": "4",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2259,
+      "courseCode": "GST 111",
+      "topic": "Library Resources",
+      "question": "What is a 'Call Mark'?",
+      "options": [],
+      "correctAnswer": "A combination of class and cutter numbers identifying a book's shelf location",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2260,
+      "courseCode": "GST 111",
+      "topic": "Study Skills",
+      "question": "What are the components of the SQ3R method?",
+      "options": [],
+      "correctAnswer": "Survey, Question, Read, Recall, Review",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2261,
+      "courseCode": "GST 111",
+      "topic": "General",
+      "question": "Define 'Information Literacy'.",
+      "options": [],
+      "correctAnswer": "Ability to identify, locate, evaluate, and effectively use information",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2262,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Select the clause structure: 'Sing repeatedly that verse'.",
+      "options": [],
+      "correctAnswer": "PAC (Predicator-Adjunct-Complement)",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2263,
+      "courseCode": "GST 111",
+      "topic": "General",
+      "question": "Identify the function of the underlined part: 'Adeyemi, **the cobbler**, was arrested'.",
+      "options": [],
+      "correctAnswer": "Appositive element to 'Adeyemi'",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2264,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "What is the difference between a 'root' and a 'stem'?",
+      "options": [],
+      "correctAnswer": "Root is the core meaningful part; stem is the part remaining after removing inflectional affixes",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2265,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the function of 'that Nigeria is rich' in: 'The notion that Nigeria is rich may not be correct'.",
+      "options": [],
+      "correctAnswer": "Noun clause, appositive element to 'The notion'",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2266,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Select the clause structure: 'Ola loves the man deeply'.",
+      "options": [],
+      "correctAnswer": "SPCA (Subject-Predicator-Complement-Adjunct)",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2267,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "State the function: 'To succeed in life is **our goal**'.",
+      "options": [],
+      "correctAnswer": "Noun phrase, subject complement",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2268,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Indicate the structure type: 'During a public lecture..., Apeke displayed her wealth of knowledge...'.",
+      "options": [],
+      "correctAnswer": "Complex sentence",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2269,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the grammatical name and function: '**Embittered by the years of neglect**, Roseline wept'.",
+      "options": [],
+      "correctAnswer": "Participial phrase, qualifying the subject 'Roseline'",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2270,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "What are the rules for transforming an active sentence to passive?",
+      "options": [],
+      "correctAnswer": "Subject/Object reversal, adding 'BE' verb of same tense, adding 'by' before new object",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2271,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the function: 'I know **that you are serious**'.",
+      "options": [],
+      "correctAnswer": "Noun clause, object of the verb",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2272,
+      "courseCode": "GST 111",
+      "topic": "Information Literacy",
+      "question": "What is the APA 7th edition rule for citing three or more authors in subsequent text?",
+      "options": [],
+      "correctAnswer": "First author followed by 'et al.' and year (e.g., Oshiluyi et al., 2024)",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2273,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the name and function: 'He has been learning **swimming in the icy sea**'.",
+      "options": [],
+      "correctAnswer": "Gerundive phrase, object of the verb phrase 'has been learning'",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2274,
+      "courseCode": "GST 111",
+      "topic": "General",
+      "question": "State the function: 'Going **by your comments**, we are sure of victory'.",
+      "options": [],
+      "correctAnswer": "Adjectival function modifying 'we'",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2275,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the structure: 'Love covers **all sins**'.",
+      "options": [],
+      "correctAnswer": "Noun phrase, object complement (per specific test marking)",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2276,
+      "courseCode": "GST 111",
+      "topic": "Library Resources",
+      "question": "Explain the difference between 'Anaphoric' and 'Cataphoric' references.",
+      "options": [],
+      "correctAnswer": "Anaphoric refers backward to an antecedent; Cataphoric refers forward to a following referent",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2277,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "Analyze the morphemes in 'individualistic'.",
+      "options": [],
+      "correctAnswer": "individual (root) + ist (derivational) + ic (derivational)",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2278,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the function: '**If the matter is resolved on time**, there will not be unrest'.",
+      "options": [],
+      "correctAnswer": "Adverbial clause of condition, qualifying the verb phrase 'will not be'",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2279,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "What is a 'Pseudo Cleft' sentence?",
+      "options": [],
+      "correctAnswer": "A reversal of a wh-cleft (e.g., 'A bar of chocolate is what I would like')",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2280,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the name and function: '**The man that stole your car** was caught'.",
+      "options": [],
+      "correctAnswer": "Noun phrase, subject of the verb phrase 'was caught'",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2281,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "State the rules for summary writing.",
+      "options": [],
+      "correctAnswer": "No fragments (complete sentences), avoid mindless lifting, and maintain brevity",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2282,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Contrast the 'Frustration', 'Instructional', and 'Independent' levels of comprehension.",
+      "options": [],
+      "correctAnswer": "Frustration: cannot comprehend; Instructional: needs help; Independent: succeeds alone",
+      "difficulty": "Hard",
+      "explanation": ""
+    },
+    {
+      "id": 2283,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Indicate the grammatical name of the underlined structure: 'Where you are going is a cause for concern.'",
+      "options": [],
+      "correctAnswer": "Noun clause",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2284,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Indicate the tense in the sentence: 'We shall have been finishing the food by this time next week'.",
+      "options": [],
+      "correctAnswer": "Future perfect continuous",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2285,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Change the following to reported speech: 'These politicians are corrupt,' commented Adeola.",
+      "options": [],
+      "correctAnswer": "Adeola commented that those politicians were corrupt.",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2286,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the correct spelling: remuneration / renumeration",
+      "options": [],
+      "correctAnswer": "Remuneration",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2287,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Complete the sentence: 'Forty litres of fuel _______ no longer easy to get.'",
+      "options": [],
+      "correctAnswer": "Is",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2288,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Indicate the tense in the sentence: 'If I was invited, I would accept the offer.'",
+      "options": [],
+      "correctAnswer": "Simple past",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2289,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Indicate the grammatical name of the underlined structure: 'Confused by the scarcity of fuel, different institutes were shut.'",
+      "options": [],
+      "correctAnswer": "Participial phrase",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2290,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Complete the sentence: 'The number of politicians _______ increasing in Nigeria.'",
+      "options": [],
+      "correctAnswer": "Is",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2291,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Change 'I have not seen this before' to the passive voice.",
+      "options": [],
+      "correctAnswer": "That has not been seen by me before.",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2292,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Complete the sentence: 'The total number of hours spent in the class _______ too much.'",
+      "options": [],
+      "correctAnswer": "Is",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2293,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the correct spelling: definition / definetion",
+      "options": [],
+      "correctAnswer": "Definition",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2294,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "State the function of the underlined structure: 'I will eat because you prepared the food.'",
+      "options": [],
+      "correctAnswer": "Modifier of 'will eat'",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2295,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "What type of sentence is 'Speak up if you are certain.'?",
+      "options": [],
+      "correctAnswer": "Simple",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2296,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the correct spelling: abstinence / abstinance",
+      "options": [],
+      "correctAnswer": "Abstinence",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2297,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "State the function of the underlined structure: 'The man whose child you invited is here to see you.'",
+      "options": [],
+      "correctAnswer": "Modifies 'the man'",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2298,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Indicate the grammatical name of the underlined structure: 'When Nigeria will be free from corruption remains unknown.'",
+      "options": [],
+      "correctAnswer": "Noun clause",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2299,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Complete the sentence: 'Each _______ has a name to protect.'",
+      "options": [],
+      "correctAnswer": "Student",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2300,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Complete the sentence: 'The total number of hours spent on that _______ too much.'",
+      "options": [],
+      "correctAnswer": "Is",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2301,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Complete the sentence: 'One of the pupils who _______ writing the examination _______ my friend.'",
+      "options": [],
+      "correctAnswer": "Are/is",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2302,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Change 'Segun's wife has been helping him' to the passive voice.",
+      "options": [],
+      "correctAnswer": "Segun has been being helped by his wife.",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2303,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Change to reported speech: 'I am a lecturer,' said the man.",
+      "options": [],
+      "correctAnswer": "The man said that he was a lecturer.",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2304,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Change 'They should have finished the work' to the passive voice.",
+      "options": [],
+      "correctAnswer": "The work should have been finished by them.",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2305,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Change 'The GES 101 supervisor is compiling the list' to the passive voice.",
+      "options": [],
+      "correctAnswer": "The list is being compiled by the GES 101 supervisor.",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2306,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Change to reported speech: 'We have been here,' said Paul.",
+      "options": [],
+      "correctAnswer": "Paul said they had been there.",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2307,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "What type of sentence is 'If you are tired, see me.'?",
+      "options": [],
+      "correctAnswer": "Complex",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2308,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "What type of sentence is 'Go and preach it.'?",
+      "options": [],
+      "correctAnswer": "Compound",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2309,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Indicate the tense in the sentence: 'We have left before.'",
+      "options": [],
+      "correctAnswer": "Past perfect",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2310,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "State the function of the underlined structure: 'Travelling by road is risky.'",
+      "options": [],
+      "correctAnswer": "Subject of the verb",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2311,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Indicate the tense in the sentence: 'How old are you?'",
+      "options": [],
+      "correctAnswer": "Simple present",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2312,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Complete the sentence: 'A pair of trousers now _______ exorbitantly in the market.'",
+      "options": [],
+      "correctAnswer": "Sells",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2313,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "How many morphemes are in 'Presidential'?",
+      "options": [],
+      "correctAnswer": "3",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2314,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Which of the following is a complex word? residential / resistance",
+      "options": [],
+      "correctAnswer": "Residential",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2315,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Select the clause structure for: 'Sing repeatedly that verse'",
+      "options": [],
+      "correctAnswer": "PAC (Predicator-Adjunct-Complement)",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2316,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "The base in 'References' is:",
+      "options": [],
+      "correctAnswer": "Refer",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2317,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "How many morphemes are in 'universal'?",
+      "options": [],
+      "correctAnswer": "2",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2318,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Select the clause structure for: 'Ola loves the man deeply'",
+      "options": [],
+      "correctAnswer": "SPCA (Subject-Predicator-Complement-Adjunct)",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2319,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the grammatical name and function of the underlined part: 'Adeyemi, **the cobbler**, was arrested yesterday.'",
+      "options": [],
+      "correctAnswer": "Noun phrase, appositive element to 'Adeyemi'",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2320,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the grammatical name and function: '**Embittered by the years of neglect**, Roseline wept endlessly.'",
+      "options": [],
+      "correctAnswer": "Participial phrase, qualifying the subject 'Roseline'",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2321,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the grammatical name and function: 'I **have been fascinated** by your elocution.'",
+      "options": [],
+      "correctAnswer": "Verb phrase, predicator",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2322,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the grammatical name and function: 'The lady **in the white dress** winked at Evelyn.'",
+      "options": [],
+      "correctAnswer": "Prepositional phrase, qualifies the subject 'The lady'",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2323,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the grammatical name and function: 'The notion **that Nigeria is rich** may not be correct.'",
+      "options": [],
+      "correctAnswer": "Noun clause, appositive element to the noun phrase 'The notion'",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2324,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the grammatical name and function: 'To succeed in life is **our goal**.'",
+      "options": [],
+      "correctAnswer": "Noun phrase, subject complement",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2325,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Which of the following is an example of a compound word? girlfriend / friendly",
+      "options": [],
+      "correctAnswer": "Girlfriend",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2326,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the grammatical name and function: 'It is unfortunate that Moses does not know **where he was born**.'",
+      "options": [],
+      "correctAnswer": "Noun clause, object of the verb 'know'",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2327,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the grammatical name and function: '**To be bitter** is to be unhappy.'",
+      "options": [],
+      "correctAnswer": "Infinitival phrase, subject of the verb 'is'",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2328,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the grammatical name and function: 'He has been learning **swimming in the icy sea** for years.'",
+      "options": [],
+      "correctAnswer": "Gerundive phrase, object of the verb phrase 'has been learning'",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2329,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the grammatical name and function: 'Love covers **all sins**.'",
+      "options": [],
+      "correctAnswer": "Noun phrase, object complement",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2330,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the grammatical name and function: '**If the matter is resolved on time**, there will not be any further unrest.'",
+      "options": [],
+      "correctAnswer": "Adverbial clause of condition, qualifying the verb phrase 'will not be'",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2331,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the grammatical name and function: '**The man that stole your car** was caught in Lokoja.'",
+      "options": [],
+      "correctAnswer": "Noun phrase, subject of the verb phrase 'was caught'",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2332,
+      "courseCode": "GST 111",
+      "topic": "General",
+      "question": "What is the meaning of the Latin word 'Liber'?",
+      "options": [],
+      "correctAnswer": "Book",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2333,
+      "courseCode": "GST 111",
+      "topic": "Library Resources",
+      "question": "What are the two processes for organizing information materials?",
+      "options": [],
+      "correctAnswer": "Cataloguing and classification",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2334,
+      "courseCode": "GST 111",
+      "topic": "Library Resources",
+      "question": "Which classification scheme is used at Kenneth Dike Library?",
+      "options": [],
+      "correctAnswer": "Library of Congress (LC)",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2335,
+      "courseCode": "GST 111",
+      "topic": "Library Resources",
+      "question": "What libraries primarily use the Moys classification scheme?",
+      "options": [],
+      "correctAnswer": "Law libraries",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2336,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the grammatical name: 'The teacher **who raped that student** has been apprehended.'",
+      "options": [],
+      "correctAnswer": "Relative clause",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2337,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the grammatical name: '**Discouraged by global economic meltdown**, he abandoned the project.'",
+      "options": [],
+      "correctAnswer": "Participial phrase",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2338,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the grammatical name: 'Susan **has been honoured by them**.'",
+      "options": [],
+      "correctAnswer": "Verb phrase",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2339,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the grammatical name: 'I hate **giving money to beggars**.'",
+      "options": [],
+      "correctAnswer": "Gerundive phrase",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2340,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the grammatical name: 'The man **whose daughter you jilted** is crying.'",
+      "options": [],
+      "correctAnswer": "Relative clause",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2341,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the grammatical name: '**When he will come** is the cause of the argument.'",
+      "options": [],
+      "correctAnswer": "Noun clause",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2342,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the grammatical name: '**Although you are right**, you will be penalised.'",
+      "options": [],
+      "correctAnswer": "Adverbial clause",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2343,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the grammatical name: 'Keep it **in your bag**.'",
+      "options": [],
+      "correctAnswer": "Prepositional phrase",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2344,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "Identify the grammatical name: 'We can see **the repentant prisoners**.'",
+      "options": [],
+      "correctAnswer": "Noun phrase",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2345,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the grammatical name: 'It was **very interesting**.'",
+      "options": [],
+      "correctAnswer": "Adjectival phrase",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2346,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "How many morphemes are in 'Melodious'?",
+      "options": [],
+      "correctAnswer": "2",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2347,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "How many morphemes are in 'Acquiescence'?",
+      "options": [],
+      "correctAnswer": "2",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2348,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "How many morphemes are in 'Apologize'?",
+      "options": [],
+      "correctAnswer": "2",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2349,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "How many morphemes are in 'Achievements'?",
+      "options": [],
+      "correctAnswer": "3",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2350,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "How many morphemes are in 'Close-mouthed'?",
+      "options": [],
+      "correctAnswer": "3",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2351,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "How many morphemes are in 'Motorized'?",
+      "options": [],
+      "correctAnswer": "3",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2352,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "How many morphemes are in 'Preparations'?",
+      "options": [],
+      "correctAnswer": "3",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2353,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "How many morphemes are in 'Indiscriminately'?",
+      "options": [],
+      "correctAnswer": "4",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2354,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "How many morphemes are in 'Individualistic'?",
+      "options": [],
+      "correctAnswer": "3",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2355,
+      "courseCode": "GST 111",
+      "topic": "Morphology",
+      "question": "How many morphemes are in 'Pageantry'?",
+      "options": [],
+      "correctAnswer": "3",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2356,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Change to passive: 'I have seen her.'",
+      "options": [],
+      "correctAnswer": "She has been seen by me.",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2357,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Change to passive: 'That tailor sews suits.'",
+      "options": [],
+      "correctAnswer": "Suits are sewn by that tailor.",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2358,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Change to passive: 'Thomas can make beads.'",
+      "options": [],
+      "correctAnswer": "Beads can be made by Thomas.",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2359,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Change to passive: 'I saw many people there.'",
+      "options": [],
+      "correctAnswer": "Many people were seen there by me.",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2360,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Complete with the correct tense: 'A number of the boys _______ angry.'",
+      "options": [],
+      "correctAnswer": "Are",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2361,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Convert this reported speech to direct: 'The governor said that their farmers had a good harvest that year.'",
+      "options": [],
+      "correctAnswer": "'Our farmers have good harvest this year,' said the governor.",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2362,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Convert to direct speech: 'Adeseke said she can help those children the following day.'",
+      "options": [],
+      "correctAnswer": "'I can help these children tomorrow,' said Adeseke.",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2363,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Convert to direct speech: 'Seun told James to leave that place at that moment.'",
+      "options": [],
+      "correctAnswer": "'Leave this place now,' James told Seun.",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2364,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the correct spelling: accommodation / accomodation",
+      "options": [],
+      "correctAnswer": "Accommodation",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2365,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the correct spelling: estrange / estrang",
+      "options": [],
+      "correctAnswer": "Estrange",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2366,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the correct spelling: erstwhile / erstwhile",
+      "options": [],
+      "correctAnswer": "Erstwhile",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2367,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the correct spelling: occasion / occassion",
+      "options": [],
+      "correctAnswer": "Occasion",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2368,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the correct spelling: fluctuate / flucuate",
+      "options": [],
+      "correctAnswer": "Fluctuate",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2369,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the correct spelling: assessment / assesment",
+      "options": [],
+      "correctAnswer": "Assessment",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2370,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the correct spelling: committee / commitee",
+      "options": [],
+      "correctAnswer": "Committee",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2371,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the correct spelling: maintenance / maintanance",
+      "options": [],
+      "correctAnswer": "Maintenance",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2372,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "Identify the correct spelling: embarrassment / embarassment",
+      "options": [],
+      "correctAnswer": "Embarrassment",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2373,
+      "courseCode": "GST 111",
+      "topic": "General",
+      "question": "State the function: 'Going **by your comments**, we are sure of victory.'",
+      "options": [],
+      "correctAnswer": "Modifies 'we'",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2374,
+      "courseCode": "GST 111",
+      "topic": "General",
+      "question": "State the function: 'She is a woman **to fear**.'",
+      "options": [],
+      "correctAnswer": "Modifies 'a woman'",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2375,
+      "courseCode": "GST 111",
+      "topic": "Grammar",
+      "question": "State the function: 'To be healthy is **to be wealthy**.'",
+      "options": [],
+      "correctAnswer": "Complement of 'is'",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2376,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "State the function: '**Like playing the guitar**, Adeola enjoys himself.'",
+      "options": [],
+      "correctAnswer": "Object of the verb",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2377,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "State the function: 'She respects **the people in our group**.'",
+      "options": [],
+      "correctAnswer": "Object of the verb",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2378,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "State the function: 'I know **that you are serious**.'",
+      "options": [],
+      "correctAnswer": "Object of the verb",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2379,
+      "courseCode": "GST 111",
+      "topic": "General",
+      "question": "State the function: 'The two boys **whose ball you took** are here.'",
+      "options": [],
+      "correctAnswer": "Modifies 'the two boys'",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2380,
+      "courseCode": "GST 111",
+      "topic": "General",
+      "question": "State the function: 'We gave **money** to the man.'",
+      "options": [],
+      "correctAnswer": "Direct object",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2381,
+      "courseCode": "GST 111",
+      "topic": "General",
+      "question": "State the function: 'Keep it **in your bag**.'",
+      "options": [],
+      "correctAnswer": "Modifier of 'keep'",
+      "difficulty": "Medium",
+      "explanation": ""
+    },
+    {
+      "id": 2382,
+      "courseCode": "GST 111",
+      "topic": "Word Classes",
+      "question": "State the function: 'The young **musician** is fighting outside.'",
+      "options": [],
+      "correctAnswer": "Subject of the verb",
+      "difficulty": "Medium",
+      "explanation": ""
     }
   ]
 }

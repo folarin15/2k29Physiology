@@ -80,10 +80,7 @@
 
           <!-- REPS SUMMARY COMPONENT: Shows the two class reps as trusted contacts. -->
           <div class="header-actions" aria-label="Dashboard support actions">
-            <span class="early-access-badge" id="earlyAccessBadge" hidden>
-              <span class="material-symbols-rounded" aria-hidden="true">lock_open</span>
-              Early Access
-            </span>
+
             <button class="ghost-action compact-action" type="button" data-open-site-guide>
               <span class="material-symbols-rounded" aria-hidden="true">help</span>
               How to use
@@ -111,17 +108,7 @@
               <a class="primary-action" href="./timetable.html"><span class="material-symbols-rounded" aria-hidden="true">event_available</span>View countdown</a>
               <a class="secondary-action" href="./courses.html"><span class="material-symbols-rounded" aria-hidden="true">menu_book</span>Open notes</a>
             </div>
-            <div class="early-access-code" id="earlyAccessBox">
-              <form class="portal-form code-form">
-                <label for="earlyAccessInput">Early-access code</label>
-                <p class="form-help">Ask your course rep for the early-access code to unlock second-semester content before July 11.</p>
-                <div class="code-row">
-                  <input id="earlyAccessInput" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="Enter code" autocomplete="off" />
-                  <button class="primary-action" id="earlyAccessBtn">Unlock</button>
-                </div>
-                <small id="earlyAccessMsg"></small>
-              </form>
-            </div>
+
           </div>
           <figure class="break-illustration">
             <img src="./assets/semester-break-illustration.jpg" alt="Minimal line-art illustration of a student relaxing in a hammock during semester break" />
@@ -135,12 +122,7 @@
             <input id="resourceSearch" type="search" placeholder="Search notes, quizzes, uploads..." autocomplete="off" />
           </label>
 
-          <!-- RESUMPTION SNAPSHOT COMPONENT: Shows days until full public access opens. -->
-          <article class="next-exam-card">
-            <span>Opening</span>
-            <strong id="nextExamTitle">Full access countdown</strong>
-            <small id="nextExamMeta">Early access available now.</small>
-          </article>
+
         </section>
 
         <!-- QUICK START COMPONENT: Reduces dashboard confusion by putting the most common actions first. -->
@@ -167,22 +149,14 @@
           </button>
         </section>
 
-        <!-- RESUMPTION COUNTDOWN COMPONENT: Shows time until full public access is unlocked. -->
-        <section class="ges-countdown-panel" aria-label="Second semester resumption countdown">
-          <div>
-            <p class="eyebrow">Public access opens</p>
-            <h2 id="gesCountdownTitle">Second-semester resources are loaded and ready.</h2>
-            <p id="gesCountdownMeta">Full access for everyone on July 11.</p>
-          </div>
-          <div class="countdown-grid" id="gesCountdownGrid" aria-label="Time remaining"></div>
-        </section>
+
 
         <!-- STUDY SNAPSHOT COMPONENT: Shows streak and topic guidance for second-semester prep. -->
         <section class="study-snapshot content-panel" id="dashboardStudyPanel">
           <div>
             <p class="eyebrow">Study now</p>
             <h2>Get ahead of the class.</h2>
-            <p id="studyMotivation">Jump into second-semester notes, past questions, and quizzes—available now with early access.</p>
+            <p id="studyMotivation">Jump into notes, quizzes, past questions, and study aids across all courses.</p>
           </div>
           <button class="streak-orb-card" type="button" data-open-streak-summary aria-label="Open study streak summary">
             <span class="streak-orb" aria-hidden="true">

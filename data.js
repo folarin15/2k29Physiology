@@ -12,8 +12,8 @@ export const firstSemesterCourses = [
   { code: "PHY 108", title: "General Practical Physics II", type: "Compulsory", units: 1 },
 ];
 
-/* BREAK LOCK: Only the dashboard is accessible until this date. All other pages redirect to dashboard. */
-export const BREAK_LOCK_UNTIL = new Date("2026-07-11T00:00:00+01:00");
+/* BREAK LOCK: Now expired — all content is fully open. */
+export const BREAK_LOCK_UNTIL = new Date("2026-06-01T00:00:00+01:00");
 
 /* RESUMPTION DATA: Semester-break message and second-semester countdown. */
 export const secondSemesterResumption = {

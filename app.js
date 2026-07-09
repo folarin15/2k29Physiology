@@ -386,18 +386,8 @@ function getResumptionDate() {
   return new Date(secondSemesterResumption.date);
 }
 
-const EARLY_ACCESS_KEY = "physiology2k29.earlyAccess";
-const EARLY_ACCESS_CODE = "7085";
-
-function isEarlyAccessActive() {
-  try {
-    return localStorage.getItem(EARLY_ACCESS_KEY) === EARLY_ACCESS_CODE;
-  } catch { return false; }
-}
-
-/* BREAK LOCK: Returns true while the portal is in semester-break lockdown mode. */
+/* BREAK LOCK: Returns true while the portal is in semester-break lockdown mode (now expired). */
 function isBreakLockActive() {
-  if (isEarlyAccessActive()) return false;
   return Date.now() < BREAK_LOCK_UNTIL.getTime();
 }
 
@@ -431,45 +421,6 @@ function enforceBreakLock() {
   if (!OPEN_PAGES.includes(page)) {
     window.location.replace("./dashboard.html");
   }
-}
-
-/* EARLY ACCESS BADGE: Shows a persistent badge on the dashboard header when early access is active. */
-function renderEarlyAccessBadge() {
-  const badge = getElement("#earlyAccessBadge");
-  if (!badge) return;
-  badge.hidden = !isEarlyAccessActive();
-}
-
-/* EARLY ACCESS: Handles passcode entry on the dashboard to unlock the portal before July 11. */
-function connectEarlyAccess() {
-  renderEarlyAccessBadge();
-
-  const btn = getElement("#earlyAccessBtn");
-  const input = getElement("#earlyAccessInput");
-  const msg = getElement("#earlyAccessMsg");
-  if (!btn || !input || !msg) return;
-
-  if (isEarlyAccessActive()) {
-    btn.closest("#earlyAccessBox")?.remove();
-    return;
-  }
-
-  btn.addEventListener("click", () => {
-    const code = input.value.trim();
-    if (code !== EARLY_ACCESS_CODE) {
-      msg.textContent = "Incorrect code. Try again.";
-      return;
-    }
-    try { localStorage.setItem(EARLY_ACCESS_KEY, code); } catch {}
-    msg.textContent = "Access granted. Reloading...";
-    btn.disabled = true;
-    input.disabled = true;
-    window.location.reload();
-  });
-
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") btn.click();
-  });
 }
 
 function formatCountdownParts(targetDate, now = new Date()) {
@@ -1581,47 +1532,6 @@ function renderTimetable() {
 }
 
 /* NEXT STEP CARD: Keeps the dashboard focused on resumption after exams. */
-function renderNextExam() {
-  const title = getElement("#nextExamTitle");
-  const meta = getElement("#nextExamMeta");
-  if (!title || !meta) return;
-
-  title.textContent = "Semester break";
-  meta.textContent = `${secondSemesterResumption.displayDate}. Rest now; your notes and quizzes will be ready when you return.`;
-}
-
-/* RESUMPTION COUNTDOWN: Gives the class a calm post-exam reset message. */
-function renderGesCountdown() {
-  const title = getElement("#gesCountdownTitle");
-  const meta = getElement("#gesCountdownMeta");
-  const grid = getElement("#gesCountdownGrid");
-  if (!title || !meta || !grid) return;
-
-  const now = new Date();
-  const resumptionDate = getResumptionDate();
-  if (now >= resumptionDate) {
-    title.textContent = "Welcome back. We are right here with you.";
-    meta.textContent = "Ease back in, check new updates, and start the semester with a clean rhythm.";
-    grid.innerHTML = ["Days", "Hours", "Minutes", "Seconds"]
-      .map((label) => `<span><strong>0</strong><small>${label}</small></span>`)
-      .join("");
-    return;
-  }
-
-  title.textContent = "The semester may be on pause, but your journey isn't.";
-  meta.textContent = `Resumption is ${secondSemesterResumption.displayDate}. Rest, reconnect with the people you love, and recharge at your own pace.`;
-  grid.innerHTML = formatCountdownParts(resumptionDate, now)
-    .map(
-      (part) => `
-        <span>
-          <strong>${String(part.value).padStart(2, "0")}</strong>
-          <small>${part.label}</small>
-        </span>
-      `
-    )
-    .join("");
-}
-
 function isLastMinuteResource(resource) {
   const haystack = `${resource.title} ${resource.type} ${resource.note || ""} ${resource.fileName || ""}`.toLowerCase();
   return /\b(past questions?|pq|pqs|mock|test|exam|ca|practice|revision|solved|compiled)\b/.test(haystack);
@@ -4932,7 +4842,6 @@ async function init() {
   connectGenericBulkUpload();
   renderBreakLockNav();
   enforceBreakLock();
-  renderEarlyAccessBadge();
   connectSuggestionForm();
   connectStaffActions();
   connectStaffAnalytics();
@@ -4947,10 +4856,7 @@ async function init() {
   connectQuizMode();
   connectTimetableDownload();
   connectMembersPdfDownload();
-  connectEarlyAccess();
   window.setInterval(() => {
-    renderNextExam();
-    renderGesCountdown();
     renderExamMode();
   }, 1000);
   updateBootLoader("Verifying class access");
