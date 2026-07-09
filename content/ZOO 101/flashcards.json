@@ -1,102 +1,504 @@
-[
-  {"id":1,"front":"Three layers of the heart wall","back":"Epicardium (outer), Myocardium (middle/bulk), and Endocardium (inner)."},
-  {"id":2,"front":"Systemic circulation","back":"The division of the circulatory system that moves blood between the heart and the body."},
-  {"id":3,"front":"Pulmonary circulation","back":"The division of the circulatory system that moves blood between the heart and the lungs."},
-  {"id":4,"front":"Coronary circulation","back":"The division of the circulatory system serving the vessels within the heart itself."},
-  {"id":5,"front":"Atria function","back":"The two upper heart chambers that receive blood into the heart."},
-  {"id":6,"front":"Ventricles function","back":"The two lower heart chambers that pump blood out of the heart."},
-  {"id":7,"front":"Right atrium blood source","back":"Receives deoxygenated blood from the superior and inferior vena cava."},
-  {"id":8,"front":"Left ventricle function","back":"Pumps oxygen-rich blood through the aorta to the body; it has the thickest heart wall."},
-  {"id":9,"front":"Tricuspid valve location","back":"The valve located between the right atrium and right ventricle."},
-  {"id":10,"front":"Mitral (Bicuspid) valve location","back":"The valve located between the left atrium and left ventricle."},
-  {"id":11,"front":"Artery wall layers","back":"Tunica intima (inner), Tunica media (middle/smooth muscle), and Tunica externa (outer/connective tissue)."},
-  {"id":12,"front":"Arterioles role","back":"Regulate blood flow into the capillaries."},
-  {"id":13,"front":"Veins vs. Arteries direction","back":"Arteries carry blood away from the heart; veins carry blood toward the heart."},
-  {"id":14,"front":"Capillary primary function","back":"The exchange of materials (nutrients, gases, waste) between blood and tissue cells."},
-  {"id":15,"front":"Systole","back":"The phase of the cardiac cycle where the heart contracts to push blood out."},
-  {"id":16,"front":"Diastole","back":"The relaxation phase of the cardiac cycle where the heart fills with blood."},
-  {"id":17,"front":"Depolarization","back":"The shift in electrical charge that stimulates heart muscle contraction."},
-  {"id":18,"front":"Sinoatrial (SA) node","back":"The heart's pacemaker located in the right atrium that generates electrical impulses."},
-  {"id":19,"front":"Plasma components","back":"92% water; contains nutrients, waste, hormones, ions, and proteins (albumin, globulins, fibrinogen)."},
-  {"id":20,"front":"Hematocrit","back":"The fraction of the total volume of blood occupied by red blood cells (~45% in humans)."},
-  {"id":21,"front":"Mature mammalian RBC feature","back":"Lacks a nucleus to maximize space for hemoglobin and oxygen transport."},
-  {"id":22,"front":"Serum","back":"Blood plasma from which the clotting protein fibrinogen has been removed."},
-  {"id":23,"front":"Leukocytes (WBCs)","back":"Blood cells responsible for protection against injury, microbes, and toxins."},
-  {"id":24,"front":"Platelet function","back":"Cell fragments that release clotting factors to convert fibrinogen into fibrin."},
-  {"id":25,"front":"Haematopoiesis","back":"The process of blood cell formation in the bone marrow."},
-  {"id":26,"front":"Erythropoietin (EPO)","back":"A hormone produced by the kidneys that stimulates red blood cell production."},
-  {"id":27,"front":"Kidney location","back":"Retroperitoneally in the abdomen, extending between vertebral levels T12 and L3."},
-  {"id":28,"front":"Renal cortex vs. Medulla","back":"Cortex is the outer region; Medulla is the inner region containing renal pyramids."},
-  {"id":29,"front":"Nephron","back":"The functional unit of the kidney responsible for filtering blood and forming urine."},
-  {"id":30,"front":"Cortical nephrons","back":"Make up 85% of nephrons; located in the outer cortex with short loops of Henle."},
-  {"id":31,"front":"Juxtamedullary nephrons","back":"Make up 15% of nephrons; have long loops of Henle that penetrate deep into the medulla."},
-  {"id":32,"front":"Renal corpuscle components","back":"The glomerulus (capillary bed) and Bowman's (glomerular) capsule."},
-  {"id":33,"front":"Glomerular filtration","back":"The process where blood pressure forces plasma (minus proteins) into the Bowman's capsule."},
-  {"id":34,"front":"Tubular reabsorption","back":"Reclaiming water and solutes (glucose, amino acids) from the filtrate back into the blood."},
-  {"id":35,"front":"Tubular secretion","back":"Moving unfiltered substances (toxins, excess H+ and K+ ions) from blood into the filtrate."},
-  {"id":36,"front":"Homeostasis","back":"The maintenance of constant physiological conditions in the body."},
-  {"id":37,"front":"Negative feedback","back":"A control mechanism that reverses a change to restore the body to its normal state."},
-  {"id":38,"front":"Positive feedback","back":"A mechanism that intensifies a response until an endpoint is reached (e.g., childbirth)."},
-  {"id":39,"front":"Antidiuretic hormone (ADH) role","back":"Promotes water reabsorption in kidney tubules to conserve water and concentrate urine."},
-  {"id":40,"front":"External respiration","back":"The exchange of gases between the lungs and the blood."},
-  {"id":41,"front":"Internal respiration","back":"The exchange of gases between the blood and tissue cells."},
-  {"id":42,"front":"Diaphragm during inhalation","back":"Contracts and moves down, increasing thoracic volume and decreasing pressure."},
-  {"id":43,"front":"Upper respiratory tract","back":"Includes the nose, pharynx (throat), and larynx (voice box)."},
-  {"id":44,"front":"Paranasal sinuses","back":"Air-filled cavities that reduce skull weight and warm/humidify inhaled air."},
-  {"id":45,"front":"Epiglottis function","back":"Acts as a trap door to prevent food from entering the larynx during swallowing."},
-  {"id":46,"front":"Thyroid cartilage","back":"The largest laryngeal cartilage, commonly known as the 'Adam's apple'."},
-  {"id":47,"front":"Mucociliary clearance","back":"Process where cilia propel mucus-trapped particles upward to be expelled or swallowed."},
-  {"id":48,"front":"Alveoli","back":"Tiny air sacs that provide the primary surface for gas exchange in the lungs."},
-  {"id":49,"front":"Cardiac notch","back":"An indentation on the medial surface of the left lung to accommodate the heart."},
-  {"id":50,"front":"Tidal volume","back":"The normal amount of air inhaled or exhaled during a regular breath cycle."},
-  {"id":51,"front":"Vital capacity","back":"The maximum volume of air that can be exhaled after a deep inhalation."},
-  {"id":52,"front":"Carbaminohemoglobin","back":"Carbon dioxide bound to hemoglobin for transport to the lungs."},
-  {"id":53,"front":"Central Nervous System (CNS)","back":"Composed of the brain and the spinal cord."},
-  {"id":54,"front":"Peripheral Nervous System (PNS)","back":"Composed of the nerves and ganglia branching out from the CNS."},
-  {"id":55,"front":"Meninges","back":"Three connective tissue layers protecting the CNS: Dura mater, Arachnoid, and Pia mater."},
-  {"id":56,"front":"Corpus callosum","back":"A band of white fibers connecting the two cerebral hemispheres."},
-  {"id":57,"front":"Hypothalamus role","back":"Maintains homeostasis by regulating visceral activities like temperature, thirst, and hunger."},
-  {"id":58,"front":"Pineal gland hormone","back":"Melatonin, which regulates circadian rhythms (biological clock)."},
-  {"id":59,"front":"Medulla oblongata function","back":"Regulates essential life functions: breathing, heart rate, and blood pressure."},
-  {"id":60,"front":"Cerebellum function","back":"Coordinates voluntary movement, posture, and balance."},
-  {"id":61,"front":"Cauda equina","back":"A collection of spinal nerves at the distal end of the cord resembling a horse's tail."},
-  {"id":62,"front":"Somatic nervous system","back":"The division of the PNS involved in conscious/voluntary skeletal muscle movement."},
-  {"id":63,"front":"Autonomic nervous system","back":"The division of the PNS that mediates unconscious activities of visceral organs."},
-  {"id":64,"front":"Neuron","back":"The conducting cell and structural unit of the nervous system; amitotic (cannot be replaced)."},
-  {"id":65,"front":"Neuroglia (glial cells)","back":"Non-conducting support cells that nourish and protect neurons."},
-  {"id":66,"front":"Synapse","back":"The junction where neurons transmit chemical signals via neurotransmitters."},
-  {"id":67,"front":"Vagus Nerve (Cranial Nerve X)","back":"Innervates visceral organs like the heart, stomach, and glands."},
-  {"id":68,"front":"Endocrine glands","back":"Ductless glands that secrete hormones directly into the blood."},
-  {"id":69,"front":"Exocrine glands","back":"Glands that use ducts to carry products (e.g., sweat, enzymes) to a surface."},
-  {"id":70,"front":"Tropic hormones","back":"Hormones that stimulate other endocrine glands to secrete their hormones."},
-  {"id":71,"front":"Adenohypophysis","back":"The anterior lobe of the pituitary gland."},
-  {"id":72,"front":"Neurohypophysis","back":"The posterior lobe of the pituitary gland."},
-  {"id":73,"front":"Growth hormone (GH)","back":"Anterior pituitary protein that stimulates growth of bones and muscles."},
-  {"id":74,"front":"Calcitonin function","back":"A thyroid hormone that reduces blood calcium levels."},
-  {"id":75,"front":"Parathyroid hormone (PTH)","back":"The primary regulator of blood calcium; increases calcium levels."},
-  {"id":76,"front":"Adrenal cortex vs. Medulla","back":"Cortex (outer) secretes steroids; Medulla (inner) secretes epinephrine/norepinephrine."},
-  {"id":77,"front":"Aldosterone principal function","back":"A mineralocorticoid that conserves sodium ions and water in the body."},
-  {"id":78,"front":"Pancreatic Islets Alpha vs. Beta cells","back":"Alpha cells secrete glucagon (low glucose); Beta cells secrete insulin (high glucose)."},
-  {"id":79,"front":"Atrial natriuretic peptide (ANP)","back":"Heart hormone that reduces blood volume/pressure by promoting sodium/water excretion."},
-  {"id":80,"front":"Largest organ of the body","back":"The integument or skin."},
-  {"id":81,"front":"Structural layers of skin","back":"Epidermis (outer), Dermis (middle), and Subcutis/Hypodermis (inner fat layer)."},
-  {"id":82,"front":"Desmosomes","back":"Protein bridges that connect keratinocytes in the epidermis."},
-  {"id":83,"front":"Stratum basale","back":"The innermost layer of the epidermis where dividing keratinocytes and melanocytes reside."},
-  {"id":84,"front":"Melanin function","back":"Pigment providing protection against ultraviolet (UV) radiation."},
-  {"id":85,"front":"Stratum lucidum","back":"Translucent epidermal layer seen only in thick skin (palms and soles)."},
-  {"id":86,"front":"Langerhans cells","back":"Bone marrow-derived cells in the epidermis that act as antigen-presenting cells."},
-  {"id":87,"front":"Osteocytes","back":"Mature bone cells found within cavities called lacunae."},
-  {"id":88,"front":"Osteon (Haversian system)","back":"The elongated cylinder and structural unit of compact bone."},
-  {"id":89,"front":"Osteoclasts vs. Osteoblasts","back":"Osteoclasts resorb/break down bone; Osteoblasts build bone tissue."},
-  {"id":90,"front":"Axial Skeleton components","back":"The skull, vertebral column, sternum, and ribs."},
-  {"id":91,"front":"Cervical vertebrae count","back":"Constant at 7 in almost all mammals."},
-  {"id":92,"front":"Atlas and Axis","back":"The first (C1) and second (C2) cervical vertebrae; support head and allow rotation."},
-  {"id":93,"front":"Three muscle fiber types","back":"Skeletal (voluntary/striated), Smooth (involuntary/non-striated), and Cardiac (involuntary/striated)."},
-  {"id":94,"front":"Sarcomere","back":"The functional unit of a myofibril between two successive Z lines."},
-  {"id":95,"front":"Contractile proteins","back":"Actin (thin filaments) and Myosin (thick filaments)."},
-  {"id":96,"front":"Energy sources for muscle contraction","back":"ATP (immediate), Creatine phosphate (2nd level), and Glycogen (3rd level)."},
-  {"id":97,"front":"Oxygen debt","back":"The extra oxygen needed after exercise to oxidize accumulated lactic acid."},
-  {"id":98,"front":"Chyme","back":"The liquefied food mass that enters the duodenum from the stomach."},
-  {"id":99,"front":"Villi and Microvilli function","back":"Increase the internal surface area of the intestine to facilitate absorption."},
-  {"id":100,"front":"Kwashiorkor primary symptom","back":"Edema and reddish hair/skin pigmentation caused by severe protein deficiency."}
-]
+﻿{
+    "flashcards":  [
+                       {
+                           "id":  1,
+                           "front":  "Three layers of the heart wall",
+                           "back":  "Epicardium (outer), Myocardium (middle/bulk), and Endocardium (inner)."
+                       },
+                       {
+                           "id":  2,
+                           "front":  "Systemic circulation",
+                           "back":  "The division of the circulatory system that moves blood between the heart and the body."
+                       },
+                       {
+                           "id":  3,
+                           "front":  "Pulmonary circulation",
+                           "back":  "The division of the circulatory system that moves blood between the heart and the lungs."
+                       },
+                       {
+                           "id":  4,
+                           "front":  "Coronary circulation",
+                           "back":  "The division of the circulatory system serving the vessels within the heart itself."
+                       },
+                       {
+                           "id":  5,
+                           "front":  "Atria function",
+                           "back":  "The two upper heart chambers that receive blood into the heart."
+                       },
+                       {
+                           "id":  6,
+                           "front":  "Ventricles function",
+                           "back":  "The two lower heart chambers that pump blood out of the heart."
+                       },
+                       {
+                           "id":  7,
+                           "front":  "Right atrium blood source",
+                           "back":  "Receives deoxygenated blood from the superior and inferior vena cava."
+                       },
+                       {
+                           "id":  8,
+                           "front":  "Left ventricle function",
+                           "back":  "Pumps oxygen-rich blood through the aorta to the body; it has the thickest heart wall."
+                       },
+                       {
+                           "id":  9,
+                           "front":  "Tricuspid valve location",
+                           "back":  "The valve located between the right atrium and right ventricle."
+                       },
+                       {
+                           "id":  10,
+                           "front":  "Mitral (Bicuspid) valve location",
+                           "back":  "The valve located between the left atrium and left ventricle."
+                       },
+                       {
+                           "id":  11,
+                           "front":  "Artery wall layers",
+                           "back":  "Tunica intima (inner), Tunica media (middle/smooth muscle), and Tunica externa (outer/connective tissue)."
+                       },
+                       {
+                           "id":  12,
+                           "front":  "Arterioles role",
+                           "back":  "Regulate blood flow into the capillaries."
+                       },
+                       {
+                           "id":  13,
+                           "front":  "Veins vs. Arteries direction",
+                           "back":  "Arteries carry blood away from the heart; veins carry blood toward the heart."
+                       },
+                       {
+                           "id":  14,
+                           "front":  "Capillary primary function",
+                           "back":  "The exchange of materials (nutrients, gases, waste) between blood and tissue cells."
+                       },
+                       {
+                           "id":  15,
+                           "front":  "Systole",
+                           "back":  "The phase of the cardiac cycle where the heart contracts to push blood out."
+                       },
+                       {
+                           "id":  16,
+                           "front":  "Diastole",
+                           "back":  "The relaxation phase of the cardiac cycle where the heart fills with blood."
+                       },
+                       {
+                           "id":  17,
+                           "front":  "Depolarization",
+                           "back":  "The shift in electrical charge that stimulates heart muscle contraction."
+                       },
+                       {
+                           "id":  18,
+                           "front":  "Sinoatrial (SA) node",
+                           "back":  "The heart\u0027s pacemaker located in the right atrium that generates electrical impulses."
+                       },
+                       {
+                           "id":  19,
+                           "front":  "Plasma components",
+                           "back":  "92% water; contains nutrients, waste, hormones, ions, and proteins (albumin, globulins, fibrinogen)."
+                       },
+                       {
+                           "id":  20,
+                           "front":  "Hematocrit",
+                           "back":  "The fraction of the total volume of blood occupied by red blood cells (~45% in humans)."
+                       },
+                       {
+                           "id":  21,
+                           "front":  "Mature mammalian RBC feature",
+                           "back":  "Lacks a nucleus to maximize space for hemoglobin and oxygen transport."
+                       },
+                       {
+                           "id":  22,
+                           "front":  "Serum",
+                           "back":  "Blood plasma from which the clotting protein fibrinogen has been removed."
+                       },
+                       {
+                           "id":  23,
+                           "front":  "Leukocytes (WBCs)",
+                           "back":  "Blood cells responsible for protection against injury, microbes, and toxins."
+                       },
+                       {
+                           "id":  24,
+                           "front":  "Platelet function",
+                           "back":  "Cell fragments that release clotting factors to convert fibrinogen into fibrin."
+                       },
+                       {
+                           "id":  25,
+                           "front":  "Haematopoiesis",
+                           "back":  "The process of blood cell formation in the bone marrow."
+                       },
+                       {
+                           "id":  26,
+                           "front":  "Erythropoietin (EPO)",
+                           "back":  "A hormone produced by the kidneys that stimulates red blood cell production."
+                       },
+                       {
+                           "id":  27,
+                           "front":  "Kidney location",
+                           "back":  "Retroperitoneally in the abdomen, extending between vertebral levels T12 and L3."
+                       },
+                       {
+                           "id":  28,
+                           "front":  "Renal cortex vs. Medulla",
+                           "back":  "Cortex is the outer region; Medulla is the inner region containing renal pyramids."
+                       },
+                       {
+                           "id":  29,
+                           "front":  "Nephron",
+                           "back":  "The functional unit of the kidney responsible for filtering blood and forming urine."
+                       },
+                       {
+                           "id":  30,
+                           "front":  "Cortical nephrons",
+                           "back":  "Make up 85% of nephrons; located in the outer cortex with short loops of Henle."
+                       },
+                       {
+                           "id":  31,
+                           "front":  "Juxtamedullary nephrons",
+                           "back":  "Make up 15% of nephrons; have long loops of Henle that penetrate deep into the medulla."
+                       },
+                       {
+                           "id":  32,
+                           "front":  "Renal corpuscle components",
+                           "back":  "The glomerulus (capillary bed) and Bowman\u0027s (glomerular) capsule."
+                       },
+                       {
+                           "id":  33,
+                           "front":  "Glomerular filtration",
+                           "back":  "The process where blood pressure forces plasma (minus proteins) into the Bowman\u0027s capsule."
+                       },
+                       {
+                           "id":  34,
+                           "front":  "Tubular reabsorption",
+                           "back":  "Reclaiming water and solutes (glucose, amino acids) from the filtrate back into the blood."
+                       },
+                       {
+                           "id":  35,
+                           "front":  "Tubular secretion",
+                           "back":  "Moving unfiltered substances (toxins, excess H+ and K+ ions) from blood into the filtrate."
+                       },
+                       {
+                           "id":  36,
+                           "front":  "Homeostasis",
+                           "back":  "The maintenance of constant physiological conditions in the body."
+                       },
+                       {
+                           "id":  37,
+                           "front":  "Negative feedback",
+                           "back":  "A control mechanism that reverses a change to restore the body to its normal state."
+                       },
+                       {
+                           "id":  38,
+                           "front":  "Positive feedback",
+                           "back":  "A mechanism that intensifies a response until an endpoint is reached (e.g., childbirth)."
+                       },
+                       {
+                           "id":  39,
+                           "front":  "Antidiuretic hormone (ADH) role",
+                           "back":  "Promotes water reabsorption in kidney tubules to conserve water and concentrate urine."
+                       },
+                       {
+                           "id":  40,
+                           "front":  "External respiration",
+                           "back":  "The exchange of gases between the lungs and the blood."
+                       },
+                       {
+                           "id":  41,
+                           "front":  "Internal respiration",
+                           "back":  "The exchange of gases between the blood and tissue cells."
+                       },
+                       {
+                           "id":  42,
+                           "front":  "Diaphragm during inhalation",
+                           "back":  "Contracts and moves down, increasing thoracic volume and decreasing pressure."
+                       },
+                       {
+                           "id":  43,
+                           "front":  "Upper respiratory tract",
+                           "back":  "Includes the nose, pharynx (throat), and larynx (voice box)."
+                       },
+                       {
+                           "id":  44,
+                           "front":  "Paranasal sinuses",
+                           "back":  "Air-filled cavities that reduce skull weight and warm/humidify inhaled air."
+                       },
+                       {
+                           "id":  45,
+                           "front":  "Epiglottis function",
+                           "back":  "Acts as a trap door to prevent food from entering the larynx during swallowing."
+                       },
+                       {
+                           "id":  46,
+                           "front":  "Thyroid cartilage",
+                           "back":  "The largest laryngeal cartilage, commonly known as the \u0027Adam\u0027s apple\u0027."
+                       },
+                       {
+                           "id":  47,
+                           "front":  "Mucociliary clearance",
+                           "back":  "Process where cilia propel mucus-trapped particles upward to be expelled or swallowed."
+                       },
+                       {
+                           "id":  48,
+                           "front":  "Alveoli",
+                           "back":  "Tiny air sacs that provide the primary surface for gas exchange in the lungs."
+                       },
+                       {
+                           "id":  49,
+                           "front":  "Cardiac notch",
+                           "back":  "An indentation on the medial surface of the left lung to accommodate the heart."
+                       },
+                       {
+                           "id":  50,
+                           "front":  "Tidal volume",
+                           "back":  "The normal amount of air inhaled or exhaled during a regular breath cycle."
+                       },
+                       {
+                           "id":  51,
+                           "front":  "Vital capacity",
+                           "back":  "The maximum volume of air that can be exhaled after a deep inhalation."
+                       },
+                       {
+                           "id":  52,
+                           "front":  "Carbaminohemoglobin",
+                           "back":  "Carbon dioxide bound to hemoglobin for transport to the lungs."
+                       },
+                       {
+                           "id":  53,
+                           "front":  "Central Nervous System (CNS)",
+                           "back":  "Composed of the brain and the spinal cord."
+                       },
+                       {
+                           "id":  54,
+                           "front":  "Peripheral Nervous System (PNS)",
+                           "back":  "Composed of the nerves and ganglia branching out from the CNS."
+                       },
+                       {
+                           "id":  55,
+                           "front":  "Meninges",
+                           "back":  "Three connective tissue layers protecting the CNS: Dura mater, Arachnoid, and Pia mater."
+                       },
+                       {
+                           "id":  56,
+                           "front":  "Corpus callosum",
+                           "back":  "A band of white fibers connecting the two cerebral hemispheres."
+                       },
+                       {
+                           "id":  57,
+                           "front":  "Hypothalamus role",
+                           "back":  "Maintains homeostasis by regulating visceral activities like temperature, thirst, and hunger."
+                       },
+                       {
+                           "id":  58,
+                           "front":  "Pineal gland hormone",
+                           "back":  "Melatonin, which regulates circadian rhythms (biological clock)."
+                       },
+                       {
+                           "id":  59,
+                           "front":  "Medulla oblongata function",
+                           "back":  "Regulates essential life functions: breathing, heart rate, and blood pressure."
+                       },
+                       {
+                           "id":  60,
+                           "front":  "Cerebellum function",
+                           "back":  "Coordinates voluntary movement, posture, and balance."
+                       },
+                       {
+                           "id":  61,
+                           "front":  "Cauda equina",
+                           "back":  "A collection of spinal nerves at the distal end of the cord resembling a horse\u0027s tail."
+                       },
+                       {
+                           "id":  62,
+                           "front":  "Somatic nervous system",
+                           "back":  "The division of the PNS involved in conscious/voluntary skeletal muscle movement."
+                       },
+                       {
+                           "id":  63,
+                           "front":  "Autonomic nervous system",
+                           "back":  "The division of the PNS that mediates unconscious activities of visceral organs."
+                       },
+                       {
+                           "id":  64,
+                           "front":  "Neuron",
+                           "back":  "The conducting cell and structural unit of the nervous system; amitotic (cannot be replaced)."
+                       },
+                       {
+                           "id":  65,
+                           "front":  "Neuroglia (glial cells)",
+                           "back":  "Non-conducting support cells that nourish and protect neurons."
+                       },
+                       {
+                           "id":  66,
+                           "front":  "Synapse",
+                           "back":  "The junction where neurons transmit chemical signals via neurotransmitters."
+                       },
+                       {
+                           "id":  67,
+                           "front":  "Vagus Nerve (Cranial Nerve X)",
+                           "back":  "Innervates visceral organs like the heart, stomach, and glands."
+                       },
+                       {
+                           "id":  68,
+                           "front":  "Endocrine glands",
+                           "back":  "Ductless glands that secrete hormones directly into the blood."
+                       },
+                       {
+                           "id":  69,
+                           "front":  "Exocrine glands",
+                           "back":  "Glands that use ducts to carry products (e.g., sweat, enzymes) to a surface."
+                       },
+                       {
+                           "id":  70,
+                           "front":  "Tropic hormones",
+                           "back":  "Hormones that stimulate other endocrine glands to secrete their hormones."
+                       },
+                       {
+                           "id":  71,
+                           "front":  "Adenohypophysis",
+                           "back":  "The anterior lobe of the pituitary gland."
+                       },
+                       {
+                           "id":  72,
+                           "front":  "Neurohypophysis",
+                           "back":  "The posterior lobe of the pituitary gland."
+                       },
+                       {
+                           "id":  73,
+                           "front":  "Growth hormone (GH)",
+                           "back":  "Anterior pituitary protein that stimulates growth of bones and muscles."
+                       },
+                       {
+                           "id":  74,
+                           "front":  "Calcitonin function",
+                           "back":  "A thyroid hormone that reduces blood calcium levels."
+                       },
+                       {
+                           "id":  75,
+                           "front":  "Parathyroid hormone (PTH)",
+                           "back":  "The primary regulator of blood calcium; increases calcium levels."
+                       },
+                       {
+                           "id":  76,
+                           "front":  "Adrenal cortex vs. Medulla",
+                           "back":  "Cortex (outer) secretes steroids; Medulla (inner) secretes epinephrine/norepinephrine."
+                       },
+                       {
+                           "id":  77,
+                           "front":  "Aldosterone principal function",
+                           "back":  "A mineralocorticoid that conserves sodium ions and water in the body."
+                       },
+                       {
+                           "id":  78,
+                           "front":  "Pancreatic Islets Alpha vs. Beta cells",
+                           "back":  "Alpha cells secrete glucagon (low glucose); Beta cells secrete insulin (high glucose)."
+                       },
+                       {
+                           "id":  79,
+                           "front":  "Atrial natriuretic peptide (ANP)",
+                           "back":  "Heart hormone that reduces blood volume/pressure by promoting sodium/water excretion."
+                       },
+                       {
+                           "id":  80,
+                           "front":  "Largest organ of the body",
+                           "back":  "The integument or skin."
+                       },
+                       {
+                           "id":  81,
+                           "front":  "Structural layers of skin",
+                           "back":  "Epidermis (outer), Dermis (middle), and Subcutis/Hypodermis (inner fat layer)."
+                       },
+                       {
+                           "id":  82,
+                           "front":  "Desmosomes",
+                           "back":  "Protein bridges that connect keratinocytes in the epidermis."
+                       },
+                       {
+                           "id":  83,
+                           "front":  "Stratum basale",
+                           "back":  "The innermost layer of the epidermis where dividing keratinocytes and melanocytes reside."
+                       },
+                       {
+                           "id":  84,
+                           "front":  "Melanin function",
+                           "back":  "Pigment providing protection against ultraviolet (UV) radiation."
+                       },
+                       {
+                           "id":  85,
+                           "front":  "Stratum lucidum",
+                           "back":  "Translucent epidermal layer seen only in thick skin (palms and soles)."
+                       },
+                       {
+                           "id":  86,
+                           "front":  "Langerhans cells",
+                           "back":  "Bone marrow-derived cells in the epidermis that act as antigen-presenting cells."
+                       },
+                       {
+                           "id":  87,
+                           "front":  "Osteocytes",
+                           "back":  "Mature bone cells found within cavities called lacunae."
+                       },
+                       {
+                           "id":  88,
+                           "front":  "Osteon (Haversian system)",
+                           "back":  "The elongated cylinder and structural unit of compact bone."
+                       },
+                       {
+                           "id":  89,
+                           "front":  "Osteoclasts vs. Osteoblasts",
+                           "back":  "Osteoclasts resorb/break down bone; Osteoblasts build bone tissue."
+                       },
+                       {
+                           "id":  90,
+                           "front":  "Axial Skeleton components",
+                           "back":  "The skull, vertebral column, sternum, and ribs."
+                       },
+                       {
+                           "id":  91,
+                           "front":  "Cervical vertebrae count",
+                           "back":  "Constant at 7 in almost all mammals."
+                       },
+                       {
+                           "id":  92,
+                           "front":  "Atlas and Axis",
+                           "back":  "The first (C1) and second (C2) cervical vertebrae; support head and allow rotation."
+                       },
+                       {
+                           "id":  93,
+                           "front":  "Three muscle fiber types",
+                           "back":  "Skeletal (voluntary/striated), Smooth (involuntary/non-striated), and Cardiac (involuntary/striated)."
+                       },
+                       {
+                           "id":  94,
+                           "front":  "Sarcomere",
+                           "back":  "The functional unit of a myofibril between two successive Z lines."
+                       },
+                       {
+                           "id":  95,
+                           "front":  "Contractile proteins",
+                           "back":  "Actin (thin filaments) and Myosin (thick filaments)."
+                       },
+                       {
+                           "id":  96,
+                           "front":  "Energy sources for muscle contraction",
+                           "back":  "ATP (immediate), Creatine phosphate (2nd level), and Glycogen (3rd level)."
+                       },
+                       {
+                           "id":  97,
+                           "front":  "Oxygen debt",
+                           "back":  "The extra oxygen needed after exercise to oxidize accumulated lactic acid."
+                       },
+                       {
+                           "id":  98,
+                           "front":  "Chyme",
+                           "back":  "The liquefied food mass that enters the duodenum from the stomach."
+                       },
+                       {
+                           "id":  99,
+                           "front":  "Villi and Microvilli function",
+                           "back":  "Increase the internal surface area of the intestine to facilitate absorption."
+                       },
+                       {
+                           "id":  100,
+                           "front":  "Kwashiorkor primary symptom",
+                           "back":  "Edema and reddish hair/skin pigmentation caused by severe protein deficiency."
+                       }
+                   ]
+}

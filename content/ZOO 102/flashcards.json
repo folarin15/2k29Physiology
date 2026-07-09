@@ -1,102 +1,504 @@
-[
-  { "id": 1, "front": "What is animal systematics?", "back": "The science of classifying organisms and determining their evolutionary relationships using fossils, anatomy, and genetic data." },
-  { "id": 2, "front": "What are the three major goals of animal systematics?", "back": "To identify all animal species, evaluate their evolutionary relationships, and produce a hierarchical taxonomy." },
-  { "id": 3, "front": "Define a monophyletic taxon.", "back": "A group that includes a common ancestor and all of its descendants." },
-  { "id": 4, "front": "How do traditional and modern classification methods differ?", "back": "Traditional methods use physical/morphological traits; modern methods use genetic and molecular data." },
-  { "id": 5, "front": "List the Linnaean hierarchical ranks from most to least inclusive.", "back": "Domain, Kingdom, Phylum, Class, Order, Family, Genus, Species." },
-  { "id": 6, "front": "What is a 'taxon'?", "back": "A named group at any level of the taxonomic hierarchy (e.g., Felidae at the family level)." },
-  { "id": 7, "front": "What are the rules for writing scientific names above the genus level?", "back": "They should be capitalized but not italicized." },
-  { "id": 8, "front": "What is a dendrogram?", "back": "A branching diagram or tree depicting evolutionary relationships among groups of organisms." },
-  { "id": 9, "front": "What is Phenetics (Numerical Taxonomy)?", "back": "A systematic trend that groups organisms based on overall similarity without considering evolutionary history." },
-  { "id": 10, "front": "Define Cladistics (Phylogenetic Taxonomy).", "back": "A system that groups organisms into clades based on shared derived characters (synapomorphies) from a common ancestor." },
-  { "id": 11, "front": "What molecules are primarily used in molecular systematics?", "back": "DNA and proteins." },
-  { "id": 12, "front": "How is Artificial Intelligence (AI) currently used in taxonomy?", "back": "It uses machine learning to identify animal species from photographs." },
-  { "id": 13, "front": "What is the Binomial System of Nomenclature?", "back": "Assigning each animal a two-word scientific name consisting of a generic name and a specific name." },
-  { "id": 14, "front": "When was the International Code of Zoological Nomenclature (ICZN) established?", "back": "January 1, 1758." },
-  { "id": 15, "front": "What is 'Alpha Systematics'?", "back": "The stage of systematics concerned with the discovery and description of new species." },
-  { "id": 16, "front": "Define Zoogeography.", "back": "The study of the natural arrangement of animal species across the Earth's surface." },
-  { "id": 17, "front": "What is a 'cosmopolitan' animal distribution?", "back": "Species found in many parts of the world, like the house mouse or pigeon." },
-  { "id": 18, "front": "What does it mean for a species to be 'endemic'?", "back": "The species is unique to one specific location and found nowhere else naturally." },
-  { "id": 19, "front": "Define 'disjunct' distribution.", "back": "When a species or related group is found in two or more geographically separated areas." },
-  { "id": 20, "front": "Which region did Wallace define as containing North America and Greenland?", "back": "The Nearctic Region." },
-  { "id": 21, "front": "What areas are covered by the Neotropical Region?", "back": "South America and Central America." },
-  { "id": 22, "front": "Which region includes Europe, North Asia, and North Africa?", "back": "The Palearctic Region." },
-  { "id": 23, "front": "Where is the Ethiopian (Afrotropical) Region located?", "back": "Africa south of the Sahara and Madagascar." },
-  { "id": 24, "front": "Which region includes South and Southeast Asia?", "back": "The Oriental Region." },
-  { "id": 25, "front": "What characterizes the Australian Region?", "back": "Unique animal life in Australia, New Guinea, and nearby islands." },
-  { "id": 26, "front": "Differentiate between in-situ and ex-situ conservation.", "back": "In-situ protects animals in their natural habitat (e.g., National Parks); ex-situ protects them outside it (e.g., Zoos)." },
-  { "id": 27, "front": "What are the main factors threatening animal biodiversity?", "back": "Habitat destruction, overexploitation, climate change, pollution, and invasive species." },
-  { "id": 28, "front": "Which Nigerian ministry is responsible for environmental policy and protection?", "back": "The Federal Ministry of Environment." },
-  { "id": 29, "front": "What is the role of the National Parks Service (NPS) in Nigeria?", "back": "To manage and protect Nigeria's 7 national parks." },
-  { "id": 30, "front": "What is the Nigerian Conservation Foundation (NCF)?", "back": "A leading non-governmental organization (NGO) established in 1980 for biodiversity preservation." },
-  { "id": 31, "front": "Which Nigerian agency enforces environmental laws and standards?", "back": "NESREA (National Environmental Standards and Regulations Enforcement Agency)." },
-  { "id": 32, "front": "Which is Nigeria's largest national park?", "back": "Gashaka-Gumti National Park." },
-  { "id": 33, "front": "Where is Yankari National Park located and what are its key features?", "back": "Bauchi State; it features elephants, baboons, and a savanna ecosystem." },
-  { "id": 34, "front": "Which park is the habitat for the critically endangered Cross River gorilla?", "back": "Cross River National Park." },
-  { "id": 35, "front": "What is protected in Okomu National Park in Edo State?", "back": "Rainforest and the white-throated monkey." },
-  { "id": 36, "front": "What is the goal of the Great Green Wall Project?", "back": "To combat desertification by creating a green belt across northern Nigeria." },
-  { "id": 37, "front": "Define the REDD Programme.", "back": "Reducing Emissions from Deforestation and Forest Degradation." },
-  { "id": 38, "front": "Which NGO manages the Lekki Conservation Centre in Lagos?", "back": "Nigerian Conservation Foundation (NCF)." },
-  { "id": 39, "front": "List four general characteristics of Kingdom Animalia.", "back": "Heterotrophy, multicellularity, no cell walls, and active movement." },
-  { "id": 40, "front": "What protein holds animal bodies together in place of cell walls?", "back": "Collagen." },
-  { "id": 41, "front": "What are 'Parazoa'?", "back": "Animals that lack specialized tissues, such as sponges." },
-  { "id": 42, "front": "Define radial symmetry.", "back": "Body parts arranged around a central axis so any longitudinal plane through it creates mirror halves." },
-  { "id": 43, "front": "Define bilateral symmetry.", "back": "A body plan with distinct right and left halves that are mirror images." },
-  { "id": 44, "front": "What is cephalization?", "back": "The concentration of nervous and sensory tissues at the anterior end to form a distinct head." },
-  { "id": 45, "front": "Which anatomical plane divides a bilateral body into dorsal and ventral portions?", "back": "The frontal plane." },
-  { "id": 46, "front": "Which plane divides a bilateral body into right and left halves?", "back": "The sagittal plane." },
-  { "id": 47, "front": "Which plane divides a bilateral body into anterior and posterior ends?", "back": "The transverse plane." },
-  { "id": 48, "front": "Differentiate between diploblastic and triploblastic organization.", "back": "Diploblastic has 2 germ layers (ecto/endoderm); triploblastic has 3 (ecto/meso/endoderm)." },
-  { "id": 49, "front": "What does the ectoderm germ layer give rise to?", "back": "The epidermis (outer skin) and the nervous system." },
-  { "id": 50, "front": "What does the endoderm germ layer give rise to?", "back": "The gastrodermis (gut lining), lungs, and various glands." },
-  { "id": 51, "front": "What are the roles of the mesoderm in triploblastic animals?", "back": "Forms muscles, bones, circulatory system, reproductive organs, and kidneys." },
-  { "id": 52, "front": "Define an acoelomate body plan.", "back": "Triploblastic animals where mesoderm completely fills the space, leaving only a gut cavity." },
-  { "id": 53, "front": "What is a pseudocoelom?", "back": "A body cavity present but only partially lined by mesoderm; derived from the blastocoel." },
-  { "id": 54, "front": "What characterizes a eucoelomate (true coelomate)?", "back": "A body cavity completely enclosed within a mesodermal lining called the peritoneum." },
-  { "id": 55, "front": "What is schizocoely?", "back": "Coelom formation by the splitting of solid bands of mesoderm, typical of protostomes." },
-  { "id": 56, "front": "What is enterocoely?", "back": "Coelom formation where the gut lining grows outward as pouches, typical of deuterostomes." },
-  { "id": 57, "front": "Contrast protostomes and deuterostomes regarding the blastopore.", "back": "In protostomes, it becomes the mouth; in deuterostomes, it becomes the anus." },
-  { "id": 58, "front": "What is ecdysis?", "back": "The shedding of the outer body surface during development, characteristic of Ecdysozoa." },
-  { "id": 59, "front": "Define metamerism (segmentation).", "back": "The serial repetition of similar body units along the anterior-posterior axis." },
-  { "id": 60, "front": "What is the notochord?", "back": "A flexible, rod-like mesodermal structure in chordates providing skeletal support." },
-  { "id": 61, "front": "What does 'Porifera' mean?", "back": "Pore-bearers." },
-  { "id": 62, "front": "What is unique about sponge cell differentiation?", "back": "They can dedifferentiate and then redifferentiate, allowing dissociated cells to reform a sponge." },
-  { "id": 63, "front": "What are choanocytes in sponges?", "back": "Flagellated collar cells that generate water currents, capture food, and capture sperm." },
-  { "id": 64, "front": "What is the function of archaeocytes in sponges?", "back": "Amoeboid cells for digestion, food storage, gamete formation, waste elimination, and non-self recognition." },
-  { "id": 65, "front": "Describe the pinacoderm.", "back": "The outer epithelial-like layer of sponges made of pinacocytes." },
-  { "id": 66, "front": "What is the mesohyl in sponges?", "back": "An acellular, gelatinous layer between the pinacoderm and choanocytes containing skeletal elements." },
-  { "id": 67, "front": "Name the supporting elements in sponge skeletons.", "back": "Calcareous or siliceous spicules and spongin fibers." },
-  { "id": 68, "front": "How do sponges reproduce asexually to survive harsh conditions?", "back": "By forming gemmules—archaeocyte clusters surrounded by a protective capsule." },
-  { "id": 69, "front": "Differentiate between asconoid, syconoid, and leuconoid canal systems.", "back": "Asconoid is simple/small; syconoid has folded radial canals; leuconoid has many small flagellated chambers and attains the greatest size." },
-  { "id": 70, "front": "Which sponge class has spicules of calcium carbonate?", "back": "Class Calcarea." },
-  { "id": 71, "front": "What are 'glass sponges'?", "back": "Class Hexactinellida, which have six-pointed siliceous spicules." },
-  { "id": 72, "front": "Which class contains 90% of all sponge species?", "back": "Class Demospongiae." },
-  { "id": 73, "front": "What is the flagellated larva of sponges called?", "back": "Parenchymula larva." },
-  { "id": 74, "front": "What is the defining characteristic of Phylum Cnidaria?", "back": "Possession of cnidocytes containing stinging organelles called cnidae (nematocysts)." },
-  { "id": 75, "front": "Explain dimorphism in Cnidarians.", "back": "They exist in two forms: the sessile, cylindrical polyp and the free-swimming, umbrella-shaped medusa." },
-  { "id": 76, "front": "What is the mesoglea in Cnidarians?", "back": "A jelly-like acellular layer separating the epidermis and gastrodermis." },
-  { "id": 77, "front": "What kind of nervous system do Cnidarians have?", "back": "A simple interconnecting nerve net without a brain." },
-  { "id": 78, "front": "Which class of Cnidaria includes corals and sea anemones that lack a medusa stage?", "back": "Class Anthozoa." },
-  { "id": 79, "front": "What is a velum?", "back": "A shelf-like membrane on the margin of some medusae (craspedote), typical of Class Hydrozoa." },
-  { "id": 80, "front": "Which class contains 'true jellyfish' where the medusa is dominant?", "back": "Class Scyphozoa." },
-  { "id": 81, "front": "What characterizes Class Cubozoa?", "back": "Box-shaped medusae, strong swimmers, image-forming eyes, and potentially lethal stings." },
-  { "id": 82, "front": "How are coral reefs formed?", "back": "Anthozoan polyps secrete calcium carbonate exoskeletons that accumulate over time." },
-  { "id": 83, "front": "What is a siphonoglyph?", "back": "A ciliated groove at the mouth of Anthozoans that moves water into the gastrovascular cavity." },
-  { "id": 84, "front": "Define totipotent stem cells.", "back": "Cells capable of differentiating into all body cell types plus extra-embryonic tissues like the placenta." },
-  { "id": 85, "front": "Define pluripotent stem cells.", "back": "Cells that can differentiate into most cell types but cannot form an entire individual or the placenta." },
-  { "id": 86, "front": "List the five major grades of body organization.", "back": "Protoplasmic, cellular, cell-tissue, tissue-organ, and organ-system." },
-  { "id": 87, "front": "What was the 'Cambrian Explosion'?", "back": "A period 542–525 million years ago when about half of extant animal phyla first appeared." },
-  { "id": 88, "front": "What are the Ediacara fauna?", "back": "The oldest generally accepted animal fossils (575 million years old), primarily soft-bodied." },
-  { "id": 89, "front": "What is parthenogenesis?", "back": "Development of an embryo from an unfertilized egg." },
-  { "id": 90, "front": "What are the Animal and Vegetal poles of an egg?", "back": "The Vegetal Pole is yolk-rich; the Animal Pole contains mostly cytoplasm and little yolk." },
-  { "id": 91, "front": "Differentiate between isolecithal and telolecithal eggs.", "back": "Isolecithal has minute, evenly distributed yolk; telolecithal has abundant yolk concentrated at one end." },
-  { "id": 92, "front": "Differentiate between holoblastic and meroblastic cleavage.", "back": "Holoblastic cleavage goes completely through the egg (low yolk); meroblastic is partial/incomplete (high yolk)." },
-  { "id": 93, "front": "Contrast spiral and radial cleavage symmetry.", "back": "Radial cleavage planes are parallel/perpendicular to the axis; spiral planes are diagonal (approx. 45 degrees)." },
-  { "id": 94, "front": "What is a blastula?", "back": "A multicellular, often hollow ball of cells formed during early cleavage." },
-  { "id": 95, "front": "Define gastrulation.", "back": "The process where a blastula is converted into a complex shape with distinct germ layers." },
-  { "id": 96, "front": "What is the archenteron?", "back": "The 'primitive gut' cavity formed during gastrulation." },
-  { "id": 97, "front": "Define invagination and involution in cell movement.", "back": "Invagination: a cell sheet bends inward. Involution: a cell sheet rolls inward to form an underlying layer." },
-  { "id": 98, "front": "Define epiboly.", "back": "A gastrulation movement where a sheet of cells spreads by thinning to enclose deeper layers." },
-  { "id": 99, "front": "Differentiate between euryhaline and stenohaline animals.", "back": "Euryhaline can survive a wide range of salinity; stenohaline are restricted to a narrow range." },
-  { "id": 100, "front": "Contrast ammonotelic, ureotelic, and uricotelic excretion.", "back": "Ammonotelic: excrete ammonia (fish); ureotelic: excrete urea (mammals); uricotelic: excrete uric acid (birds/reptiles)." }
-]
+{
+  "flashcards": [
+    {
+      "id": 1,
+      "front": "What is animal systematics?",
+      "back": "The science of classifying organisms and determining their evolutionary relationships using fossils, anatomy, and genetic data."
+    },
+    {
+      "id": 2,
+      "front": "What are the three major goals of animal systematics?",
+      "back": "To identify all animal species, evaluate their evolutionary relationships, and produce a hierarchical taxonomy."
+    },
+    {
+      "id": 3,
+      "front": "Define a monophyletic taxon.",
+      "back": "A group that includes a common ancestor and all of its descendants."
+    },
+    {
+      "id": 4,
+      "front": "How do traditional and modern classification methods differ?",
+      "back": "Traditional methods use physical/morphological traits; modern methods use genetic and molecular data."
+    },
+    {
+      "id": 5,
+      "front": "List the Linnaean hierarchical ranks from most to least inclusive.",
+      "back": "Domain, Kingdom, Phylum, Class, Order, Family, Genus, Species."
+    },
+    {
+      "id": 6,
+      "front": "What is a 'taxon'?",
+      "back": "A named group at any level of the taxonomic hierarchy (e.g., Felidae at the family level)."
+    },
+    {
+      "id": 7,
+      "front": "What are the rules for writing scientific names above the genus level?",
+      "back": "They should be capitalized but not italicized."
+    },
+    {
+      "id": 8,
+      "front": "What is a dendrogram?",
+      "back": "A branching diagram or tree depicting evolutionary relationships among groups of organisms."
+    },
+    {
+      "id": 9,
+      "front": "What is Phenetics (Numerical Taxonomy)?",
+      "back": "A systematic trend that groups organisms based on overall similarity without considering evolutionary history."
+    },
+    {
+      "id": 10,
+      "front": "Define Cladistics (Phylogenetic Taxonomy).",
+      "back": "A system that groups organisms into clades based on shared derived characters (synapomorphies) from a common ancestor."
+    },
+    {
+      "id": 11,
+      "front": "What molecules are primarily used in molecular systematics?",
+      "back": "DNA and proteins."
+    },
+    {
+      "id": 12,
+      "front": "How is Artificial Intelligence (AI) currently used in taxonomy?",
+      "back": "It uses machine learning to identify animal species from photographs."
+    },
+    {
+      "id": 13,
+      "front": "What is the Binomial System of Nomenclature?",
+      "back": "Assigning each animal a two-word scientific name consisting of a generic name and a specific name."
+    },
+    {
+      "id": 14,
+      "front": "When was the International Code of Zoological Nomenclature (ICZN) established?",
+      "back": "January 1, 1758."
+    },
+    {
+      "id": 15,
+      "front": "What is 'Alpha Systematics'?",
+      "back": "The stage of systematics concerned with the discovery and description of new species."
+    },
+    {
+      "id": 16,
+      "front": "Define Zoogeography.",
+      "back": "The study of the natural arrangement of animal species across the Earth's surface."
+    },
+    {
+      "id": 17,
+      "front": "What is a 'cosmopolitan' animal distribution?",
+      "back": "Species found in many parts of the world, like the house mouse or pigeon."
+    },
+    {
+      "id": 18,
+      "front": "What does it mean for a species to be 'endemic'?",
+      "back": "The species is unique to one specific location and found nowhere else naturally."
+    },
+    {
+      "id": 19,
+      "front": "Define 'disjunct' distribution.",
+      "back": "When a species or related group is found in two or more geographically separated areas."
+    },
+    {
+      "id": 20,
+      "front": "Which region did Wallace define as containing North America and Greenland?",
+      "back": "The Nearctic Region."
+    },
+    {
+      "id": 21,
+      "front": "What areas are covered by the Neotropical Region?",
+      "back": "South America and Central America."
+    },
+    {
+      "id": 22,
+      "front": "Which region includes Europe, North Asia, and North Africa?",
+      "back": "The Palearctic Region."
+    },
+    {
+      "id": 23,
+      "front": "Where is the Ethiopian (Afrotropical) Region located?",
+      "back": "Africa south of the Sahara and Madagascar."
+    },
+    {
+      "id": 24,
+      "front": "Which region includes South and Southeast Asia?",
+      "back": "The Oriental Region."
+    },
+    {
+      "id": 25,
+      "front": "What characterizes the Australian Region?",
+      "back": "Unique animal life in Australia, New Guinea, and nearby islands."
+    },
+    {
+      "id": 26,
+      "front": "Differentiate between in-situ and ex-situ conservation.",
+      "back": "In-situ protects animals in their natural habitat (e.g., National Parks); ex-situ protects them outside it (e.g., Zoos)."
+    },
+    {
+      "id": 27,
+      "front": "What are the main factors threatening animal biodiversity?",
+      "back": "Habitat destruction, overexploitation, climate change, pollution, and invasive species."
+    },
+    {
+      "id": 28,
+      "front": "Which Nigerian ministry is responsible for environmental policy and protection?",
+      "back": "The Federal Ministry of Environment."
+    },
+    {
+      "id": 29,
+      "front": "What is the role of the National Parks Service (NPS) in Nigeria?",
+      "back": "To manage and protect Nigeria's 7 national parks."
+    },
+    {
+      "id": 30,
+      "front": "What is the Nigerian Conservation Foundation (NCF)?",
+      "back": "A leading non-governmental organization (NGO) established in 1980 for biodiversity preservation."
+    },
+    {
+      "id": 31,
+      "front": "Which Nigerian agency enforces environmental laws and standards?",
+      "back": "NESREA (National Environmental Standards and Regulations Enforcement Agency)."
+    },
+    {
+      "id": 32,
+      "front": "Which is Nigeria's largest national park?",
+      "back": "Gashaka-Gumti National Park."
+    },
+    {
+      "id": 33,
+      "front": "Where is Yankari National Park located and what are its key features?",
+      "back": "Bauchi State; it features elephants, baboons, and a savanna ecosystem."
+    },
+    {
+      "id": 34,
+      "front": "Which park is the habitat for the critically endangered Cross River gorilla?",
+      "back": "Cross River National Park."
+    },
+    {
+      "id": 35,
+      "front": "What is protected in Okomu National Park in Edo State?",
+      "back": "Rainforest and the white-throated monkey."
+    },
+    {
+      "id": 36,
+      "front": "What is the goal of the Great Green Wall Project?",
+      "back": "To combat desertification by creating a green belt across northern Nigeria."
+    },
+    {
+      "id": 37,
+      "front": "Define the REDD Programme.",
+      "back": "Reducing Emissions from Deforestation and Forest Degradation."
+    },
+    {
+      "id": 38,
+      "front": "Which NGO manages the Lekki Conservation Centre in Lagos?",
+      "back": "Nigerian Conservation Foundation (NCF)."
+    },
+    {
+      "id": 39,
+      "front": "List four general characteristics of Kingdom Animalia.",
+      "back": "Heterotrophy, multicellularity, no cell walls, and active movement."
+    },
+    {
+      "id": 40,
+      "front": "What protein holds animal bodies together in place of cell walls?",
+      "back": "Collagen."
+    },
+    {
+      "id": 41,
+      "front": "What are 'Parazoa'?",
+      "back": "Animals that lack specialized tissues, such as sponges."
+    },
+    {
+      "id": 42,
+      "front": "Define radial symmetry.",
+      "back": "Body parts arranged around a central axis so any longitudinal plane through it creates mirror halves."
+    },
+    {
+      "id": 43,
+      "front": "Define bilateral symmetry.",
+      "back": "A body plan with distinct right and left halves that are mirror images."
+    },
+    {
+      "id": 44,
+      "front": "What is cephalization?",
+      "back": "The concentration of nervous and sensory tissues at the anterior end to form a distinct head."
+    },
+    {
+      "id": 45,
+      "front": "Which anatomical plane divides a bilateral body into dorsal and ventral portions?",
+      "back": "The frontal plane."
+    },
+    {
+      "id": 46,
+      "front": "Which plane divides a bilateral body into right and left halves?",
+      "back": "The sagittal plane."
+    },
+    {
+      "id": 47,
+      "front": "Which plane divides a bilateral body into anterior and posterior ends?",
+      "back": "The transverse plane."
+    },
+    {
+      "id": 48,
+      "front": "Differentiate between diploblastic and triploblastic organization.",
+      "back": "Diploblastic has 2 germ layers (ecto/endoderm); triploblastic has 3 (ecto/meso/endoderm)."
+    },
+    {
+      "id": 49,
+      "front": "What does the ectoderm germ layer give rise to?",
+      "back": "The epidermis (outer skin) and the nervous system."
+    },
+    {
+      "id": 50,
+      "front": "What does the endoderm germ layer give rise to?",
+      "back": "The gastrodermis (gut lining), lungs, and various glands."
+    },
+    {
+      "id": 51,
+      "front": "What are the roles of the mesoderm in triploblastic animals?",
+      "back": "Forms muscles, bones, circulatory system, reproductive organs, and kidneys."
+    },
+    {
+      "id": 52,
+      "front": "Define an acoelomate body plan.",
+      "back": "Triploblastic animals where mesoderm completely fills the space, leaving only a gut cavity."
+    },
+    {
+      "id": 53,
+      "front": "What is a pseudocoelom?",
+      "back": "A body cavity present but only partially lined by mesoderm; derived from the blastocoel."
+    },
+    {
+      "id": 54,
+      "front": "What characterizes a eucoelomate (true coelomate)?",
+      "back": "A body cavity completely enclosed within a mesodermal lining called the peritoneum."
+    },
+    {
+      "id": 55,
+      "front": "What is schizocoely?",
+      "back": "Coelom formation by the splitting of solid bands of mesoderm, typical of protostomes."
+    },
+    {
+      "id": 56,
+      "front": "What is enterocoely?",
+      "back": "Coelom formation where the gut lining grows outward as pouches, typical of deuterostomes."
+    },
+    {
+      "id": 57,
+      "front": "Contrast protostomes and deuterostomes regarding the blastopore.",
+      "back": "In protostomes, it becomes the mouth; in deuterostomes, it becomes the anus."
+    },
+    {
+      "id": 58,
+      "front": "What is ecdysis?",
+      "back": "The shedding of the outer body surface during development, characteristic of Ecdysozoa."
+    },
+    {
+      "id": 59,
+      "front": "Define metamerism (segmentation).",
+      "back": "The serial repetition of similar body units along the anterior-posterior axis."
+    },
+    {
+      "id": 60,
+      "front": "What is the notochord?",
+      "back": "A flexible, rod-like mesodermal structure in chordates providing skeletal support."
+    },
+    {
+      "id": 61,
+      "front": "What does 'Porifera' mean?",
+      "back": "Pore-bearers."
+    },
+    {
+      "id": 62,
+      "front": "What is unique about sponge cell differentiation?",
+      "back": "They can dedifferentiate and then redifferentiate, allowing dissociated cells to reform a sponge."
+    },
+    {
+      "id": 63,
+      "front": "What are choanocytes in sponges?",
+      "back": "Flagellated collar cells that generate water currents, capture food, and capture sperm."
+    },
+    {
+      "id": 64,
+      "front": "What is the function of archaeocytes in sponges?",
+      "back": "Amoeboid cells for digestion, food storage, gamete formation, waste elimination, and non-self recognition."
+    },
+    {
+      "id": 65,
+      "front": "Describe the pinacoderm.",
+      "back": "The outer epithelial-like layer of sponges made of pinacocytes."
+    },
+    {
+      "id": 66,
+      "front": "What is the mesohyl in sponges?",
+      "back": "An acellular, gelatinous layer between the pinacoderm and choanocytes containing skeletal elements."
+    },
+    {
+      "id": 67,
+      "front": "Name the supporting elements in sponge skeletons.",
+      "back": "Calcareous or siliceous spicules and spongin fibers."
+    },
+    {
+      "id": 68,
+      "front": "How do sponges reproduce asexually to survive harsh conditions?",
+      "back": "By forming gemmulesâ€”archaeocyte clusters surrounded by a protective capsule."
+    },
+    {
+      "id": 69,
+      "front": "Differentiate between asconoid, syconoid, and leuconoid canal systems.",
+      "back": "Asconoid is simple/small; syconoid has folded radial canals; leuconoid has many small flagellated chambers and attains the greatest size."
+    },
+    {
+      "id": 70,
+      "front": "Which sponge class has spicules of calcium carbonate?",
+      "back": "Class Calcarea."
+    },
+    {
+      "id": 71,
+      "front": "What are 'glass sponges'?",
+      "back": "Class Hexactinellida, which have six-pointed siliceous spicules."
+    },
+    {
+      "id": 72,
+      "front": "Which class contains 90% of all sponge species?",
+      "back": "Class Demospongiae."
+    },
+    {
+      "id": 73,
+      "front": "What is the flagellated larva of sponges called?",
+      "back": "Parenchymula larva."
+    },
+    {
+      "id": 74,
+      "front": "What is the defining characteristic of Phylum Cnidaria?",
+      "back": "Possession of cnidocytes containing stinging organelles called cnidae (nematocysts)."
+    },
+    {
+      "id": 75,
+      "front": "Explain dimorphism in Cnidarians.",
+      "back": "They exist in two forms: the sessile, cylindrical polyp and the free-swimming, umbrella-shaped medusa."
+    },
+    {
+      "id": 76,
+      "front": "What is the mesoglea in Cnidarians?",
+      "back": "A jelly-like acellular layer separating the epidermis and gastrodermis."
+    },
+    {
+      "id": 77,
+      "front": "What kind of nervous system do Cnidarians have?",
+      "back": "A simple interconnecting nerve net without a brain."
+    },
+    {
+      "id": 78,
+      "front": "Which class of Cnidaria includes corals and sea anemones that lack a medusa stage?",
+      "back": "Class Anthozoa."
+    },
+    {
+      "id": 79,
+      "front": "What is a velum?",
+      "back": "A shelf-like membrane on the margin of some medusae (craspedote), typical of Class Hydrozoa."
+    },
+    {
+      "id": 80,
+      "front": "Which class contains 'true jellyfish' where the medusa is dominant?",
+      "back": "Class Scyphozoa."
+    },
+    {
+      "id": 81,
+      "front": "What characterizes Class Cubozoa?",
+      "back": "Box-shaped medusae, strong swimmers, image-forming eyes, and potentially lethal stings."
+    },
+    {
+      "id": 82,
+      "front": "How are coral reefs formed?",
+      "back": "Anthozoan polyps secrete calcium carbonate exoskeletons that accumulate over time."
+    },
+    {
+      "id": 83,
+      "front": "What is a siphonoglyph?",
+      "back": "A ciliated groove at the mouth of Anthozoans that moves water into the gastrovascular cavity."
+    },
+    {
+      "id": 84,
+      "front": "Define totipotent stem cells.",
+      "back": "Cells capable of differentiating into all body cell types plus extra-embryonic tissues like the placenta."
+    },
+    {
+      "id": 85,
+      "front": "Define pluripotent stem cells.",
+      "back": "Cells that can differentiate into most cell types but cannot form an entire individual or the placenta."
+    },
+    {
+      "id": 86,
+      "front": "List the five major grades of body organization.",
+      "back": "Protoplasmic, cellular, cell-tissue, tissue-organ, and organ-system."
+    },
+    {
+      "id": 87,
+      "front": "What was the 'Cambrian Explosion'?",
+      "back": "A period 542â€“525 million years ago when about half of extant animal phyla first appeared."
+    },
+    {
+      "id": 88,
+      "front": "What are the Ediacara fauna?",
+      "back": "The oldest generally accepted animal fossils (575 million years old), primarily soft-bodied."
+    },
+    {
+      "id": 89,
+      "front": "What is parthenogenesis?",
+      "back": "Development of an embryo from an unfertilized egg."
+    },
+    {
+      "id": 90,
+      "front": "What are the Animal and Vegetal poles of an egg?",
+      "back": "The Vegetal Pole is yolk-rich; the Animal Pole contains mostly cytoplasm and little yolk."
+    },
+    {
+      "id": 91,
+      "front": "Differentiate between isolecithal and telolecithal eggs.",
+      "back": "Isolecithal has minute, evenly distributed yolk; telolecithal has abundant yolk concentrated at one end."
+    },
+    {
+      "id": 92,
+      "front": "Differentiate between holoblastic and meroblastic cleavage.",
+      "back": "Holoblastic cleavage goes completely through the egg (low yolk); meroblastic is partial/incomplete (high yolk)."
+    },
+    {
+      "id": 93,
+      "front": "Contrast spiral and radial cleavage symmetry.",
+      "back": "Radial cleavage planes are parallel/perpendicular to the axis; spiral planes are diagonal (approx. 45 degrees)."
+    },
+    {
+      "id": 94,
+      "front": "What is a blastula?",
+      "back": "A multicellular, often hollow ball of cells formed during early cleavage."
+    },
+    {
+      "id": 95,
+      "front": "Define gastrulation.",
+      "back": "The process where a blastula is converted into a complex shape with distinct germ layers."
+    },
+    {
+      "id": 96,
+      "front": "What is the archenteron?",
+      "back": "The 'primitive gut' cavity formed during gastrulation."
+    },
+    {
+      "id": 97,
+      "front": "Define invagination and involution in cell movement.",
+      "back": "Invagination: a cell sheet bends inward. Involution: a cell sheet rolls inward to form an underlying layer."
+    },
+    {
+      "id": 98,
+      "front": "Define epiboly.",
+      "back": "A gastrulation movement where a sheet of cells spreads by thinning to enclose deeper layers."
+    },
+    {
+      "id": 99,
+      "front": "Differentiate between euryhaline and stenohaline animals.",
+      "back": "Euryhaline can survive a wide range of salinity; stenohaline are restricted to a narrow range."
+    },
+    {
+      "id": 100,
+      "front": "Contrast ammonotelic, ureotelic, and uricotelic excretion.",
+      "back": "Ammonotelic: excrete ammonia (fish); ureotelic: excrete urea (mammals); uricotelic: excrete uric acid (birds/reptiles)."
+    }
+  ]
+}
