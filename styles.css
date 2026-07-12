@@ -1,4 +1,4 @@
-/* THEME TOKENS: A non-stereotypic academic palette with clay, mint, citron, plum, and ink. */
+﻿/* THEME TOKENS: A non-stereotypic academic palette with clay, mint, citron, plum, and ink. */
 :root {
   --bg: #f8f6ef;
   --ink: #171b1f;
@@ -586,10 +586,9 @@ textarea {
   padding: clamp(20px, 3.4vw, 32px);
   margin-bottom: 18px;
   overflow: visible;
-  border-color: rgba(42, 157, 127, 0.2);
-  background:
-    linear-gradient(135deg, rgba(42, 157, 127, 0.13), transparent 42%),
-    linear-gradient(180deg, rgba(255, 253, 248, 0.96), rgba(255, 253, 248, 0.88));
+  background-image: linear-gradient(rgba(255, 253, 248, 0.6), rgba(255, 253, 248, 0.6)), url('./assets/hero-new.png');
+  background-size: cover;
+  background-position: center;
 }
 
 .hero-panel > div {
@@ -4733,7 +4732,7 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
 }
 
 /* ============================================================
-   PREMIUM SUGGESTIONS LAYOUT — two‑column feedback workspace
+   PREMIUM SUGGESTIONS LAYOUT â€” twoâ€‘column feedback workspace
    ============================================================ */
 
 .suggestions-workspace {
@@ -5044,7 +5043,7 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
   color: white;
 }
 
-/* suggestion card — GitHub Issues style */
+/* suggestion card â€” GitHub Issues style */
 
 .suggestion-card {
   background: var(--panel);
@@ -5456,4 +5455,23 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
     align-items: flex-start;
     gap: 10px;
   }
+}
+
+ 
+.resumption-hero {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+}
+
+.resumption-illustration {
+  margin: 0;
+  line-height: 0;
+}
+
+.resumption-illustration img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
 }
