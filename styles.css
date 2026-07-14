@@ -6682,3 +6682,282 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
   font-size: 0.8rem;
   color: var(--muted);
 }
+
+/* ── Suggestions Page ──────────────────────────────────────────────── */
+
+.suggestions-workspace {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 820px) {
+  .suggestions-workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+.feedback-form-card {
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: #fffdf8;
+  box-shadow: var(--soft-shadow);
+}
+
+.form-header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.form-icon {
+  font-size: 32px;
+  background: rgba(42, 157, 127, 0.1);
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.form-header h2 {
+  margin: 0;
+  font-family: var(--display-font);
+}
+
+.form-header p {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
+
+#suggestionForm {
+  display: grid;
+  gap: 16px;
+}
+
+#suggestionForm .field-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.category-btn {
+  padding: 12px 4px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fcfbf8;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.category-btn:hover,
+.category-btn.active {
+  background: rgba(42, 157, 127, 0.08);
+  border-color: var(--mint-dark);
+}
+
+.feedback-input,
+.feedback-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fdfcf9;
+  font-family: inherit;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+.feedback-textarea {
+  resize: vertical;
+}
+
+.char-count {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.anonymous-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fcfbf8;
+}
+
+.anonymous-toggle input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+
+.anonymous-toggle strong {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.anonymous-toggle span {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.submit-feedback-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: var(--ink);
+  color: #fffaf0;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: opacity 0.15s;
+}
+
+.submit-feedback-btn:hover {
+  opacity: 0.9;
+}
+
+.submit-feedback-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.suggestions-sidebar {
+  display: grid;
+  gap: 24px;
+}
+
+.suggestions-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.stat-card {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fffdf8;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.stat-value.mint {
+  color: var(--mint);
+}
+
+.stat-value.blue {
+  color: var(--sky);
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.recent-list-card {
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: #fffdf8;
+  box-shadow: var(--soft-shadow);
+}
+
+.recent-list-card h3 {
+  margin: 0 0 16px 0;
+}
+
+.empty-suggestions {
+  color: var(--muted);
+  font-size: 14px;
+  text-align: center;
+  padding: 24px 0;
+}
+
+.contact-reps-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #f0f7f5;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.contact-reps-card:hover {
+  background: #e4f0ec;
+}
+
+.contact-icon {
+  font-size: 24px;
+  background: rgba(42, 157, 127, 0.2);
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.contact-text {
+  flex: 1;
+}
+
+.contact-text strong {
+  display: block;
+  color: var(--ink);
+}
+
+.contact-text span {
+  font-size: 0.85rem;
+  color: var(--mint-dark);
+}
+
+.contact-reps-card .material-symbols-rounded {
+  color: var(--mint-dark);
+}
+
+/* ── Timetable Download Buttons ───────────────────────────────────── */
+
+.timetable-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.planner-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 550;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.planner-download-btn:hover {
+  background: #eef3ef;
+  border-color: var(--mint-dark);
+}
+
+.planner-download-btn .material-symbols-rounded {
+  font-size: 1.2rem;
+}

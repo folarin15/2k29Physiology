@@ -5577,12 +5577,28 @@ function connectTimetable() {
 }
 
 function connectTimetableDownload() {
-  const button = getElement("#downloadTimetable");
-  if (!button) return;
+  const pdfButton = getElement("#downloadTimetable");
+  const pngButton = getElement("#downloadTimetablePng");
 
-  button.addEventListener("click", async () => {
+  if (pngButton) {
+    pngButton.addEventListener("click", () => {
+      const link = document.createElement("a");
+      link.href = "./assets/PhysioK29-Timetable.png";
+      link.download = "PhysioK29-Timetable.png";
+      link.target = "_blank";
+      link.rel = "noopener";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      showToast("Timetable image is downloading.");
+    });
+  }
+
+  if (!pdfButton) return;
+
+  pdfButton.addEventListener("click", async () => {
     try {
-      button.disabled = true;
+      pdfButton.disabled = true;
       const blob = MOCK_SCHEDULE.length ? createSemesterSchedulePdfBlob() : createTimetablePdfBlob();
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -5598,7 +5614,7 @@ function connectTimetableDownload() {
     } catch (error) {
       showToast(error.message || "No schedule data available yet.", "error");
     } finally {
-      button.disabled = false;
+      pdfButton.disabled = false;
     }
   });
 }
@@ -5616,7 +5632,6 @@ async function init() {
   updateBootLoader("Preparing page tools");
   connectConnectionStatus();
   connectSearch();
-  connectCourseFilters();
   connectStaffPortal(document.body.dataset.portalRole === "admin" ? ["admin"] : ["rep", "admin"]);
   connectRepForms();
   connectGenericBulkUpload();
