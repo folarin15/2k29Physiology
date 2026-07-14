@@ -5573,23 +5573,49 @@ function renderWeeklySchedule() {
 
 function connectTimetable() {
   if (document.body.dataset.page !== "timetable") return;
-  renderWeeklySchedule();
+  const dayNames = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+  const today = dayNames[new Date().getDay()];
+  document.querySelectorAll(".timetable-table").forEach((table) => {
+    const headers = table.querySelectorAll("thead th");
+    headers.forEach((th, i) => {
+      if (th.textContent.trim().toLowerCase() === today) {
+        table.querySelectorAll(`tbody tr`).forEach((row) => {
+          const cell = row.children[i];
+          if (cell && cell.textContent.trim() !== "—") {
+            cell.classList.add("today-cell");
+          }
+        });
+      }
+    });
+  });
 }
 
 function connectTimetableDownload() {
   const pngButton = getElement("#downloadTimetablePng");
   if (!pngButton) return;
 
-  pngButton.addEventListener("click", () => {
-    const link = document.createElement("a");
-    link.href = "./assets/PhysioK29-Timetable.png";
-    link.download = "PhysioK29-Timetable.png";
-    link.target = "_blank";
-    link.rel = "noopener";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    showToast("Timetable image is downloading.");
+  pngButton.addEventListener("click", async () => {
+    try {
+      pngButton.disabled = true;
+      pngButton.innerHTML = '<span class="material-symbols-rounded">hourglass_top</span> Downloading…';
+      const response = await fetch("./assets/PhysioK29-Timetable.png");
+      if (!response.ok) throw new Error("Image not found");
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "PhysioK29-Timetable.png";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      showToast("Timetable image downloaded.");
+    } catch (err) {
+      showToast(err.message || "Download failed.", "error");
+    } finally {
+      pngButton.disabled = false;
+      pngButton.innerHTML = '<span class="material-symbols-rounded">image</span> Download Timetable Image';
+    }
   });
 }
 
