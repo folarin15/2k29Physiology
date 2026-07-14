@@ -5577,45 +5577,19 @@ function connectTimetable() {
 }
 
 function connectTimetableDownload() {
-  const pdfButton = getElement("#downloadTimetable");
   const pngButton = getElement("#downloadTimetablePng");
+  if (!pngButton) return;
 
-  if (pngButton) {
-    pngButton.addEventListener("click", () => {
-      const link = document.createElement("a");
-      link.href = "./assets/PhysioK29-Timetable.png";
-      link.download = "PhysioK29-Timetable.png";
-      link.target = "_blank";
-      link.rel = "noopener";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      showToast("Timetable image is downloading.");
-    });
-  }
-
-  if (!pdfButton) return;
-
-  pdfButton.addEventListener("click", async () => {
-    try {
-      pdfButton.disabled = true;
-      const blob = MOCK_SCHEDULE.length ? createSemesterSchedulePdfBlob() : createTimetablePdfBlob();
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = MOCK_SCHEDULE.length ? "physiok29-semester-schedule.pdf" : "physiok29-final-exam-timetable.pdf";
-      link.target = "_blank";
-      link.rel = "noopener";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      showToast("Schedule PDF is downloading.");
-      window.setTimeout(() => URL.revokeObjectURL(url), 30000);
-    } catch (error) {
-      showToast(error.message || "No schedule data available yet.", "error");
-    } finally {
-      pdfButton.disabled = false;
-    }
+  pngButton.addEventListener("click", () => {
+    const link = document.createElement("a");
+    link.href = "./assets/PhysioK29-Timetable.png";
+    link.download = "PhysioK29-Timetable.png";
+    link.target = "_blank";
+    link.rel = "noopener";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    showToast("Timetable image is downloading.");
   });
 }
 
