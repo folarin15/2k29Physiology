@@ -5534,74 +5534,6 @@ function createSemesterSchedulePdfBlob() {
 }
 
 /* TIMETABLE RENDERING: Card-based weekly schedule for the timetable page. */
-function renderTodayClasses() {
-  const grid = getElement("#todayClassesGrid");
-  const empty = getElement("#todayEmpty");
-  const now = new Date();
-  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  const todayName = days[now.getDay()];
-  if (!grid) return;
-
-  const todayItems = MOCK_SCHEDULE.filter((i) => i.day === todayName && i.week === 1)
-    .sort((a, b) => a.start_time.localeCompare(b.start_time));
-
-  if (!todayItems.length) {
-    grid.innerHTML = "";
-    if (empty) empty.hidden = false;
-    return;
-  }
-  if (empty) empty.hidden = true;
-
-  grid.innerHTML = todayItems.map((item) => {
-    const isNext = todayItems[0] === item;
-    const start = item.start_time.slice(0, 5);
-    const end = item.end_time.slice(0, 5);
-    const badges = [];
-    if (item.slides_available) badges.push('<span class="tt-badge">Slides</span>');
-    else badges.push('<span class="tt-badge missing">No slides</span>');
-    if (item.quiz_available) badges.push('<span class="tt-badge">Quiz</span>');
-    if (isNext) badges.push('<span class="tt-badge next">Up next</span>');
-    return `<a class="tt-card${isNext ? " active" : ""}" href="./courses.html?course=${encodeURIComponent(item.course_code)}">
-      <div class="tt-time">
-        <strong>${start}</strong>
-        <small>${end}</small>
-      </div>
-      <div class="tt-body">
-        <span class="tt-code">${item.course_code}</span>
-        <span class="tt-title">${item.course_title}</span>
-        <span class="tt-venue"><span class="material-symbols-rounded" aria-hidden="true">location_on</span>${item.venue}</span>
-      </div>
-      <div class="tt-badges">${badges.join("")}</div>
-      <span class="material-symbols-rounded tt-card-arrow" aria-hidden="true">chevron_right</span>
-    </a>`;
-  }).join("");
-}
-
-function renderWeekDayStrip() {
-  const strip = getElement("#weekDayStrip");
-  if (!strip) return;
-  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-  const now = new Date();
-  const dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-  const shortNames = ["Mon", "Tue", "Wed", "Thu", "Fri"];
-  const weekItems = MOCK_SCHEDULE.filter((i) => i.week === 1);
-  const countByDay = {};
-  weekItems.forEach((i) => { countByDay[i.day] = (countByDay[i.day] || 0) + 1; });
-
-  strip.innerHTML = days.map((day, i) => {
-    const isToday = day === dayNames[now.getDay() - 1];
-    const count = countByDay[day] || 0;
-    return `<div class="week-day-chip${isToday ? " today" : ""}" data-day="${day}">
-      <strong>${shortNames[i]}</strong>
-      <small>${count} lecture${count !== 1 ? "s" : ""}</small>
-    </div>`;
-  }).join("");
-
-  // Scroll to today
-  const todayChip = strip.querySelector(".week-day-chip.today");
-  if (todayChip) todayChip.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-}
-
 function renderWeeklySchedule() {
   const container = getElement("#weeklySchedule");
   if (!container) return;
@@ -5616,31 +5548,24 @@ function renderWeeklySchedule() {
   container.innerHTML = days.map((day) => {
     const items = (scheduleByDay[day] || []).sort((a, b) => a.start_time.localeCompare(b.start_time));
     if (!items.length) return "";
-    return `<div class="schedule-day-group">
-      <div class="schedule-day-header">
-        <h3>${day}</h3>
-        <span class="eyebrow">${day.toUpperCase().slice(0, 3)}</span>
-        <span class="schedule-day-divider"></span>
+    return `<div class="tt-day-group">
+      <div class="tt-day-header">
+        <span class="tt-day-label">${day}</span>
+        <span class="tt-day-count">${items.length} lecture${items.length > 1 ? "s" : ""}</span>
       </div>
-      <div class="schedule-day-cards">
-        ${items.map((item) => {
-          const badges = [];
-          if (item.slides_available) badges.push('<span class="tt-badge">Slides</span>');
-          if (item.quiz_available) badges.push('<span class="tt-badge">Quiz</span>');
-          return `<a class="tt-card" href="./courses.html?course=${encodeURIComponent(item.course_code)}">
-            <div class="tt-time">
-              <strong>${item.start_time.slice(0, 5)}</strong>
-              <small>${item.end_time.slice(0, 5)}</small>
-            </div>
-            <div class="tt-body">
-              <span class="tt-code">${item.course_code}</span>
-              <span class="tt-title">${item.course_title}</span>
-              <span class="tt-venue"><span class="material-symbols-rounded" aria-hidden="true">location_on</span>${item.venue}</span>
-            </div>
-            <div class="tt-badges">${badges.join("")}</div>
-            <span class="material-symbols-rounded tt-card-arrow" aria-hidden="true">chevron_right</span>
-          </a>`;
-        }).join("")}
+      <div class="tt-day-cards">
+        ${items.map((item) => `<a class="tt-card" href="./courses.html?course=${encodeURIComponent(item.course_code)}">
+          <div class="tt-time">
+            <strong>${item.start_time.slice(0, 5)}</strong>
+            <small>${item.end_time.slice(0, 5)}</small>
+          </div>
+          <div class="tt-body">
+            <span class="tt-code">${item.course_code}</span>
+            <span class="tt-title">${item.course_title}</span>
+            <span class="tt-venue"><span class="material-symbols-rounded" aria-hidden="true">location_on</span>${item.venue}</span>
+          </div>
+          <span class="material-symbols-rounded tt-card-arrow" aria-hidden="true">chevron_right</span>
+        </a>`).join("")}
       </div>
     </div>`;
   }).join("");
@@ -5648,57 +5573,34 @@ function renderWeeklySchedule() {
 
 function connectTimetable() {
   if (document.body.dataset.page !== "timetable") return;
-  const todayPill = getElement("#todayDate");
-  if (todayPill) {
-    todayPill.textContent = new Date().toLocaleDateString("en-NG", {
-      weekday: "long", month: "long", day: "numeric"
-    });
-  }
-  renderTodayClasses();
-  renderWeekDayStrip();
   renderWeeklySchedule();
 }
 
 function connectTimetableDownload() {
   const button = getElement("#downloadTimetable");
-  if (button) {
-    button.addEventListener("click", async () => {
-      try {
-        button.disabled = true;
-        const blob = MOCK_SCHEDULE.length ? createSemesterSchedulePdfBlob() : createTimetablePdfBlob();
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = MOCK_SCHEDULE.length ? "physiok29-semester-schedule.pdf" : "physiok29-final-exam-timetable.pdf";
-        link.target = "_blank";
-        link.rel = "noopener";
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        showToast("Schedule PDF is downloading.");
-        window.setTimeout(() => URL.revokeObjectURL(url), 30000);
-      } catch (error) {
-        showToast(error.message || "No schedule data available yet.", "error");
-      } finally {
-        button.disabled = false;
-      }
-    });
-  }
+  if (!button) return;
 
-  const imgButton = getElement("#downloadTimetableImage");
-  if (imgButton) {
-    imgButton.addEventListener("click", () => {
+  button.addEventListener("click", async () => {
+    try {
+      button.disabled = true;
+      const blob = MOCK_SCHEDULE.length ? createSemesterSchedulePdfBlob() : createTimetablePdfBlob();
+      const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
-      link.href = "./assets/PhysioK29-Timetable.png";
-      link.download = "PhysioK29-Timetable.png";
+      link.href = url;
+      link.download = MOCK_SCHEDULE.length ? "physiok29-semester-schedule.pdf" : "physiok29-final-exam-timetable.pdf";
       link.target = "_blank";
       link.rel = "noopener";
       document.body.appendChild(link);
       link.click();
       link.remove();
-      showToast("Timetable image is downloading.");
-    });
-  }
+      showToast("Schedule PDF is downloading.");
+      window.setTimeout(() => URL.revokeObjectURL(url), 30000);
+    } catch (error) {
+      showToast(error.message || "No schedule data available yet.", "error");
+    } finally {
+      button.disabled = false;
+    }
+  });
 }
 
 async function init() {

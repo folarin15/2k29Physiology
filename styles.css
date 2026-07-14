@@ -6052,22 +6052,6 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
   font-size: 1.2rem;
 }
 
-.timetable-download-group {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.planner-download-img {
-  background: #fffaf0;
-  color: var(--mint-dark);
-  border: 1px solid var(--mint);
-}
-
-.planner-download-img:hover {
-  background: var(--mint-soft);
-}
-
 .control-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 340px;
@@ -6075,30 +6059,7 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
   margin-bottom: 14px;
 }
 
-/* TIMETABLE v2: Card-based academic schedule. */
-.planner-section {
-  margin: 24px 0;
-}
-
-.planner-section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.planner-section-header h2 {
-  margin: 0;
-  font-family: var(--display-font);
-  font-weight: 500;
-  font-size: 1.3rem;
-}
-
-.today-classes-grid {
-  display: grid;
-  gap: 14px;
-}
+/* ── Timetable ────────────────────────────────────────────── */
 
 .tt-card {
   display: grid;
@@ -6118,11 +6079,6 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
 .tt-card:hover {
   border-color: var(--mint);
   box-shadow: var(--soft-shadow);
-}
-
-.tt-card.active {
-  border-color: var(--mint);
-  background: rgba(42, 157, 127, 0.04);
 }
 
 .tt-time {
@@ -6175,33 +6131,6 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
   font-size: 14px;
 }
 
-.tt-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  align-items: center;
-}
-
-.tt-badge {
-  padding: 3px 10px;
-  border-radius: 999px;
-  font-size: 0.7rem;
-  font-weight: 550;
-  background: var(--mint-soft);
-  color: var(--mint-dark);
-}
-
-.tt-badge.missing {
-  background: rgba(217, 111, 77, 0.1);
-  color: var(--clay);
-}
-
-.tt-badge.next {
-  background: rgba(42, 157, 127, 0.15);
-  color: var(--mint-dark);
-  font-weight: 600;
-}
-
 .tt-card-arrow {
   color: var(--muted);
   font-size: 1.2rem;
@@ -6213,83 +6142,43 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
   color: var(--mint-dark);
 }
 
-/* Week day strip for upcoming */
-.week-day-strip {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-}
+/* Day groups */
 
-.week-day-chip {
-  flex: 0 0 auto;
-  display: grid;
-  gap: 2px;
-  text-align: center;
-  padding: 12px 20px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--panel);
-  cursor: pointer;
-  transition: border-color 180ms, background 180ms;
-  min-width: 72px;
-}
-
-.week-day-chip:hover {
-  border-color: var(--mint);
-}
-
-.week-day-chip.today {
-  border-color: var(--mint);
-  background: var(--mint-soft);
-}
-
-.week-day-chip strong {
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-
-.week-day-chip small {
-  font-size: 0.7rem;
-  color: var(--muted);
-  text-transform: uppercase;
-}
-
-.week-day-chip .chip-count {
-  font-size: 0.75rem;
-  color: var(--mint-dark);
-  font-weight: 560;
-}
-
-/* Weekly schedule day groups */
 .weekly-schedule-container {
   display: grid;
   gap: 28px;
 }
 
-.schedule-day-group {
+.tt-day-group {
   display: grid;
   gap: 10px;
 }
 
-.schedule-day-header {
+.tt-day-header {
   display: flex;
   align-items: center;
   gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
 }
 
-.schedule-day-header h3 {
-  margin: 0;
+.tt-day-label {
   font-family: var(--display-font);
-  font-weight: 500;
+  font-weight: 530;
   font-size: 1.1rem;
 }
 
-.schedule-day-header .eyebrow {
-  font-size: 0.7rem;
+.tt-day-count {
+  font-size: 0.75rem;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
+}
+
+.tt-day-cards {
+  display: grid;
+  gap: 10px;
+}
 }
 
 .schedule-day-divider {
@@ -6663,6 +6552,18 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
 /* ── Admin Dashboard ──────────────────────────────────────────────── */
 
 .admin-dashboard-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.admin-dashboard-panel,
+.staff-monitor-panel {
   display: grid;
   gap: 14px;
 }
