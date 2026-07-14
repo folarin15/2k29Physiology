@@ -112,6 +112,11 @@ function mapResource(row) {
     uploadedBy: row.uploaded_by,
     uploadedByUid: row.uploaded_by_user_id,
     createdAtMs: toMillis(row.created_at),
+    uploadCategory: row.upload_category || "resource",
+    week: row.week != null ? Number(row.week) : null,
+    lectureDate: row.lecture_date || null,
+    lectureTopic: row.lecture_topic || "",
+    lectureVenue: row.lecture_venue || "",
     progress: mapProgress(row.progress),
     feedback: {
       helpful: Boolean(row.feedback?.helpful),
@@ -973,22 +978,31 @@ export async function createBackend() {
 
       const resourceTitle = cleanStoredText(formData.title || "");
       const resourceType = cleanStoredText(formData.type || "Resource");
+      const isLecture = resourceType === "Weekly Lecture";
+      const insertPayload = {
+        title: resourceTitle,
+        course_code: courseCode,
+        course_title: cleanStoredText(formData.courseTitle || ""),
+        type: resourceType,
+        note: cleanStoredText(formData.note || ""),
+        file_name: cleanStoredText(file.name) || safeFileName(file.name),
+        file_size: file.size,
+        file_type: file.type || "unknown",
+        storage_path: filePath,
+        download_url: filePath,
+        uploaded_by: role.displayName || user.email || "Course rep",
+        uploaded_by_user_id: user.id,
+        upload_category: isLecture ? "lecture" : "resource",
+      };
+      if (isLecture) {
+        insertPayload.week = Number(formData.week) || null;
+        insertPayload.lecture_date = formData.lectureDate || null;
+        insertPayload.lecture_topic = cleanStoredText(formData.lectureTopic || "");
+        insertPayload.lecture_venue = cleanStoredText(formData.lectureVenue || "");
+      }
       const { data: insertedResource, error: insertError } = await supabase
         .from("resources")
-        .insert({
-          title: resourceTitle,
-          course_code: courseCode,
-          course_title: cleanStoredText(formData.courseTitle || ""),
-          type: resourceType,
-          note: cleanStoredText(formData.note || ""),
-          file_name: cleanStoredText(file.name) || safeFileName(file.name),
-          file_size: file.size,
-          file_type: file.type || "unknown",
-          storage_path: filePath,
-          download_url: filePath,
-          uploaded_by: role.displayName || user.email || "Course rep",
-          uploaded_by_user_id: user.id,
-        })
+        .insert(insertPayload)
         .select("id")
         .single();
 

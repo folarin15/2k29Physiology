@@ -61,7 +61,7 @@
           <a class="nav-link" href="./quiz.html"><span class="material-symbols-rounded" aria-hidden="true">quiz</span>Quiz Mode</a>
           <a class="nav-link" href="./exam-room.html"><span class="material-symbols-rounded" aria-hidden="true">timer</span>Exam Room</a>
           <a class="nav-link" href="./exam.html"><span class="material-symbols-rounded" aria-hidden="true">psychology_alt</span>Smart Guide</a>
-          <a class="nav-link" href="./timetable.html"><span class="material-symbols-rounded" aria-hidden="true">event_available</span>Resumption</a>
+           <a class="nav-link" href="./timetable.html"><span class="material-symbols-rounded" aria-hidden="true">calendar_month</span>Timetable</a>
           <a class="nav-link" href="./reps.html"><span class="material-symbols-rounded" aria-hidden="true">groups</span>Reps</a>
           <a class="nav-link" href="./suggestions.html"><span class="material-symbols-rounded" aria-hidden="true">forum</span>Suggestions</a>
         </nav>
@@ -106,7 +106,20 @@
             <input id="resourceSearch" type="search" placeholder="Search notes, quizzes, uploads..." autocomplete="off" />
           </label>
 
-
+          <a class="next-lecture-card" id="nextLectureCard" href="./courses.html" aria-label="Next lecture">
+            <span class="material-symbols-rounded" aria-hidden="true">schedule</span>
+            <div>
+              <small>Next lecture</small>
+              <strong id="nextLectureTitle">Loading...</strong>
+              <small id="nextLectureTime"></small>
+              <small id="nextLectureVenue"></small>
+              <div id="nextLectureStatus"></div>
+            </div>
+            <div>
+              <div id="nextLectureTimer" class="countdown-timer">--:--:--</div>
+              <small>Open Course →</small>
+            </div>
+          </a>
         </section>
 
         <!-- QUICK START COMPONENT: Reduces dashboard confusion by putting the most common actions first. -->

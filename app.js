@@ -1,6 +1,32 @@
-import { BREAK_LOCK_UNTIL, cbtTimetable, findCourse, firstSemesterCourses, resourceTypes, secondSemesterResumption } from "./data.js?v=20260704";
-import { createBackend } from "./supabase-service.js?v=20260704";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260704";
+// Mock data: Precise schedule extracted from CBT Timetable image
+const MOCK_SCHEDULE = [
+  // MONDAY
+  { id: 's1', course_code: 'PHY 102', course_title: 'Physics II', day: 'Monday', start_time: '08:00:00', end_time: '09:00:00', venue: 'Lecture Theatre', lecturer: 'TBD', week: 1, semester: 'Second', academic_session: '2025/2026', slides_available: true, quiz_available: false },
+  { id: 's2', course_code: 'CHM 102', course_title: 'Chemistry II', day: 'Monday', start_time: '09:00:00', end_time: '10:00:00', venue: 'Lecture Theatre', lecturer: 'TBD', week: 1, semester: 'Second', academic_session: '2025/2026', slides_available: true, quiz_available: true },
+  { id: 's3', course_code: 'BIO 102', course_title: 'Biology II', day: 'Monday', start_time: '14:00:00', end_time: '15:00:00', venue: 'Lecture Theatre', lecturer: 'TBD', week: 1, semester: 'Second', academic_session: '2025/2026', slides_available: false, quiz_available: false },
+  { id: 's4', course_code: 'PHY 108', course_title: 'Physics Lab (Group B2)', day: 'Monday', start_time: '10:00:00', end_time: '13:00:00', venue: 'Physics Lab', lecturer: 'TBD', week: 1, semester: 'Second', academic_session: '2025/2026', slides_available: false, quiz_available: false },
+  { id: 's5', course_code: 'BIO 108', course_title: 'Biology Lab (Group A1)', day: 'Monday', start_time: '14:00:00', end_time: '17:00:00', venue: 'Biology Lab', lecturer: 'TBD', week: 1, semester: 'Second', academic_session: '2025/2026', slides_available: false, quiz_available: false },
+
+  // TUESDAY
+  { id: 's6', course_code: 'ZOO 101', course_title: 'Zoology I', day: 'Tuesday', start_time: '08:00:00', end_time: '09:00:00', venue: 'Lecture Theatre', lecturer: 'TBD', week: 1, semester: 'Second', academic_session: '2025/2026', slides_available: true, quiz_available: false },
+  { id: 's7', course_code: 'CHM 102', course_title: 'Chemistry II', day: 'Tuesday', start_time: '09:00:00', end_time: '10:00:00', venue: 'Lecture Theatre', lecturer: 'TBD', week: 1, semester: 'Second', academic_session: '2025/2026', slides_available: true, quiz_available: true },
+  { id: 's8', course_code: 'CHM 108', course_title: 'Chemistry Lab (Group A4)', day: 'Tuesday', start_time: '14:00:00', end_time: '17:00:00', venue: 'Chemistry Lab', lecturer: 'TBD', week: 1, semester: 'Second', academic_session: '2025/2026', slides_available: false, quiz_available: false },
+
+  // WEDNESDAY
+  { id: 's9', course_code: 'PHY 104', course_title: 'Physics IV', day: 'Wednesday', start_time: '08:00:00', end_time: '10:00:00', venue: 'Lecture Theatre', lecturer: 'TBD', week: 1, semester: 'Second', academic_session: '2025/2026', slides_available: true, quiz_available: false },
+  { id: 's10', course_code: 'CHM 102', course_title: 'Chemistry II', day: 'Wednesday', start_time: '12:00:00', end_time: '13:00:00', venue: 'Lecture Theatre', lecturer: 'TBD', week: 1, semester: 'Second', academic_session: '2025/2026', slides_available: true, quiz_available: true },
+  { id: 's11', course_code: 'BIO 102', course_title: 'Biology II', day: 'Wednesday', start_time: '14:00:00', end_time: '15:00:00', venue: 'Lecture Theatre', lecturer: 'TBD', week: 1, semester: 'Second', academic_session: '2025/2026', slides_available: false, quiz_available: false },
+
+  // THURSDAY
+  { id: 's12', course_code: 'PHY 102', course_title: 'Physics II', day: 'Thursday', start_time: '08:00:00', end_time: '09:00:00', venue: 'Lecture Theatre', lecturer: 'TBD', week: 1, semester: 'Second', academic_session: '2025/2026', slides_available: true, quiz_available: false },
+  { id: 's13', course_code: 'ZOO 102', course_title: 'Zoology II', day: 'Thursday', start_time: '13:00:00', end_time: '14:00:00', venue: 'Lecture Theatre', lecturer: 'TBD', week: 1, semester: 'Second', academic_session: '2025/2026', slides_available: true, quiz_available: false },
+  { id: 's14', course_code: 'ZOO 101', course_title: 'Zoology I', day: 'Thursday', start_time: '14:00:00', end_time: '15:00:00', venue: 'Lecture Theatre', lecturer: 'TBD', week: 1, semester: 'Second', academic_session: '2025/2026', slides_available: true, quiz_available: false },
+  { id: 's15', course_code: 'CHM 102', course_title: 'Chemistry II', day: 'Thursday', start_time: '17:00:00', end_time: '18:00:00', venue: 'Lecture Theatre', lecturer: 'TBD', week: 1, semester: 'Second', academic_session: '2025/2026', slides_available: true, quiz_available: true },
+
+  // FRIDAY
+  { id: 's16', course_code: 'ZOO 102', course_title: 'Zoology II', day: 'Friday', start_time: '08:00:00', end_time: '09:00:00', venue: 'Lecture Theatre', lecturer: 'TBD', week: 1, semester: 'Second', academic_session: '2025/2026', slides_available: true, quiz_available: false },
+  { id: 's17', course_code: 'CHM 102', course_title: 'Chemistry II', day: 'Friday', start_time: '09:00:00', end_time: '10:00:00', venue: 'Lecture Theatre', lecturer: 'TBD', week: 1, semester: 'Second', academic_session: '2025/2026', slides_available: true, quiz_available: true }
+];
 
 const MEMBER_SESSION_KEY = "physiology2k29.memberSession";
 const MEMBER_SESSION_COOKIE = "physiok29_member_session";
@@ -25,6 +51,7 @@ const state = {
   topicPerformance: [],
    studyGuide: [],
    studyGuideFlashcardCache: {},
+   activeCourseTab: "",
    selectedStudyGuideCourse: "",
    selectedStudyGuideTopic: "",
   studyGuideFlashcardIndex: 0,
@@ -1350,6 +1377,9 @@ function renderCourseDetail(grid, course, resources) {
     return groups;
   }, {});
   const groupOrder = ["Slides", "Past Questions", "Notes", "Assignments", "Practicals", "Links", "Other Resources"];
+  const courseSchedule = MOCK_SCHEDULE.filter((item) => item.course_code === course.code);
+  const activeTab = state.activeCourseTab || "overview";
+  if (!state.activeCourseTab) state.activeCourseTab = "overview";
 
   grid.classList.add("course-detail-grid");
   grid.innerHTML = `
@@ -1373,9 +1403,155 @@ function renderCourseDetail(grid, course, resources) {
           <span class="form-status" id="courseZipStatus"></span>
         </div>
       </div>
-      <div class="course-resource-groups">
-        ${groupOrder
-          .map((group) => {
+
+      <nav class="course-hub-tabs" data-course-tabs aria-label="Course hub sections">
+        <button class="hub-tab ${activeTab === "overview" ? "active" : ""}" data-tab="overview">Overview</button>
+        <button class="hub-tab ${activeTab === "lectures" ? "active" : ""}" data-tab="lectures">Weekly Lectures</button>
+        <button class="hub-tab ${activeTab === "resources" ? "active" : ""}" data-tab="resources">Resources</button>
+        <button class="hub-tab ${activeTab === "past-questions" ? "active" : ""}" data-tab="past-questions">Past Questions</button>
+        <button class="hub-tab ${activeTab === "quiz" ? "active" : ""}" data-tab="quiz">Quiz</button>
+        <button class="hub-tab ${activeTab === "announcements" ? "active" : ""}" data-tab="announcements">Announcements</button>
+      </nav>
+
+      <div class="course-hub-content">
+        ${renderHubTabContent(activeTab, course, resources, grouped, groupOrder, courseSchedule)}
+      </div>
+    </section>
+  `;
+
+  const hubSection = grid.querySelector(".course-detail");
+  if (hubSection) {
+    hubSection.addEventListener("click", (event) => {
+      const tab = event.target.closest("[data-tab]");
+      if (!tab) return;
+      state.activeCourseTab = tab.dataset.tab;
+      renderCourseDetail(grid, course, resources);
+    });
+  }
+}
+
+const TOTAL_WEEKS = 13;
+const SEMESTER_START = new Date("2026-02-15");
+
+function weekStartDate(weekNum) {
+  const d = new Date(SEMESTER_START);
+  d.setDate(d.getDate() + (weekNum - 1) * 7);
+  return d;
+}
+
+function weekDateRange(weekNum) {
+  const start = weekStartDate(weekNum);
+  const end = new Date(start);
+  end.setDate(end.getDate() + 4);
+  const fmt = (dt) => dt.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  return `${fmt(start)} – ${fmt(end)}`;
+}
+
+function generateWeeklyLectures(courseCode) {
+  const slots = MOCK_SCHEDULE.filter((s) => s.course_code === courseCode);
+  if (!slots.length) return [];
+  const lectures = [];
+  for (let w = 1; w <= TOTAL_WEEKS; w++) {
+    slots.forEach((slot) => {
+      const slidesUp = w <= 6 ? slot.slides_available : (w <= 10 ? Math.random() > 0.3 : Math.random() > 0.5);
+      const quizUp  = slidesUp && (w <= 4 ? slot.quiz_available : Math.random() > 0.6);
+      lectures.push({
+        week: w,
+        day: slot.day,
+        start_time: slot.start_time,
+        end_time: slot.end_time,
+        venue: slot.venue,
+        lecturer: slot.lecturer,
+        course_title: slot.course_title,
+        slides_available: slidesUp,
+        quiz_available: quizUp,
+      });
+    });
+  }
+  return lectures;
+}
+
+function renderHubTabContent(tab, course, resources, grouped, groupOrder, courseSchedule) {
+  switch (tab) {
+    case "overview":
+      return `
+        <section class="hub-overview">
+          <div class="hub-overview-card">
+            <h3>About this course</h3>
+            <p><strong>Code:</strong> ${escapeHtml(course.code)}</p>
+            <p><strong>Title:</strong> ${escapeHtml(course.title)}</p>
+            <p><strong>Type:</strong> ${escapeHtml(course.type)}</p>
+            <p><strong>Units:</strong> ${course.units}</p>
+            <p><strong>Resources:</strong> ${resources.length} posted</p>
+          </div>
+          <div class="hub-overview-card">
+            <h3>Quick actions</h3>
+            <div class="hub-quick-actions">
+              <a class="secondary-action" href="./quiz.html?course=${encodeURIComponent(course.code)}">
+                <span class="material-symbols-rounded" aria-hidden="true">quiz</span>Practice quiz
+              </a>
+              ${courseSchedule.length ? `<button class="secondary-action" type="button" data-tab="lectures"><span class="material-symbols-rounded" aria-hidden="true">event</span>View schedule</button>` : ""}
+            </div>
+          </div>
+        </section>
+      `;
+
+    case "lectures": {
+      const weeklyLectures = generateWeeklyLectures(course.code);
+      if (!weeklyLectures.length) {
+        return `<p class="empty-group">No lecture schedule available for this course yet.</p>`;
+      }
+      const weekGroups = {};
+      weeklyLectures.forEach((lec) => {
+        if (!weekGroups[lec.week]) weekGroups[lec.week] = [];
+        weekGroups[lec.week].push(lec);
+      });
+      const weekNums = Object.keys(weekGroups).map(Number).sort((a, b) => a - b);
+      const dayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      return `
+        <div class="hub-lectures">
+          ${weekNums.map((wk) => {
+            const lecs = weekGroups[wk].sort((a, b) => dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day) || a.start_time.localeCompare(b.start_time));
+            const dateRange = weekDateRange(wk);
+            return `
+              <section class="lecture-week-group">
+                <div class="lecture-week-header">
+                  <span class="lecture-week-badge">Week ${wk}</span>
+                  <span class="lecture-week-date">${dateRange}</span>
+                </div>
+                ${lecs.map((lec) => `
+                  <div class="hub-lecture-card">
+                    <div class="lecture-day-badge">${lec.day.slice(0, 3).toUpperCase()}</div>
+                    <div class="lecture-card-body">
+                      <div class="lecture-card-top">
+                        <strong>${escapeHtml(lec.course_title)}</strong>
+                        <span class="lecture-time">${lec.start_time.slice(0, 5)} – ${lec.end_time.slice(0, 5)}</span>
+                      </div>
+                      <small class="lecture-venue">${escapeHtml(lec.venue)}</small>
+                      <div class="lecture-status-row">
+                        <span class="lecture-status-badge ${lec.slides_available ? "badge-ok" : "badge-missing"}">
+                          <span class="material-symbols-rounded" aria-hidden="true">${lec.slides_available ? "check_circle" : "pending"}</span>
+                          ${lec.slides_available ? "Slides" : "Slides missing"}
+                        </span>
+                        <span class="lecture-status-badge ${lec.quiz_available ? "badge-ok" : "badge-later"}">
+                          <span class="material-symbols-rounded" aria-hidden="true">${lec.quiz_available ? "check_circle" : "hourglass_top"}</span>
+                          ${lec.quiz_available ? "Quiz" : "Quiz later"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                `).join("")}
+              </section>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    case "resources":
+      return `
+        <div class="course-resource-groups">
+          ${groupOrder.map((group) => {
             const groupItems = grouped[group] || [];
             return `
               <section class="course-resource-group">
@@ -1383,18 +1559,62 @@ function renderCourseDetail(grid, course, resources) {
                   <h3>${group}</h3>
                   <span>${groupItems.length}</span>
                 </div>
-                ${
-                  groupItems.length
-                    ? groupItems.map(courseResourceItem).join("")
-                    : `<p class="empty-group">Nothing posted here yet.</p>`
-                }
+                ${groupItems.length ? groupItems.map(courseResourceItem).join("") : `<p class="empty-group">Nothing posted here yet.</p>`}
               </section>
             `;
-          })
-          .join("")}
-      </div>
-    </section>
-  `;
+          }).join("")}
+        </div>
+      `;
+
+    case "past-questions": {
+      const pqItems = grouped["Past Questions"] || [];
+      return `
+        <div class="course-resource-groups">
+          <section class="course-resource-group">
+            <div class="group-heading">
+              <h3>Past Questions</h3>
+              <span>${pqItems.length}</span>
+            </div>
+            ${pqItems.length ? pqItems.map(courseResourceItem).join("") : `<p class="empty-group">No past questions uploaded yet. Check back during revision season.</p>`}
+          </section>
+        </div>
+      `;
+    }
+
+    case "quiz":
+      return `
+        <div class="hub-quiz-panel">
+          <h3>Test your knowledge</h3>
+          <p>Practice with quiz questions tailored for ${escapeHtml(course.title)}.</p>
+          <div class="hub-quick-actions">
+            <a class="primary-action" href="./quiz.html?course=${encodeURIComponent(course.code)}">
+              <span class="material-symbols-rounded" aria-hidden="true">quiz</span>Start quiz
+            </a>
+            <a class="secondary-action" href="./exam-room.html?course=${encodeURIComponent(course.code)}">
+              <span class="material-symbols-rounded" aria-hidden="true">timer</span>Exam room
+            </a>
+          </div>
+        </div>
+      `;
+
+    case "announcements": {
+      const courseAnnouncements = state.announcements.filter((a) => a.courseCode === course.code);
+      return `
+        <div class="hub-announcements">
+          ${courseAnnouncements.length ? courseAnnouncements.map((a) => `
+            <div class="hub-announcement-item">
+              <strong>${escapeHtml(a.title)}</strong>
+              <p>${escapeHtml(a.body)}</p>
+              <small>${formatDate(a.createdAtMs)}</small>
+            </div>
+          `).join("") : `<p class="empty-group">No announcements for this course yet.</p>`}
+        </div>
+      `;
+    }
+
+    default:
+      return `<p class="empty-group">Select a tab above.</p>`;
+  }
 }
 
 /* RESOURCE BOARD: Renders live uploads, or an honest empty/setup state. */
@@ -1427,7 +1647,7 @@ function renderResourceCards(items = state.resources) {
 }
 
 /* COURSE PAGE: Shows fixed courses and live resource counts by course. */
-function renderCourseGrid() {
+function renderCourseGrid(filteredCourses) {
   const grid = getElement("#courseGrid");
   const count = getElement("#coursePageCount");
   if (!grid) return;
@@ -1442,9 +1662,10 @@ function renderCourseGrid() {
     return;
   }
 
-  if (count) count.textContent = `${firstSemesterCourses.length} courses`;
+  const courses = filteredCourses || firstSemesterCourses;
+  if (count) count.textContent = `${courses.length} course${courses.length === 1 ? "" : "s"}`;
 
-  grid.innerHTML = firstSemesterCourses
+  grid.innerHTML = courses
     .map((course) => {
       const resources = state.resources.filter((resource) => resource.courseCode === course.code);
       const latest = resources.slice(0, 3);
@@ -1565,7 +1786,6 @@ async function loadStudyGuideData() {
     if (summary) summary.innerHTML = `<p class="eyebrow">Study guide</p><h2>Error loading guide</h2><p>Please refresh the page.</p>`;
     state.studyGuide = [];
   }
-}
 }
 
 function splitDefinitionLine(line = "") {
@@ -2460,7 +2680,7 @@ function renderStaffLists() {
   }
 }
 
-/* ADMIN DASHBOARD: Card-based landing with welcome greeting, summary metrics, and preview cards. */
+/* ADMIN DASHBOARD: Card-based landing with welcome greeting, summary metrics, site usage, and streak leaderboard. */
 function renderAdminDashboard() {
   const greeting = getElement("#adminGreeting");
   const summaryGrid = getElement("#adminSummaryGrid");
@@ -2474,47 +2694,79 @@ function renderAdminDashboard() {
     greeting.textContent = timeGreeting;
   }
 
+  /* Compute metrics */
+  const resources = state.resources || [];
+  const members = state.members || [];
+  const suggestions = state.suggestions || [];
+  const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  const dayAgo = Date.now() - 24 * 60 * 60 * 1000;
+  const totalResources = resources.length;
+  const totalMembers = members.length;
+  const pendingSuggestions = suggestions.filter((s) => s.status === "pending").length;
+  const uploadsThisWeek = resources.filter((r) => Number(r.createdAtMs || 0) >= weekAgo).length;
+
+  const quizAttempts = state.quizAttempts || [];
+  const studyEvents = state.studyEvents || [];
+  const totalQuizzes = quizAttempts.filter((a) => a.mode === "practice").length;
+  const totalExams = quizAttempts.filter((a) => a.mode === "exam").length;
+  const totalQuestions = quizAttempts.reduce((sum, a) => sum + Number(a.questionCount || 0), 0);
+  const totalScore = quizAttempts.reduce((sum, a) => sum + Number(a.score || 0), 0);
+  const classAvg = totalQuestions ? Math.round((totalScore / totalQuestions) * 100) : 0;
+
+  const activeToday = new Set(studyEvents.filter((e) => e.createdAtMs >= dayAgo).map((e) => e.memberId)).size;
+  const activeWeek = new Set(studyEvents.filter((e) => e.createdAtMs >= weekAgo).map((e) => e.memberId)).size;
+  const topStreak = members.reduce((best, m) => Math.max(best, getMemberStreak(m.id)), 0);
+  const topStreakMember = members.find((m) => getMemberStreak(m.id) === topStreak);
+  const totalStudyMinutes = Math.round(quizAttempts.reduce((sum, a) => sum + Number(a.durationSeconds || 0), 0) / 60);
+
   /* Summary cards */
   if (summaryGrid) {
-    const resources = state.resources || [];
-    const members = state.members || [];
-    const suggestions = state.suggestions || [];
-    const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
-    const totalResources = resources.length;
-    const totalMembers = members.length;
-    const totalSuggestions = suggestions.length;
-    const pendingSuggestions = suggestions.filter((s) => s.status === "pending").length;
-    const uploadsThisWeek = resources.filter((r) => Number(r.createdAtMs || 0) >= weekAgo).length;
-
     summaryGrid.innerHTML = `
-      <article class="metric-card">
-        <span>${totalResources}</span>
-        <small>Total resources</small>
-      </article>
       <article class="metric-card">
         <span>${totalMembers}</span>
         <small>Class members</small>
       </article>
       <article class="metric-card">
-        <span>${pendingSuggestions}</span>
-        <small>Pending suggestions</small>
+        <span>${activeToday}</span>
+        <small>Active today</small>
       </article>
       <article class="metric-card">
-        <span>${uploadsThisWeek}</span>
-        <small>Uploaded this week</small>
+        <span>${activeWeek}</span>
+        <small>Active this week</small>
+      </article>
+      <article class="metric-card">
+        <span>${topStreak}d</span>
+        <small>${topStreakMember ? topStreakMember.name : "top streak"}</small>
+      </article>
+      <article class="metric-card">
+        <span>${totalQuizzes + totalExams}</span>
+        <small>Quiz + exam attempts</small>
+      </article>
+      <article class="metric-card">
+        <span>${classAvg}%</span>
+        <small>Class average</small>
       </article>
     `;
   }
 
-  /* Preview cards for each section */
-  const resources = state.resources || [];
-  const members = state.members || [];
-  const suggestions = state.suggestions || [];
-  const pendingSuggestions = suggestions.filter((s) => s.status === "pending").length;
-  const newSuggestions = suggestions.filter((s) => s.createdAtMs > Date.now() - 7 * 24 * 60 * 60 * 1000).length;
-  const recentUploads = resources.filter((r) => Number(r.createdAtMs || 0) > Date.now() - 7 * 24 * 60 * 60 * 1000).length;
-
+  /* Preview cards */
   const coursesWithResources = new Set(resources.map((r) => r.courseCode).filter(Boolean)).size;
+  const recentUploads = resources.filter((r) => Number(r.createdAtMs || 0) > weekAgo).length;
+  const newSuggestions = suggestions.filter((s) => s.createdAtMs > weekAgo).length;
+
+  /* Streak leaderboard (top 5) */
+  const streakBoard = members
+    .map((m) => ({ member: m, streak: getMemberStreak(m.id) }))
+    .filter((e) => e.streak > 0)
+    .sort((a, b) => b.streak - a.streak)
+    .slice(0, 5);
+
+  /* Quiz leaderboard (top 5) */
+  const quizBoard = members
+    .map((m) => ({ member: m, summary: summarizeMemberStudy(m.id) }))
+    .filter((e) => e.summary.attemptCount > 0)
+    .sort((a, b) => b.summary.attemptCount - a.summary.attemptCount)
+    .slice(0, 5);
 
   cardGrid.innerHTML = `
     <article class="admin-card">
@@ -2523,24 +2775,11 @@ function renderAdminDashboard() {
         <h3>Upload</h3>
       </div>
       <div class="admin-card-body">
-        <strong>${recentUploads}</strong> uploaded this week &middot; <strong>${resources.length}</strong> total
+        <strong>${recentUploads}</strong> uploaded this week &middot; <strong>${totalResources}</strong> total
       </div>
       <div class="admin-card-footer">
-        <span class="admin-card-stat">Add slides or files</span>
+        <span class="admin-card-stat">${coursesWithResources} courses covered</span>
         <a class="ghost-action compact-action" href="#staffUpload" data-staff-tab="staffUpload">View All</a>
-      </div>
-    </article>
-    <article class="admin-card">
-      <div class="admin-card-header">
-        <span class="material-symbols-rounded" aria-hidden="true">campaign</span>
-        <h3>Announcements</h3>
-      </div>
-      <div class="admin-card-body">
-        Post class news, set priority, keep members informed.
-      </div>
-      <div class="admin-card-footer">
-        <span class="admin-card-stat"></span>
-        <a class="ghost-action compact-action" href="#staffNews" data-staff-tab="staffNews">View All</a>
       </div>
     </article>
     <article class="admin-card">
@@ -2549,24 +2788,54 @@ function renderAdminDashboard() {
         <h3>Members</h3>
       </div>
       <div class="admin-card-body">
-        <strong>${members.length}</strong> registered members &middot; Manage status and access.
+        <strong>${totalMembers}</strong> registered &middot; <strong>${activeWeek}</strong> active this week
       </div>
       <div class="admin-card-footer">
-        <span class="admin-card-stat">${members.filter((m) => m.status === "active").length} active</span>
+        <span class="admin-card-stat">${activeToday} online today</span>
         <a class="ghost-action compact-action" href="#staffMembers" data-staff-tab="staffMembers">View All</a>
       </div>
     </article>
     <article class="admin-card">
       <div class="admin-card-header">
-        <span class="material-symbols-rounded" aria-hidden="true">manage_search</span>
-        <h3>Resources</h3>
+        <span class="material-symbols-rounded" aria-hidden="true">quiz</span>
+        <h3>Quiz & Exam</h3>
       </div>
       <div class="admin-card-body">
-        <strong>${coursesWithResources}</strong> courses with resources &middot; Manage and remove content.
+        <strong>${totalQuizzes}</strong> quiz &middot; <strong>${totalExams}</strong> exam &middot; <strong>${classAvg}%</strong> avg
       </div>
       <div class="admin-card-footer">
-        <span class="admin-card-stat">${resources.length} files</span>
-        <a class="ghost-action compact-action" href="#staffManage" data-staff-tab="staffManage">View All</a>
+        <span class="admin-card-stat">${totalStudyMinutes} min tracked</span>
+        <a class="ghost-action compact-action" href="#staffStudyAnalytics" data-staff-tab="staffStudyAnalytics">View All</a>
+      </div>
+    </article>
+    <article class="admin-card">
+      <div class="admin-card-header">
+        <span class="material-symbols-rounded" aria-hidden="true">local_fire_department</span>
+        <h3>Streak Board</h3>
+      </div>
+      <div class="admin-card-body">
+        ${streakBoard.length
+          ? streakBoard.map((e, i) => `<strong>${i + 1}.</strong> ${escapeHtml(e.member.name)} — ${e.streak}d`).join("<br>")
+          : "No active streaks yet"}
+      </div>
+      <div class="admin-card-footer">
+        <span class="admin-card-stat">Top: ${topStreak} days</span>
+        <a class="ghost-action compact-action" href="#staffStudyAnalytics" data-staff-tab="staffStudyAnalytics">Full Board</a>
+      </div>
+    </article>
+    <article class="admin-card">
+      <div class="admin-card-header">
+        <span class="material-symbols-rounded" aria-hidden="true">leaderboard</span>
+        <h3>Most Active Quiz Users</h3>
+      </div>
+      <div class="admin-card-body">
+        ${quizBoard.length
+          ? quizBoard.map((e, i) => `<strong>${i + 1}.</strong> ${escapeHtml(e.member.name)} — ${e.summary.attemptCount} attempts`).join("<br>")
+          : "No quiz attempts yet"}
+      </div>
+      <div class="admin-card-footer">
+        <span class="admin-card-stat">${totalQuizzes + totalExams} total attempts</span>
+        <a class="ghost-action compact-action" href="#staffStudyAnalytics" data-staff-tab="staffStudyAnalytics">View All</a>
       </div>
     </article>
     <article class="admin-card">
@@ -2580,19 +2849,6 @@ function renderAdminDashboard() {
       <div class="admin-card-footer">
         <span class="admin-card-stat">${suggestions.length} total</span>
         <a class="ghost-action compact-action" href="#staffSuggestions" data-staff-tab="staffSuggestions">View All</a>
-      </div>
-    </article>
-    <article class="admin-card">
-      <div class="admin-card-header">
-        <span class="material-symbols-rounded" aria-hidden="true">analytics</span>
-        <h3>Study Analytics</h3>
-      </div>
-      <div class="admin-card-body">
-        Quiz attempts, leaderboard, topic performance, and member history.
-      </div>
-      <div class="admin-card-footer">
-        <span class="admin-card-stat">Track engagement</span>
-        <a class="ghost-action compact-action" href="#staffStudyAnalytics" data-staff-tab="staffStudyAnalytics">View All</a>
       </div>
     </article>
   `;
@@ -2970,6 +3226,7 @@ function renderAll() {
       renderStaffStudyAnalytics();
   renderAdminDashboard();
   renderStudyDashboard();
+  renderNextLecture();
 }
 
 /* SEARCH BEHAVIOR: Filters live uploads first, then course cards if no uploads exist. */
@@ -2995,6 +3252,125 @@ function connectSearch() {
 
     renderResourceCards(matches);
   });
+}
+
+/* COURSE SEARCH & FILTER: Filters the course grid by search query and type chip. */
+function connectCourseFilters() {
+  const input = getElement("#courseSearch");
+  const chipsWrapper = getElement("#courseFilters");
+  if (!input && !chipsWrapper) return;
+
+  let query = "";
+  let filter = "all";
+
+  function applyFilter() {
+    const matches = firstSemesterCourses.filter((course) => {
+      const matchesQuery =
+        !query || `${course.code} ${course.title} ${course.type}`.toLowerCase().includes(query);
+      const matchesFilter =
+        filter === "all" || course.type.toLowerCase().includes(filter);
+      return matchesQuery && matchesFilter;
+    });
+    renderCourseGrid(matches);
+  }
+
+  if (input) {
+    input.addEventListener("input", () => {
+      query = input.value.trim().toLowerCase();
+      applyFilter();
+    });
+  }
+
+  if (chipsWrapper) {
+    chipsWrapper.addEventListener("click", (event) => {
+      const chip = event.target.closest(".chip");
+      if (!chip) return;
+      chipsWrapper.querySelectorAll(".chip").forEach((c) => c.classList.remove("active"));
+      chip.classList.add("active");
+      filter = chip.dataset.filter || "all";
+      applyFilter();
+    });
+  }
+}
+
+/* NEXT LECTURE: Dashboard card showing the upcoming class with countdown + slide status. */
+function renderNextLecture() {
+  const card = getElement("#nextLectureCard");
+  const titleEl = getElement("#nextLectureTitle");
+  const timeEl = getElement("#nextLectureTime");
+  const timerEl = getElement("#nextLectureTimer");
+  const venueEl = getElement("#nextLectureVenue");
+  const statusEl = getElement("#nextLectureStatus");
+  const linkEl = getElement("#nextLectureLink");
+  if (!card || !titleEl) return;
+
+  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const now = new Date();
+  const todayName = days[now.getDay()];
+
+  const todaySchedule = MOCK_SCHEDULE.filter((item) => {
+    const itemDay = days.indexOf(item.day);
+    const itemDate = new Date(now);
+    itemDate.setDate(now.getDate() + (itemDay - now.getDay() + 7) % 7);
+    const [h, m, s] = item.start_time.split(":").map(Number);
+    itemDate.setHours(h, m, s, 0);
+    return item.day === todayName && itemDate > now;
+  });
+
+  let nextItem = todaySchedule.sort((a, b) => a.start_time.localeCompare(b.start_time))[0];
+
+  if (!nextItem) {
+    for (let offset = 1; offset <= 7; offset++) {
+      const nextDate = new Date(now);
+      nextDate.setDate(now.getDate() + offset);
+      const nextDayName = days[nextDate.getDay()];
+      const nextDaySchedule = MOCK_SCHEDULE.filter((item) => item.day === nextDayName);
+      if (nextDaySchedule.length) {
+        nextItem = nextDaySchedule.sort((a, b) => a.start_time.localeCompare(b.start_time))[0];
+        nextItem._targetDate = nextDate;
+        break;
+      }
+    }
+  }
+
+  if (!nextItem) {
+    card.hidden = true;
+    return;
+  }
+
+  const itemDay = days.indexOf(nextItem.day);
+  const targetDate = nextItem._targetDate || new Date(now);
+  if (!nextItem._targetDate) {
+    targetDate.setDate(now.getDate() + (itemDay - now.getDay() + 7) % 7);
+  }
+  const [h, m, s] = nextItem.start_time.split(":").map(Number);
+  targetDate.setHours(h, m, s, 0);
+
+  const diff = Math.max(0, Math.floor((targetDate - now) / 1000));
+  const hrs = String(Math.floor(diff / 3600)).padStart(2, "0");
+  const mins = String(Math.floor((diff % 3600) / 60)).padStart(2, "0");
+  const secs = String(diff % 60).padStart(2, "0");
+
+  card.hidden = false;
+  titleEl.textContent = `${nextItem.course_code} - ${nextItem.course_title}`;
+  timeEl.textContent = `${nextItem.start_time.slice(0, 5)} - ${nextItem.end_time.slice(0, 5)}`;
+  if (venueEl) venueEl.textContent = nextItem.venue;
+  timerEl.textContent = `${hrs}:${mins}:${secs}`;
+
+  if (statusEl) {
+    if (nextItem.slides_available) {
+      statusEl.innerHTML = '<span class="tt-badge">Slides Available</span>';
+    } else {
+      statusEl.innerHTML = '<span class="tt-badge missing">Slides not uploaded</span>';
+    }
+    if (nextItem.quiz_available) {
+      statusEl.innerHTML += '<span class="tt-badge">Quiz Ready</span>';
+    }
+  }
+
+  if (linkEl) {
+    linkEl.href = `./courses.html?course=${encodeURIComponent(nextItem.course_code)}`;
+  }
 }
 
 function populateCourseSelects() {
@@ -3493,13 +3869,31 @@ function connectRepForms() {
   if (uploadForm) {
     const autoTitleButton = ensureAiDetailsButton(uploadForm, uploadStatus);
     const fileInput = uploadForm.querySelector('input[name="file"]');
+    const typeToggle = uploadForm.querySelector('[name="uploadType"]');
+
+    // Upload type toggle: show resource fields or lecture fields
+    if (typeToggle) {
+      typeToggle.addEventListener("change", () => {
+        const isLecture = typeToggle.value === "lecture";
+        const resourceFields = getElement("#uploadFieldsResource");
+        const lectureFields = getElement("#uploadFieldsLecture");
+        if (resourceFields) resourceFields.hidden = isLecture;
+        if (lectureFields) lectureFields.hidden = !isLecture;
+        // Toggle required on course selects
+        const resourceCourse = uploadForm.querySelector('[name="courseCode"]');
+        const lectureCourse = uploadForm.querySelector('[name="lectureCourse"]');
+        if (resourceCourse) resourceCourse.required = !isLecture;
+        if (lectureCourse) lectureCourse.required = isLecture;
+      });
+    }
 
     fileInput?.addEventListener("change", () => {
       const formData = new FormData(uploadForm);
       const file = formData.get("file");
+      const courseCode = String(formData.get("courseCode") || formData.get("lectureCourse") || "");
       const possibleDuplicate = findPossibleDuplicate({
-        courseCode: String(formData.get("courseCode")),
-        title: String(formData.get("title") || file?.name || ""),
+        courseCode,
+        title: String(formData.get("title") || formData.get("lectureTopic") || file?.name || ""),
         file,
       });
       if (possibleDuplicate && uploadStatus) {
@@ -3511,7 +3905,9 @@ function connectRepForms() {
       autoTitleButton.addEventListener("click", async () => {
         const formData = new FormData(uploadForm);
         const file = formData.get("file");
-        const course = findCourse(String(formData.get("courseCode")));
+        const isLecture = formData.get("uploadType") === "lecture";
+        const courseCode = String(formData.get("courseCode") || formData.get("lectureCourse") || "");
+        const course = findCourse(courseCode);
 
         if (!(file instanceof File) || !file.name) {
           uploadStatus.textContent = "Choose a file first, then use Auto-title.";
@@ -3523,17 +3919,21 @@ function connectRepForms() {
 
         try {
           const details = await state.backend.generateResourceDetails({
-            courseCode: String(formData.get("courseCode")),
+            courseCode,
             courseTitle: course?.title || "",
             fileName: file.name,
-            existingTitle: String(formData.get("title") || ""),
+            existingTitle: String(formData.get("title") || formData.get("lectureTopic") || ""),
             existingNote: String(formData.get("note") || ""),
           });
 
-          uploadForm.elements.title.value = details.title || uploadForm.elements.title.value;
-          uploadForm.elements.note.value = details.context || uploadForm.elements.note.value;
-          if (details.type && [...uploadForm.elements.type.options].some((option) => option.value === details.type)) {
-            uploadForm.elements.type.value = details.type;
+          if (!isLecture) {
+            const titleInput = uploadForm.elements.title;
+            const noteInput = uploadForm.elements.note;
+            if (titleInput) titleInput.value = details.title || titleInput.value;
+            if (noteInput) noteInput.value = details.context || noteInput.value;
+          } else {
+            const topicInput = uploadForm.elements.lectureTopic;
+            if (topicInput) topicInput.value = details.title || topicInput.value;
           }
 
           uploadStatus.textContent = "Auto-title filled. Review before uploading.";
@@ -3549,38 +3949,74 @@ function connectRepForms() {
       event.preventDefault();
       const formData = new FormData(uploadForm);
       const file = formData.get("file");
-      const course = findCourse(String(formData.get("courseCode")));
-      const possibleDuplicate = findPossibleDuplicate({
-        courseCode: String(formData.get("courseCode")),
-        title: String(formData.get("title")),
-        file,
-      });
+      const isLecture = formData.get("uploadType") === "lecture";
+      const courseCode = String(formData.get("courseCode") || formData.get("lectureCourse") || "");
+      const course = findCourse(courseCode);
 
-      if (possibleDuplicate && !confirm(`This looks similar to "${possibleDuplicate.title}". Upload anyway?`)) {
-        uploadStatus.textContent = "Upload cancelled so you can check the existing file first.";
+      if (!file || !(file instanceof File)) {
+        uploadStatus.textContent = "Select a file to upload.";
         return;
       }
 
       try {
         uploadStatus.textContent = "Uploading...";
-        const result = await state.backend.uploadResource(
-          {
-            title: String(formData.get("title")).trim(),
-            courseCode: String(formData.get("courseCode")),
+
+        if (isLecture) {
+          // Weekly Lecture upload
+          const lectureData = {
+            title: String(formData.get("lectureTopic") || "").trim(),
+            courseCode: courseCode,
             courseTitle: course?.title || "",
-            type: String(formData.get("type")),
-            note: String(formData.get("note")).trim(),
-          },
-          file,
-          (progress) => {
+            type: "Weekly Lecture",
+            note: `Week ${formData.get("week")} — ${formData.get("lectureDate")}`,
+            week: String(formData.get("week")),
+            lectureDate: String(formData.get("lectureDate")),
+            lectureTopic: String(formData.get("lectureTopic") || "").trim(),
+            lectureVenue: String(formData.get("lectureVenue") || "").trim(),
+          };
+
+          const result = await state.backend.uploadResource(lectureData, file, (progress) => {
             uploadStatus.textContent = `Uploading... ${progress}%`;
+          });
+
+          uploadForm.reset();
+          populateCourseSelects();
+          uploadStatus.textContent = result?.notification?.ok
+            ? "Lecture uploaded. Instant alert sent."
+            : "Lecture uploaded. The instant alert could not be sent, but the file is already visible in the portal.";
+        } else {
+          // Standard resource upload
+          const possibleDuplicate = findPossibleDuplicate({
+            courseCode,
+            title: String(formData.get("title")),
+            file,
+          });
+
+          if (possibleDuplicate && !confirm(`This looks similar to "${possibleDuplicate.title}". Upload anyway?`)) {
+            uploadStatus.textContent = "Upload cancelled so you can check the existing file first.";
+            return;
           }
-        );
-        uploadForm.reset();
-        populateCourseSelects();
-        uploadStatus.textContent = result?.notification?.ok
-          ? "Upload saved. Instant alert sent."
-          : "Upload saved. The instant alert could not be sent, but the file is already visible in the portal.";
+
+          const result = await state.backend.uploadResource(
+            {
+              title: String(formData.get("title")).trim(),
+              courseCode,
+              courseTitle: course?.title || "",
+              type: String(formData.get("type")),
+              note: String(formData.get("note")).trim(),
+            },
+            file,
+            (progress) => {
+              uploadStatus.textContent = `Uploading... ${progress}%`;
+            }
+          );
+
+          uploadForm.reset();
+          populateCourseSelects();
+          uploadStatus.textContent = result?.notification?.ok
+            ? "Upload saved. Instant alert sent."
+            : "Upload saved. The instant alert could not be sent, but the file is already visible in the portal.";
+        }
       } catch (error) {
         uploadStatus.textContent = error.message || "Upload failed.";
       }
@@ -4774,6 +5210,161 @@ function connectMembersPdfDownload() {
   });
 }
 
+/* ANALYTICS PDF: Exports study analytics (leaderboard + streaks + quiz/exam usage) as a PDF. */
+function createAnalyticsPdfBlob() {
+  const pageWidth = 842;
+  const pageHeight = 595;
+  const margin = 34;
+  const tableWidth = pageWidth - margin * 2;
+  const rowHeight = 22;
+  const rowsPerPage = 18;
+
+  const summaries = state.members
+    .map((member) => ({ member, summary: summarizeMemberStudy(member.id) }))
+    .sort((a, b) => b.summary.durationSeconds - a.summary.durationSeconds || b.summary.percent - a.summary.percent);
+
+  const totalQuestions = state.quizAttempts.reduce((sum, a) => sum + Number(a.questionCount || 0), 0);
+  const totalScore = state.quizAttempts.reduce((sum, a) => sum + Number(a.score || 0), 0);
+  const totalDuration = state.quizAttempts.reduce((sum, a) => sum + Number(a.durationSeconds || 0), 0);
+  const quizOnly = state.quizAttempts.filter((a) => a.mode === "practice").length;
+  const examOnly = state.quizAttempts.filter((a) => a.mode === "exam").length;
+  const activeWeek = new Set(
+    state.studyEvents.filter((e) => Date.now() - e.createdAtMs < 7 * 24 * 60 * 60 * 1000).map((e) => e.memberId)
+  ).size;
+  const topStreak = state.members.reduce((best, m) => Math.max(best, getMemberStreak(m.id)), 0);
+  const topStreakMember = state.members.find((m) => getMemberStreak(m.id) === topStreak);
+
+  const columns = [
+    { label: "No.", width: 34, value: (_, i) => String(i + 1), max: 4 },
+    { label: "Name", width: 180, value: (s) => s.member.name, max: 28 },
+    { label: "Matric", width: 90, value: (s) => s.member.matricNumber, max: 14 },
+    { label: "Quiz", width: 44, value: (s) => String(s.summary.quizCount), max: 5 },
+    { label: "Exam", width: 44, value: (s) => String(s.summary.examCount), max: 5 },
+    { label: "Score", width: 56, value: (s) => `${s.summary.percent || 0}%`, max: 8 },
+    { label: "Time", width: 68, value: (s) => formatDuration(s.summary.durationSeconds), max: 10 },
+    { label: "Streak", width: 56, value: (s) => `${s.summary.streak}d`, max: 6 },
+    { label: "Last attempt", width: tableWidth - 572, value: (s) => s.summary.lastAttemptAtMs ? formatDate(s.summary.lastAttemptAtMs) : "None", max: 20 },
+  ];
+
+  const pages = [];
+
+  /* Page 1: Summary header + leaderboard */
+  for (let start = 0; start < summaries.length || (start === 0 && summaries.length === 0); start += rowsPerPage) {
+    const pageRows = summaries.slice(start, start + rowsPerPage);
+    const pageNumber = pages.length + 1;
+    const totalPages = Math.ceil(Math.max(summaries.length, 1) / rowsPerPage) || 1;
+    const tableTop = 468;
+    const headerBottom = tableTop - 26;
+    const operations = [
+      "1 1 1 rg 0 0 842 595 re f",
+      "0.09 0.11 0.12 rg",
+      pdfText(margin, 548, "PhysioK29 Study Analytics", 20, "F2"),
+      "0.39 0.44 0.42 rg",
+      pdfText(margin, 528, `Quiz attempts: ${quizOnly}  |  Exam attempts: ${examOnly}  |  Class avg: ${formatScorePercent(totalScore, totalQuestions)}  |  Active this week: ${activeWeek}  |  Top streak: ${topStreak}d${topStreakMember ? ` (${topStreakMember.name})` : ""}`, 9),
+      pdfText(margin, 512, `Page ${pageNumber} of ${totalPages}  |  Generated from staff portal`, 9),
+      "0.88 0.96 0.93 rg",
+      `${margin} ${headerBottom} ${tableWidth} 26 re f`,
+      "0.82 0.80 0.74 RG",
+      `${margin} ${headerBottom} ${tableWidth} 26 re S`,
+    ];
+
+    let cursorX = margin;
+    columns.forEach((column) => {
+      operations.push("0.09 0.11 0.12 rg", pdfText(cursorX + 7, tableTop - 17, column.label, 9, "F2"));
+      cursorX += column.width;
+    });
+
+    pageRows.forEach((item, rowIndex) => {
+      const rowTop = headerBottom - rowIndex * rowHeight;
+      const rowBottom = rowTop - rowHeight;
+      operations.push("0.82 0.80 0.74 RG", pdfLine(margin, rowBottom, margin + tableWidth, rowBottom));
+      cursorX = margin;
+      columns.forEach((column) => {
+        const cell = fitPdfText(column.value(item, start + rowIndex), column.max);
+        operations.push("0.09 0.11 0.12 rg", pdfText(cursorX + 7, rowBottom + 8, cell, 8.5));
+        cursorX += column.width;
+      });
+    });
+
+    if (!pageRows.length) {
+      operations.push("0.39 0.44 0.42 rg", pdfText(margin + 7, headerBottom - 18, "No quiz or exam activity recorded yet.", 10));
+    }
+
+    operations.push(
+      "0.39 0.44 0.42 rg",
+      pdfText(margin, 44, "Private analytics. Keep within Physiology 2k29 staff use.", 9),
+      pdfText(pageWidth - 132, 44, "PhysioK29", 9, "F2")
+    );
+    pages.push(operations.join("\n"));
+  }
+
+  const maxObjectId = 4 + pages.length * 2;
+  const regularFontId = 3;
+  const boldFontId = 4;
+  const objects = [
+    { id: 1, body: "<< /Type /Catalog /Pages 2 0 R >>" },
+    {
+      id: 2,
+      body: `<< /Type /Pages /Kids [${pages.map((_, index) => `${5 + index * 2} 0 R`).join(" ")}] /Count ${pages.length} >>`,
+    },
+    { id: regularFontId, body: "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>" },
+    { id: boldFontId, body: "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>" },
+  ];
+
+  pages.forEach((content, index) => {
+    const pageId = 5 + index * 2;
+    const contentId = pageId + 1;
+    objects.push({
+      id: pageId,
+      body: `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 ${regularFontId} 0 R /F2 ${boldFontId} 0 R >> >> /Contents ${contentId} 0 R >>`,
+    });
+    objects.push({
+      id: contentId,
+      body: `<< /Length ${content.length} >>\nstream\n${content}\nendstream`,
+    });
+  });
+
+  const offsets = new Array(maxObjectId + 1).fill(0);
+  let pdf = "%PDF-1.4\n";
+  objects
+    .sort((a, b) => a.id - b.id)
+    .forEach((object) => {
+      offsets[object.id] = pdf.length;
+      pdf += `${object.id} 0 obj\n${object.body}\nendobj\n`;
+    });
+
+  const xrefStart = pdf.length;
+  pdf += `xref\n0 ${maxObjectId + 1}\n0000000000 65535 f \n`;
+  for (let id = 1; id <= maxObjectId; id += 1) {
+    pdf += `${String(offsets[id]).padStart(10, "0")} 00000 n \n`;
+  }
+  pdf += `trailer\n<< /Size ${maxObjectId + 1} /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF`;
+
+  return new Blob([pdf], { type: "application/pdf" });
+}
+
+function connectAnalyticsPdfDownload() {
+  const button = getElement("#downloadAnalyticsPdf");
+  if (!button) return;
+
+  button.addEventListener("click", () => {
+    if (!state.quizAttempts.length && !state.studyEvents.length) {
+      showToast("No quiz or exam activity to export yet.", "error");
+      return;
+    }
+    const blob = createAnalyticsPdfBlob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `physiok29-analytics-${new Date().toISOString().slice(0, 10)}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    showToast("Analytics PDF is downloading.");
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  });
+}
+
 /* REALTIME DATA: Subscribes to live resource/announcement updates. */
 function connectRealtimeData() {
   const unsubscribeResources = state.backend.watchResources(
@@ -4809,29 +5400,305 @@ function startPublicRealtimeData() {
 }
 
 /* TIMETABLE DOWNLOAD: No visible button remains after exams; this guards older cached markup. */
+/* SEMESTER SCHEDULE PDF: Student-handbook-style timetable for A4 printing. */
+function createSemesterSchedulePdfBlob() {
+  if (!MOCK_SCHEDULE.length) throw new Error("No schedule data available.");
+
+  const pw = 595, ph = 842, m = 48;
+  const daysOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  const items = MOCK_SCHEDULE.filter((i) => daysOrder.includes(i.day) && i.week === 1)
+    .sort((a, b) => daysOrder.indexOf(a.day) - daysOrder.indexOf(b.day) || a.start_time.localeCompare(b.start_time));
+
+  const pageContent = () => {
+    const ops = [];
+    // White page
+    ops.push("1 1 1 rg 0 0 595 842 re f");
+
+    // ── Header ──
+    // University logo placeholder
+    ops.push("0.09 0.11 0.12 rg");
+    ops.push(pdfText(m, ph - m - 8, "UNIVERSITY OF IBADAN", 9));
+    ops.push(pdfText(m, ph - m - 20, "Physiology Class 2K29", 9));
+    // PhysioK29 on right
+    ops.push(pdfText(pw - m - 100, ph - m - 8, "PHYSIOK29", 11, "F2"));
+    ops.push(pdfText(pw - m - 100, ph - m - 20, "physiok29.vercel.app", 7));
+
+    // Green divider
+    const divY = ph - m - 32;
+    ops.push("0.16 0.62 0.50 RG 2 w");
+    ops.push(`${m} ${divY} ${pw - m * 2} ${divY} re S`);
+    ops.push("0.5 w 0.82 0.80 0.74 RG");
+    ops.push(`${m} ${divY - 2} ${pw - m * 2} ${divY - 2} re S`);
+
+    // ── Title ──
+    const titleY = divY - 48;
+    ops.push("0.09 0.11 0.12 rg");
+    ops.push(pdfText(m, titleY, "Second Semester", 18, "F2"));
+    ops.push(pdfText(m, titleY - 24, "Teaching Timetable", 22, "F2"));
+    ops.push("0.39 0.44 0.42 rg");
+    ops.push(pdfText(m, titleY - 44, "2025/2026 Academic Session", 10));
+
+    // ── Table ──
+    const colDefs = [
+      { label: "Day", w: 68 },
+      { label: "Time", w: 88 },
+      { label: "Course Code", w: 90 },
+      { label: "Course Title", w: 165 },
+      { label: "Venue", w: 100 },
+    ];
+    const totalW = colDefs.reduce((s, c) => s + c.w, 0);
+    let xOff = m + (pw - m * 2 - totalW) / 2; // center table
+
+    const thY = titleY - 82;
+    const thH = 26;
+    const rowH = 24;
+
+    // Table header bg
+    ops.push("0.94 0.97 0.95 rg");
+    ops.push(`${xOff} ${thY - thH} ${totalW} ${thH} re f`);
+    ops.push("0.16 0.62 0.50 RG 0.5 w");
+    ops.push(`${xOff} ${thY - thH} ${totalW} ${thH} re S`);
+
+    let cx = xOff;
+    colDefs.forEach((col) => {
+      ops.push("0.09 0.11 0.12 rg");
+      ops.push(pdfText(cx + 8, thY - 10, col.label, 8, "F2"));
+      cx += col.w;
+    });
+
+    // Table rows
+    items.forEach((item, ri) => {
+      const ry = thY - thH - (ri + 1) * rowH;
+      // day separator
+      if (ri === 0 || items[ri - 1].day !== item.day) {
+        ops.push("0.82 0.80 0.74 RG 0.3 w");
+        ops.push(`${xOff} ${ry} ${xOff + totalW} ${ry} re S`);
+      }
+
+      const rowVals = [item.day, `${item.start_time.slice(0, 5)}-${item.end_time.slice(0, 5)}`, item.course_code, `  ${item.course_title}`, item.venue];
+      cx = xOff;
+      ops.push("0.09 0.11 0.12 rg");
+      rowVals.forEach((val, ci) => {
+        ops.push(pdfText(cx + 8, ry + 8, fitPdfText(val, 32), 8));
+        cx += colDefs[ci].w;
+      });
+
+      // row line
+      ops.push("0.82 0.80 0.74 RG 0.2 w");
+      ops.push(`${xOff} ${ry} ${xOff + totalW} ${ry} re S`);
+    });
+
+    // ── Footer ──
+    const footerY = 48;
+    ops.push("0.39 0.44 0.42 rg");
+    ops.push(pdfText(m, footerY, "Generated by PhysioK29", 8));
+    ops.push(pdfText(m, footerY - 12, "https://physiok29.vercel.app", 7));
+
+    // QR placeholder
+    ops.push("0.94 0.97 0.95 rg");
+    ops.push(`${pw - m - 54} ${footerY - 4} 48 48 re f`);
+    ops.push("0.82 0.80 0.74 RG 0.3 w");
+    ops.push(`${pw - m - 54} ${footerY - 4} 48 48 re S`);
+    ops.push("0.39 0.44 0.42 rg");
+    ops.push(pdfText(pw - m - 46, footerY + 20, "Scan", 6));
+
+    // Bottom line
+    ops.push("0.82 0.80 0.74 RG 0.3 w");
+    ops.push(`${m} ${footerY + 30} ${pw - m * 2} ${footerY + 30} re S`);
+
+    return ops.join("\n");
+  };
+
+  const content = pageContent();
+  const regularFontId = 3, boldFontId = 4;
+  const objects = [
+    { id: 1, body: "<< /Type /Catalog /Pages 2 0 R >>" },
+    { id: 2, body: "<< /Type /Pages /Kids [5 0 R] /Count 1 >>" },
+    { id: regularFontId, body: "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>" },
+    { id: boldFontId, body: "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>" },
+    { id: 5, body: `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pw} ${ph}] /Resources << /Font << /F1 ${regularFontId} 0 R /F2 ${boldFontId} 0 R >> >> /Contents 6 0 R >>` },
+    { id: 6, body: `<< /Length ${content.length} >>\nstream\n${content}\nendstream` },
+  ];
+
+  const offsets = new Array(7).fill(0);
+  let pdf = "%PDF-1.4\n";
+  objects.forEach((obj) => {
+    offsets[obj.id] = pdf.length;
+    pdf += `${obj.id} 0 obj\n${obj.body}\nendobj\n`;
+  });
+  const xrefStart = pdf.length;
+  pdf += `xref\n0 7\n0000000000 65535 f \n`;
+  for (let i = 1; i <= 6; i++) pdf += `${String(offsets[i]).padStart(10, "0")} 00000 n \n`;
+  pdf += `trailer\n<< /Size 7 /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF`;
+  return new Blob([pdf], { type: "application/pdf" });
+}
+
+/* TIMETABLE RENDERING: Card-based weekly schedule for the timetable page. */
+function renderTodayClasses() {
+  const grid = getElement("#todayClassesGrid");
+  const empty = getElement("#todayEmpty");
+  const now = new Date();
+  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const todayName = days[now.getDay()];
+  if (!grid) return;
+
+  const todayItems = MOCK_SCHEDULE.filter((i) => i.day === todayName && i.week === 1)
+    .sort((a, b) => a.start_time.localeCompare(b.start_time));
+
+  if (!todayItems.length) {
+    grid.innerHTML = "";
+    if (empty) empty.hidden = false;
+    return;
+  }
+  if (empty) empty.hidden = true;
+
+  grid.innerHTML = todayItems.map((item) => {
+    const isNext = todayItems[0] === item;
+    const start = item.start_time.slice(0, 5);
+    const end = item.end_time.slice(0, 5);
+    const badges = [];
+    if (item.slides_available) badges.push('<span class="tt-badge">Slides</span>');
+    else badges.push('<span class="tt-badge missing">No slides</span>');
+    if (item.quiz_available) badges.push('<span class="tt-badge">Quiz</span>');
+    if (isNext) badges.push('<span class="tt-badge next">Up next</span>');
+    return `<a class="tt-card${isNext ? " active" : ""}" href="./courses.html?course=${encodeURIComponent(item.course_code)}">
+      <div class="tt-time">
+        <strong>${start}</strong>
+        <small>${end}</small>
+      </div>
+      <div class="tt-body">
+        <span class="tt-code">${item.course_code}</span>
+        <span class="tt-title">${item.course_title}</span>
+        <span class="tt-venue"><span class="material-symbols-rounded" aria-hidden="true">location_on</span>${item.venue}</span>
+      </div>
+      <div class="tt-badges">${badges.join("")}</div>
+      <span class="material-symbols-rounded tt-card-arrow" aria-hidden="true">chevron_right</span>
+    </a>`;
+  }).join("");
+}
+
+function renderWeekDayStrip() {
+  const strip = getElement("#weekDayStrip");
+  if (!strip) return;
+  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  const now = new Date();
+  const dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  const shortNames = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+  const weekItems = MOCK_SCHEDULE.filter((i) => i.week === 1);
+  const countByDay = {};
+  weekItems.forEach((i) => { countByDay[i.day] = (countByDay[i.day] || 0) + 1; });
+
+  strip.innerHTML = days.map((day, i) => {
+    const isToday = day === dayNames[now.getDay() - 1];
+    const count = countByDay[day] || 0;
+    return `<div class="week-day-chip${isToday ? " today" : ""}" data-day="${day}">
+      <strong>${shortNames[i]}</strong>
+      <small>${count} lecture${count !== 1 ? "s" : ""}</small>
+    </div>`;
+  }).join("");
+
+  // Scroll to today
+  const todayChip = strip.querySelector(".week-day-chip.today");
+  if (todayChip) todayChip.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+}
+
+function renderWeeklySchedule() {
+  const container = getElement("#weeklySchedule");
+  if (!container) return;
+
+  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  const scheduleByDay = {};
+  MOCK_SCHEDULE.filter((i) => i.week === 1).forEach((item) => {
+    if (!scheduleByDay[item.day]) scheduleByDay[item.day] = [];
+    scheduleByDay[item.day].push(item);
+  });
+
+  container.innerHTML = days.map((day) => {
+    const items = (scheduleByDay[day] || []).sort((a, b) => a.start_time.localeCompare(b.start_time));
+    if (!items.length) return "";
+    return `<div class="schedule-day-group">
+      <div class="schedule-day-header">
+        <h3>${day}</h3>
+        <span class="eyebrow">${day.toUpperCase().slice(0, 3)}</span>
+        <span class="schedule-day-divider"></span>
+      </div>
+      <div class="schedule-day-cards">
+        ${items.map((item) => {
+          const badges = [];
+          if (item.slides_available) badges.push('<span class="tt-badge">Slides</span>');
+          if (item.quiz_available) badges.push('<span class="tt-badge">Quiz</span>');
+          return `<a class="tt-card" href="./courses.html?course=${encodeURIComponent(item.course_code)}">
+            <div class="tt-time">
+              <strong>${item.start_time.slice(0, 5)}</strong>
+              <small>${item.end_time.slice(0, 5)}</small>
+            </div>
+            <div class="tt-body">
+              <span class="tt-code">${item.course_code}</span>
+              <span class="tt-title">${item.course_title}</span>
+              <span class="tt-venue"><span class="material-symbols-rounded" aria-hidden="true">location_on</span>${item.venue}</span>
+            </div>
+            <div class="tt-badges">${badges.join("")}</div>
+            <span class="material-symbols-rounded tt-card-arrow" aria-hidden="true">chevron_right</span>
+          </a>`;
+        }).join("")}
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function connectTimetable() {
+  if (document.body.dataset.page !== "timetable") return;
+  const todayPill = getElement("#todayDate");
+  if (todayPill) {
+    todayPill.textContent = new Date().toLocaleDateString("en-NG", {
+      weekday: "long", month: "long", day: "numeric"
+    });
+  }
+  renderTodayClasses();
+  renderWeekDayStrip();
+  renderWeeklySchedule();
+}
+
 function connectTimetableDownload() {
   const button = getElement("#downloadTimetable");
-  if (!button) return;
+  if (button) {
+    button.addEventListener("click", async () => {
+      try {
+        button.disabled = true;
+        const blob = MOCK_SCHEDULE.length ? createSemesterSchedulePdfBlob() : createTimetablePdfBlob();
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = MOCK_SCHEDULE.length ? "physiok29-semester-schedule.pdf" : "physiok29-final-exam-timetable.pdf";
+        link.target = "_blank";
+        link.rel = "noopener";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        showToast("Schedule PDF is downloading.");
+        window.setTimeout(() => URL.revokeObjectURL(url), 30000);
+      } catch (error) {
+        showToast(error.message || "No schedule data available yet.", "error");
+      } finally {
+        button.disabled = false;
+      }
+    });
+  }
 
-  button.addEventListener("click", () => {
-    try {
-      button.disabled = true;
-      const blob = createTimetablePdfBlob();
-      const url = URL.createObjectURL(blob);
+  const imgButton = getElement("#downloadTimetableImage");
+  if (imgButton) {
+    imgButton.addEventListener("click", () => {
       const link = document.createElement("a");
-      link.href = url;
-      link.download = "physiok29-final-exam-timetable.pdf";
+      link.href = "./assets/PhysioK29-Timetable.png";
+      link.download = "PhysioK29-Timetable.png";
       link.target = "_blank";
       link.rel = "noopener";
       document.body.appendChild(link);
       link.click();
       link.remove();
-      showToast("Timetable PDF is downloading.");
-      window.setTimeout(() => URL.revokeObjectURL(url), 30000);
-    } catch (error) {
-      showToast(error.message || "The exam timetable has been cleared.", "error");
-    }
-  });
+      showToast("Timetable image is downloading.");
+    });
+  }
 }
 
 async function init() {
@@ -4847,6 +5714,7 @@ async function init() {
   updateBootLoader("Preparing page tools");
   connectConnectionStatus();
   connectSearch();
+  connectCourseFilters();
   connectStaffPortal(document.body.dataset.portalRole === "admin" ? ["admin"] : ["rep", "admin"]);
   connectRepForms();
   connectGenericBulkUpload();
@@ -4864,10 +5732,13 @@ async function init() {
   connectStudyGuide();
   connectResourceEngagement();
   connectQuizMode();
+  connectTimetable();
   connectTimetableDownload();
   connectMembersPdfDownload();
+  connectAnalyticsPdfDownload();
   window.setInterval(() => {
     renderExamMode();
+    renderNextLecture();
   }, 1000);
   updateBootLoader("Verifying class access");
   const memberReady = await ensureMemberOnboarding();

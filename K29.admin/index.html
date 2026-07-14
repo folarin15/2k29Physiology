@@ -102,6 +102,18 @@
 
         <!-- ADMIN PORTAL COMPONENT: Hidden until the logged-in user has admin role. -->
         <section id="staffPortal" hidden>
+          <!-- ADMIN DASHBOARD: Overview cards + summary metrics -->
+          <section class="content-panel admin-dashboard-panel">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Welcome</p>
+                <h2 id="adminGreeting">Admin Dashboard</h2>
+              </div>
+            </div>
+            <div class="metrics-grid staff-summary-grid" id="adminSummaryGrid"></div>
+            <div class="admin-card-grid" id="adminCardGrid"></div>
+          </section>
+
           <section class="content-panel staff-summary-panel">
             <div class="section-header">
               <div>
@@ -110,6 +122,45 @@
               </div>
             </div>
             <div class="metrics-grid staff-summary-grid" id="staffSummaryGrid"></div>
+          </section>
+
+          <!-- STAFF MONITOR: Resource analytics -->
+          <section class="content-panel staff-monitor-panel">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Resource analytics</p>
+                <h2>Upload monitor</h2>
+              </div>
+            </div>
+            <div class="metrics-grid staff-summary-grid" id="staffMonitorGrid"></div>
+            <div class="staff-monitor-layout">
+              <section class="monitor-courses">
+                <div class="section-header compact-header">
+                  <p class="eyebrow">By course</p>
+                  <h3>Resources per course</h3>
+                </div>
+                <div class="table-wrap">
+                  <table class="timetable-table">
+                    <thead>
+                      <tr>
+                        <th>Code</th>
+                        <th>Title</th>
+                        <th>Files</th>
+                        <th>Latest</th>
+                      </tr>
+                    </thead>
+                    <tbody id="staffMonitorCourseBody"></tbody>
+                  </table>
+                </div>
+              </section>
+              <section class="monitor-feed">
+                <div class="section-header compact-header">
+                  <p class="eyebrow">Recent</p>
+                  <h3>Latest uploads</h3>
+                </div>
+                <div id="staffMonitorFeed"></div>
+              </section>
+            </div>
           </section>
 
           <nav class="staff-section-tabs" aria-label="Admin portal sections">
@@ -134,21 +185,70 @@
               </div>
               <form class="portal-form" id="resourceUploadForm">
                 <label>
-                  Course
-                  <select name="courseCode" data-course-select required></select>
+                  Upload Type
+                  <select name="uploadType" id="uploadTypeSelect" required>
+                    <option value="resource">Study Resource</option>
+                    <option value="lecture">Weekly Lecture</option>
+                  </select>
                 </label>
-                <label>
-                  Type
-                  <select name="type" data-type-select required></select>
-                </label>
-                <label>
-                  Title
-                  <input name="title" type="text" placeholder="e.g. CHM 101 Week 3 Slides" required />
-                </label>
-                <label>
-                  Note
-                  <textarea name="note" placeholder="Short context for students"></textarea>
-                </label>
+
+                <div id="uploadFieldsResource">
+                  <label>
+                    Course
+                    <select name="courseCode" data-course-select required></select>
+                  </label>
+                  <label>
+                    Type
+                    <select name="type" data-type-select required></select>
+                  </label>
+                  <label>
+                    Title
+                    <input name="title" type="text" placeholder="e.g. CHM 101 Week 3 Slides" required />
+                  </label>
+                  <label>
+                    Note
+                    <textarea name="note" placeholder="Short context for students"></textarea>
+                  </label>
+                </div>
+
+                <div id="uploadFieldsLecture" hidden>
+                  <label>
+                    Course
+                    <select name="lectureCourse" data-course-select required></select>
+                  </label>
+                  <label>
+                    Week
+                    <select name="week" required>
+                      <option value="">Select week</option>
+                      <option value="1">Week 1</option>
+                      <option value="2">Week 2</option>
+                      <option value="3">Week 3</option>
+                      <option value="4">Week 4</option>
+                      <option value="5">Week 5</option>
+                      <option value="6">Week 6</option>
+                      <option value="7">Week 7</option>
+                      <option value="8">Week 8</option>
+                      <option value="9">Week 9</option>
+                      <option value="10">Week 10</option>
+                      <option value="11">Week 11</option>
+                      <option value="12">Week 12</option>
+                      <option value="13">Week 13</option>
+                    </select>
+                  </label>
+                  <label>
+                    Lecture Date
+                    <input name="lectureDate" type="date" required />
+                  </label>
+                  <label>
+                    Lecture Topic
+                    <input name="lectureTopic" type="text" placeholder="e.g. Membrane Transport Mechanisms" required />
+                  </label>
+                  <label>
+                    Venue (optional)
+                    <input name="lectureVenue" type="text" placeholder="e.g. Physiology LT" />
+                  </label>
+                </div>
+
                 <label>
                   File
                   <input name="file" type="file" accept=".pdf,.ppt,.pptx,.doc,.docx,.png,.jpg,.jpeg" required />
@@ -257,6 +357,10 @@
                     <option value="">All topics</option>
                   </select>
                 </label>
+                <button class="secondary-action compact-action" type="button" id="downloadAnalyticsPdf">
+                  <span class="material-symbols-rounded" aria-hidden="true">picture_as_pdf</span>
+                  Download PDF
+                </button>
               </div>
             </div>
             <p class="form-help">

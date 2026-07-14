@@ -4085,7 +4085,63 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
     scrollbar-width: none;
   }
 
-  .quick-start-panel {
+.next-lecture-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 180ms, box-shadow 180ms;
+}
+
+.next-lecture-card:hover {
+  border-color: var(--mint);
+  box-shadow: var(--soft-shadow);
+}
+
+.next-lecture-card > .material-symbols-rounded:first-child {
+  font-size: 1.6rem;
+  color: var(--mint-dark);
+}
+
+.next-lecture-card > div:first-of-type {
+  flex: 1;
+  display: grid;
+  gap: 2px;
+}
+
+.next-lecture-card small {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.next-lecture-card strong {
+  font-weight: 560;
+}
+
+.countdown-timer {
+  font-size: 1.3rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  color: var(--mint-dark);
+  font-family: "Instrument Sans", monospace;
+  min-width: 80px;
+  text-align: right;
+}
+
+.next-lecture-card > div:last-child small {
+  display: block;
+  text-align: right;
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.quick-start-panel {
     display: flex;
     gap: 10px;
     margin-inline: -12px;
@@ -5474,4 +5530,1254 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
   height: auto;
   display: block;
   object-fit: cover;
+}
+
+ / *   S E M E S T E R   P L A N N E R :   N e w   t i m e t a b l e   a n d   w e e k l y   s c h e d u l e   c o m p o n e n t s .   * / 
+ 
+ . s e m e s t e r - p l a n n e r - h e a d e r   { 
+     d i s p l a y :   f l e x ; 
+     j u s t i f y - c o n t e n t :   s p a c e - b e t w e e n ; 
+     a l i g n - i t e m s :   c e n t e r ; 
+     m a r g i n - b o t t o m :   3 2 p x ; 
+ } 
+ 
+ . p l a n n e r - t i t l e - g r o u p   { 
+     d i s p l a y :   f l e x ; 
+     f l e x - d i r e c t i o n :   c o l u m n ; 
+ } 
+ 
+ . p l a n n e r - t i t l e   { 
+     f o n t - f a m i l y :   v a r ( - - d i s p l a y - f o n t ) ; 
+     f o n t - s i z e :   c l a m p ( 1 . 8 r e m ,   4 v w ,   3 r e m ) ; 
+     f o n t - w e i g h t :   5 0 0 ; 
+     l i n e - h e i g h t :   1 ; 
+     m a r g i n :   0 ; 
+ } 
+ 
+ . p l a n n e r - s u b t i t l e   { 
+     c o l o r :   v a r ( - - m u t e d ) ; 
+     f o n t - s i z e :   1 r e m ; 
+     m a r g i n - t o p :   4 p x ; 
+ } 
+ 
+ . p l a n n e r - d o w n l o a d - b t n   { 
+     d i s p l a y :   i n l i n e - f l e x ; 
+     a l i g n - i t e m s :   c e n t e r ; 
+     g a p :   8 p x ; 
+     p a d d i n g :   1 0 p x   1 6 p x ; 
+     b o r d e r :   1 p x   s o l i d   v a r ( - - l i n e ) ; 
+     b o r d e r - r a d i u s :   1 2 p x ; 
+     b a c k g r o u n d :   v a r ( - - p a n e l ) ; 
+     c o l o r :   v a r ( - - i n k ) ; 
+     f o n t - w e i g h t :   6 0 0 ; 
+     t e x t - d e c o r a t i o n :   n o n e ; 
+     t r a n s i t i o n :   a l l   1 6 0 m s   e a s e ; 
+     c u r s o r :   p o i n t e r ; 
+ } 
+ 
+ . p l a n n e r - d o w n l o a d - b t n : h o v e r   { 
+     b o r d e r - c o l o r :   v a r ( - - m i n t ) ; 
+     b a c k g r o u n d :   r g b a ( 4 2 ,   1 5 7 ,   1 2 7 ,   0 . 0 5 ) ; 
+ } 
+ 
+ . p l a n n e r - s e c t i o n   { 
+     m a r g i n - b o t t o m :   4 0 p x ; 
+ } 
+ 
+ . p l a n n e r - s e c t i o n - h e a d e r   { 
+     d i s p l a y :   f l e x ; 
+     a l i g n - i t e m s :   c e n t e r ; 
+     g a p :   1 2 p x ; 
+     m a r g i n - b o t t o m :   1 6 p x ; 
+ } 
+ 
+ . p l a n n e r - s e c t i o n - h e a d e r   h 2   { 
+     f o n t - f a m i l y :   v a r ( - - d i s p l a y - f o n t ) ; 
+     f o n t - s i z e :   1 . 5 r e m ; 
+     m a r g i n :   0 ; 
+ } 
+ 
+ . t o d a y - c l a s s e s - g r i d   { 
+     d i s p l a y :   g r i d ; 
+     g r i d - t e m p l a t e - c o l u m n s :   r e p e a t ( a u t o - f i t ,   m i n m a x ( 3 0 0 p x ,   1 f r ) ) ; 
+     g a p :   1 6 p x ; 
+ } 
+ 
+ . t o d a y - c l a s s - c a r d   { 
+     b a c k g r o u n d :   v a r ( - - p a n e l ) ; 
+     b o r d e r :   1 p x   s o l i d   v a r ( - - l i n e ) ; 
+     b o r d e r - r a d i u s :   1 8 p x ; 
+     p a d d i n g :   2 0 p x ; 
+     b o x - s h a d o w :   v a r ( - - s o f t - s h a d o w ) ; 
+     d i s p l a y :   f l e x ; 
+     f l e x - d i r e c t i o n :   c o l u m n ; 
+     g a p :   1 2 p x ; 
+ } 
+ 
+ . t o d a y - c l a s s - c a r d   . c o u r s e - i n f o   { 
+     d i s p l a y :   f l e x ; 
+     j u s t i f y - c o n t e n t :   s p a c e - b e t w e e n ; 
+     a l i g n - i t e m s :   f l e x - s t a r t ; 
+ } 
+ 
+ . t o d a y - c l a s s - c a r d   . c o u r s e - c o d e   { 
+     f o n t - w e i g h t :   7 0 0 ; 
+     c o l o r :   v a r ( - - m i n t - d a r k ) ; 
+     f o n t - s i z e :   1 . 1 r e m ; 
+ } 
+ 
+ . t o d a y - c l a s s - c a r d   . c l a s s - t i m e   { 
+     f o n t - s i z e :   0 . 9 r e m ; 
+     c o l o r :   v a r ( - - m u t e d ) ; 
+ } 
+ 
+ . t o d a y - c l a s s - c a r d   . c l a s s - v e n u e   { 
+     d i s p l a y :   f l e x ; 
+     a l i g n - i t e m s :   c e n t e r ; 
+     g a p :   6 p x ; 
+     f o n t - s i z e :   0 . 9 r e m ; 
+     c o l o r :   v a r ( - - i n k ) ; 
+ } 
+ 
+ . t o d a y - c l a s s - c a r d   . c l a s s - a c t i o n s   { 
+     d i s p l a y :   f l e x ; 
+     g a p :   8 p x ; 
+     m a r g i n - t o p :   8 p x ; 
+ } 
+ 
+ . w e e k l y - s c h e d u l e - c o n t a i n e r   { 
+     d i s p l a y :   f l e x ; 
+     f l e x - d i r e c t i o n :   c o l u m n ; 
+     g a p :   3 2 p x ; 
+ } 
+ 
+ . d a y - g r o u p   { 
+     d i s p l a y :   f l e x ; 
+     f l e x - d i r e c t i o n :   c o l u m n ; 
+     g a p :   1 6 p x ; 
+ } 
+ 
+ . d a y - g r o u p - h e a d e r   { 
+     f o n t - f a m i l y :   v a r ( - - d i s p l a y - f o n t ) ; 
+     f o n t - s i z e :   1 . 2 5 r e m ; 
+     f o n t - w e i g h t :   5 0 0 ; 
+     b o r d e r - b o t t o m :   1 p x   s o l i d   v a r ( - - l i n e ) ; 
+     p a d d i n g - b o t t o m :   8 p x ; 
+     c o l o r :   v a r ( - - i n k ) ; 
+ } 
+ 
+ . s c h e d u l e - g r i d   { 
+     d i s p l a y :   g r i d ; 
+     g r i d - t e m p l a t e - c o l u m n s :   r e p e a t ( a u t o - f i l l ,   m i n m a x ( 2 8 0 p x ,   1 f r ) ) ; 
+     g a p :   1 6 p x ; 
+ } 
+ 
+ . s c h e d u l e - c a r d   { 
+     b a c k g r o u n d :   v a r ( - - p a n e l ) ; 
+     b o r d e r :   1 p x   s o l i d   v a r ( - - l i n e ) ; 
+     b o r d e r - r a d i u s :   1 6 p x ; 
+     p a d d i n g :   1 6 p x ; 
+     b o x - s h a d o w :   v a r ( - - s o f t - s h a d o w ) ; 
+     t r a n s i t i o n :   t r a n s f o r m   1 6 0 m s   e a s e ; 
+ } 
+ 
+ . s c h e d u l e - c a r d : h o v e r   { 
+     t r a n s f o r m :   t r a n s l a t e Y ( - 2 p x ) ; 
+ } 
+ 
+ . s c h e d u l e - c a r d   . t i m e - t a g   { 
+     d i s p l a y :   i n l i n e - b l o c k ; 
+     p a d d i n g :   4 p x   8 p x ; 
+     b a c k g r o u n d :   r g b a ( 4 2 ,   1 5 7 ,   1 2 7 ,   0 . 1 ) ; 
+     c o l o r :   v a r ( - - m i n t - d a r k ) ; 
+     b o r d e r - r a d i u s :   8 p x ; 
+     f o n t - s i z e :   0 . 8 r e m ; 
+     f o n t - w e i g h t :   6 0 0 ; 
+     m a r g i n - b o t t o m :   1 2 p x ; 
+ } 
+ 
+ . s c h e d u l e - c a r d   . c o u r s e - t i t l e   { 
+     f o n t - w e i g h t :   6 0 0 ; 
+     f o n t - s i z e :   1 r e m ; 
+     m a r g i n - b o t t o m :   4 p x ; 
+ } 
+ 
+ . s c h e d u l e - c a r d   . c o u r s e - c o d e   { 
+     c o l o r :   v a r ( - - m u t e d ) ; 
+     f o n t - s i z e :   0 . 8 5 r e m ; 
+     m a r g i n - b o t t o m :   1 2 p x ; 
+ } 
+ 
+ . s c h e d u l e - c a r d   . v e n u e - i n f o   { 
+     d i s p l a y :   f l e x ; 
+     a l i g n - i t e m s :   c e n t e r ; 
+     g a p :   6 p x ; 
+     f o n t - s i z e :   0 . 8 5 r e m ; 
+     c o l o r :   v a r ( - - m u t e d ) ; 
+     m a r g i n - b o t t o m :   1 6 p x ; 
+ } 
+ 
+ . s c h e d u l e - c a r d   . s t a t u s - p i l l s   { 
+     d i s p l a y :   f l e x ; 
+     f l e x - w r a p :   w r a p ; 
+     g a p :   6 p x ; 
+ } 
+ 
+ . s t a t u s - p i l l - s m a l l   { 
+     p a d d i n g :   2 p x   8 p x ; 
+     b o r d e r - r a d i u s :   9 9 9 p x ; 
+     f o n t - s i z e :   0 . 7 5 r e m ; 
+     f o n t - w e i g h t :   6 0 0 ; 
+     b a c k g r o u n d :   r g b a ( 2 5 5 ,   2 5 5 ,   2 5 5 ,   0 . 5 ) ; 
+     b o r d e r :   1 p x   s o l i d   v a r ( - - l i n e ) ; 
+ } 
+ 
+ . s t a t u s - p i l l - s m a l l . a v a i l a b l e   { 
+     b a c k g r o u n d :   r g b a ( 4 2 ,   1 5 7 ,   1 2 7 ,   0 . 1 ) ; 
+     c o l o r :   v a r ( - - m i n t - d a r k ) ; 
+     b o r d e r - c o l o r :   r g b a ( 4 2 ,   1 5 7 ,   1 2 7 ,   0 . 2 ) ; 
+ } 
+  
+ . s t a t u s - p i l l - s m a l l . a v a i l a b l e   { 
+         b a c k g r o u n d :   r g b a ( 4 2 ,   1 5 7 ,   1 2 7 ,   0 . 1 ) ; 
+         c o l o r :   v a r ( - - m i n t - d a r k ) ; 
+         b o r d e r - c o l o r :   r g b a ( 4 2 ,   1 5 7 ,   1 2 7 ,   0 . 2 ) ; 
+ } 
+ 
+ / *   F I L T E R   B A R :   S e a r c h   a n d   c a t e g o r y   c h i p s   f o r   f i n d i n g   c o u r s e s .   * / 
+ . f i l t e r - b a r   { 
+     d i s p l a y :   f l e x ; 
+     f l e x - d i r e c t i o n :   c o l u m n ; 
+     g a p :   1 4 p x ; 
+     m a r g i n - b o t t o m :   2 4 p x ; 
+ } 
+ 
+ . s e a r c h - w r a p p e r   { 
+     p o s i t i o n :   r e l a t i v e ; 
+     d i s p l a y :   f l e x ; 
+     a l i g n - i t e m s :   c e n t e r ; 
+ } 
+ 
+ . s e a r c h - w r a p p e r   . m a t e r i a l - s y m b o l s - r o u n d e d   { 
+     p o s i t i o n :   a b s o l u t e ; 
+     l e f t :   1 6 p x ; 
+     c o l o r :   v a r ( - - m i n t ) ; 
+     f o n t - s i z e :   1 . 4 5 r e m ; 
+ } 
+ 
+ . s e a r c h - w r a p p e r   i n p u t   { 
+     w i d t h :   1 0 0 % ; 
+     m i n - h e i g h t :   5 4 p x ; 
+     p a d d i n g :   0   1 6 p x   0   4 8 p x ; 
+     b o r d e r :   1 p x   s o l i d   v a r ( - - l i n e ) ; 
+     b o r d e r - r a d i u s :   1 4 p x ; 
+     b a c k g r o u n d :   v a r ( - - p a n e l ) ; 
+     c o l o r :   v a r ( - - i n k ) ; 
+     f o n t - s i z e :   1 r e m ; 
+     t r a n s i t i o n :   b o r d e r - c o l o r   1 6 0 m s   e a s e ,   b o x - s h a d o w   1 6 0 m s   e a s e ; 
+ } 
+ 
+ . s e a r c h - w r a p p e r   i n p u t : f o c u s - v i s i b l e   { 
+     o u t l i n e :   0 ; 
+     b o r d e r - c o l o r :   v a r ( - - m i n t ) ; 
+     b o x - s h a d o w :   0   0   0   4 p x   v a r ( - - m i n t - s o f t ) ; 
+ } 
+ 
+ . f i l t e r - c h i p s   { 
+     d i s p l a y :   f l e x ; 
+     f l e x - w r a p :   w r a p ; 
+     g a p :   8 p x ; 
+ } 
+ 
+ . c h i p   { 
+     m i n - h e i g h t :   3 6 p x ; 
+     p a d d i n g :   0   1 6 p x ; 
+     b o r d e r :   1 p x   s o l i d   v a r ( - - l i n e ) ; 
+     b o r d e r - r a d i u s :   9 9 9 p x ; 
+     b a c k g r o u n d :   v a r ( - - p a n e l ) ; 
+     c o l o r :   v a r ( - - m u t e d ) ; 
+     f o n t - s i z e :   0 . 8 8 r e m ; 
+     f o n t - w e i g h t :   5 6 0 ; 
+     c u r s o r :   p o i n t e r ; 
+     t r a n s i t i o n : 
+         b o r d e r - c o l o r   1 6 0 m s   e a s e , 
+         b a c k g r o u n d   1 6 0 m s   e a s e , 
+         c o l o r   1 6 0 m s   e a s e , 
+         t r a n s f o r m   1 6 0 m s   e a s e ; 
+ } 
+ 
+ . c h i p : h o v e r   { 
+     b o r d e r - c o l o r :   v a r ( - - m i n t ) ; 
+     c o l o r :   v a r ( - - m i n t - d a r k ) ; 
+ } 
+ 
+ . c h i p . a c t i v e   { 
+     b a c k g r o u n d :   v a r ( - - m i n t ) ; 
+     b o r d e r - c o l o r :   v a r ( - - m i n t ) ; 
+     c o l o r :   # f f f a f 0 ; 
+ } 
+ 
+ . c h i p : a c t i v e   { 
+     t r a n s f o r m :   s c a l e ( 0 . 9 6 ) ; 
+ }  
+ 
+
+/* NEXT LECTURE CARD: Dashboard countdown to the upcoming class. */
+.next-lecture-card {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  min-height: 58px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(42, 157, 127, 0.08), var(--panel));
+}
+
+.next-lecture-card .material-symbols-rounded {
+  color: var(--mint);
+  font-size: 1.45rem;
+}
+
+.next-lecture-card small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.3;
+}
+
+.next-lecture-card strong {
+  display: block;
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.2;
+}
+
+.countdown-timer {
+  font-family: var(--display-font);
+  font-size: 1.2rem;
+  font-weight: 520;
+  color: var(--mint-dark);
+  white-space: nowrap;
+}
+
+
+/* COURSE HUB: Tabbed navigation inside the course detail view. */
+.course-hub-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 20px 0 24px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+}
+
+.hub-tab {
+  padding: 8px 18px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 560;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.hub-tab:hover {
+  border-color: var(--mint);
+  color: var(--mint-dark);
+  background: rgba(42, 157, 127, 0.06);
+}
+
+.hub-tab.active {
+  background: var(--mint);
+  border-color: var(--mint);
+  color: #fffaf0;
+}
+
+.hub-overview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.hub-overview-card {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
+}
+
+.hub-overview-card h3 {
+  margin: 0 0 12px;
+  font-family: var(--display-font);
+  font-weight: 500;
+}
+
+.hub-overview-card p {
+  margin: 4px 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.hub-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.hub-quick-actions .secondary-action {
+  font-size: 0.85rem;
+  min-height: 38px;
+}
+
+.hub-lectures {
+  display: grid;
+  gap: 12px;
+}
+
+.hub-lecture-card {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+}
+
+.lecture-time-badge {
+  flex: 0 0 auto;
+  width: 70px;
+  padding: 10px 8px;
+  text-align: center;
+  border-radius: 12px;
+  background: rgba(42, 157, 127, 0.1);
+  color: var(--mint-dark);
+  font-size: 0.75rem;
+  font-weight: 560;
+  line-height: 1.3;
+}
+
+.lecture-time-badge strong {
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 650;
+}
+
+.hub-lecture-card > div:last-child {
+  display: grid;
+  gap: 2px;
+}
+
+.hub-lecture-card small {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.hub-quiz-panel {
+  padding: 32px;
+  text-align: center;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--panel);
+}
+
+.hub-quiz-panel h3 {
+  margin: 0 0 8px;
+  font-family: var(--display-font);
+  font-weight: 500;
+}
+
+.hub-quiz-panel p {
+  color: var(--muted);
+  margin: 0 0 16px;
+}
+
+.hub-quiz-panel .hub-quick-actions {
+  justify-content: center;
+}
+
+.hub-announcements {
+  display: grid;
+  gap: 12px;
+}
+
+.hub-announcement-item {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+}
+
+.hub-announcement-item strong {
+  display: block;
+  font-weight: 600;
+}
+
+.hub-announcement-item p {
+  margin: 6px 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.hub-announcement-item small {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.planner-download-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 999px;
+  background: var(--mint);
+  color: #fffaf0;
+  font-size: 0.88rem;
+  font-weight: 560;
+  cursor: pointer;
+  transition: background 160ms;
+}
+
+.planner-download-btn:hover {
+  background: var(--mint-dark);
+}
+
+.planner-download-btn .material-symbols-rounded {
+  font-size: 1.2rem;
+}
+
+.timetable-download-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.planner-download-img {
+  background: #fffaf0;
+  color: var(--mint-dark);
+  border: 1px solid var(--mint);
+}
+
+.planner-download-img:hover {
+  background: var(--mint-soft);
+}
+
+.control-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+/* TIMETABLE v2: Card-based academic schedule. */
+.planner-section {
+  margin: 24px 0;
+}
+
+.planner-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.planner-section-header h2 {
+  margin: 0;
+  font-family: var(--display-font);
+  font-weight: 500;
+  font-size: 1.3rem;
+}
+
+.today-classes-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.tt-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
+  cursor: pointer;
+  transition: border-color 180ms, box-shadow 180ms;
+  text-decoration: none;
+  color: inherit;
+}
+
+.tt-card:hover {
+  border-color: var(--mint);
+  box-shadow: var(--soft-shadow);
+}
+
+.tt-card.active {
+  border-color: var(--mint);
+  background: rgba(42, 157, 127, 0.04);
+}
+
+.tt-time {
+  display: grid;
+  gap: 2px;
+  text-align: center;
+  min-width: 68px;
+}
+
+.tt-time strong {
+  font-size: 1.05rem;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.tt-time small {
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tt-body {
+  display: grid;
+  gap: 2px;
+}
+
+.tt-code {
+  font-size: 0.78rem;
+  font-weight: 560;
+  color: var(--mint-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.tt-title {
+  font-weight: 560;
+  line-height: 1.3;
+}
+
+.tt-venue {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.tt-venue .material-symbols-rounded {
+  font-size: 14px;
+}
+
+.tt-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+
+.tt-badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 550;
+  background: var(--mint-soft);
+  color: var(--mint-dark);
+}
+
+.tt-badge.missing {
+  background: rgba(217, 111, 77, 0.1);
+  color: var(--clay);
+}
+
+.tt-badge.next {
+  background: rgba(42, 157, 127, 0.15);
+  color: var(--mint-dark);
+  font-weight: 600;
+}
+
+.tt-card-arrow {
+  color: var(--muted);
+  font-size: 1.2rem;
+  transition: transform 180ms;
+}
+
+.tt-card:hover .tt-card-arrow {
+  transform: translateX(4px);
+  color: var(--mint-dark);
+}
+
+/* Week day strip for upcoming */
+.week-day-strip {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.week-day-chip {
+  flex: 0 0 auto;
+  display: grid;
+  gap: 2px;
+  text-align: center;
+  padding: 12px 20px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+  cursor: pointer;
+  transition: border-color 180ms, background 180ms;
+  min-width: 72px;
+}
+
+.week-day-chip:hover {
+  border-color: var(--mint);
+}
+
+.week-day-chip.today {
+  border-color: var(--mint);
+  background: var(--mint-soft);
+}
+
+.week-day-chip strong {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.week-day-chip small {
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.week-day-chip .chip-count {
+  font-size: 0.75rem;
+  color: var(--mint-dark);
+  font-weight: 560;
+}
+
+/* Weekly schedule day groups */
+.weekly-schedule-container {
+  display: grid;
+  gap: 28px;
+}
+
+.schedule-day-group {
+  display: grid;
+  gap: 10px;
+}
+
+.schedule-day-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.schedule-day-header h3 {
+  margin: 0;
+  font-family: var(--display-font);
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.schedule-day-header .eyebrow {
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.schedule-day-divider {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.schedule-day-cards {
+  display: grid;
+  gap: 10px;
+}
+
+/* PDF handbook styles */
+.tt-pdf-page {
+  width: 100%;
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 32px 40px;
+  background: #fff;
+  color: #171b1f;
+  font-family: "Instrument Sans", system-ui, sans-serif;
+}
+
+.tt-pdf-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 3px solid #2a9d7f;
+  margin-bottom: 24px;
+}
+
+.tt-pdf-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tt-pdf-brand img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.tt-pdf-brand strong {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.tt-pdf-brand small {
+  display: block;
+  font-size: 0.75rem;
+  color: #67706c;
+}
+
+.tt-pdf-title {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.tt-pdf-title h1 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.tt-pdf-title p {
+  color: #67706c;
+  font-size: 0.85rem;
+  margin: 4px 0 0;
+}
+
+.tt-pdf-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 32px;
+}
+
+.tt-pdf-table th {
+  text-align: left;
+  padding: 10px 12px;
+  background: #f0f7f5;
+  color: #16735c;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tt-pdf-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e3ddd0;
+  font-size: 0.85rem;
+}
+
+.tt-pdf-table tr:last-child td {
+  border-bottom: none;
+}
+
+.tt-pdf-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid #e3ddd0;
+  font-size: 0.75rem;
+  color: #67706c;
+}
+
+.tt-pdf-footer strong {
+  display: block;
+  font-size: 0.85rem;
+  color: #171b1f;
+}
+
+.tt-pdf-footer a {
+  color: #2a9d7f;
+  text-decoration: none;
+}
+
+.tt-pdf-qr {
+  width: 64px;
+  height: 64px;
+  background: #f0f7f5;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  color: #67706c;
+  text-align: center;
+}
+
+/* ── Course Hub · Weekly Lectures Tab ─────────────────────────────── */
+
+.hub-lectures {
+  display: grid;
+  gap: 18px;
+}
+
+.lecture-week-group {
+  display: grid;
+  gap: 8px;
+}
+
+.lecture-week-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--line);
+}
+
+.lecture-week-badge {
+  display: inline-grid;
+  place-items: center;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: var(--mint-soft);
+  color: var(--mint-dark);
+  font-size: 0.82rem;
+  font-weight: 640;
+  white-space: nowrap;
+}
+
+.lecture-week-date {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.hub-lecture-card {
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fffefa;
+  transition: border-color 0.15s;
+}
+
+.hub-lecture-card:hover {
+  border-color: var(--mint-dark);
+}
+
+.lecture-day-badge {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--mint-soft);
+  color: var(--mint-dark);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.lecture-card-body {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+}
+
+.lecture-card-top {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.lecture-card-top strong {
+  font-size: 0.95rem;
+}
+
+.lecture-time {
+  font-size: 0.8rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.lecture-venue {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.lecture-status-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.lecture-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.lecture-status-badge .material-symbols-rounded {
+  font-size: 14px;
+}
+
+.lecture-status-badge.badge-ok {
+  background: #d6f5ec;
+  color: #147a5a;
+}
+
+.lecture-status-badge.badge-missing {
+  background: #fde8e8;
+  color: #b42318;
+}
+
+.lecture-status-badge.badge-later {
+  background: #fef3e2;
+  color: #b54708;
+}
+
+/* ── Course Hub Tabs ──────────────────────────────────────────────── */
+
+.course-hub-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 4px 0 8px;
+  border-bottom: 1px solid var(--line);
+  -webkit-overflow-scrolling: touch;
+}
+
+.hub-tab {
+  flex-shrink: 0;
+  padding: 7px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 560;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.hub-tab:hover {
+  background: var(--mint-soft);
+  color: var(--mint-dark);
+  border-color: var(--mint-soft);
+}
+
+.hub-tab.active {
+  background: var(--mint-dark);
+  color: #fff;
+  border-color: var(--mint-dark);
+}
+
+.course-hub-content {
+  padding-top: 14px;
+}
+
+/* ── Hub Overview ─────────────────────────────────────────────────── */
+
+.hub-overview {
+  display: grid;
+  gap: 14px;
+}
+
+.hub-overview-card {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fffefa;
+  display: grid;
+  gap: 10px;
+}
+
+.hub-overview-card h3 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.hub-overview-card p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.hub-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* ── Hub Announcements ────────────────────────────────────────────── */
+
+.hub-announcements {
+  display: grid;
+  gap: 10px;
+}
+
+.hub-announcement-item {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fffefa;
+  display: grid;
+  gap: 6px;
+}
+
+.hub-announcement-item strong {
+  font-size: 0.92rem;
+}
+
+.hub-announcement-item p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.hub-announcement-item small {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* ── Admin Dashboard ──────────────────────────────────────────────── */
+
+.admin-dashboard-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.admin-card {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fffefa;
+  display: grid;
+  gap: 10px;
+}
+
+.admin-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-card-header .material-symbols-rounded {
+  font-size: 1.3rem;
+  color: var(--mint-dark);
+}
+
+.admin-card-header h3 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.admin-card-body {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.admin-card-body strong {
+  color: #171b1f;
+}
+
+.admin-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.admin-card-stat {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.ghost-action {
+  background: none;
+  border: none;
+  color: var(--mint-dark);
+  font-size: 0.82rem;
+  font-weight: 560;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0;
+}
+
+.ghost-action:hover {
+  text-decoration: underline;
+}
+
+/* ── Staff Monitor ────────────────────────────────────────────────── */
+
+.staff-monitor-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.monitor-courses,
+.monitor-feed {
+  display: grid;
+  gap: 10px;
+}
+
+.compact-header {
+  margin-bottom: 4px;
+}
+
+.monitor-feed-item {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fffefa;
+  display: grid;
+  gap: 4px;
+}
+
+.monitor-feed-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.monitor-feed-head strong {
+  font-size: 0.88rem;
+}
+
+.monitor-feed-item p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted);
 }

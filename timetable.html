@@ -3,17 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PhysioK29 - Resumption</title>
-    <meta
-      name="description"
-      content="Count down to second-semester resumption for Physiology Class 2k29."
-    />
+    <title>PhysioK29 - Timetable</title>
+    <meta name="description" content="Academic schedule and weekly lectures for Physiology Class 2k29." />
     <meta property="og:site_name" content="PhysioK29" />
     <meta property="og:title" content="PhysioK29 - Physiology Class 2k29" />
-    <meta
-      property="og:description"
-      content="Slides, announcements, resumption countdown, rep contacts, and suggestions for Physiology Class 2k29."
-    />
+    <meta property="og:description" content="Academic schedule, lectures, and resources for Physiology Class 2k29." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="./assets/og-image.png" />
     <meta property="og:image:type" content="image/png" />
@@ -25,27 +19,11 @@
     <link rel="manifest" href="./site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Instrument+Sans:wght@400;450;500;600;650&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(async function (OneSignal) {
-        await OneSignal.init({
-          appId: "6b1caa76-8b69-48cb-b925-b10aabd80ef3",
-          serviceWorkerParam: { scope: "/" },
-          serviceWorkerPath: "OneSignalSDKWorker.js",
-        });
-      });
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Instrument+Sans:wght@400;450;500;600;650&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css?v=20260707-7" />
   </head>
   <body data-page="timetable">
-    <!-- APP SHELL: The timetable page keeps the same layout language. -->
     <div class="app-shell">
-      <!-- SIDEBAR COMPONENT: Public navigation with staff portals kept private by URL. -->
       <aside class="sidebar" aria-label="Class dashboard navigation">
         <a class="sidebar-brand" href="./dashboard.html">
           <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
@@ -54,85 +32,78 @@
             <small>Physiology 2k29</small>
           </span>
         </a>
-
         <nav class="nav-stack" aria-label="Primary pages">
           <a class="nav-link" href="./dashboard.html"><span class="material-symbols-rounded" aria-hidden="true">space_dashboard</span>Dashboard</a>
           <a class="nav-link" href="./courses.html"><span class="material-symbols-rounded" aria-hidden="true">menu_book</span>Courses</a>
           <a class="nav-link" href="./quiz.html"><span class="material-symbols-rounded" aria-hidden="true">quiz</span>Quiz Mode</a>
           <a class="nav-link" href="./exam-room.html"><span class="material-symbols-rounded" aria-hidden="true">timer</span>Exam Room</a>
           <a class="nav-link" href="./exam.html"><span class="material-symbols-rounded" aria-hidden="true">psychology_alt</span>Smart Guide</a>
-          <a class="nav-link active" href="./timetable.html"><span class="material-symbols-rounded" aria-hidden="true">event_available</span>Resumption</a>
+          <a class="nav-link active" href="./timetable.html"><span class="material-symbols-rounded" aria-hidden="true">calendar_month</span>Timetable</a>
           <a class="nav-link" href="./reps.html"><span class="material-symbols-rounded" aria-hidden="true">groups</span>Reps</a>
           <a class="nav-link" href="./suggestions.html"><span class="material-symbols-rounded" aria-hidden="true">forum</span>Suggestions</a>
         </nav>
-
-        <!-- RESUMPTION TIP COMPONENT: Sets the tone for the lead-up to full access. -->
         <section class="sidebar-note">
-          <strong>Countdown</strong>
-          <p>All second-semester resources are live and accessible. Dive in whenever you're ready.</p>
+          <strong>Quick Tip</strong>
+          <p>Tap any lecture card to open course materials.</p>
         </section>
       </aside>
 
       <main class="main-area">
-        <!-- HEADER COMPONENT: Logo plaque and page action. -->
         <header class="page-header">
           <div class="logo-plaque">
             <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
             <div class="plaque-text">
               <span>PhysioK29</span>
-              <strong>Resumption Countdown</strong>
+              <strong>Academic Schedule</strong>
             </div>
           </div>
-          <a class="ghost-action" href="./dashboard.html">
-            <span class="material-symbols-rounded" aria-hidden="true">space_dashboard</span>
-            Dashboard
-          </a>
+          <div class="timetable-download-group">
+            <button class="planner-download-btn" id="downloadTimetable">
+              <span class="material-symbols-rounded">download</span>
+              Download PDF
+            </button>
+            <button class="planner-download-btn planner-download-img" id="downloadTimetableImage">
+              <span class="material-symbols-rounded">image</span>
+              Download Image
+            </button>
+          </div>
         </header>
 
-        <!-- RESUMPTION INTRO COMPONENT: Explains the countdown to full public access. -->
         <section class="page-intro">
-          <p class="eyebrow">📚 Second Semester</p>
-          <h1>Resources are loaded and ready.</h1>
-          <p>
-            Notes, past questions, and study materials for all second-semester courses are
-            available now — all fully accessible.
-          </p>
+          <p class="eyebrow">Second Semester</p>
+          <h1>Teaching Timetable</h1>
+          <p>Physiology 2K29 &middot; 2025/2026 Academic Session</p>
         </section>
 
-        <!-- RESUMPTION CARD COMPONENT: JavaScript renders the rest message and resumption details. -->
-        <section class="exam-card-grid" id="timetableCardGrid" aria-label="Second semester resumption details"></section>
-
-        <!-- POST-EXAM STATE COMPONENT: Keeps old timetable space useful without showing stale rows. -->
-        <section class="content-panel">
-          <div class="section-header">
-            <div>
-              <p class="eyebrow">Countdown</p>
-              <h2>Resumption status</h2>
-            </div>
-            <span id="timetablePageCount" class="soft-pill">Loading...</span>
+        <!-- TODAY'S CLASSES -->
+        <section class="planner-section">
+          <div class="planner-section-header">
+            <h2>Today's Classes</h2>
+            <span class="soft-pill" id="todayDate"></span>
           </div>
-          <div class="table-wrap">
-            <table class="timetable-table">
-              <thead>
-                <tr>
-                  <th>Stage</th>
-                  <th>Status</th>
-                  <th>Board</th>
-                  <th>Now</th>
-                  <th>Until</th>
-                  <th>Message</th>
-                </tr>
-              </thead>
-              <tbody id="timetableBody"></tbody>
-            </table>
-          </div>
+          <div class="today-classes-grid" id="todayClassesGrid"></div>
+          <p class="empty-message" id="todayEmpty" hidden>No classes scheduled for today.</p>
         </section>
+
+        <!-- UPCOMING THIS WEEK -->
+        <section class="planner-section">
+          <div class="planner-section-header">
+            <h2>Upcoming This Week</h2>
+          </div>
+          <nav class="week-day-strip" id="weekDayStrip" aria-label="Days of the week"></nav>
+        </section>
+
+        <!-- WEEKLY SCHEDULE -->
+        <section class="planner-section">
+          <div class="planner-section-header">
+            <h2>Weekly Schedule</h2>
+          </div>
+          <div class="weekly-schedule-container" id="weeklySchedule"></div>
+        </section>
+
       </main>
     </div>
 
     <script type="module" src="./app.js?v=20260707-7"></script>
   </body>
 </html>
-
-
-
