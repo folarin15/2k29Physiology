@@ -5599,24 +5599,23 @@ function connectTimetableDownload() {
   pngButton.addEventListener("click", async () => {
     try {
       pngButton.disabled = true;
-      pngButton.innerHTML = '<span class="material-symbols-rounded">hourglass_top</span> Downloading…';
-      const response = await fetch(TIMETABLE_IMAGE_URL);
-      if (!response.ok) throw new Error("Image not found on server");
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "PhysioK29-Timetable.png";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      URL.revokeObjectURL(url);
-      showToast("Timetable image downloaded.");
+      const res = await fetch(TIMETABLE_IMAGE_URL);
+      if (!res.ok) throw new Error("Could not fetch image");
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = "PhysioK29-Timetable.png";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+      showToast("Timetable downloaded.");
     } catch (err) {
-      showToast(err.message || "Download failed.", "error");
+      window.open(TIMETABLE_IMAGE_URL, "_blank");
+      showToast("Opened image in new tab.");
     } finally {
       pngButton.disabled = false;
-      pngButton.innerHTML = '<span class="material-symbols-rounded">image</span> Download Timetable Image';
     }
   });
 }
