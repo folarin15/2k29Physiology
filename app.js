@@ -5594,12 +5594,14 @@ function connectTimetableDownload() {
   const pngButton = getElement("#downloadTimetablePng");
   if (!pngButton) return;
 
+  const TIMETABLE_IMAGE_URL = "https://rfrlddiebyfojnzbfldy.supabase.co/storage/v1/object/public/class-resources/timetable/PhysioK29-Timetable.png";
+
   pngButton.addEventListener("click", async () => {
     try {
       pngButton.disabled = true;
       pngButton.innerHTML = '<span class="material-symbols-rounded">hourglass_top</span> Downloading…';
-      const response = await fetch("./assets/PhysioK29-Timetable.png");
-      if (!response.ok) throw new Error("Image not found");
+      const response = await fetch(TIMETABLE_IMAGE_URL);
+      if (!response.ok) throw new Error("Image not found on server");
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
