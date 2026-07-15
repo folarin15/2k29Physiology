@@ -31,7 +31,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Instrument+Sans:wght@400;450;500;600;650&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260707-7" />
+    <link rel="stylesheet" href="./styles.css?v=20260715-1" />
   </head>
   <body data-page="admin" data-portal="staff" data-portal-role="admin">
     <!-- APP SHELL: Protected admin frame for the site owner. -->
@@ -110,8 +110,72 @@
                 <h2 id="adminGreeting">Admin Dashboard</h2>
               </div>
             </div>
-            <div class="metrics-grid staff-summary-grid" id="adminSummaryGrid"></div>
-            <div class="admin-card-grid" id="adminCardGrid"></div>
+
+            <!-- ENHANCED METRIC CARDS: Real-time class stats -->
+            <div class="admin-metric-row" id="adminMetricRow">
+              <div class="admin-metric-card">
+                <div class="admin-metric-icon mint"><span class="material-symbols-rounded">group</span></div>
+                <div class="admin-metric-info">
+                  <span class="metric-value" id="adminMetricMembers">--</span>
+                  <span class="metric-label">Class members</span>
+                </div>
+              </div>
+              <div class="admin-metric-card">
+                <div class="admin-metric-icon sky"><span class="material-symbols-rounded">upload_file</span></div>
+                <div class="admin-metric-info">
+                  <span class="metric-value" id="adminMetricResources">--</span>
+                  <span class="metric-label">Total resources</span>
+                </div>
+              </div>
+              <div class="admin-metric-card">
+                <div class="admin-metric-icon clay"><span class="material-symbols-rounded">quiz</span></div>
+                <div class="admin-metric-info">
+                  <span class="metric-value" id="adminMetricQuizzes">--</span>
+                  <span class="metric-label">Quiz attempts</span>
+                </div>
+              </div>
+              <div class="admin-metric-card">
+                <div class="admin-metric-icon plum"><span class="material-symbols-rounded">local_fire_department</span></div>
+                <div class="admin-metric-info">
+                  <span class="metric-value" id="adminMetricStreak">--</span>
+                  <span class="metric-label">Top streak</span>
+                </div>
+              </div>
+              <div class="admin-metric-card">
+                <div class="admin-metric-icon citron"><span class="material-symbols-rounded">trending_up</span></div>
+                <div class="admin-metric-info">
+                  <span class="metric-value" id="adminMetricActive">--</span>
+                  <span class="metric-label">Active this week</span>
+                </div>
+              </div>
+              <div class="admin-metric-card">
+                <div class="admin-metric-icon mint"><span class="material-symbols-rounded">campaign</span></div>
+                <div class="admin-metric-info">
+                  <span class="metric-value" id="adminMetricAnnouncements">--</span>
+                  <span class="metric-label">Announcements</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- QUICK ACTIONS -->
+            <div class="admin-quick-actions">
+              <a class="admin-quick-action" href="#staffUpload">
+                <span class="material-symbols-rounded">cloud_upload</span>
+                Upload Resource
+              </a>
+              <a class="admin-quick-action" href="#staffNews">
+                <span class="material-symbols-rounded">campaign</span>
+                Post News
+              </a>
+              <a class="admin-quick-action" href="#staffMembers">
+                <span class="material-symbols-rounded">group</span>
+                View Members
+              </a>
+              <a class="admin-quick-action" href="#staffSuggestions">
+                <span class="material-symbols-rounded">feedback</span>
+                Suggestions
+              </a>
+            </div>
           </section>
 
           <section class="content-panel staff-summary-panel">
@@ -368,6 +432,37 @@
               Durations come from completed quiz/exam sessions.
             </p>
             <div class="metrics-grid staff-study-grid" id="staffStudyAnalyticsGrid"></div>
+
+            <!-- ANALYTICS CHARTS: Engagement visualization -->
+            <div class="analytics-chart-grid" id="analyticsChartGrid">
+              <div class="analytics-chart-card">
+                <h3>Activity this week</h3>
+                <p class="chart-subtitle">Daily active students</p>
+                <div class="css-bar-chart" id="weeklyActivityChart">
+                  <!-- Bar columns rendered by JS -->
+                </div>
+              </div>
+              <div class="analytics-chart-card">
+                <h3>Engagement rate</h3>
+                <p class="chart-subtitle">Students active out of total</p>
+                <div class="engagement-ring" id="engagementRing">
+                  <div class="engagement-ring-chart">
+                    <svg viewBox="0 0 36 36">
+                      <circle class="ring-bg" cx="18" cy="18" r="14"></circle>
+                      <circle class="ring-fill" cx="18" cy="18" r="14" id="engagementRingFill"
+                        stroke-dasharray="87.96" stroke-dashoffset="87.96"></circle>
+                    </svg>
+                    <div class="engagement-ring-center" id="engagementPercent">0%</div>
+                  </div>
+                  <div class="engagement-ring-legend" id="engagementLegend">
+                    <div class="legend-item"><span class="legend-dot" style="background:var(--mint)"></span><span>Active this week: <strong id="engagementActive">0</strong></span></div>
+                    <div class="legend-item"><span class="legend-dot" style="background:var(--line)"></span><span>Total members: <strong id="engagementTotal">0</strong></span></div>
+                    <div class="legend-item"><span class="legend-dot" style="background:var(--plum)"></span><span>Top streak: <strong id="engagementTopStreak">0</strong> days</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="staff-study-layout">
               <section class="study-leaderboard">
                 <div class="section-header compact-header">
@@ -413,6 +508,17 @@
                   <span class="material-symbols-rounded" aria-hidden="true">picture_as_pdf</span>
                   Download PDF
                 </button>
+                <button class="secondary-action compact-action" type="button" id="exportMembersCsv">
+                  <span class="material-symbols-rounded" aria-hidden="true">download</span>
+                  Export CSV
+                </button>
+              </div>
+            </div>
+            <!-- MEMBER DIRECTORY TOOLBAR -->
+            <div class="member-directory-toolbar">
+              <div class="member-search">
+                <span class="material-symbols-rounded">search</span>
+                <input type="text" id="memberSearchInput" placeholder="Search by name or matric number..." />
               </div>
             </div>
             <div class="table-wrap">
@@ -422,6 +528,7 @@
                     <th>Name</th>
                     <th>Matric number</th>
                     <th>Status</th>
+                    <th>Push</th>
                     <th>Streak</th>
                     <th>Last seen</th>
                     <th>Action</th>
@@ -440,14 +547,45 @@
                   <p class="eyebrow">Resources</p>
                   <h2>Manage resources</h2>
                 </div>
+                <div class="section-actions">
+                  <span class="soft-pill" id="resourceCount">0 files</span>
+                </div>
               </div>
-              <div class="table-wrap">
-                <table class="timetable-table">
+              <!-- RESOURCE TOOLBAR: Search, filter, sort -->
+              <div class="resource-toolbar">
+                <div class="resource-search">
+                  <span class="material-symbols-rounded">search</span>
+                  <input type="text" id="resourceSearchInput" placeholder="Search resources..." />
+                </div>
+                <div class="resource-sort">
+                  <span class="material-symbols-rounded" style="font-size:1.1rem">sort</span>
+                  <select id="resourceSortSelect">
+                    <option value="newest">Newest first</option>
+                    <option value="oldest">Oldest first</option>
+                    <option value="title">Title A-Z</option>
+                    <option value="course">Course</option>
+                  </select>
+                </div>
+              </div>
+              <div class="resource-filter-pills" id="resourceFilterPills">
+                <button class="resource-filter-pill" data-filter="all" data-active="true">All <span class="pill-count" id="filterCountAll">0</span></button>
+                <button class="resource-filter-pill" data-filter="pdf">PDF <span class="pill-count" id="filterCountPdf">0</span></button>
+                <button class="resource-filter-pill" data-filter="ppt">PPT <span class="pill-count" id="filterCountPpt">0</span></button>
+                <button class="resource-filter-pill" data-filter="doc">DOC <span class="pill-count" id="filterCountDoc">0</span></button>
+                <button class="resource-filter-pill" data-filter="image">Image <span class="pill-count" id="filterCountImg">0</span></button>
+              </div>
+              <div class="resource-grid" id="resourceManageGrid">
+                <!-- Resource cards rendered by JS -->
+              </div>
+              <div class="table-wrap" style="margin-top:14px">
+                <table class="timetable-table" id="resourceManageTable">
                   <thead>
                     <tr>
                       <th>Title</th>
                       <th>Course</th>
+                      <th>Type</th>
                       <th>Added by</th>
+                      <th>Date</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -603,6 +741,6 @@
       </main>
     </div>
 
-    <script type="module" src="./app.js?v=20260707-7"></script>
+    <script type="module" src="./app.js?v=20260715-1"></script>
   </body>
 </html>

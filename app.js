@@ -2599,7 +2599,7 @@ function renderStaffLists() {
   const announcementsBody = getElement("#staffAnnouncementsBody") || getElement("#adminAnnouncementsBody");
   const suggestionsBody = getElement("#staffSuggestionsBody");
 
-  if (resourcesBody) {
+  if (resourcesBody && !getElement("#resourceSearchInput")) {
     resourcesBody.innerHTML = state.resources.length
       ? state.resources
           .map((resource) => {
@@ -2685,7 +2685,7 @@ function renderAdminDashboard() {
   const greeting = getElement("#adminGreeting");
   const summaryGrid = getElement("#adminSummaryGrid");
   const cardGrid = getElement("#adminCardGrid");
-  if (!cardGrid) return;
+  if (!cardGrid && !getElement("#adminMetricRow")) return;
 
   /* Time-based greeting */
   if (greeting) {
@@ -2698,6 +2698,7 @@ function renderAdminDashboard() {
   const resources = state.resources || [];
   const members = state.members || [];
   const suggestions = state.suggestions || [];
+  const announcements = state.announcements || [];
   const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
   const dayAgo = Date.now() - 24 * 60 * 60 * 1000;
   const totalResources = resources.length;
@@ -2719,7 +2720,19 @@ function renderAdminDashboard() {
   const topStreakMember = members.find((m) => getMemberStreak(m.id) === topStreak);
   const totalStudyMinutes = Math.round(quizAttempts.reduce((sum, a) => sum + Number(a.durationSeconds || 0), 0) / 60);
 
-  /* Summary cards */
+  /* Enhanced metric cards */
+  setMetricText("#adminMetricMembers", totalMembers);
+  setMetricText("#adminMetricResources", totalResources);
+  setMetricText("#adminMetricQuizzes", totalQuizzes + totalExams);
+  setMetricText("#adminMetricStreak", topStreak + "d");
+  setMetricText("#adminMetricActive", activeWeek);
+  setMetricText("#adminMetricAnnouncements", announcements.length);
+
+  /* Analytics charts */
+  renderWeeklyActivityChart();
+  renderEngagementRing();
+
+  /* Summary cards (legacy grid, kept for backward compat) */
   if (summaryGrid) {
     summaryGrid.innerHTML = `
       <article class="metric-card">
@@ -3225,6 +3238,7 @@ function renderAll() {
       renderStaffMonitor();
       renderStaffStudyAnalytics();
   renderAdminDashboard();
+  renderRepSummary();
   renderStudyDashboard();
   renderNextLecture();
 }
@@ -5620,6 +5634,302 @@ function connectTimetableDownload() {
   });
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   ADMIN ENHANCED: Metric cards, charts, resource filters, member search
+   ═══════════════════════════════════════════════════════════════════ */
+
+function setMetricText(selector, value) {
+  const el = getElement(selector);
+  if (el) el.textContent = value;
+}
+
+/* Weekly activity bar chart: last 7 days of active unique students */
+function renderWeeklyActivityChart() {
+  const container = getElement("#weeklyActivityChart");
+  if (!container) return;
+
+  const studyEvents = state.studyEvents || [];
+  const days = [];
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const now = new Date();
+
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    d.setHours(0, 0, 0, 0);
+    const dayStart = d.getTime();
+    const dayEnd = dayStart + 86400000;
+    const active = new Set(
+      studyEvents.filter((e) => e.createdAtMs >= dayStart && e.createdAtMs < dayEnd).map((e) => e.memberId)
+    ).size;
+    days.push({ label: dayNames[d.getDay()], value: active });
+  }
+
+  const maxVal = Math.max(...days.map((d) => d.value), 1);
+
+  container.innerHTML = days
+    .map(
+      (d) => `
+      <div class="bar-col">
+        <span class="bar-value">${d.value}</span>
+        <div class="bar" style="height: ${(d.value / maxVal) * 100}%"></div>
+        <span class="bar-label">${d.label}</span>
+      </div>
+    `
+    )
+    .join("");
+}
+
+/* Engagement ring: active students / total members */
+function renderEngagementRing() {
+  const ringFill = getElement("#engagementRingFill");
+  const percentEl = getElement("#engagementPercent");
+  const activeEl = getElement("#engagementActive");
+  const totalEl = getElement("#engagementTotal");
+  const streakEl = getElement("#engagementTopStreak");
+  if (!ringFill) return;
+
+  const members = state.members || [];
+  const studyEvents = state.studyEvents || [];
+  const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  const totalMembers = members.length;
+  const activeWeek = new Set(
+    studyEvents.filter((e) => e.createdAtMs >= weekAgo).map((e) => e.memberId)
+  ).size;
+  const topStreak = members.reduce((best, m) => Math.max(best, getMemberStreak(m.id)), 0);
+  const percent = totalMembers ? Math.round((activeWeek / totalMembers) * 100) : 0;
+
+  const circumference = 2 * Math.PI * 14;
+  const offset = circumference - (percent / 100) * circumference;
+  ringFill.style.strokeDashoffset = offset;
+
+  if (percentEl) percentEl.textContent = percent + "%";
+  if (activeEl) activeEl.textContent = activeWeek;
+  if (totalEl) totalEl.textContent = totalMembers;
+  if (streakEl) streakEl.textContent = topStreak;
+}
+
+/* Rep summary: populate the three metric cards */
+function renderRepSummary() {
+  const uploadsEl = getElement("#repMetricUploads");
+  const postsEl = getElement("#repMetricPosts");
+  const suggestionsEl = getElement("#repMetricSuggestions");
+  if (!uploadsEl && !postsEl) return;
+
+  const staffUser = state.staffUser;
+  const staffEmail = staffUser?.email || "";
+  const resources = state.resources || [];
+  const announcements = state.announcements || [];
+  const suggestions = state.suggestions || [];
+
+  const myUploads = staffEmail
+    ? resources.filter((r) => (r.uploadedBy || "").toLowerCase().includes(staffEmail.split("@")[0])).length
+    : resources.length;
+  const myPosts = staffEmail
+    ? announcements.filter((a) => (a.postedBy || "").toLowerCase().includes(staffEmail.split("@")[0])).length
+    : announcements.length;
+  const pendingSuggestions = suggestions.filter((s) => s.status === "pending").length;
+
+  setMetricText("#repMetricUploads", myUploads);
+  setMetricText("#repMetricPosts", myPosts);
+  setMetricText("#repMetricSuggestions", pendingSuggestions);
+}
+
+/* Resource filters: search, filter by type, sort */
+function connectResourceFilters() {
+  const searchInput = getElement("#resourceSearchInput");
+  const sortSelect = getElement("#resourceSortSelect");
+  const filterPills = getElement("#resourceFilterPills");
+  if (!searchInput && !filterPills) return;
+
+  let activeFilter = "all";
+
+  function applyResourceFilters() {
+    const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
+    const sort = sortSelect ? sortSelect.value : "newest";
+    let filtered = [...(state.resources || [])];
+
+    /* Type filter */
+    if (activeFilter !== "all") {
+      filtered = filtered.filter((r) => {
+        const ext = (r.fileType || r.title || "").split(".").pop().toLowerCase();
+        if (activeFilter === "pdf") return ext === "pdf";
+        if (activeFilter === "ppt") return ext === "ppt" || ext === "pptx";
+        if (activeFilter === "doc") return ext === "doc" || ext === "docx";
+        if (activeFilter === "image") return ext === "png" || ext === "jpg" || ext === "jpeg";
+        return true;
+      });
+    }
+
+    /* Search filter */
+    if (query) {
+      filtered = filtered.filter((r) =>
+        `${r.title || ""} ${r.courseCode || ""} ${r.type || ""} ${r.uploadedBy || ""}`.toLowerCase().includes(query)
+      );
+    }
+
+    /* Sort */
+    if (sort === "newest") filtered.sort((a, b) => (b.createdAtMs || 0) - (a.createdAtMs || 0));
+    else if (sort === "oldest") filtered.sort((a, b) => (a.createdAtMs || 0) - (b.createdAtMs || 0));
+    else if (sort === "title") filtered.sort((a, b) => (a.title || "").localeCompare(b.title || ""));
+    else if (sort === "course") filtered.sort((a, b) => (a.courseCode || "").localeCompare(b.courseCode || ""));
+
+    /* Update filter pill counts */
+    const allResources = state.resources || [];
+    setText("#filterCountAll", allResources.length);
+    setText("#filterCountPdf", allResources.filter((r) => (r.fileType || r.title || "").toLowerCase().endsWith(".pdf")).length);
+    setText("#filterCountPpt", allResources.filter((r) => /\.(ppt|pptx)$/i.test(r.fileType || r.title || "")).length);
+    setText("#filterCountDoc", allResources.filter((r) => /\.(doc|docx)$/i.test(r.fileType || r.title || "")).length);
+    setText("#filterCountImg", allResources.filter((r) => /\.(png|jpg|jpeg)$/i.test(r.fileType || r.title || "")).length);
+
+    /* Update resource count pill */
+    setText("#resourceCount", filtered.length + " files");
+
+    /* Render filtered resources into the table */
+    const body = getElement("#staffResourcesBody");
+    if (body) {
+      body.innerHTML = filtered.length
+        ? filtered
+            .map((resource) => {
+              const action = canDeleteResource(resource)
+                ? `<div class="table-actions">
+                    <button class="ghost-link" data-edit-resource="${resource.id}">Edit</button>
+                    <button class="danger-link" data-delete-resource="${resource.id}">Delete</button>
+                  </div>`
+                : `<span class="muted-cell">Owner only</span>`;
+              const ext = (resource.fileType || resource.title || "").split(".").pop().toLowerCase();
+              const date = resource.createdAtMs ? formatDate(resource.createdAtMs) : "";
+              return `
+                <tr>
+                  <td>${escapeHtml(resource.title)}</td>
+                  <td>${escapeHtml(resource.courseCode)}</td>
+                  <td>${escapeHtml(resource.type || ext)}</td>
+                  <td>${escapeHtml(resource.uploadedBy || "Course rep")}</td>
+                  <td>${date}</td>
+                  <td>${action}</td>
+                </tr>
+              `;
+            })
+            .join("")
+        : `<tr><td colspan="6">No resources match your filters.</td></tr>`;
+    }
+  }
+
+  if (searchInput) searchInput.addEventListener("input", applyResourceFilters);
+  if (sortSelect) sortSelect.addEventListener("change", applyResourceFilters);
+
+  if (filterPills) {
+    filterPills.addEventListener("click", (e) => {
+      const pill = e.target.closest(".resource-filter-pill");
+      if (!pill) return;
+      filterPills.querySelectorAll(".resource-filter-pill").forEach((p) => (p.dataset.active = "false"));
+      pill.dataset.active = "true";
+      activeFilter = pill.dataset.filter;
+      applyResourceFilters();
+    });
+  }
+
+  /* Run initial render */
+  applyResourceFilters();
+}
+
+/* Member search: filter members table by name or matric */
+function connectMemberSearch() {
+  const input = getElement("#memberSearchInput");
+  if (!input) return;
+
+  input.addEventListener("input", () => {
+    const query = input.value.trim().toLowerCase();
+    const body = getElement("#membersTableBody");
+    if (!body) return;
+
+    const filtered = state.members.filter((m) =>
+      `${m.name || ""} ${m.matricNumber || ""}`.toLowerCase().includes(query)
+    );
+
+    const canDeleteMembers = isAdminPortal();
+    const canViewHistory = Boolean(getElement("#memberStudyHistoryPanel"));
+    const hasActionColumn = canDeleteMembers || canViewHistory;
+
+    body.innerHTML = filtered.length
+      ? filtered
+          .map(
+            (member) => `
+              <tr>
+                <td>${escapeHtml(member.name)}</td>
+                <td>${escapeHtml(member.matricNumber)}</td>
+                <td>
+                  <span class="member-status-badge ${getMemberStreak(member.id) > 0 ? "active" : "inactive"}">
+                    <span class="status-dot"></span>
+                    ${getMemberStreak(member.id) > 0 ? "Active" : "Inactive"}
+                  </span>
+                </td>
+                <td>
+                  <span class="member-push-badge ${member.notificationEnabled ? "on" : "off"}">
+                    ${member.notificationEnabled ? "On" : "Off"}
+                  </span>
+                </td>
+                <td>
+                  <span class="member-streak-display">
+                    ${getMemberStreak(member.id) > 0 ? '<span class="streak-fire">🔥</span>' : ""}
+                    ${getMemberStreak(member.id)}d
+                  </span>
+                </td>
+                <td>${formatDate(member.lastSeenAtMs || member.createdAtMs)}</td>
+                ${
+                  hasActionColumn
+                    ? `<td>
+                        <div class="table-actions">
+                          ${canViewHistory ? `<button class="ghost-link" data-view-member-history="${member.id}">History</button>` : ""}
+                          ${canDeleteMembers ? `<button class="danger-link" data-delete-member="${member.id}">Delete</button>` : ""}
+                        </div>
+                      </td>`
+                    : ""
+                }
+              </tr>
+            `
+          )
+          .join("")
+      : `<tr><td colspan="${hasActionColumn ? 7 : 6}">No members match your search.</td></tr>`;
+  });
+}
+
+/* CSV export for members */
+function connectMembersCsvExport() {
+  const btn = getElement("#exportMembersCsv");
+  if (!btn) return;
+
+  btn.addEventListener("click", () => {
+    const members = state.members || [];
+    if (!members.length) {
+      showToast("No members to export.");
+      return;
+    }
+
+    const header = "Name,Matric Number,Push Status,Streak,Last Seen";
+    const rows = members.map(
+      (m) =>
+        `"${(m.name || "").replace(/"/g, '""')}","${(m.matricNumber || "").replace(/"/g, '""')}","${m.notificationEnabled ? "On" : "Off"}",${getMemberStreak(m.id)},"${formatDate(m.lastSeenAtMs || m.createdAtMs)}"`
+    );
+    const csv = [header, ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "PhysioK29-Members.csv";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    showToast("Members CSV downloaded.");
+  });
+}
+
+function setText(selector, text) {
+  const el = getElement(selector);
+  if (el) el.textContent = text;
+}
+
 async function init() {
   renderBootLoader("Opening portal");
   registerPortalServiceWorker();
@@ -5654,6 +5964,9 @@ async function init() {
   connectTimetableDownload();
   connectMembersPdfDownload();
   connectAnalyticsPdfDownload();
+  connectResourceFilters();
+  connectMemberSearch();
+  connectMembersCsvExport();
   window.setInterval(() => {
     renderExamMode();
     renderNextLecture();
