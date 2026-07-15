@@ -1,3 +1,7 @@
+import { BREAK_LOCK_UNTIL, cbtTimetable, findCourse, firstSemesterCourses, resourceTypes, secondSemesterResumption } from "./data.js?v=20260715-1";
+import { createBackend } from "./supabase-service.js?v=20260715-1";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260715-1";
+
 // Mock data: Precise schedule extracted from CBT Timetable image
 const MOCK_SCHEDULE = [
   // MONDAY
