@@ -9,3 +9,8 @@ build/
 outputs/
 K29.temp/
 *.log
+
+upload-resource.mjs
+create_table.mjs
+list_tables.mjs
+setup_db.ps1
