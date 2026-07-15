@@ -7023,41 +7023,37 @@ body[data-page="dashboard"] .dashboard-topic-tracker[hidden] {
   }
 }
 
-#downloadTimetablePng {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
-  border: 1.5px solid var(--mint-dark);
-  border-radius: 14px;
-  background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
-  color: #1b5e20;
+button#downloadTimetablePng {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 10px 20px !important;
+  border: 2px solid #16735c !important;
+  border-radius: 40px !important;
+  background: #16735c !important;
+  color: #ffffff !important;
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
-  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
-  box-shadow: 0 2px 8px rgba(42, 157, 127, 0.15);
-}
-
-#downloadTimetablePng:hover {
-  background: linear-gradient(135deg, #c8e6c9, #dcedc8);
-  box-shadow: 0 4px 14px rgba(42, 157, 127, 0.25);
-  transform: translateY(-1px);
-}
-
-#downloadTimetablePng:active {
-  transform: translateY(0);
-}
-
-#downloadTimetablePng:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
+  transition: opacity 0.2s;
   box-shadow: none;
 }
 
-#downloadTimetablePng .material-symbols-rounded {
-  font-size: 1.3rem;
+button#downloadTimetablePng:hover {
+  opacity: 0.85;
+}
+
+button#downloadTimetablePng:active {
+  opacity: 0.7;
+}
+
+button#downloadTimetablePng:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button#downloadTimetablePng .material-symbols-rounded {
+  font-size: 1.2rem;
 }
