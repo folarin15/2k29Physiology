@@ -1,6 +1,6 @@
 import { BREAK_LOCK_UNTIL, cbtTimetable, findCourse, firstSemesterCourses, resourceTypes, secondSemesterResumption } from "./data.js?v=20260717-1";
 import { createBackend } from "./supabase-service.js?v=20260717-1";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260717-1";
+import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260717-1";
 
 const APP_VERSION = "20260716-1";
 
@@ -6248,6 +6248,37 @@ function renderBirthdayDashboard() {
   }
 }
 
+let birthdayNotificationStatus = "";
+
+async function triggerBirthdayNotification() {
+  const statusEl = getElement("#birthdayNotificationStatus");
+  if (statusEl) statusEl.textContent = "Sending notification...";
+  const btn = document.querySelector("[data-trigger-birthday-notify]");
+  if (btn) btn.disabled = true;
+
+  try {
+    const funcUrl = `${supabaseConfig.url}/functions/v1/birthday-notify`;
+    const res = await fetch(funcUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ trigger: "manual" }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+
+    const msg = data?.results?.length
+      ? `Sent: ${data.results.map((r) => `${r.type} (${r.count})`).join(", ")}${data.webhookSent ? " + webhook" : ""}`
+      : data?.message || "No upcoming birthdays.";
+    if (statusEl) statusEl.textContent = msg;
+    showToast(msg);
+  } catch (err) {
+    const msg = err.message || "Notification failed.";
+    if (statusEl) statusEl.textContent = msg;
+    showToast(msg, "error");
+  }
+  if (btn) btn.disabled = false;
+}
+
 function renderBirthdayManager(upcoming, allMembers) {
   if (getElement("#birthdayManagerModal")) return;
 
@@ -6286,11 +6317,22 @@ function renderBirthdayManager(upcoming, allMembers) {
         </select>
       </div>
 
+      <div style="margin-bottom:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <button class="secondary-action" type="button" data-trigger-birthday-notify>
+          <span class="material-symbols-rounded" aria-hidden="true">notifications</span>
+          Test Notification
+        </button>
+        <small id="birthdayNotificationStatus" style="color:var(--muted);"></small>
+      </div>
+
       <div id="birthdayManagerResults" style="max-height:60vh;overflow-y:auto;"></div>
     </article>
   `;
 
   document.body.appendChild(overlay);
+
+  const notifyBtn = overlay.querySelector("[data-trigger-birthday-notify]");
+  if (notifyBtn) notifyBtn.addEventListener("click", triggerBirthdayNotification);
 
   let currentMonth = "";
   const results = getElement("#birthdayManagerResults");

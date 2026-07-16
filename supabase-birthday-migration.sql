@@ -40,3 +40,33 @@ on storage.objects for update
 to public
 using (bucket_id = 'birthday-photos')
 with check (bucket_id = 'birthday-photos');
+
+-- ── 5. Birthday notifications log ───────────────────────────
+create table if not exists public.birthday_notifications (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  notification_type text not null check (notification_type in ('today', 'tomorrow', 'this_week')),
+  member_count integer not null default 0,
+  members_json jsonb not null default '[]'::jsonb,
+  webhook_sent boolean not null default false,
+  webhook_response text,
+  triggered_by text not null default 'cron' check (triggered_by in ('cron', 'manual')),
+  error text
+);
+
+alter table public.birthday_notifications enable row level security;
+
+drop policy if exists "Staff can read birthday_notifications" on public.birthday_notifications;
+create policy "Staff can read birthday_notifications"
+on public.birthday_notifications for select
+to authenticated
+using (public.is_staff());
+
+drop policy if exists "Service role can insert birthday_notifications" on public.birthday_notifications;
+create policy "Service role can insert birthday_notifications"
+on public.birthday_notifications for insert
+to authenticated
+with check (public.is_staff());
+
+create index if not exists idx_birthday_notifications_date
+  on public.birthday_notifications(created_at desc);

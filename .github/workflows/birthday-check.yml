@@ -1,0 +1,21 @@
+name: Birthday Check
+
+on:
+  schedule:
+    - cron: "0 7 * * *"
+  workflow_dispatch:
+
+env:
+  SUPABASE_PROJECT_REF: rfrlddiebyfojnzbfldy
+  SUPABASE_FUNCTION_URL: https://rfrlddiebyfojnzbfldy.supabase.co/functions/v1
+
+jobs:
+  check-birthdays:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call birthday-notify function
+        run: |
+          curl -s -X POST "${{ env.SUPABASE_FUNCTION_URL }}/birthday-notify" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{"trigger":"cron"}'
