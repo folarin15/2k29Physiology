@@ -3409,6 +3409,12 @@ function renderNextExam() {
   card.hidden = true;
 }
 
+function renderGesCountdown() {
+  const card = getElement("#gesCountdownCard");
+  if (!card) return;
+  card.hidden = true;
+}
+
 function populateCourseSelects() {
   getElements("[data-course-select]").forEach((select) => {
     select.innerHTML = firstSemesterCourses
