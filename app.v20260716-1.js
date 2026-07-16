@@ -2703,7 +2703,7 @@ function renderAdminDashboard() {
   const greeting = getElement("#adminGreeting");
   const summaryGrid = getElement("#adminSummaryGrid");
   const cardGrid = getElement("#adminCardGrid");
-  if (!cardGrid && !getElement("#adminMetricRow")) return;
+  if (!getElement("#adminMetricRow")) return;
 
   /* Time-based greeting */
   if (greeting) {
@@ -2799,7 +2799,8 @@ function renderAdminDashboard() {
     .sort((a, b) => b.summary.attemptCount - a.summary.attemptCount)
     .slice(0, 5);
 
-  cardGrid.innerHTML = `
+  if (cardGrid) {
+    cardGrid.innerHTML = `
     <article class="admin-card">
       <div class="admin-card-header">
         <span class="material-symbols-rounded" aria-hidden="true">cloud_upload</span>
@@ -2883,6 +2884,7 @@ function renderAdminDashboard() {
       </div>
     </article>
   `;
+  }
 }
 
 function renderStaffSummary() {
