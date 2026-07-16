@@ -1,4 +1,4 @@
-import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260716-1";
+import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260717-1";
 
 const QUIZ_BANK_CACHE_KEY = "physiology2k29.quizBank";
 const QUIZ_BANK_URL = "./quiz-bank.json?v=20260709-1";
@@ -237,6 +237,20 @@ function mapQuizAttempt(row) {
   };
 }
 
+function mapBirthdayProfile(row) {
+  return {
+    id: row.id,
+    name: row.name,
+    matricNumber: row.matric_number,
+    fullName: row.full_name || "",
+    dateOfBirth: row.date_of_birth || "",
+    photoUrl: row.birthday_photo_url || "",
+    birthdayRegistrationCompleted: Boolean(row.birthday_registration_completed),
+    photoUpdatedAtMs: toMillis(row.birthday_photo_updated_at),
+    createdAtMs: toMillis(row.created_at),
+  };
+}
+
 function mapTopicPerformance(row) {
   const attempts = Number(row.attempts || 0);
   const correct = Number(row.correct || 0);
@@ -411,6 +425,14 @@ export async function createBackend() {
       },
       submitQuizAttempt: async () => {
         throw new Error("Quiz submission is not connected yet. Try again later.");
+      },
+      saveBirthdayProfile: async () => {
+        throw new Error("Birthday profile is not connected yet. Try again later.");
+      },
+      getBirthdayProfile: async () => null,
+      getBirthdayList: async () => [],
+      uploadBirthdayPhoto: async () => {
+        throw new Error("Photo upload is not connected yet. Try again later.");
       },
     };
   }
@@ -1125,6 +1147,76 @@ export async function createBackend() {
     async deleteMember(memberId) {
       const { error } = await supabase.from("members").delete().eq("id", memberId);
       if (error) throw error;
+    },
+
+    async saveBirthdayProfile(fullName, dateOfBirth, photoUrl) {
+      const data = await callMemberPortal("save-birthday-profile", {
+        memberSession: getStoredMemberSession(),
+        fullName: String(fullName || "").trim(),
+        dateOfBirth: String(dateOfBirth || "").trim(),
+        photoUrl: String(photoUrl || "").trim(),
+      });
+      return {
+        ok: true,
+        fullName: data.fullName,
+        dateOfBirth: data.dateOfBirth,
+        photoUrl: data.photoUrl || "",
+        birthdayRegistrationCompleted: true,
+      };
+    },
+
+    async getBirthdayProfile() {
+      const data = await callMemberPortal("get-birthday-profile", {
+        memberSession: getStoredMemberSession(),
+      });
+      if (!data?.ok) return null;
+      return {
+        id: data.id,
+        name: data.name,
+        matricNumber: data.matricNumber,
+        fullName: data.fullName || "",
+        dateOfBirth: data.dateOfBirth || "",
+        photoUrl: data.photoUrl || "",
+        birthdayRegistrationCompleted: Boolean(data.birthdayRegistrationCompleted),
+        photoUpdatedAtMs: toMillis(data.photoUpdatedAt),
+        createdAtMs: toMillis(data.createdAt),
+      };
+    },
+
+    async getBirthdayList() {
+      const { data, error } = await supabase
+        .from("members")
+        .select("id, name, matric_number, full_name, date_of_birth, birthday_photo_url, birthday_registration_completed, created_at")
+        .eq("birthday_registration_completed", true)
+        .order("date_of_birth", { ascending: true });
+
+      if (error) throw error;
+      return (data || []).map(mapBirthdayProfile);
+    },
+
+    async uploadBirthdayPhoto(file, memberId) {
+      if (!(file instanceof File)) throw new Error("Choose a photo to upload.");
+      const MAX_SIZE = 10 * 1024 * 1024;
+      if (file.size > MAX_SIZE) throw new Error("Keep photos under 10 MB.");
+      const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+      const safeExt = ["jpg", "jpeg", "png", "webp"].includes(ext) ? ext : "jpg";
+      const filePath = `birthday-photos/${memberId}-${Date.now()}.${safeExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("birthday-photos")
+        .upload(filePath, file, {
+          cacheControl: "3600",
+          contentType: file.type || "image/jpeg",
+          upsert: false,
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { data: publicUrl } = supabase.storage
+        .from("birthday-photos")
+        .getPublicUrl(filePath);
+
+      return publicUrl?.publicUrl || `${supabaseConfig.url}/storage/v1/object/public/birthday-photos/${filePath}`;
     },
   };
 }

@@ -19,12 +19,12 @@ const APP_SHELL_URLS = [
   "/suggestions.html",
   OFFLINE_URL,
   "/styles.css",
-  "/app.v20260716-1.js",
-  "/reader.v20260716-1.js",
-  "/data.v20260716-1.js",
+  "/app.v20260717-1.js",
+  "/reader.v20260717-1.js",
+  "/data.v20260717-1.js",
   "/bio-study-guide.json",
-  "/supabase-config.v20260716-1.js",
-  "/supabase-service.v20260716-1.js",
+  "/supabase-config.v20260717-1.js",
+  "/supabase-service.v20260717-1.js",
   "/site.webmanifest",
   "/assets/ui-logo.jpeg",
   "/assets/favicon.png",
@@ -36,7 +36,7 @@ const APP_SHELL_URLS = [
   The fetch handler appends it to every script/style request so Cloudflare
   (or any intermediary) cannot serve a stale cached copy.
 */
-const VERSION_TAG = "v=20260716-1";
+const VERSION_TAG = "v=20260717-1";
 
 function isStaffRequest(url) {
   return STAFF_PATHS.some((path) => url.pathname === path || url.pathname.startsWith(`${path}/`));

@@ -7772,3 +7772,47 @@ button#downloadTimetablePng .material-symbols-rounded {
     align-items: flex-start;
   }
 }
+
+/* ── BIRTHDAY ONBOARDING ───────────────────────────────────── */
+.birthday-photo-label {
+  cursor: pointer;
+}
+
+.birthday-photo-preview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border: 2px dashed var(--line);
+  border-radius: 10px;
+  margin-top: 6px;
+  transition: border-color 0.2s;
+  min-height: 80px;
+  justify-content: center;
+  color: var(--muted);
+}
+
+.birthday-photo-preview:hover {
+  border-color: var(--mint);
+}
+
+.birthday-photo-preview img {
+  max-height: 160px;
+  max-width: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* ── BIRTHDAY MANAGER ──────────────────────────────────────── */
+.birthday-manager-row {
+  transition: background 0.2s;
+}
+
+.birthday-manager-row:hover {
+  background: var(--surface-alt) !important;
+}
+
+.birthday-manager-row .compact-action {
+  font-size: 12px;
+  padding: 4px 10px;
+}

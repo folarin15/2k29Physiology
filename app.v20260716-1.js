@@ -1262,6 +1262,8 @@ async function ensureMemberOnboarding() {
       showToast("Welcome. Your class profile is saved.");
       connectPushNotifications(memberSession, true);
       startPublicRealtimeData();
+      await ensureBirthdayOnboarding();
+      renderBirthdayPhotoSettings();
     } catch (error) {
       status.textContent = error.message || "Could not save profile. Please try again.";
       if (signinHelp) {
@@ -3243,6 +3245,7 @@ function renderAll() {
   renderScholarGreeting();
   renderInstallPrompt();
   renderNotificationSetup();
+  renderBirthdayPhotoSettings();
   renderDashboardMetrics();
   renderResourceCards();
   renderCourseGrid();
@@ -3258,6 +3261,7 @@ function renderAll() {
   if (typeof renderStaffMonitor === "function") renderStaffMonitor();
   if (typeof renderStaffStudyAnalytics === "function") renderStaffStudyAnalytics();
   renderAdminDashboard();
+  renderBirthdayDashboard();
   renderRepSummary();
   renderStudyDashboard();
   renderNextLecture();
@@ -5962,6 +5966,394 @@ function setText(selector, text) {
   if (el) el.textContent = text;
 }
 
+/* ── BIRTHDAY ONBOARDING ───────────────────────────────────── */
+
+const BIRTHDAY_PROFILE_KEY = "physiology2k29.birthdayCompleted";
+
+function isBirthdayCompletedLocally() {
+  return localStorage.getItem(BIRTHDAY_PROFILE_KEY) === "true";
+}
+
+function markBirthdayCompletedLocally() {
+  try { localStorage.setItem(BIRTHDAY_PROFILE_KEY, "true"); } catch {}
+}
+
+async function ensureBirthdayOnboarding() {
+  if (document.body.dataset.portal === "staff") return;
+  if (!getMemberSession()?.memberId) return;
+  if (isBirthdayCompletedLocally()) return;
+
+  const existingOverlay = getElement("#birthdayOnboarding");
+  if (existingOverlay) return;
+
+  let profile = null;
+  try {
+    profile = await state.backend.getBirthdayProfile();
+  } catch {
+    return;
+  }
+
+  if (profile?.birthdayRegistrationCompleted) {
+    markBirthdayCompletedLocally();
+    return;
+  }
+
+  renderBirthdayOnboarding(profile);
+}
+
+function renderBirthdayOnboarding(profile) {
+  if (getElement("#birthdayOnboarding")) return;
+
+  const session = getMemberSession();
+  const savedName = profile?.fullName || session?.name || "";
+
+  const overlay = document.createElement("section");
+  overlay.id = "birthdayOnboarding";
+  overlay.className = "member-modal";
+  overlay.innerHTML = `
+    <form class="member-card" id="birthdayOnboardingForm">
+      <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
+      <p class="eyebrow">Happy to have you here</p>
+      <h2>Complete Your Class Profile</h2>
+      <p class="form-help">Share your birthday so the class can celebrate with you this session. Your photo helps the class designer create birthday flyers and slides.</p>
+
+      <label>
+        Full name
+        <input name="fullName" type="text" value="${escapeHtml(savedName)}" placeholder="e.g. Suberu Igbobamiji Barawo" required />
+      </label>
+
+      <label>
+        Date of birth
+        <input name="dateOfBirth" type="date" min="2000-01-01" max="2010-12-31" required />
+      </label>
+
+      <label class="birthday-photo-label">
+        <span>Upload a portrait photo <small>(optional — helps the designer create your birthday flyer)</small></span>
+        <div class="birthday-photo-preview" id="birthdayPhotoPreview">
+          <span class="material-symbols-rounded" aria-hidden="true">add_a_photo</span>
+          <span>Tap to choose a photo</span>
+        </div>
+        <input name="photo" type="file" accept="image/jpeg,image/png,image/webp" hidden />
+        <small class="form-help">Portrait, half-body, or full-body casual photo. Max 10 MB.</small>
+      </label>
+
+      <button class="primary-action" type="submit">Save Profile</button>
+      <p class="form-status" id="birthdayOnboardingStatus"></p>
+    </form>
+  `;
+
+  document.body.appendChild(overlay);
+
+  const form = getElement("#birthdayOnboardingForm");
+  const status = getElement("#birthdayOnboardingStatus");
+  const photoInput = form.querySelector('input[name="photo"]');
+  const photoPreview = getElement("#birthdayPhotoPreview");
+
+  photoPreview.addEventListener("click", () => photoInput?.click());
+
+  photoInput.addEventListener("change", () => {
+    const file = photoInput.files?.[0];
+    if (!file) {
+      photoPreview.innerHTML = `
+        <span class="material-symbols-rounded" aria-hidden="true">add_a_photo</span>
+        <span>Tap to choose a photo</span>
+      `;
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      photoPreview.innerHTML = `
+        <span class="material-symbols-rounded" aria-hidden="true">warning</span>
+        <span>Photo too large. Max 10 MB.</span>
+      `;
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      photoPreview.innerHTML = `<img src="${e.target.result}" alt="Preview" />`;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const formData = new FormData(form);
+    const fullName = String(formData.get("fullName") || "").trim();
+    const dateOfBirth = String(formData.get("dateOfBirth") || "").trim();
+    const photoFile = formData.get("photo");
+
+    if (!fullName || fullName.length < 2) {
+      status.textContent = "Enter your full name.";
+      return;
+    }
+    if (!dateOfBirth || !/^\d{4}-\d{2}-\d{2}$/.test(dateOfBirth)) {
+      status.textContent = "Select your date of birth.";
+      return;
+    }
+
+    status.textContent = "Saving your profile...";
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+
+    try {
+      let photoUrl = profile?.photoUrl || "";
+      if (photoFile instanceof File && photoFile.size > 0) {
+        status.textContent = "Uploading photo...";
+        const memberId = getMemberSession()?.memberId || "unknown";
+        photoUrl = await state.backend.uploadBirthdayPhoto(photoFile, memberId);
+      }
+
+      status.textContent = "Saving birthday profile...";
+      await state.backend.saveBirthdayProfile(fullName, dateOfBirth, photoUrl);
+
+      markBirthdayCompletedLocally();
+      overlay.remove();
+      renderBirthdayPhotoSettings();
+      showToast("Happy birthday in advance, " + fullName.split(" ")[0] + "!");
+    } catch (error) {
+      status.textContent = error.message || "Could not save profile. Try again.";
+      submitBtn.disabled = false;
+    }
+  });
+}
+
+/* ── BIRTHDAY PHOTO SETTINGS ───────────────────────────────── */
+
+function renderBirthdayPhotoSettings() {
+  const existingBtn = getElement("#birthdayPhotoSettings");
+  if (existingBtn) existingBtn.remove();
+  if (document.body.dataset.portal === "staff" || !isDashboardPage()) return;
+  if (!getMemberSession()?.memberId) return;
+  if (!isBirthdayCompletedLocally()) return;
+
+  const panel = getElement(".notification-setup");
+  if (!panel) return;
+
+  const btn = document.createElement("div");
+  btn.id = "birthdayPhotoSettings";
+  btn.className = "notification-setup";
+  btn.style.marginTop = "8px";
+  btn.innerHTML = `
+    <div>
+      <span class="material-symbols-rounded" aria-hidden="true">photo_camera</span>
+      <div>
+        <strong>Birthday photo</strong>
+        <p>Update your photo for the class birthday flyer.</p>
+      </div>
+    </div>
+    <button class="secondary-action" type="button" data-replace-birthday-photo>
+      <span class="material-symbols-rounded" aria-hidden="true">edit</span>
+      Replace photo
+    </button>
+  `;
+  panel.insertAdjacentElement("afterend", btn);
+
+  btn.querySelector("[data-replace-birthday-photo]").addEventListener("click", async () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/jpeg,image/png,image/webp";
+    input.click();
+
+    input.addEventListener("change", async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      if (file.size > 10 * 1024 * 1024) {
+        showToast("Photo too large. Max 10 MB.", "error");
+        return;
+      }
+
+      try {
+        const memberId = getMemberSession()?.memberId || "unknown";
+        const photoUrl = await state.backend.uploadBirthdayPhoto(file, memberId);
+
+        const profile = await state.backend.getBirthdayProfile();
+        if (profile) {
+          await state.backend.saveBirthdayProfile(profile.fullName, profile.dateOfBirth, photoUrl);
+        }
+        showToast("Birthday photo updated.");
+      } catch (error) {
+        showToast(error.message || "Could not update photo.", "error");
+      }
+    });
+  });
+}
+
+/* ── DESIGNER BIRTHDAY DASHBOARD ───────────────────────────── */
+
+let cachedBirthdayList = [];
+let birthdayListLoading = false;
+
+async function loadBirthdayList() {
+  if (birthdayListLoading) return cachedBirthdayList;
+  birthdayListLoading = true;
+  try {
+    cachedBirthdayList = await state.backend.getBirthdayList();
+  } catch {
+    cachedBirthdayList = [];
+  }
+  birthdayListLoading = false;
+  return cachedBirthdayList;
+}
+
+function getUpcomingBirthdays(memberList) {
+  const today = new Date();
+  const todayMD = today.getMonth() * 100 + today.getDate();
+
+  return memberList
+    .filter((m) => m.dateOfBirth)
+    .map((m) => {
+      const parts = m.dateOfBirth.split("-");
+      const dob = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+      const dobMD = dob.getMonth() * 100 + dob.getDate();
+      let diff = dobMD - todayMD;
+      if (diff < 0) diff += 1200;
+      return { ...m, diff, dob };
+    })
+    .filter((m) => m.diff >= 0 && m.diff <= 14)
+    .sort((a, b) => a.diff - b.diff);
+}
+
+function renderBirthdayDashboard() {
+  const grid = getElement("#adminCardGrid");
+  if (!grid) return;
+
+  const members = cachedBirthdayList;
+  const upcoming = getUpcomingBirthdays(members);
+  const totalRegistered = members.length;
+
+  const tomorrow = upcoming.filter((m) => m.diff === 1);
+  const in3Days = upcoming.filter((m) => m.diff >= 2 && m.diff <= 3);
+  const nextWeek = upcoming.filter((m) => m.diff >= 4 && m.diff <= 14);
+
+  grid.insertAdjacentHTML("beforeend", `
+    <article class="admin-card" id="birthdayDashboardCard">
+      <div class="admin-card-header">
+        <span class="material-symbols-rounded" aria-hidden="true">celebration</span>
+        <h3>Birthdays</h3>
+      </div>
+      <div class="admin-card-body">
+        <strong>${totalRegistered}</strong> classmates registered &middot;
+        <strong>${upcoming.length}</strong> birthdays in the next 2 weeks
+        ${tomorrow.length ? `<br><strong>🎉 ${tomorrow.length} tomorrow!</strong>` : ""}
+      </div>
+      <div class="admin-card-footer">
+        <span class="admin-card-stat">${in3Days.length} in 3 days &middot; ${nextWeek.length} next week</span>
+        <button class="ghost-action compact-action" type="button" data-open-birthday-manager>View All</button>
+      </div>
+    </article>
+  `);
+
+  const viewBtn = grid.querySelector("[data-open-birthday-manager]");
+  if (viewBtn) {
+    viewBtn.addEventListener("click", () => renderBirthdayManager(upcoming, members));
+  }
+}
+
+function renderBirthdayManager(upcoming, allMembers) {
+  if (getElement("#birthdayManagerModal")) return;
+
+  const overlay = document.createElement("section");
+  overlay.id = "birthdayManagerModal";
+  overlay.className = "edit-modal";
+  overlay.innerHTML = `
+    <article class="edit-card" style="max-width: 800px;">
+      <header>
+        <div>
+          <p class="eyebrow">Class Birthdays</p>
+          <h2>Birthday Manager</h2>
+          <p class="form-help">Upcoming birthdays and search all registered profiles.</p>
+        </div>
+        <button type="button" class="icon-button" data-close-edit aria-label="Close">
+          <span class="material-symbols-rounded" aria-hidden="true">close</span>
+        </button>
+      </header>
+
+      <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+        <input type="text" id="birthdayManagerSearch" placeholder="Search by name or month..." style="flex:1;min-width:180px;" />
+        <select id="birthdayManagerMonth" style="min-width:140px;">
+          <option value="">All months</option>
+          <option value="0">January</option>
+          <option value="1">February</option>
+          <option value="2">March</option>
+          <option value="3">April</option>
+          <option value="4">May</option>
+          <option value="5">June</option>
+          <option value="6">July</option>
+          <option value="7">August</option>
+          <option value="8">September</option>
+          <option value="9">October</option>
+          <option value="10">November</option>
+          <option value="11">December</option>
+        </select>
+      </div>
+
+      <div id="birthdayManagerResults" style="max-height:60vh;overflow-y:auto;"></div>
+    </article>
+  `;
+
+  document.body.appendChild(overlay);
+
+  let currentMonth = "";
+  const results = getElement("#birthdayManagerResults");
+  const searchInput = getElement("#birthdayManagerSearch");
+  const monthSelect = getElement("#birthdayManagerMonth");
+
+  function filterBirthdays() {
+    const query = searchInput.value.trim().toLowerCase();
+    const month = monthSelect.value;
+    currentMonth = month;
+
+    let filtered = allMembers;
+    if (query) {
+      filtered = filtered.filter((m) =>
+        (m.fullName || m.name || "").toLowerCase().includes(query) ||
+        (m.matricNumber || "").toLowerCase().includes(query)
+      );
+    }
+    if (month !== "") {
+      filtered = filtered.filter((m) => {
+        if (!m.dateOfBirth) return false;
+        const parts = m.dateOfBirth.split("-");
+        return Number(parts[1]) - 1 === Number(month);
+      });
+    }
+
+    if (!filtered.length) {
+      results.innerHTML = '<p style="text-align:center;padding:40px;color:var(--text-muted);">No birthdays match your filter.</p>';
+      return;
+    }
+
+    results.innerHTML = filtered.map((m) => {
+      const dob = m.dateOfBirth ? new Date(m.dateOfBirth.split("-")[0], Number(m.dateOfBirth.split("-")[1]) - 1, m.dateOfBirth.split("-")[2]) : null;
+      const dobStr = dob ? dob.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "Not set";
+      const photo = m.photoUrl
+        ? `<img src="${escapeHtml(m.photoUrl)}" alt="${escapeHtml(m.fullName || m.name)}" style="width:64px;height:64px;border-radius:50%;object-fit:cover;flex-shrink:0;" />`
+        : `<span style="width:64px;height:64px;border-radius:50%;background:var(--surface-alt);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span class="material-symbols-rounded" style="font-size:28px;">person</span></span>`;
+      const isUpcoming = upcoming.some((u) => u.id === m.id);
+
+      return `
+        <div class="birthday-manager-row" style="display:flex;align-items:center;gap:12px;padding:10px;border-radius:8px;background:${isUpcoming ? "var(--surface-accent)" : "transparent"};margin-bottom:4px;">
+          ${photo}
+          <div style="flex:1;min-width:0;">
+            <strong>${escapeHtml(m.fullName || m.name)}</strong>
+            <small style="display:block;color:var(--text-muted);">${escapeHtml(m.matricNumber)}</small>
+          </div>
+          <div style="text-align:right;flex-shrink:0;">
+            <div style="font-weight:500;">${dobStr}</div>
+            ${isUpcoming ? '<small style="color:var(--accent);">🎉 Upcoming</small>' : ""}
+          </div>
+          ${m.photoUrl ? `<a class="secondary-action compact-action" href="${escapeHtml(m.photoUrl)}" download="${escapeHtml(m.fullName || m.name)}-birthday-photo" target="_blank" rel="noopener" style="text-decoration:none;font-size:13px;padding:4px 10px;">Download</a>` : ""}
+        </div>
+      `;
+    }).join("");
+  }
+
+  searchInput.addEventListener("input", filterBirthdays);
+  monthSelect.addEventListener("change", filterBirthdays);
+  filterBirthdays();
+}
+
+/* ── END BIRTHDAY FUNCTIONS ────────────────────────────────── */
+
 async function init() {
   console.log("[PhysioK29] app version:", APP_VERSION);
   renderBootLoader("Opening portal");
@@ -6012,6 +6404,12 @@ async function init() {
     updateBootLoader("Syncing study tools");
     await loadQuizSetup();
     startPublicRealtimeData();
+    updateBootLoader("Checking profile setup");
+    await ensureBirthdayOnboarding();
+    renderBirthdayPhotoSettings();
+    if (document.body.dataset.portal === "staff") {
+      loadBirthdayList();
+    }
   }
   hideBootLoader();
 }

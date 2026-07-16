@@ -1,8 +1,8 @@
-import { BREAK_LOCK_UNTIL, cbtTimetable, findCourse, firstSemesterCourses, resourceTypes, secondSemesterResumption } from "./data.js?v=20260717-1";
-import { createBackend } from "./supabase-service.js?v=20260717-1";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260717-1";
+import { BREAK_LOCK_UNTIL, cbtTimetable, findCourse, firstSemesterCourses, resourceTypes, secondSemesterResumption } from "./data.v20260717-1.js";
+import { createBackend } from "./supabase-service.v20260717-1.js";
+import { isSupabaseConfigured } from "./supabase-config.v20260717-1.js";
 
-const APP_VERSION = "20260716-1";
+const APP_VERSION = "20260717-1";
 
 // Mock data: Precise schedule extracted from CBT Timetable image
 const MOCK_SCHEDULE = [
@@ -742,7 +742,7 @@ function registerPortalServiceWorker() {
   /* Force a fresh SW install by appending a unique version parameter.
      When this string changes, the browser treats it as a new script URL,
      bypassing both browser cache and CDN (Cloudflare/Pxxl) edge cache. */
-  const SW_VERSION = "20260716-1";
+  const SW_VERSION = "20260717-1";
   const swUrl = `/OneSignalSDKWorker.js?v=${SW_VERSION}`;
 
   navigator.serviceWorker

@@ -27,7 +27,9 @@ type MemberRequest = {
     | "save-resource-feedback"
     | "quiz-setup"
     | "quiz-questions"
-    | "submit-quiz-attempt";
+    | "submit-quiz-attempt"
+    | "save-birthday-profile"
+    | "get-birthday-profile";
   name?: string;
   matricNumber?: string;
   memberSession?: MemberSession;
@@ -47,6 +49,9 @@ type MemberRequest = {
   limit?: number;
   durationSeconds?: number;
   answers?: Array<{ questionId?: string; selectedAnswer?: string }>;
+  fullName?: string;
+  dateOfBirth?: string;
+  photoUrl?: string;
 };
 
 function corsHeaders(req: Request) {
@@ -828,6 +833,65 @@ Deno.serve(async (req) => {
 
       if (error) throw error;
       return jsonResponse(req, { ok: true, notificationEnabled: enabled });
+    }
+
+    if (action === "save-birthday-profile") {
+      const fullName = cleanText(body.fullName || "", 120);
+      const dateOfBirth = String(body.dateOfBirth || "").trim();
+      const photoUrl = cleanText(body.photoUrl || "", 500);
+
+      if (!fullName || fullName.length < 2) {
+        return jsonResponse(req, { error: "Enter your full name." }, 400);
+      }
+
+      if (!dateOfBirth || !/^\d{4}-\d{2}-\d{2}$/.test(dateOfBirth)) {
+        return jsonResponse(req, { error: "Enter a valid date of birth (YYYY-MM-DD)." }, 400);
+      }
+
+      const { error: updateError } = await supabase
+        .from("members")
+        .update({
+          full_name: fullName,
+          date_of_birth: dateOfBirth,
+          birthday_photo_url: photoUrl || null,
+          birthday_registration_completed: true,
+          birthday_photo_updated_at: photoUrl ? new Date().toISOString() : null,
+        })
+        .eq("id", member.id);
+
+      if (updateError) throw updateError;
+
+      return jsonResponse(req, {
+        ok: true,
+        fullName,
+        dateOfBirth,
+        photoUrl: photoUrl || "",
+        birthdayRegistrationCompleted: true,
+      });
+    }
+
+    if (action === "get-birthday-profile") {
+      const { data: profile, error } = await supabase
+        .from("members")
+        .select("id, name, matric_number, full_name, date_of_birth, birthday_photo_url, birthday_registration_completed, birthday_photo_updated_at, created_at")
+        .eq("id", member.id)
+        .maybeSingle();
+
+      if (error) throw error;
+      if (!profile) return jsonResponse(req, { error: "Profile not found." }, 404);
+
+      return jsonResponse(req, {
+        ok: true,
+        id: profile.id,
+        name: profile.name,
+        matricNumber: profile.matric_number,
+        fullName: profile.full_name || "",
+        dateOfBirth: profile.date_of_birth || "",
+        photoUrl: profile.birthday_photo_url || "",
+        birthdayRegistrationCompleted: Boolean(profile.birthday_registration_completed),
+        photoUpdatedAt: profile.birthday_photo_updated_at || "",
+        createdAt: profile.created_at,
+      });
     }
 
     return jsonResponse(req, { error: "Unsupported action." }, 400);
