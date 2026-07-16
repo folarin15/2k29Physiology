@@ -2,7 +2,7 @@
 importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js");
 
 /* OFFLINE SHELL: Keeps the student-facing portal usable when the network drops. */
-const PORTAL_CACHE = "physiok29-shell-20260715a";
+const PORTAL_CACHE = "physiok29-shell-20260716a";
 const OFFLINE_URL = "/offline.html";
 const STAFF_PATHS = ["/K29.admin", "/K29.rep", "/admin.html", "/rep.html"];
 const APP_SHELL_URLS = [
@@ -30,6 +30,13 @@ const APP_SHELL_URLS = [
   "/assets/favicon.png",
   "/assets/og-image.png",
 ];
+
+/*
+  VERSION_TAG: Bump this string whenever you push new JS/CSS to production.
+  The fetch handler appends it to every script/style request so Cloudflare
+  (or any intermediary) cannot serve a stale cached copy.
+*/
+const VERSION_TAG = "v=20260716-1";
 
 function isStaffRequest(url) {
   return STAFF_PATHS.some((path) => url.pathname === path || url.pathname.startsWith(`${path}/`));
@@ -89,8 +96,19 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (isCacheableAsset(request)) {
+    /* Rewrite script/style requests with a cache-busting version tag so
+       Cloudflare/Pxxl CDN cannot serve stale JS.  Image/font requests
+       are left alone — they are immutable assets. */
+    const url = new URL(request.url);
+    const isJsOrCss = ["script", "style"].includes(request.destination);
+    let fetchUrl = request.url;
+    if (isJsOrCss && !url.searchParams.has("v")) {
+      url.searchParams.set("v", VERSION_TAG.split("=")[1]);
+      fetchUrl = url.toString();
+    }
+
     event.respondWith(
-      fetch(request)
+      fetch(fetchUrl)
         .then((response) => {
           if (response.ok) {
             const copy = response.clone();

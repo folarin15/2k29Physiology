@@ -1,6 +1,6 @@
-import { BREAK_LOCK_UNTIL, cbtTimetable, findCourse, firstSemesterCourses, resourceTypes, secondSemesterResumption } from "./data.js?v=20260715-1";
-import { createBackend } from "./supabase-service.js?v=20260715-1";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260715-1";
+import { BREAK_LOCK_UNTIL, cbtTimetable, findCourse, firstSemesterCourses, resourceTypes, secondSemesterResumption } from "./data.js?v=20260716-1";
+import { createBackend } from "./supabase-service.js?v=20260716-1";
+import { isSupabaseConfigured } from "./supabase-config.js?v=20260716-1";
 
 // Mock data: Precise schedule extracted from CBT Timetable image
 const MOCK_SCHEDULE = [
@@ -737,9 +737,21 @@ function shouldShowInstallPrompt() {
 function registerPortalServiceWorker() {
   if (!("serviceWorker" in navigator) || window.location.protocol === "file:") return;
 
-  navigator.serviceWorker.register("/OneSignalSDKWorker.js", { scope: "/" }).catch((error) => {
-    console.warn("Portal service worker registration skipped:", error);
-  });
+  /* Force a fresh SW install by appending a unique version parameter.
+     When this string changes, the browser treats it as a new script URL,
+     bypassing both browser cache and CDN (Cloudflare/Pxxl) edge cache. */
+  const SW_VERSION = "20260716-1";
+  const swUrl = `/OneSignalSDKWorker.js?v=${SW_VERSION}`;
+
+  navigator.serviceWorker
+    .register(swUrl, { scope: "/", updateViaCache: "none" })
+    .then((registration) => {
+      /* Check for an update every time the page loads */
+      registration.update();
+    })
+    .catch((error) => {
+      console.warn("Portal service worker registration skipped:", error);
+    });
 }
 
 /* OFFLINE STATUS: Keeps students aware when they are seeing cached shell pages. */

@@ -1,4 +1,4 @@
-import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260615c";
+import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.js?v=20260716-1";
 
 const QUIZ_BANK_CACHE_KEY = "physiology2k29.quizBank";
 const QUIZ_BANK_URL = "./quiz-bank.json?v=20260709-1";
