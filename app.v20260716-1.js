@@ -1,6 +1,6 @@
-import { BREAK_LOCK_UNTIL, cbtTimetable, findCourse, firstSemesterCourses, resourceTypes, secondSemesterResumption } from "./data.js?v=20260716-1";
-import { createBackend } from "./supabase-service.js?v=20260716-1";
-import { isSupabaseConfigured } from "./supabase-config.js?v=20260716-1";
+import { BREAK_LOCK_UNTIL, cbtTimetable, findCourse, firstSemesterCourses, resourceTypes, secondSemesterResumption } from "./data.v20260716-1.js";
+import { createBackend } from "./supabase-service.v20260716-1.js";
+import { isSupabaseConfigured } from "./supabase-config.v20260716-1.js";
 
 const APP_VERSION = "20260716-1";
 
