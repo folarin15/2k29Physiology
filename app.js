@@ -3403,6 +3403,12 @@ function renderNextLecture() {
   }
 }
 
+function renderNextExam() {
+  const card = getElement("#nextExamCard");
+  if (!card) return;
+  card.hidden = true;
+}
+
 function populateCourseSelects() {
   getElements("[data-course-select]").forEach((select) => {
     select.innerHTML = firstSemesterCourses
