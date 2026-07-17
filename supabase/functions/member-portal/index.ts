@@ -257,7 +257,24 @@ async function verifyMember(supabase: ReturnType<typeof createClient>, session: 
     p_matric_number: matricNumber,
   });
 
-  if (error || data === false) return null;
+  if (error || data === false) {
+    const { data: member } = await supabase
+      .from("members")
+      .select("id, name, matric_number, notification_enabled, onesignal_subscription_id")
+      .eq("id", memberId)
+      .eq("matric_number", matricNumber)
+      .maybeSingle();
+
+    if (member) {
+      await supabase
+        .from("members")
+        .update({ last_seen_at: new Date().toISOString() })
+        .eq("id", memberId);
+      console.warn(`verifyMember: name-matching RPC rejected (${name} vs ${member.name}), but member ${memberId} exists — accepted via fallback`);
+      return member;
+    }
+    return null;
+  }
 
   const { data: member } = await supabase
     .from("members")

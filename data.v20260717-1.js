@@ -29,6 +29,20 @@ export const cbtTimetable = [];
 
 export const resourceTypes = ["Slide", "Note", "Textbook", "Practical", "Past Question", "Assignment", "Link"];
 
+export const secondSemesterCourses = [
+  { code: "PHY 101", title: "General Physics I", type: "Core Science" },
+  { code: "PHY 103", title: "Physics Laboratory I", type: "Lab" },
+  { code: "CHM 101", title: "General Chemistry I", type: "Core Science" },
+  { code: "CHM 107", title: "Chemistry Laboratory I", type: "Lab" },
+  { code: "BIO 101", title: "General Biology I", type: "Core Science" },
+  { code: "BIO 107", title: "Biology Laboratory I", type: "Lab" },
+  { code: "GES 101", title: "Use of English I", type: "General Studies" },
+  { code: "GES 103", title: "Philosophy and Logic", type: "General Studies" },
+  { code: "GES 107", title: "Citizenship Education I", type: "General Studies" },
+  { code: "MTH 101", title: "General Mathematics I", type: "Core Science" },
+  { code: "PHY 105", title: "Physics III", type: "Core Science" },
+];
+
 export function findCourse(courseCode) {
   return firstSemesterCourses.find((course) => course.code === courseCode);
 }

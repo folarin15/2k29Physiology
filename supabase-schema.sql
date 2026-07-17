@@ -347,16 +347,18 @@ security definer
 set search_path = public
 as $$
 declare
+  v_name text;
   v_matric text;
   v_allowed_name text;
 begin
+  v_name := trim(regexp_replace(coalesce(p_name, ''), '\s+', ' ', 'g'));
   v_matric := upper(regexp_replace(trim(coalesce(p_matric_number, '')), '\s+', '', 'g'));
 
   select name into v_allowed_name
   from public.allowed_members
   where matric_number = v_matric;
 
-  if v_allowed_name is null or not public.member_name_matches(p_name, v_allowed_name) then
+  if v_allowed_name is null or not public.member_name_matches(v_name, v_allowed_name) then
     return false;
   end if;
 

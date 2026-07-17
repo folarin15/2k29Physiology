@@ -1188,6 +1188,11 @@ async function ensureMemberOnboarding() {
       connectPushNotifications(getMemberSession());
       return true;
     }
+    if (refreshedSession) {
+      showToast("Could not verify your profile. Cached data is shown.", "warning");
+      setMemberGate(false);
+      return true;
+    }
     clearMemberSession();
   }
 
@@ -1721,56 +1726,16 @@ function renderCourseGrid(filteredCourses) {
 
 /* RESUMPTION PAGE: Replaces the finished exam timetable with a calm second-semester countdown. */
 function renderTimetable() {
-  const body = getElement("#timetableBody");
-  const cards = getElement("#timetableCardGrid");
-  const count = getElement("#timetablePageCount");
-  if (!body && !cards) return;
+  const container = getElement("#lectureTimetable") || getElement("#practicalTimetable");
+  if (!container) return;
 
   const now = new Date();
   const resumptionDate = getResumptionDate();
   const hasResumed = now >= resumptionDate;
   const countdownParts = formatCountdownParts(resumptionDate, now);
 
+  const count = getElement("#timetablePageCount");
   if (count) count.textContent = hasResumed ? "Second semester has resumed" : `${countdownParts[0].value} days left`;
-
-  if (cards) {
-    cards.innerHTML = `
-      <article class="exam-date-card" data-status="current">
-        <div class="exam-date-main">
-          <span class="course-code">Semester Break</span>
-          <h2>${hasResumed ? "Welcome back. We are ready for you." : "Welcome home. Second semester is loading."}</h2>
-          <p>${escapeHtml(secondSemesterResumption.message)}</p>
-        </div>
-        <dl>
-          <div>
-            <dt>Resumption</dt>
-            <dd>${escapeHtml(secondSemesterResumption.displayDate)}</dd>
-          </div>
-          <div>
-            <dt>Focus now</dt>
-            <dd>Rest, reconnect, and recharge at your own pace.</dd>
-          </div>
-          <div>
-            <dt>Class mood</dt>
-            <dd>Semester break is active. Enjoy it fully.</dd>
-          </div>
-        </dl>
-      </article>
-    `;
-  }
-
-  if (body) {
-    body.innerHTML = `
-      <tr data-status="current">
-        <td>Semester break</td>
-        <td>Active</td>
-        <td>Portal ready</td>
-        <td>Rest and recharge</td>
-        <td>Until ${escapeHtml(secondSemesterResumption.displayDate)}</td>
-        <td>Enjoy the break - you have earned it</td>
-      </tr>
-    `;
-  }
 }
 
 /* NEXT STEP CARD: Keeps the dashboard focused on resumption after exams. */
@@ -2593,8 +2558,6 @@ function renderAll() {
   renderResourceCards();
   renderCourseGrid();
   renderTimetable();
-  if (typeof renderNextExam === "function") renderNextExam();
-  if (typeof renderGesCountdown === "function") renderGesCountdown();
   renderExamMode();
   renderNotificationCenter();
   renderAnnouncements();
@@ -2635,44 +2598,7 @@ function connectSearch() {
   });
 }
 
-/* COURSE SEARCH & FILTER: Filters the course grid by search query and type chip. */
-function connectCourseFilters() {
-  const input = getElement("#courseSearch");
-  const chipsWrapper = getElement("#courseFilters");
-  if (!input && !chipsWrapper) return;
 
-  let query = "";
-  let filter = "all";
-
-  function applyFilter() {
-    const matches = firstSemesterCourses.filter((course) => {
-      const matchesQuery =
-        !query || `${course.code} ${course.title} ${course.type}`.toLowerCase().includes(query);
-      const matchesFilter =
-        filter === "all" || course.type.toLowerCase().includes(filter);
-      return matchesQuery && matchesFilter;
-    });
-    renderCourseGrid(matches);
-  }
-
-  if (input) {
-    input.addEventListener("input", () => {
-      query = input.value.trim().toLowerCase();
-      applyFilter();
-    });
-  }
-
-  if (chipsWrapper) {
-    chipsWrapper.addEventListener("click", (event) => {
-      const chip = event.target.closest(".chip");
-      if (!chip) return;
-      chipsWrapper.querySelectorAll(".chip").forEach((c) => c.classList.remove("active"));
-      chip.classList.add("active");
-      filter = chip.dataset.filter || "all";
-      applyFilter();
-    });
-  }
-}
 
 /* NEXT LECTURE: Dashboard card showing the upcoming class with countdown + slide status. */
 function renderNextLecture() {
@@ -2682,7 +2608,6 @@ function renderNextLecture() {
   const timerEl = getElement("#nextLectureTimer");
   const venueEl = getElement("#nextLectureVenue");
   const statusEl = getElement("#nextLectureStatus");
-  const linkEl = getElement("#nextLectureLink");
   if (!card || !titleEl) return;
 
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -2748,23 +2673,8 @@ function renderNextLecture() {
       statusEl.innerHTML += '<span class="tt-badge">Quiz Ready</span>';
     }
   }
-
-  if (linkEl) {
-    linkEl.href = `./courses.html?course=${encodeURIComponent(nextItem.course_code)}`;
-  }
 }
 
-function renderNextExam() {
-  const card = getElement("#nextExamCard");
-  if (!card) return;
-  card.hidden = true;
-}
-
-function renderGesCountdown() {
-  const card = getElement("#gesCountdownCard");
-  if (!card) return;
-  card.hidden = true;
-}
 
 function populateCourseSelects() {
   getElements("[data-course-select]").forEach((select) => {
@@ -3067,6 +2977,15 @@ function connectSuggestionForm() {
 
   anonToggle?.addEventListener("change", updateAnonLabel);
   updateAnonLabel();
+
+  const categoryInput = form.querySelector('[name="category"]');
+  form.querySelectorAll(".category-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      form.querySelectorAll(".category-btn").forEach((b) => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      if (categoryInput) categoryInput.value = btn.dataset.category;
+    });
+  });
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -4631,8 +4550,6 @@ async function init() {
   window.__PHYSIOK29_STATE__ = state;
   window.__PHYSIOK29_BACKEND__ = state.backend;
   window.setInterval(() => {
-    if (typeof renderNextExam === "function") renderNextExam();
-    if (typeof renderGesCountdown === "function") renderGesCountdown();
     renderExamMode();
     renderNextLecture();
   }, 1000);

@@ -487,67 +487,41 @@ function renderAdminDashboard() {
 
 /* ── CHARTS ───────────────────────────────────────────────── */
 function renderWeeklyActivityChart() {
-  const canvas = $("#weeklyActivityChart");
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
+  const container = $("#weeklyActivityChart");
+  if (!container) return;
   const s = getState();
   const days = [];
   for (let i = 6; i >= 0; i--) {
     const d = new Date(); d.setDate(d.getDate() - i);
     const key = d.toISOString().slice(0, 10);
     const count = new Set((s.studyEvents || []).filter((e) => new Date(e.createdAtMs).toISOString().slice(0, 10) === key).map((e) => e.memberId)).size;
-    days.push({ label: d.toLocaleDateString("en", { weekday: "short" }), value: count });
+    days.push({ label: d.toLocaleDateString("en", { weekday: "short" }), value: count, key });
   }
   const max = Math.max(...days.map((d) => d.value), 1);
-  const w = canvas.width || 280, h = canvas.height || 120;
-  ctx.clearRect(0, 0, w, h);
-  const barW = (w - 40) / days.length;
-  days.forEach((d, i) => {
-    const barH = (d.value / max) * (h - 30);
-    const x = 20 + i * barW + 2;
-    ctx.fillStyle = "#2a9d7f";
-    ctx.fillRect(x, h - 10 - barH, barW - 4, barH);
-    ctx.fillStyle = "#67706c";
-    ctx.font = "10px sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText(d.label, x + (barW - 4) / 2, h - 2);
-    ctx.fillText(String(d.value), x + (barW - 4) / 2, h - 12 - barH);
-  });
+  container.innerHTML = days.map((d) =>
+    `<div class="chart-bar" style="height:${Math.round((d.value / max) * 100)}%" data-day="${d.key}"><span class="chart-bar-label">${d.value}</span><span class="chart-bar-day">${d.label}</span></div>`
+  ).join("");
 }
 
 function renderEngagementRing() {
-  const canvas = $("#engagementRing");
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
+  const container = $("#engagementRing");
+  if (!container) return;
   const s = getState();
   const total = (s.resources || []).length || 1;
   const opened = (s.resourceProgress || []).length;
   const read = (s.resourceProgress || []).filter((p) => ["reading", "urgent", "done"].includes(p.status)).length;
   const done = (s.resourceProgress || []).filter((p) => p.status === "done").length;
-  const segments = [
-    { label: "Opened", value: opened, color: "#5fa8d3" },
-    { label: "Reading", value: read, color: "#d8c74d" },
-    { label: "Done", value: done, color: "#2a9d7f" },
-    { label: "Not started", value: total - opened, color: "#e3ddd0" },
-  ];
-  const cx = 70, cy = 70, r = 50, lineW = 20;
-  let startAngle = -Math.PI / 2;
-  ctx.clearRect(0, 0, 140, 140);
-  segments.forEach((seg) => {
-    if (seg.value <= 0) return;
-    const sliceAngle = (seg.value / total) * Math.PI * 2;
-    ctx.beginPath();
-    ctx.arc(cx, cy, r, startAngle, startAngle + sliceAngle);
-    ctx.strokeStyle = seg.color;
-    ctx.lineWidth = lineW;
-    ctx.stroke();
-    startAngle += sliceAngle;
-  });
-  ctx.fillStyle = "#171b1f";
-  ctx.font = "bold 18px sans-serif";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(`${Math.round((opened / total) * 100)}%`, cx, cy);
+  const pct = total > 0 ? Math.round((opened / total) * 100) : 0;
+  const ring = container.querySelector("#engagementRingFill");
+  if (ring) {
+    const circumference = 2 * Math.PI * 14;
+    ring.style.strokeDasharray = `${circumference}`;
+    ring.style.strokeDashoffset = `${circumference - (pct / 100) * circumference}`;
+  }
+  const pctEl = container.querySelector("#engagementPercent");
+  if (pctEl) pctEl.textContent = `${pct}%`;
+  const activeEl = container.querySelector("#engagementActive");
+  if (activeEl) activeEl.textContent = String(opened);
 }
 
 /* ── RENDER: Staff Monitor ────────────────────────────────── */
@@ -753,18 +727,27 @@ function connectAnnouncementForm() {
 
 /* ── BULK UPLOAD ──────────────────────────────────────────── */
 function connectGenericBulkUpload() {
-  const form = $("#bulkUploadForm");
+  const form = $("#genericBulkUploadForm");
   if (!form) return;
+  const courseSelect = form.querySelector('[name="courseCode"]');
+  if (courseSelect && !courseSelect.options.length) {
+    [...firstSemesterCourses, ...secondSemesterCourses].forEach((c) => {
+      const opt = document.createElement("option");
+      opt.value = c.code; opt.textContent = `${c.code} — ${c.title}`;
+      courseSelect.appendChild(opt);
+    });
+  }
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const fd = new FormData(form);
-    const files = fd.getAll("files");
-    const courseCode = fd.get("courseCode");
+    const folderInput = $("#genericBulkFiles");
+    const looseInput = $("#genericBulkLooseFiles");
+    const files = [...(folderInput?.files || []), ...(looseInput?.files || [])];
+    const courseCode = (new FormData(form)).get("courseCode");
     if (!files.length || !courseCode) return showToast("Select files and a course.", "error");
 
     const total = files.length;
     let uploaded = 0;
-    const status = $("#bulkUploadStatus");
+    const status = $("#genericBulkStatus");
     const backend = window.__PHYSIOK29_BACKEND__;
 
     for (const file of files) {
@@ -1016,7 +999,7 @@ function connectStaffActions() {
 }
 
 /* ── START ────────────────────────────────────────────────── */
-export { initExecutivePortal, renderAllExec, connectStaffPortal as testStaffAuth };
+export { initExecutivePortal, connectStaffPortal as testStaffAuth };
 
 // Auto-init if we're on a staff page
 if (document.body.dataset.portal === "staff") {

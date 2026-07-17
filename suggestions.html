@@ -126,56 +126,31 @@
                 <label class="field-label">Description</label>
                 <textarea class="feedback-textarea" name="message" rows="6" placeholder="Tell us more about your feedback..."></textarea>
                 
-                <div class="char-count">
-                  <span>Detailed feedback helps us fix issues faster.</span>
-                  <span id="charCount">0 / 500</span>
-                </div>
-                
                 <div class="anonymous-toggle">
-                  <input name="anonymous" type="checkbox">
+                  <input name="anonymous" id="suggestionAnonymous" type="checkbox">
                   <div>
                     <strong>Submit Anonymously</strong>
                     <span>Your identity remains hidden to everyone.</span>
                   </div>
                 </div>
                 
+                <p class="form-status" id="suggestionStatus"></p>
+                <p class="form-help" id="anonSendingAs" hidden></p>
+                
                 <button class="submit-feedback-btn" type="submit">Send Feedback</button>
               </form>
             </div>
           </div>
 
-          <!-- RIGHT COLUMN -->
-          <div class="suggestions-sidebar">
-            <!-- STATS -->
-            <div class="suggestions-stats">
-              <div class="stat-card">
-                <div class="stat-value mint" id="studentSuggestionCount">0</div>
-                <div class="stat-label">Suggestions</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-value blue" id="studentResolvedCount">0</div>
-                <div class="stat-label">Resolved</div>
-              </div>
+          <!-- CONTACT CARD -->
+          <a href="./reps.html" class="contact-reps-card">
+            <div class="contact-icon">🎓</div>
+            <div class="contact-text">
+              <strong>Need urgent help?</strong>
+              <span>Contact your reps directly</span>
             </div>
-
-            <!-- RECENT SUGGESTIONS -->
-            <div class="recent-list-card">
-              <h3>Recent Activity</h3>
-              <div id="studentSuggestionsList">
-                <p class="empty-suggestions">No suggestions yet.</p>
-              </div>
-            </div>
-
-            <!-- CONTACT CARD -->
-            <a href="./reps.html" class="contact-reps-card">
-              <div class="contact-icon">🎓</div>
-              <div class="contact-text">
-                <strong>Need urgent help?</strong>
-                <span>Contact your reps directly</span>
-              </div>
-              <span class="material-symbols-rounded">arrow_forward</span>
-            </a>
-          </div>
+            <span class="material-symbols-rounded">arrow_forward</span>
+          </a>
         </div>
       </main>
     </div>

@@ -586,9 +586,13 @@ export async function createBackend() {
   }
 
   function pollAndReload(load, intervalMs = 60000) {
-    load();
-    const intervalId = window.setInterval(load, intervalMs);
-    return () => window.clearInterval(intervalId);
+    let pollTimer;
+    async function poll() {
+      await load();
+      pollTimer = window.setTimeout(poll, intervalMs);
+    }
+    pollTimer = window.setTimeout(poll, 0);
+    return () => window.clearTimeout(pollTimer);
   }
 
   return {
@@ -726,10 +730,14 @@ export async function createBackend() {
     },
 
     async getQuizSetup() {
-      const data = await callMemberPortal("quiz-setup", {
-        memberSession: getStoredMemberSession(),
-      });
-      if (data?.courses && Object.keys(data.courses).length > 0) return data;
+      try {
+        const data = await callMemberPortal("quiz-setup", {
+          memberSession: getStoredMemberSession(),
+        });
+        if (data?.courses && Object.keys(data.courses).length > 0) return data;
+      } catch (error) {
+        console.warn("Quiz setup from Supabase failed, trying local bank:", error.message);
+      }
 
       const bank = await loadLocalQuizBank().catch(() => null);
       if (bank?.courses) return { courses: bank.courses, summary: { streak: 0, weakTopics: [] } };
@@ -781,8 +789,7 @@ export async function createBackend() {
         answers: payload.answers || [],
       });
 
-      // If no questions returned (rare), provide fallback
-      if (!result?.results?.length && result?.score !== undefined) {
+      if (!result?.results) {
         result.results = [];
       }
       return result;
