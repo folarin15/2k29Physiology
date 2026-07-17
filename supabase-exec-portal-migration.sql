@@ -1,35 +1,39 @@
 -- ============================================================
--- PhysioK29 — Executive Portal Migration
+-- PhysioK29 — Executive Portal Migration (fixed)
 -- Run this ONCE in Supabase Dashboard > SQL Editor
--- AFTER supabase-schema.sql and supabase-migration.sql
 -- ============================================================
 
 -- ── 1. PATCH staff_roles ────────────────────────────────────
--- Add id as PK, keep user_id as unique FK
-alter table public.staff_roles
-  add column if not exists id uuid;
-
-update public.staff_roles set id = gen_random_uuid() where id is null;
-
-alter table public.staff_roles
-  alter column id set not null,
-  alter column id set default gen_random_uuid();
-
-do $$ begin
-  alter table public.staff_roles add constraint staff_roles_pkey primary key (id);
-exception when duplicate_table then null;
+-- Safely drop existing PK by finding its name
+do $$ declare
+  v_pk_name text;
+begin
+  select conname into v_pk_name
+  from pg_constraint
+  where conrelid = 'public.staff_roles'::regclass
+    and contype = 'p';
+  if v_pk_name is not null then
+    execute format('alter table public.staff_roles drop constraint %I', v_pk_name);
+  end if;
 end $$;
 
-alter table public.staff_roles
-  add constraint if not exists staff_roles_user_id_unique unique (user_id);
+-- Drop old role check
+alter table public.staff_roles drop constraint if exists staff_roles_role_check;
 
--- Expand role check to include all exec roles
-alter table public.staff_roles
-  drop constraint if exists staff_roles_role_check;
+-- Update existing rep rows to representative
+update public.staff_roles set role = 'representative' where role = 'rep';
 
-alter table public.staff_roles
-  add constraint staff_roles_role_check
-  check (role in ('admin', 'representative', 'academic', 'treasurer', 'auditor', 'designer'));
+-- Add id column + new PK
+alter table public.staff_roles add column if not exists id uuid;
+update public.staff_roles set id = gen_random_uuid() where id is null;
+alter table public.staff_roles alter column id set not null;
+alter table public.staff_roles alter column id set default gen_random_uuid();
+alter table public.staff_roles add constraint staff_roles_pkey primary key (id);
+alter table public.staff_roles add constraint staff_roles_user_id_unique unique (user_id);
+
+-- Add new role check
+alter table public.staff_roles add constraint staff_roles_role_check
+  check (role in ('admin','representative','academic','treasurer','auditor','designer'));
 
 -- ── 2. PATCH members ────────────────────────────────────────
 alter table public.members
@@ -58,7 +62,6 @@ alter table public.topic_performance
 -- ── 7. PATCH resource_progress status check ─────────────────
 alter table public.resource_progress
   drop constraint if exists resource_progress_status_check;
-
 alter table public.resource_progress
   add constraint resource_progress_status_check
   check (status in ('opened', 'reading', 'urgent', 'done', 'not_started'));
@@ -70,7 +73,6 @@ create table if not exists public.courses (
   name text not null,
   department text
 );
-
 alter table public.courses enable row level security;
 
 -- ── 9. CREATE receipts ──────────────────────────────────────
@@ -90,10 +92,9 @@ create table if not exists public.receipts (
   receipt_url text,
   created_at timestamptz not null default now()
 );
-
 alter table public.receipts enable row level security;
 
--- ── 10. UPDATE is_staff() to cover new roles ────────────────
+-- ── 10. UPDATE is_staff() ───────────────────────────────────
 create or replace function public.is_staff()
 returns boolean
 language sql
@@ -149,7 +150,7 @@ on public.receipts for delete
 to authenticated
 using (public.is_admin());
 
--- ── 13. RLS: quiz_attempts (staff select + bridge insert) ───
+-- ── 13. RLS: quiz_attempts ──────────────────────────────────
 drop policy if exists "Staff can read quiz attempts" on public.quiz_attempts;
 create policy "Staff can read quiz attempts"
 on public.quiz_attempts for select
@@ -177,7 +178,7 @@ on public.question_bank for select
 to authenticated
 using (public.is_staff());
 
--- ── 17. Realtime subscriptions for new tables ───────────────
+-- ── 17. Realtime subscriptions ──────────────────────────────
 do $$
 begin
   alter publication supabase_realtime add table public.quiz_attempts;
