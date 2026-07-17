@@ -1162,12 +1162,14 @@ async function ensureMemberOnboarding() {
       return true;
     }
 
-    const refreshedSession = await state.backend.refreshMemberSession(existingSession).catch(() => null);
+    const rawMemberId = existingSession.memberId;
+    const cleanMemberId = typeof rawMemberId === "string" ? rawMemberId : rawMemberId?.id || "";
+    const refreshedSession = await state.backend.refreshMemberSession({ ...existingSession, memberId: cleanMemberId }).catch(() => null);
     if (refreshedSession && refreshedSession.ok !== false) {
       saveMemberSession({
         ...existingSession,
         ...refreshedSession,
-        memberId: existingSession.memberId,
+        memberId: cleanMemberId,
         savedAt: Date.now(),
         lastVerifiedAt: Date.now(),
       });
@@ -1176,7 +1178,7 @@ async function ensureMemberOnboarding() {
       return true;
     }
     if (refreshedSession) {
-      saveMemberSession({ ...existingSession, lastVerifiedAt: Date.now() });
+      saveMemberSession({ ...existingSession, memberId: cleanMemberId, lastVerifiedAt: Date.now() });
       setMemberGate(false);
       return true;
     }

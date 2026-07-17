@@ -666,13 +666,18 @@ export async function createBackend() {
       };
     },
 
+    function normalizeMemberId(raw) {
+      return typeof raw === "string" ? raw : raw?.id || "";
+    }
+
     async refreshMemberSession(session) {
-      if (!session?.memberId || !session?.matricNumber) return;
+      const memberId = normalizeMemberId(session?.memberId);
+      if (!memberId || !session?.matricNumber) return;
 
       try {
         const data = await callMemberPortal("refresh", {
           memberSession: {
-            memberId: session.memberId,
+            memberId,
             name: normalizeName(session.name),
             matricNumber: normalizeMatric(session.matricNumber),
           },
