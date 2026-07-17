@@ -7839,8 +7839,10 @@ button#downloadTimetablePng .material-symbols-rounded {
 }
 
 .birthday-actions button {
-  padding: 8px 16px;
-  font-size: 0.875rem;
+  min-width: 0;
+  min-height: 0;
+  padding: 8px 14px;
+  font-size: 0.8125rem;
 }
 
 /* ── BIRTHDAY MANAGER ──────────────────────────────────────── */
