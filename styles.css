@@ -7775,32 +7775,74 @@ button#downloadTimetablePng .material-symbols-rounded {
 
 /* ── BIRTHDAY ONBOARDING ───────────────────────────────────── */
 .birthday-photo-label {
-  cursor: pointer;
+  display: block;
 }
 
 .birthday-photo-preview {
+  all: unset;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 12px;
-  border: 2px dashed var(--line);
-  border-radius: 10px;
-  margin-top: 6px;
-  transition: border-color 0.2s;
-  min-height: 80px;
   justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 20px 16px;
+  margin-top: 8px;
+  border: 2px dashed var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+  cursor: pointer;
+  transition: all 200ms ease;
+  user-select: none;
   color: var(--muted);
+  font: inherit;
+  box-sizing: border-box;
 }
 
 .birthday-photo-preview:hover {
   border-color: var(--mint);
+  background: var(--mint-soft);
+}
+
+.birthday-photo-preview:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 2px;
+}
+
+.birthday-photo-preview:active {
+  transform: scale(0.97);
+  border-color: var(--mint-dark);
+}
+
+.birthday-photo-preview .material-symbols-rounded {
+  font-size: 32px;
+  color: var(--mint);
+}
+
+.birthday-photo-preview span:last-child {
+  font-weight: 500;
+  font-size: 0.875rem;
 }
 
 .birthday-photo-preview img {
-  max-height: 160px;
-  max-width: 100%;
-  border-radius: 8px;
+  width: 100%;
+  max-height: 180px;
   object-fit: cover;
+  border-radius: 10px;
+  box-shadow: var(--soft-shadow);
+}
+
+.birthday-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.birthday-actions button {
+  min-width: 0;
+  min-height: 0;
+  padding: 8px 14px;
+  font-size: 0.8125rem;
 }
 
 /* ── BIRTHDAY MANAGER ──────────────────────────────────────── */

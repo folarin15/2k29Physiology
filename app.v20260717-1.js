@@ -61,13 +61,7 @@ const state = {
    selectedStudyGuideCourse: "",
    selectedStudyGuideTopic: "",
   studyGuideFlashcardIndex: 0,
-  staffUser: null,
-  staffRole: null,
-  staffStudySelectedMemberId: "",
   realtimeUnsubscribe: null,
-  membersUnsubscribe: null,
-  suggestionsUnsubscribe: null,
-  engagementUnsubscribe: null,
   study: {
     setup: null,
     questions: [],
@@ -262,14 +256,6 @@ function formatScorePercent(score = 0, total = 0) {
   return Number(total || 0) ? `${Math.round((Number(score || 0) / Number(total || 0)) * 100)}%` : "No score";
 }
 
-function getFilteredQuizAttempts() {
-  const courseCode = getElement("#staffStudyCourseFilter")?.value || "";
-  const topic = getElement("#staffStudyTopicFilter")?.value || "";
-  return state.quizAttempts.filter(
-    (attempt) => (!courseCode || attempt.courseCode === courseCode) && (!topic || (attempt.topic || "General") === topic)
-  );
-}
-
 function summarizeMemberStudy(memberId, attempts = state.quizAttempts) {
   const memberAttempts = getMemberQuizAttempts(memberId, attempts);
   const questionCount = memberAttempts.reduce((sum, attempt) => sum + Number(attempt.questionCount || 0), 0);
@@ -291,14 +277,6 @@ function summarizeMemberStudy(memberId, attempts = state.quizAttempts) {
     streak: getMemberStreak(memberId),
     lastAttemptAtMs,
   };
-}
-
-function getTopicPerformanceForFilter() {
-  const courseCode = getElement("#staffStudyCourseFilter")?.value || "";
-  const topic = getElement("#staffStudyTopicFilter")?.value || "";
-  return state.topicPerformance.filter(
-    (item) => (!courseCode || item.courseCode === courseCode) && (!topic || (item.topic || "General") === topic)
-  );
 }
 
 function getStudySummary() {
@@ -2514,14 +2492,6 @@ function renderAnnouncements() {
     .join("");
 }
 
-function canDeleteResource(resource) {
-  return state.staffRole === "admin" || resource.uploadedByUid === state.staffUser?.id;
-}
-
-function canDeleteAnnouncement(announcement) {
-  return state.staffRole === "admin" || announcement.postedByUid === state.staffUser?.id;
-}
-
 function canEditResource(resource) { /* stub — moved to executive.v20260717-1.js */ }
 
 function canEditAnnouncement(announcement) { /* stub — moved to executive.v20260717-1.js */ }
@@ -2563,14 +2533,6 @@ function renderAll() {
   renderExamMode();
   renderNotificationCenter();
   renderAnnouncements();
-  renderMembersTable();
-  renderStaffLists();
-  renderStaffSummary();
-  if (typeof renderStaffMonitor === "function") renderStaffMonitor();
-  if (typeof renderStaffStudyAnalytics === "function") renderStaffStudyAnalytics();
-  renderAdminDashboard();
-  renderBirthdayDashboard();
-  renderRepSummary();
   renderStudyDashboard();
   renderNextLecture();
 }
@@ -4090,102 +4052,7 @@ function renderEngagementRing() { /* stub — moved to executive.v20260717-1.js 
 function renderRepSummary() { /* stub — moved to executive.v20260717-1.js */ }
 
 /* Resource filters: search, filter by type, sort */
-function connectResourceFilters() {
-  const searchInput = getElement("#resourceSearchInput");
-  const sortSelect = getElement("#resourceSortSelect");
-  const filterPills = getElement("#resourceFilterPills");
-  if (!searchInput && !filterPills) return;
-
-  let activeFilter = "all";
-
-  function applyResourceFilters() {
-    const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
-    const sort = sortSelect ? sortSelect.value : "newest";
-    let filtered = [...(state.resources || [])];
-
-    /* Type filter */
-    if (activeFilter !== "all") {
-      filtered = filtered.filter((r) => {
-        const ext = (r.fileType || r.title || "").split(".").pop().toLowerCase();
-        if (activeFilter === "pdf") return ext === "pdf";
-        if (activeFilter === "ppt") return ext === "ppt" || ext === "pptx";
-        if (activeFilter === "doc") return ext === "doc" || ext === "docx";
-        if (activeFilter === "image") return ext === "png" || ext === "jpg" || ext === "jpeg";
-        return true;
-      });
-    }
-
-    /* Search filter */
-    if (query) {
-      filtered = filtered.filter((r) =>
-        `${r.title || ""} ${r.courseCode || ""} ${r.type || ""} ${r.uploadedBy || ""}`.toLowerCase().includes(query)
-      );
-    }
-
-    /* Sort */
-    if (sort === "newest") filtered.sort((a, b) => (b.createdAtMs || 0) - (a.createdAtMs || 0));
-    else if (sort === "oldest") filtered.sort((a, b) => (a.createdAtMs || 0) - (b.createdAtMs || 0));
-    else if (sort === "title") filtered.sort((a, b) => (a.title || "").localeCompare(b.title || ""));
-    else if (sort === "course") filtered.sort((a, b) => (a.courseCode || "").localeCompare(b.courseCode || ""));
-
-    /* Update filter pill counts */
-    const allResources = state.resources || [];
-    setText("#filterCountAll", allResources.length);
-    setText("#filterCountPdf", allResources.filter((r) => (r.fileType || r.title || "").toLowerCase().endsWith(".pdf")).length);
-    setText("#filterCountPpt", allResources.filter((r) => /\.(ppt|pptx)$/i.test(r.fileType || r.title || "")).length);
-    setText("#filterCountDoc", allResources.filter((r) => /\.(doc|docx)$/i.test(r.fileType || r.title || "")).length);
-    setText("#filterCountImg", allResources.filter((r) => /\.(png|jpg|jpeg)$/i.test(r.fileType || r.title || "")).length);
-
-    /* Update resource count pill */
-    setText("#resourceCount", filtered.length + " files");
-
-    /* Render filtered resources into the table */
-    const body = getElement("#staffResourcesBody");
-    if (body) {
-      body.innerHTML = filtered.length
-        ? filtered
-            .map((resource) => {
-              const action = canDeleteResource(resource)
-                ? `<div class="table-actions">
-                    <button class="ghost-link" data-edit-resource="${resource.id}">Edit</button>
-                    <button class="danger-link" data-delete-resource="${resource.id}">Delete</button>
-                  </div>`
-                : `<span class="muted-cell">Owner only</span>`;
-              const ext = (resource.fileType || resource.title || "").split(".").pop().toLowerCase();
-              const date = resource.createdAtMs ? formatDate(resource.createdAtMs) : "";
-              return `
-                <tr>
-                  <td>${escapeHtml(resource.title)}</td>
-                  <td>${escapeHtml(resource.courseCode)}</td>
-                  <td>${escapeHtml(resource.type || ext)}</td>
-                  <td>${escapeHtml(resource.uploadedBy || "Course rep")}</td>
-                  <td>${date}</td>
-                  <td>${action}</td>
-                </tr>
-              `;
-            })
-            .join("")
-        : `<tr><td colspan="6">No resources match your filters.</td></tr>`;
-    }
-  }
-
-  if (searchInput) searchInput.addEventListener("input", applyResourceFilters);
-  if (sortSelect) sortSelect.addEventListener("change", applyResourceFilters);
-
-  if (filterPills) {
-    filterPills.addEventListener("click", (e) => {
-      const pill = e.target.closest(".resource-filter-pill");
-      if (!pill) return;
-      filterPills.querySelectorAll(".resource-filter-pill").forEach((p) => (p.dataset.active = "false"));
-      pill.dataset.active = "true";
-      activeFilter = pill.dataset.filter;
-      applyResourceFilters();
-    });
-  }
-
-  /* Run initial render */
-  applyResourceFilters();
-}
+function connectResourceFilters() { /* stub — moved to executive.v20260717-1.js */ }
 
 /* Member search: filter members table by name or matric */
 function connectMemberSearch() {
@@ -4259,6 +4126,7 @@ function setText(selector, text) {
 /* ── BIRTHDAY ONBOARDING ───────────────────────────────────── */
 
 const BIRTHDAY_PROFILE_KEY = "physiology2k29.birthdayCompleted";
+const BIRTHDAY_SNOOZE_KEY = "physiology2k29.birthdaySnoozedUntil";
 
 function isBirthdayCompletedLocally() {
   return localStorage.getItem(BIRTHDAY_PROFILE_KEY) === "true";
@@ -4266,12 +4134,20 @@ function isBirthdayCompletedLocally() {
 
 function markBirthdayCompletedLocally() {
   try { localStorage.setItem(BIRTHDAY_PROFILE_KEY, "true"); } catch {}
+  try { localStorage.removeItem(BIRTHDAY_SNOOZE_KEY); } catch {}
+}
+
+function snoozeBirthdayReminder() {
+  try { localStorage.setItem(BIRTHDAY_SNOOZE_KEY, String(Date.now() + 3 * 24 * 60 * 60 * 1000)); } catch {}
 }
 
 async function ensureBirthdayOnboarding() {
   if (document.body.dataset.portal === "staff") return;
   if (!getMemberSession()?.memberId) return;
   if (isBirthdayCompletedLocally()) return;
+
+  const snoozedUntil = Number(localStorage.getItem(BIRTHDAY_SNOOZE_KEY) || 0);
+  if (snoozedUntil > Date.now()) return;
 
   const existingOverlay = getElement("#birthdayOnboarding");
   if (existingOverlay) return;
@@ -4302,10 +4178,9 @@ function renderBirthdayOnboarding(profile) {
   overlay.className = "member-modal";
   overlay.innerHTML = `
     <form class="member-card" id="birthdayOnboardingForm">
-      <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
-      <p class="eyebrow">Happy to have you here</p>
-      <h2>Complete Your Class Profile</h2>
-      <p class="form-help">Share your birthday so the class can celebrate with you this session. Your photo helps the class designer create birthday flyers and slides.</p>
+      <p class="eyebrow">One-time setup</p>
+      <h2>Celebrate with us! 🎉</h2>
+      <p class="form-help">Your name, birth date, and photo let the class designer prepare birthday flyers for you.</p>
 
       <label>
         Full name
@@ -4318,16 +4193,19 @@ function renderBirthdayOnboarding(profile) {
       </label>
 
       <label class="birthday-photo-label">
-        <span>Upload a portrait photo <small>(optional — helps the designer create your birthday flyer)</small></span>
-        <div class="birthday-photo-preview" id="birthdayPhotoPreview">
+        <span>Your photo <small>(required)</small></span>
+        <button type="button" class="birthday-photo-preview" id="birthdayPhotoPreview">
           <span class="material-symbols-rounded" aria-hidden="true">add_a_photo</span>
           <span>Tap to choose a photo</span>
-        </div>
-        <input name="photo" type="file" accept="image/jpeg,image/png,image/webp" hidden />
-        <small class="form-help">Portrait, half-body, or full-body casual photo. Max 10 MB.</small>
+        </button>
+        <input name="photo" type="file" accept="image/jpeg,image/png,image/webp" required hidden />
+        <small class="form-help">Portrait, half-body, or full-body photo. Max 10 MB.</small>
       </label>
 
-      <button class="primary-action" type="submit">Save Profile</button>
+      <div class="birthday-actions">
+        <button class="secondary-action" type="button" data-remind-later>Remind Me Later</button>
+        <button class="primary-action" type="submit">Complete Now</button>
+      </div>
       <p class="form-status" id="birthdayOnboardingStatus"></p>
     </form>
   `;
@@ -4338,6 +4216,12 @@ function renderBirthdayOnboarding(profile) {
   const status = getElement("#birthdayOnboardingStatus");
   const photoInput = form.querySelector('input[name="photo"]');
   const photoPreview = getElement("#birthdayPhotoPreview");
+
+  form.querySelector("[data-remind-later]").addEventListener("click", () => {
+    snoozeBirthdayReminder();
+    overlay.remove();
+    showToast("We'll remind you again in a few days.");
+  });
 
   photoPreview.addEventListener("click", () => photoInput?.click());
 
@@ -4379,18 +4263,21 @@ function renderBirthdayOnboarding(profile) {
       status.textContent = "Select your date of birth.";
       return;
     }
+    if (!(photoFile instanceof File) || photoFile.size === 0) {
+      status.textContent = "Please select a photo to upload.";
+      return;
+    }
 
     status.textContent = "Saving your profile...";
     const submitBtn = form.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
+    const remindBtn = form.querySelector("[data-remind-later]");
+    if (remindBtn) remindBtn.disabled = true;
 
     try {
-      let photoUrl = profile?.photoUrl || "";
-      if (photoFile instanceof File && photoFile.size > 0) {
-        status.textContent = "Uploading photo...";
-        const memberId = getMemberSession()?.memberId || "unknown";
-        photoUrl = await state.backend.uploadBirthdayPhoto(photoFile, memberId);
-      }
+      status.textContent = "Uploading photo...";
+      const memberId = getMemberSession()?.memberId || "unknown";
+      const photoUrl = await state.backend.uploadBirthdayPhoto(photoFile, memberId);
 
       status.textContent = "Saving birthday profile...";
       await state.backend.saveBirthdayProfile(fullName, dateOfBirth, photoUrl);
@@ -4402,6 +4289,7 @@ function renderBirthdayOnboarding(profile) {
     } catch (error) {
       status.textContent = error.message || "Could not save profile. Try again.";
       submitBtn.disabled = false;
+      if (remindBtn) remindBtn.disabled = false;
     }
   });
 }
@@ -4469,50 +4357,11 @@ function renderBirthdayPhotoSettings() {
 
 /* ── DESIGNER BIRTHDAY DASHBOARD ───────────────────────────── */
 
-let cachedBirthdayList = [];
-let birthdayListLoading = false;
-
 async function loadBirthdayList() { /* stub — moved to executive.v20260717-1.js */ }
 
 function getUpcomingBirthdays(memberList) { /* stub — moved to executive.v20260717-1.js */ }
 
-function renderBirthdayDashboard() {
-  const grid = getElement("#adminCardGrid");
-  if (!grid) return;
-
-  const members = cachedBirthdayList;
-  const upcoming = getUpcomingBirthdays(members);
-  const totalRegistered = members.length;
-
-  const tomorrow = upcoming.filter((m) => m.diff === 1);
-  const in3Days = upcoming.filter((m) => m.diff >= 2 && m.diff <= 3);
-  const nextWeek = upcoming.filter((m) => m.diff >= 4 && m.diff <= 14);
-
-  grid.insertAdjacentHTML("beforeend", `
-    <article class="admin-card" id="birthdayDashboardCard">
-      <div class="admin-card-header">
-        <span class="material-symbols-rounded" aria-hidden="true">celebration</span>
-        <h3>Birthdays</h3>
-      </div>
-      <div class="admin-card-body">
-        <strong>${totalRegistered}</strong> classmates registered &middot;
-        <strong>${upcoming.length}</strong> birthdays in the next 2 weeks
-        ${tomorrow.length ? `<br><strong>🎉 ${tomorrow.length} tomorrow!</strong>` : ""}
-      </div>
-      <div class="admin-card-footer">
-        <span class="admin-card-stat">${in3Days.length} in 3 days &middot; ${nextWeek.length} next week</span>
-        <button class="ghost-action compact-action" type="button" data-open-birthday-manager>View All</button>
-      </div>
-    </article>
-  `);
-
-  const viewBtn = grid.querySelector("[data-open-birthday-manager]");
-  if (viewBtn) {
-    viewBtn.addEventListener("click", () => renderBirthdayManager(upcoming, members));
-  }
-}
-
-let birthdayNotificationStatus = "";
+function renderBirthdayDashboard() { /* stub — moved to executive.v20260717-1.js */ }
 
 async function triggerBirthdayNotification() { /* stub — moved to executive.v20260717-1.js */ }
 
@@ -4547,10 +4396,7 @@ async function init() {
   connectQuizMode();
   connectTimetable();
   connectTimetableDownload();
-  connectResourceFilters();
   connectMemberSearch();
-  window.__PHYSIOK29_STATE__ = state;
-  window.__PHYSIOK29_BACKEND__ = state.backend;
   window.setInterval(() => {
     renderExamMode();
     renderNextLecture();
