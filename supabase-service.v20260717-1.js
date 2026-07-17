@@ -2,6 +2,8 @@ import { isSupabaseConfigured, supabaseConfig } from "./supabase-config.v2026071
 
 const QUIZ_BANK_CACHE_KEY = "physiology2k29.quizBank";
 const QUIZ_BANK_URL = "./quiz-bank.json?v=20260709-1";
+const RESOURCE_CACHE_KEY = "physiology2k29.portalDataCache";
+const RESOURCE_CACHE_TTL = 12 * 60 * 60 * 1000;
 
 const SUPABASE_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
@@ -527,6 +529,18 @@ export async function createBackend() {
     memberPortalDataCachedAt = now;
     memberPortalDataPromise = callMemberPortal("portal-data", {
       memberSession: getStoredMemberSession(),
+    }).then((data) => {
+      try { localStorage.setItem(RESOURCE_CACHE_KEY, JSON.stringify({ data, cachedAt: Date.now() })); } catch {}
+      return data;
+    }).catch(async (portalError) => {
+      try {
+        const cached = JSON.parse(localStorage.getItem(RESOURCE_CACHE_KEY) || "null");
+        if (cached?.data && Date.now() - cached.cachedAt < RESOURCE_CACHE_TTL) {
+          console.warn("Portal data unavailable, using cached data from", new Date(cached.cachedAt).toISOString());
+          return cached.data;
+        }
+      } catch {}
+      throw portalError;
     }).finally(() => {
       window.setTimeout(() => {
         memberPortalDataPromise = null;

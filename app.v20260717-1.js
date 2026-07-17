@@ -1154,6 +1154,14 @@ async function ensureMemberOnboarding() {
 
   const existingSession = getMemberSession();
   if (existingSession?.memberId) {
+    const lastVerified = existingSession.lastVerifiedAt || 0;
+    const staleThreshold = Date.now() - 10 * 60 * 1000;
+    
+    if (lastVerified > staleThreshold) {
+      setMemberGate(false);
+      return true;
+    }
+
     const refreshedSession = await state.backend.refreshMemberSession(existingSession).catch(() => null);
     if (refreshedSession && refreshedSession.ok !== false) {
       saveMemberSession({
@@ -1161,13 +1169,14 @@ async function ensureMemberOnboarding() {
         ...refreshedSession,
         memberId: existingSession.memberId,
         savedAt: Date.now(),
+        lastVerifiedAt: Date.now(),
       });
       setMemberGate(false);
       connectPushNotifications(getMemberSession());
       return true;
     }
     if (refreshedSession) {
-      showToast("Could not verify your profile. Cached data is shown.", "warning");
+      saveMemberSession({ ...existingSession, lastVerifiedAt: Date.now() });
       setMemberGate(false);
       return true;
     }
