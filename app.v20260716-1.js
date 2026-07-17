@@ -4389,6 +4389,7 @@ function setText(selector, text) {
 /* ── BIRTHDAY ONBOARDING ───────────────────────────────────── */
 
 const BIRTHDAY_PROFILE_KEY = "physiology2k29.birthdayCompleted";
+const BIRTHDAY_SNOOZE_KEY = "physiology2k29.birthdaySnoozedUntil";
 
 function isBirthdayCompletedLocally() {
   return localStorage.getItem(BIRTHDAY_PROFILE_KEY) === "true";
@@ -4396,12 +4397,20 @@ function isBirthdayCompletedLocally() {
 
 function markBirthdayCompletedLocally() {
   try { localStorage.setItem(BIRTHDAY_PROFILE_KEY, "true"); } catch {}
+  try { localStorage.removeItem(BIRTHDAY_SNOOZE_KEY); } catch {}
+}
+
+function snoozeBirthdayReminder() {
+  try { localStorage.setItem(BIRTHDAY_SNOOZE_KEY, String(Date.now() + 3 * 24 * 60 * 60 * 1000)); } catch {}
 }
 
 async function ensureBirthdayOnboarding() {
   if (document.body.dataset.portal === "staff") return;
   if (!getMemberSession()?.memberId) return;
   if (isBirthdayCompletedLocally()) return;
+
+  const snoozedUntil = Number(localStorage.getItem(BIRTHDAY_SNOOZE_KEY) || 0);
+  if (snoozedUntil > Date.now()) return;
 
   const existingOverlay = getElement("#birthdayOnboarding");
   if (existingOverlay) return;
@@ -4432,10 +4441,9 @@ function renderBirthdayOnboarding(profile) {
   overlay.className = "member-modal";
   overlay.innerHTML = `
     <form class="member-card" id="birthdayOnboardingForm">
-      <img src="./assets/ui-logo.jpeg" alt="University of Ibadan logo" />
-      <p class="eyebrow">Happy to have you here</p>
-      <h2>Complete Your Class Profile</h2>
-      <p class="form-help">Share your birthday so the class can celebrate with you this session. Your photo helps the class designer create birthday flyers and slides.</p>
+      <p class="eyebrow">One-time setup</p>
+      <h2>Help us celebrate you! 🎉</h2>
+      <p class="form-help">To help the class executives prepare birthday materials, please provide:</p>
 
       <label>
         Full name
@@ -4448,16 +4456,24 @@ function renderBirthdayOnboarding(profile) {
       </label>
 
       <label class="birthday-photo-label">
-        <span>Upload a portrait photo <small>(optional — helps the designer create your birthday flyer)</small></span>
+        <span>Upload a clear photo of yourself <small>(required — helps the designer create your birthday flyer)</small></span>
         <div class="birthday-photo-preview" id="birthdayPhotoPreview">
           <span class="material-symbols-rounded" aria-hidden="true">add_a_photo</span>
           <span>Tap to choose a photo</span>
         </div>
-        <input name="photo" type="file" accept="image/jpeg,image/png,image/webp" hidden />
+        <input name="photo" type="file" accept="image/jpeg,image/png,image/webp" required hidden />
         <small class="form-help">Portrait, half-body, or full-body casual photo. Max 10 MB.</small>
       </label>
 
-      <button class="primary-action" type="submit">Save Profile</button>
+      <details style="margin-top:4px;font-size:0.85rem;color:var(--muted);cursor:pointer">
+        <summary>Why do we need this?</summary>
+        <p style="margin-top:6px;line-height:1.5">Your photo and date of birth will only be used by authorized class executives for birthday celebrations and class administration. Your information is not publicly visible to other students.</p>
+      </details>
+
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="secondary-action" type="button" data-remind-later style="flex:1">Remind Me Later</button>
+        <button class="primary-action" type="submit" style="flex:1">Complete Now</button>
+      </div>
       <p class="form-status" id="birthdayOnboardingStatus"></p>
     </form>
   `;
@@ -4468,6 +4484,12 @@ function renderBirthdayOnboarding(profile) {
   const status = getElement("#birthdayOnboardingStatus");
   const photoInput = form.querySelector('input[name="photo"]');
   const photoPreview = getElement("#birthdayPhotoPreview");
+
+  form.querySelector("[data-remind-later]").addEventListener("click", () => {
+    snoozeBirthdayReminder();
+    overlay.remove();
+    showToast("We'll remind you again in a few days.");
+  });
 
   photoPreview.addEventListener("click", () => photoInput?.click());
 
@@ -4509,18 +4531,21 @@ function renderBirthdayOnboarding(profile) {
       status.textContent = "Select your date of birth.";
       return;
     }
+    if (!(photoFile instanceof File) || photoFile.size === 0) {
+      status.textContent = "Please select a photo to upload.";
+      return;
+    }
 
     status.textContent = "Saving your profile...";
     const submitBtn = form.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
+    const remindBtn = form.querySelector("[data-remind-later]");
+    if (remindBtn) remindBtn.disabled = true;
 
     try {
-      let photoUrl = profile?.photoUrl || "";
-      if (photoFile instanceof File && photoFile.size > 0) {
-        status.textContent = "Uploading photo...";
-        const memberId = getMemberSession()?.memberId || "unknown";
-        photoUrl = await state.backend.uploadBirthdayPhoto(photoFile, memberId);
-      }
+      status.textContent = "Uploading photo...";
+      const memberId = getMemberSession()?.memberId || "unknown";
+      const photoUrl = await state.backend.uploadBirthdayPhoto(photoFile, memberId);
 
       status.textContent = "Saving birthday profile...";
       await state.backend.saveBirthdayProfile(fullName, dateOfBirth, photoUrl);
@@ -4532,6 +4557,7 @@ function renderBirthdayOnboarding(profile) {
     } catch (error) {
       status.textContent = error.message || "Could not save profile. Try again.";
       submitBtn.disabled = false;
+      if (remindBtn) remindBtn.disabled = false;
     }
   });
 }
