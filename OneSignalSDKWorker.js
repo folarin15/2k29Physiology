@@ -25,6 +25,7 @@ const APP_SHELL_URLS = [
   "/bio-study-guide.json",
   "/supabase-config.v20260717-1.js",
   "/supabase-service.v20260717-1.js",
+  "/executive.v20260717-1.js",
   "/site.webmanifest",
   "/assets/ui-logo.jpeg",
   "/assets/favicon.png",
