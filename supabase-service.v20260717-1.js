@@ -657,8 +657,10 @@ export async function createBackend() {
         matricNumber: normalizeMatric(profile.matricNumber),
       });
 
+      const rawId = data.memberId;
+      const memberId = typeof rawId === "string" ? rawId : rawId?.id || "";
       return {
-        memberId: data.memberId,
+        memberId,
         name: data.name || normalizeName(profile.name),
         matricNumber: data.matricNumber || normalizeMatric(profile.matricNumber),
       };

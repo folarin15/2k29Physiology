@@ -402,11 +402,12 @@ Deno.serve(async (req) => {
         return jsonResponse(req, { error: "Too many attempts. Please try again later." }, 429);
       }
 
-      const { data: memberId, error } = await supabase.rpc("register_member", {
+      const { data: rpcResult, error } = await supabase.rpc("register_member", {
         p_name: name,
         p_matric_number: matricNumber,
       });
 
+      const memberId = typeof rpcResult === "string" ? rpcResult : rpcResult?.id || "";
       const success = Boolean(memberId && !error);
       await logAttempt(supabase, "register", clientKey, matricNumber, success, name, error?.message || "");
 
